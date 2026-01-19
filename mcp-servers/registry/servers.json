@@ -1,0 +1,65 @@
+{
+  "version": "1.0.0",
+  "description": "MCP Server Registry for Agent Architect",
+  "servers": {
+    "gmail": {
+      "name": "Gmail MCP Server",
+      "package": "@gongrzhe/server-gmail-autoauth-mcp@1.1.11",
+      "type": "nodejs",
+      "image": "mcp-gmail:latest",
+      "accounts": ["board", "personal"],
+      "auth": "oauth",
+      "credentials": {
+        "pattern": "~/.config/mcp-gmail-{account}/",
+        "required": ["gcp-oauth.keys.json"],
+        "generated": ["token.json"]
+      },
+      "wrapper_pattern": "mcp-gmail-{account}.sh",
+      "status": "active"
+    },
+    "gdrive": {
+      "name": "Google Drive MCP Server",
+      "package": "@isaacphi/mcp-gdrive@0.2.0",
+      "type": "nodejs",
+      "image": "mcp-gdrive:latest",
+      "accounts": ["board", "personal"],
+      "auth": "oauth",
+      "credentials": {
+        "pattern": "~/.config/mcp-gdrive-{account}/",
+        "required": ["gcp-oauth.keys.json"],
+        "generated": ["credentials.json"]
+      },
+      "wrapper_pattern": "mcp-gdrive-{account}.sh",
+      "status": "active"
+    },
+    "google-docs": {
+      "name": "Google Docs MCP Server",
+      "package": "google-docs-mcp@1.0.0",
+      "type": "nodejs",
+      "image": "mcp-google-docs:latest",
+      "accounts": ["default"],
+      "auth": "oauth",
+      "credentials": {
+        "pattern": "~/.config/mcp-google-docs/",
+        "required": ["credentials.json"],
+        "notes": "Requires client_id, client_secret, refresh_token in JSON"
+      },
+      "wrapper": "mcp-google-docs.sh",
+      "status": "active"
+    },
+    "powerpoint": {
+      "name": "PowerPoint MCP Server",
+      "package": "custom (python-pptx)",
+      "type": "python",
+      "image": "mcp-powerpoint:latest",
+      "accounts": ["default"],
+      "auth": "none",
+      "mounts": {
+        "templates": "~/.config/mcp-powerpoint/templates",
+        "workspace": "~/.config/mcp-powerpoint/workspace"
+      },
+      "wrapper": "mcp-powerpoint.sh",
+      "status": "active"
+    }
+  }
+}

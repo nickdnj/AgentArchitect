@@ -1,0 +1,50 @@
+{
+  "id": "{{TEAM_ID}}",
+  "name": "{{TEAM_NAME}}",
+  "description": "{{TEAM_DESCRIPTION}}",
+  "version": "1.0",
+  "created": "{{CREATED_DATE}}",
+
+  "purpose": "Project team that executes defined deliverables with clear milestones and outputs",
+
+  "members": [
+    {
+      "agent_id": "{{MEMBER_1_ID}}",
+      "role": "{{MEMBER_1_ROLE}}",
+      "context_override": null
+    },
+    {
+      "agent_id": "{{MEMBER_2_ID}}",
+      "role": "{{MEMBER_2_ROLE}}",
+      "context_override": null
+    }
+  ],
+
+  "shared_context": {
+    "buckets": ["{{TEAM_ID}}-workspace", "{{TEAM_ID}}-requirements"],
+    "outputs_folder": "teams/{{TEAM_ID}}/outputs"
+  },
+
+  "collaboration_rules": {
+    "coordination_mode": "human-reviewed",
+    "handoff_protocol": "milestone-based",
+    "output_sharing": "summarized",
+    "notification_email": "{{NOTIFICATION_EMAIL}}"
+  },
+
+  "workflow": {
+    "phases": [
+      "Requirements gathering",
+      "Planning",
+      "Execution",
+      "Review",
+      "Delivery"
+    ],
+    "human_checkpoints": ["After planning", "Before delivery"]
+  },
+
+  "deliverables": {
+    "tracking": "teams/{{TEAM_ID}}/deliverables.json",
+    "output_formats": ["markdown", "pdf"]
+  }
+}

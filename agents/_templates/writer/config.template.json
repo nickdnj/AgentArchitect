@@ -1,0 +1,35 @@
+{
+  "id": "{{AGENT_ID}}",
+  "name": "{{AGENT_NAME}}",
+  "description": "{{AGENT_DESCRIPTION}}",
+  "version": "1.0",
+
+  "expertise": {
+    "domains": ["writing", "communications", "content-creation"],
+    "capabilities": ["drafting", "editing", "formatting", "tone-management"]
+  },
+
+  "mcp_servers": {{MCP_SERVERS}},
+
+  "context_buckets": {
+    "assigned": {{CONTEXT_BUCKETS}},
+    "access_level": "read-only"
+  },
+
+  "output": {
+    "folder": "{{OUTPUT_FOLDER}}",
+    "formats": ["markdown", "html"],
+    "briefing_folder": "{{BRIEFING_FOLDER}}"
+  },
+
+  "collaboration": {
+    "can_request_from": {{CAN_REQUEST_FROM}},
+    "provides_to": {{PROVIDES_TO}},
+    "handoff_format": "full-output"
+  },
+
+  "trigger": {
+    "type": "on-demand",
+    "description": "Invoked when written content is needed"
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "id": "{{TEAM_ID}}",
+  "name": "{{TEAM_NAME}}",
+  "description": "{{TEAM_DESCRIPTION}}",
+  "version": "1.0",
+  "created": "{{CREATED_DATE}}",
+
+  "purpose": "Advisory team that provides guidance, analysis, and recommendations to stakeholders",
+
+  "members": [
+    {
+      "agent_id": "{{MEMBER_1_ID}}",
+      "role": "{{MEMBER_1_ROLE}}",
+      "context_override": null
+    },
+    {
+      "agent_id": "{{MEMBER_2_ID}}",
+      "role": "{{MEMBER_2_ROLE}}",
+      "context_override": null
+    }
+  ],
+
+  "shared_context": {
+    "buckets": ["{{TEAM_ID}}-workspace"],
+    "outputs_folder": "teams/{{TEAM_ID}}/outputs"
+  },
+
+  "collaboration_rules": {
+    "coordination_mode": "human-reviewed",
+    "handoff_protocol": "explicit-request",
+    "output_sharing": "summarized",
+    "notification_email": "{{NOTIFICATION_EMAIL}}"
+  },
+
+  "workflow": {
+    "typical_flow": [
+      "Research/gather information",
+      "Analyze findings",
+      "Develop recommendations",
+      "Draft communications"
+    ],
+    "human_checkpoints": ["After analysis", "Before final output"]
+  }
+}

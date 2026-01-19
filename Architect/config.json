@@ -1,0 +1,48 @@
+{
+  "id": "architect",
+  "name": "Agent Architect",
+  "description": "Master agent for building and managing agent teams",
+  "version": "1.0",
+
+  "mcp_servers": [
+    "google-docs",
+    "gdrive",
+    "gmail",
+    "powerpoint"
+  ],
+
+  "paths": {
+    "agents": "agents/",
+    "teams": "teams/",
+    "buckets": "context-buckets/",
+    "templates": {
+      "agents": "agents/_templates/",
+      "teams": "teams/_templates/",
+      "buckets": "context-buckets/_templates/"
+    },
+    "registry": {
+      "agents": "registry/agents.json",
+      "teams": "registry/teams.json",
+      "buckets": "registry/buckets.json"
+    },
+    "mcp_assignments": "mcp-servers/assignments.json"
+  },
+
+  "defaults": {
+    "coordination_mode": "human-reviewed",
+    "gdrive_sync_mode": "on-access",
+    "output_sharing": "summarized",
+    "timezone": "America/New_York",
+    "date_format": "%B %d, %Y"
+  },
+
+  "trigger": {
+    "type": "on-startup",
+    "description": "Loads automatically when Claude Code opens this repository"
+  },
+
+  "session": {
+    "remember_context": true,
+    "auto_save": true
+  }
+}

@@ -1,0 +1,6 @@
+# Environment files with credentials
+.env
+
+# Local test files
+*.log
+*.tmp

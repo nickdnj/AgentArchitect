@@ -1,0 +1,143 @@
+# MCP Servers Docker Compose Configuration
+# This file defines all MCP server containers
+# Use profiles to start specific servers: docker-compose --profile gmail up
+
+version: '3.8'
+
+services:
+  # ========== Gmail MCP Servers ==========
+  gmail-board:
+    build:
+      context: ./images/gmail
+      dockerfile: Dockerfile
+    image: mcp-gmail:latest
+    container_name: mcp-gmail-board
+    stdin_open: true
+    tty: false
+    volumes:
+      - ${MCP_GMAIL_BOARD_CREDS:-~/.config/mcp-gmail-board}:/mcp/credentials:rw
+    restart: "no"
+    profiles:
+      - gmail
+      - board
+      - all
+
+  gmail-personal:
+    build:
+      context: ./images/gmail
+      dockerfile: Dockerfile
+    image: mcp-gmail:latest
+    container_name: mcp-gmail-personal
+    stdin_open: true
+    tty: false
+    volumes:
+      - ${MCP_GMAIL_PERSONAL_CREDS:-~/.config/mcp-gmail-personal}:/mcp/credentials:rw
+    restart: "no"
+    profiles:
+      - gmail
+      - personal
+      - all
+
+  # ========== Google Drive MCP Servers ==========
+  gdrive-board:
+    build:
+      context: ./images/gdrive
+      dockerfile: Dockerfile
+    image: mcp-gdrive:latest
+    container_name: mcp-gdrive-board
+    stdin_open: true
+    tty: false
+    volumes:
+      - ${MCP_GDRIVE_BOARD_CREDS:-~/.config/mcp-gdrive-board}:/mcp/credentials:rw
+    environment:
+      - GDRIVE_CREDS_DIR=/mcp/credentials
+    restart: "no"
+    profiles:
+      - gdrive
+      - board
+      - all
+
+  gdrive-personal:
+    build:
+      context: ./images/gdrive
+      dockerfile: Dockerfile
+    image: mcp-gdrive:latest
+    container_name: mcp-gdrive-personal
+    stdin_open: true
+    tty: false
+    volumes:
+      - ${MCP_GDRIVE_PERSONAL_CREDS:-~/.config/mcp-gdrive-personal}:/mcp/credentials:rw
+    environment:
+      - GDRIVE_CREDS_DIR=/mcp/credentials
+    restart: "no"
+    profiles:
+      - gdrive
+      - personal
+      - all
+
+  # ========== Google Docs MCP Server ==========
+  google-docs:
+    build:
+      context: ./images/google-docs
+      dockerfile: Dockerfile
+    image: mcp-google-docs:latest
+    container_name: mcp-google-docs
+    stdin_open: true
+    tty: false
+    env_file:
+      - ${MCP_GOOGLE_DOCS_ENV:-~/.config/mcp-google-docs/.env}
+    restart: "no"
+    profiles:
+      - google-docs
+      - docs
+      - all
+
+  # ========== Chrome DevTools MCP Server ==========
+  chrome:
+    build:
+      context: ./images/chrome
+      dockerfile: Dockerfile
+    image: mcp-chrome:latest
+    container_name: mcp-chrome
+    stdin_open: true
+    tty: false
+    shm_size: 2gb
+    restart: "no"
+    profiles:
+      - chrome
+      - browser
+      - all
+
+  # ========== PowerPoint MCP Server ==========
+  powerpoint:
+    build:
+      context: ./images/powerpoint
+      dockerfile: Dockerfile
+    image: mcp-powerpoint:latest
+    container_name: mcp-powerpoint
+    stdin_open: true
+    tty: false
+    volumes:
+      - ${MCP_PPT_TEMPLATES:-~/.config/mcp-powerpoint/templates}:/mcp/templates:ro
+      - ${MCP_PPT_WORKSPACE:-~/.config/mcp-powerpoint/workspace}:/mcp/workspace:rw
+    restart: "no"
+    profiles:
+      - powerpoint
+      - ppt
+      - all
+
+  # ========== GitHub MCP Server ==========
+  github:
+    build:
+      context: ./images/github
+      dockerfile: Dockerfile
+    image: mcp-github:latest
+    container_name: mcp-github
+    stdin_open: true
+    tty: false
+    environment:
+      - GITHUB_PERSONAL_ACCESS_TOKEN=${GITHUB_PERSONAL_ACCESS_TOKEN}
+    restart: "no"
+    profiles:
+      - github
+      - all

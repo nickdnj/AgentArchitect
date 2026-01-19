@@ -1,0 +1,45 @@
+{
+  "version": "1.0",
+  "description": "MCP server access assignments for agents and teams",
+  "last_updated": "2026-01-19",
+
+  "servers": {
+    "gmail": {
+      "accounts": {
+        "board": {
+          "allowed_agents": [],
+          "allowed_teams": []
+        },
+        "personal": {
+          "allowed_agents": [],
+          "allowed_teams": []
+        }
+      }
+    },
+    "gdrive": {
+      "accounts": {
+        "board": {
+          "allowed_agents": [],
+          "allowed_teams": []
+        },
+        "personal": {
+          "allowed_agents": [],
+          "allowed_teams": []
+        }
+      }
+    },
+    "google-docs": {
+      "allowed_agents": [],
+      "allowed_teams": []
+    },
+    "powerpoint": {
+      "allowed_agents": [],
+      "allowed_teams": []
+    }
+  },
+
+  "notes": {
+    "empty_arrays": "Empty arrays mean no restrictions - all agents/teams can use",
+    "architect_access": "The Architect agent always has full access to manage assignments"
+  }
+}
