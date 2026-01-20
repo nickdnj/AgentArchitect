@@ -135,8 +135,84 @@ context-buckets/wharfside-docs/
 | **Monthly Bulletin** | Community communications | Past bulletins, calendar |
 | **Proposal Review** | Vendor proposal analysis | Historical costs, contracts |
 | **Email Research** | Email analysis & response | Board email archives |
+| **Presentation** | Board meeting presentations | Meeting agendas, data |
 
 Each agent sees only its assigned context. The Archivist provides briefings when other agents need historical information.
+
+### Software Project Team
+
+A second team demonstrates Agent Architect's flexibility for software development:
+
+| Agent | Role | Workflow Stage |
+|-------|------|----------------|
+| **Product Requirements** | PRD generation | Discovery |
+| **Software Architecture** | System design | Design |
+| **UX Design** | User experience docs | Design (parallel) |
+| **Dev Planning** | Sprint breakdown | Planning |
+| **QA Strategy** | Test planning | Planning |
+| **Marketing** | Go-to-market content | Launch |
+| **Sales** | Sales enablement | Launch |
+| **Legal** | Compliance review | Throughout |
+
+This team follows a structured workflow with defined handoffs between stages.
+
+---
+
+## Claude Code Native Integration
+
+Agent Architect now integrates with Claude Code's native `/agents` feature, giving you **two ways to use your agents**:
+
+### Hybrid Architecture
+
+```
+agents/<agent-id>/              (SOURCE OF TRUTH - edit these)
+├── SKILL.md                    → Behavioral instructions
+└── config.json                 → Rich metadata (collaboration, workflow, context)
+
+        ↓ generate (via /sync-agents)
+
+.claude/agents/<agent-id>.md    (GENERATED - Claude Code native format)
+```
+
+### Using `/sync-agents`
+
+After creating or modifying agents, run the sync command to generate Claude Code native agents:
+
+```bash
+# In Claude Code
+/sync-agents
+
+# Or directly
+node scripts/generate-agents.js
+```
+
+This generates `.claude/agents/<agent-id>.md` files that Claude Code can use for native delegation.
+
+### Two Ways to Use Agents
+
+| Method | Best For | How |
+|--------|----------|-----|
+| **Native Delegation** | Quick single-agent tasks | Claude Code automatically delegates based on agent descriptions |
+| **Team Orchestration** | Multi-agent workflows | Use `/architect` to coordinate agents with briefings |
+
+### What Gets Preserved
+
+The generation process maps Agent Architect metadata to Claude Code format:
+
+| Agent Architect | Claude Code |
+|-----------------|-------------|
+| `config.name` | frontmatter `name` |
+| `config.description` | frontmatter `description` |
+| `config.mcp_servers` | frontmatter `tools` |
+| `SKILL.md` content | markdown body |
+| `collaboration`, `workflow_position` | HTML comments (preserved for reference) |
+
+### Key Points
+
+- **Never edit `.claude/agents/*.md` directly** - they're regenerated
+- **Source of truth is `agents/` directory** - edit SKILL.md and config.json there
+- **Generated files are git-ignored** - each user regenerates locally after clone
+- **Team orchestration unchanged** - Architect still coordinates multi-agent workflows
 
 ---
 
@@ -163,7 +239,21 @@ Open the repository in Claude Code:
 claude
 ```
 
-The `/architect` command will load Archie, who will guide you through:
+**Generate native agents** (recommended after clone):
+
+```
+/sync-agents
+```
+
+This creates Claude Code native agent files in `.claude/agents/` that enable native delegation.
+
+**Load the Architect** for team/agent management:
+
+```
+/architect
+```
+
+Archie will guide you through:
 
 1. Checking for updates
 2. Loading your registries
@@ -172,8 +262,8 @@ The `/architect` command will load Archie, who will guide you through:
 ```
 Agent Architect - Main Menu
 
-Teams: 1 registered
-Agents: 1 registered
+Teams: 2 registered
+Agents: 13 registered
 Context Buckets: 1 registered
 
 What would you like to do?
@@ -184,6 +274,13 @@ What would you like to do?
 5. Manage existing agents
 ...
 ```
+
+### Available Commands
+
+| Command | Purpose |
+|---------|---------|
+| `/architect` | Load Archie for team/agent management |
+| `/sync-agents` | Generate Claude Code native agents from definitions |
 
 ---
 
@@ -198,24 +295,32 @@ AgentArchitect/
 │   ├── SKILL.md                 # Archie's behavioral instructions
 │   └── config.json              # Architect configuration
 │
-├── agents/                      # Individual agents
+├── agents/                      # Individual agents (SOURCE OF TRUTH)
 │   ├── _templates/              # Agent templates
 │   │   ├── researcher/
 │   │   ├── analyst/
 │   │   ├── writer/
 │   │   └── reviewer/
-│   └── archivist/               # Example: Document archivist
-│       ├── SKILL.md
-│       └── config.json
+│   ├── archivist/               # Document archivist
+│   ├── monthly-bulletin/        # Community communications
+│   ├── proposal-review/         # Vendor proposal analysis
+│   ├── email-research/          # Email analysis
+│   ├── presentation/            # Meeting presentations
+│   ├── product-requirements/    # PRD generation
+│   ├── software-architecture/   # System design
+│   ├── ux-design/               # UX documentation
+│   ├── dev-planning/            # Sprint planning
+│   ├── qa-strategy/             # Test planning
+│   ├── marketing/               # Marketing content
+│   ├── sales/                   # Sales materials
+│   └── legal/                   # Legal review
 │
 ├── teams/                       # Agent teams
 │   ├── _templates/
 │   │   ├── advisory-team/
 │   │   └── project-team/
-│   └── wharfside-board-assistant/  # Example team
-│       ├── team.json
-│       ├── outputs/
-│       └── workspace/
+│   ├── wharfside-board-assistant/  # Condo board team
+│   └── software-project/           # Software dev team
 │
 ├── context-buckets/             # Knowledge bases
 │   ├── _templates/
@@ -224,6 +329,9 @@ AgentArchitect/
 │   └── wharfside-docs/          # Example bucket
 │       ├── bucket.json
 │       └── files/
+│
+├── scripts/                     # Utility scripts
+│   └── generate-agents.js       # Generates Claude Code native agents
 │
 ├── mcp-servers/                 # MCP integrations
 │   ├── registry/servers.json    # Available servers
@@ -236,8 +344,11 @@ AgentArchitect/
 │
 └── .claude/                     # Claude Code config
     ├── settings.local.json
+    ├── agents/                  # Generated native agents (git-ignored)
+    │   └── *.md                 # Run /sync-agents to regenerate
     └── commands/
-        └── architect.md         # /architect command
+        ├── architect.md         # /architect - Team/agent management
+        └── sync-agents.md       # /sync-agents - Generate native agents
 ```
 
 ---
@@ -370,11 +481,13 @@ Agent Architect is built on these principles:
 
 ## Roadmap
 
+- [x] Claude Code native agent integration (`/sync-agents`)
 - [ ] Automated portal sync scheduling
-- [ ] Multi-agent orchestration workflows
+- [ ] Multi-agent orchestration workflows (`/team-run` command)
 - [ ] Context bucket versioning
 - [ ] Team performance analytics
 - [ ] Additional MCP server integrations
+- [ ] Watch mode for auto-regeneration on file changes
 
 ---
 
