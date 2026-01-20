@@ -1,0 +1,61 @@
+{
+  "id": "archivist",
+  "name": "Archivist",
+  "description": "Maintains and retrieves governing documents, meeting minutes, and historical records for Wharfside Manor",
+  "version": "1.0",
+
+  "expertise": {
+    "domains": ["document management", "information retrieval", "policy research", "web portal integration"],
+    "capabilities": ["document search", "context provision", "policy lookup", "historical research", "portal document sync"]
+  },
+
+  "mcp_servers": ["gdrive", "google-docs", "chrome"],
+
+  "context_buckets": {
+    "assigned": ["wharfside-docs"],
+    "access_level": "read-write"
+  },
+
+  "output": {
+    "folder": "outputs/",
+    "formats": ["markdown", "summary"]
+  },
+
+  "collaboration": {
+    "can_request_from": [],
+    "provides_to": ["monthly-bulletin", "proposal-review", "email-research", "presentation"],
+    "handoff_format": "structured-summary"
+  },
+
+  "trigger": {
+    "type": "on-demand",
+    "description": "Triggered when information is requested by other agents or user"
+  },
+
+  "gdrive": {
+    "root_folder": "Wharfside Manor",
+    "document_categories": [
+      "governing-documents",
+      "meeting-minutes",
+      "financial",
+      "contracts",
+      "insurance",
+      "projects",
+      "permits"
+    ]
+  },
+
+  "search_behavior": {
+    "include_file_contents": true,
+    "search_subdirectories": true,
+    "max_results": 20
+  },
+
+  "portal_sync": {
+    "appfolio": {
+      "url": "https://eastcoastmgmt.appfolio.com/connect/shared_documents",
+      "download_folder": "/Users/nickd/AppFolio-Sync",
+      "mode": "on-demand"
+    }
+  }
+}
