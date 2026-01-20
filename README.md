@@ -26,7 +26,7 @@ When you work with Archie, you're not just configuring JSON files. You're having
 
 Create specialized AI agents with:
 - **Skills** - Detailed behavioral instructions (SKILL.md)
-- **Tools** - MCP server integrations (Gmail, Google Drive, Google Docs, PowerPoint)
+- **Tools** - MCP server integrations (Gmail, Google Drive, Google Docs, Chrome, PowerPoint)
 - **Context** - Assigned knowledge bases that keep agents focused
 - **Collaboration rules** - How they share work with others
 
@@ -83,6 +83,63 @@ You're the orchestrator. The agents are your team.
 
 ---
 
+## Real-World Example: Wharfside Board Assistant
+
+Here's an actual team built with Agent Architect for a condominium association board:
+
+### The Archivist Agent
+
+The **Archivist** is the knowledge keeper for the association. It:
+
+- **Retrieves documents** from Google Drive archives
+- **Syncs documents** from the AppFolio management portal
+- **Provides context** to other agents when they need historical information
+- **Cites sources** for every piece of information it provides
+
+**Key capabilities:**
+- Portal sync with Chrome MCP for browser automation
+- Organized local storage with folder structure mirroring the portal
+- Google Drive integration for document search and retrieval
+
+```
+agents/archivist/
+├── SKILL.md       # 350+ lines of behavioral instructions
+└── config.json    # MCP servers, context buckets, sync settings
+```
+
+**Portal Sync Workflow:**
+1. Navigate to AppFolio portal using Chrome MCP
+2. Expand folders to reveal document contents
+3. Download documents to local sync folder
+4. Organize into structured subfolders
+5. User uploads to Google Drive for archival
+
+### The Team Structure
+
+```
+teams/wharfside-board-assistant/
+├── team.json          # Team configuration
+├── outputs/           # Final deliverables
+└── workspace/         # Briefings and collaboration
+
+context-buckets/wharfside-docs/
+├── bucket.json        # Bucket configuration
+└── files/             # Local document cache
+```
+
+### Agents Working Together
+
+| Agent | Role | Context |
+|-------|------|---------|
+| **Archivist** | Knowledge retrieval & document sync | All association documents |
+| **Monthly Bulletin** | Community communications | Past bulletins, calendar |
+| **Proposal Review** | Vendor proposal analysis | Historical costs, contracts |
+| **Email Research** | Email analysis & response | Board email archives |
+
+Each agent sees only its assigned context. The Archivist provides briefings when other agents need historical information.
+
+---
+
 ## Getting Started
 
 ### Prerequisites
@@ -94,7 +151,7 @@ You're the orchestrator. The agents are your team.
 ### Installation
 
 ```bash
-git clone https://github.com/yourusername/AgentArchitect.git
+git clone https://github.com/nickdnj/AgentArchitect.git
 cd AgentArchitect
 ```
 
@@ -115,61 +172,18 @@ The `/architect` command will load Archie, who will guide you through:
 ```
 Agent Architect - Main Menu
 
-Teams: 0 registered
-Agents: 0 registered
-Context Buckets: 0 registered
+Teams: 1 registered
+Agents: 1 registered
+Context Buckets: 1 registered
 
 What would you like to do?
 1. Create a new team
 2. Create a new agent
 3. Create a context bucket
+4. Manage existing teams
+5. Manage existing agents
 ...
 ```
-
----
-
-## Example: Building a Board Advisory Team
-
-Let's say you're on a condo association board and want AI assistance with documents, communications, and compliance.
-
-**You:** "I need a team to help with board operations"
-
-**Archie:** "I'll help you build that. Let's start with the basics..."
-
-After a guided conversation, Archie creates:
-
-```
-teams/
-  condo-board-team/
-    team.json              # Team configuration
-    outputs/               # Team outputs
-    workspace/             # Shared briefings
-
-agents/
-  legal-advisor/           # Reviews governing documents
-    SKILL.md
-    config.json
-  communications-specialist/  # Drafts community updates
-    SKILL.md
-    config.json
-  financial-analyst/       # Budget analysis
-    SKILL.md
-    config.json
-
-context-buckets/
-  governing-documents/     # Bylaws, rules, amendments
-    bucket.json
-    files/
-  financial-records/       # Budgets, statements
-    bucket.json
-```
-
-Each agent gets only what it needs:
-- **Legal Advisor** sees governing documents, not financial records
-- **Financial Analyst** sees financial records, not legal documents
-- **Communications Specialist** sees past bulletins and community calendar
-
-They collaborate through briefings in the team workspace.
 
 ---
 
@@ -190,30 +204,35 @@ AgentArchitect/
 │   │   ├── analyst/
 │   │   ├── writer/
 │   │   └── reviewer/
-│   └── <agent-id>/              # Created agents
+│   └── archivist/               # Example: Document archivist
+│       ├── SKILL.md
+│       └── config.json
 │
 ├── teams/                       # Agent teams
 │   ├── _templates/
 │   │   ├── advisory-team/
 │   │   └── project-team/
-│   └── <team-id>/               # Created teams
+│   └── wharfside-board-assistant/  # Example team
+│       ├── team.json
+│       ├── outputs/
+│       └── workspace/
 │
 ├── context-buckets/             # Knowledge bases
 │   ├── _templates/
 │   │   ├── document-collection/
 │   │   └── codebase/
-│   └── <bucket-id>/             # Created buckets
+│   └── wharfside-docs/          # Example bucket
+│       ├── bucket.json
+│       └── files/
 │
 ├── mcp-servers/                 # MCP integrations
 │   ├── registry/servers.json    # Available servers
-│   ├── assignments.json         # Access control
-│   ├── wrappers/                # Docker wrappers
-│   └── images/                  # Dockerfiles
+│   └── assignments.json         # Access control
 │
 ├── registry/                    # Global registries
-│   ├── agents.json
-│   ├── teams.json
-│   └── buckets.json
+│   ├── agents.json              # All registered agents
+│   ├── teams.json               # All registered teams
+│   └── buckets.json             # All registered buckets
 │
 └── .claude/                     # Claude Code config
     ├── settings.local.json
@@ -225,12 +244,68 @@ AgentArchitect/
 
 ## Available MCP Servers
 
-| Server | Purpose | Accounts |
+| Server | Purpose | Use Case |
 |--------|---------|----------|
-| **Gmail** | Email search, read, send | board, personal |
-| **Google Drive** | Document storage & search | board, personal |
-| **Google Docs** | Document creation & editing | default |
-| **PowerPoint** | Presentation creation | default |
+| **Gmail** | Email search, read, send | Board communications, research |
+| **Gmail Personal** | Personal email account | Separate account access |
+| **Google Drive** | Document storage & search | Archive access, file management |
+| **Google Docs** | Document creation & editing | Reports, meeting minutes |
+| **Chrome** | Browser automation | Portal sync, web scraping |
+| **PowerPoint** | Presentation creation | Board meeting presentations |
+
+### MCP Server Assignment
+
+Agents are assigned only the MCP servers they need:
+
+```json
+{
+  "mcp_servers": [
+    "google-drive",
+    "google-docs",
+    "chrome"
+  ]
+}
+```
+
+The Architect manages these assignments based on agent requirements.
+
+---
+
+## Agent Configuration
+
+Each agent has two files:
+
+### SKILL.md - Behavioral Instructions
+
+Detailed instructions that define:
+- Purpose and responsibilities
+- Workflow steps
+- Response formats
+- Collaboration patterns
+- Error handling
+
+### config.json - Technical Configuration
+
+```json
+{
+  "name": "Archivist",
+  "description": "Knowledge keeper and document retrieval specialist",
+  "mcp_servers": ["google-drive", "google-docs", "chrome"],
+  "context_buckets": ["wharfside-docs"],
+  "collaboration": {
+    "receives_from": ["email-research"],
+    "sends_to": ["monthly-bulletin", "proposal-review"],
+    "briefing_format": "summary"
+  },
+  "portal_sync": {
+    "appfolio": {
+      "url": "https://example.appfolio.com/connect/shared_documents",
+      "download_folder": "/path/to/sync/folder",
+      "mode": "on-demand"
+    }
+  }
+}
+```
 
 ---
 
@@ -256,6 +331,31 @@ Agent Architect includes templates for common agent types:
 
 ---
 
+## Lessons Learned
+
+Building real agents taught us valuable lessons:
+
+### Portal Sync Challenges
+
+- **iCloud folders cause issues** - Use non-synced local folders for downloads
+- **Folders need expansion** - Portal folders appear collapsed; must click to reveal contents
+- **Browser limitations** - Chrome MCP can't change download location; post-download organization needed
+- **"Recent" sections are duplicates** - Skip them during sync to avoid redundancy
+
+### Context Management
+
+- **Less is more** - Agents perform better with focused, relevant context
+- **Briefings beat raw context** - Sharing summaries prevents context bleed
+- **Structure enables collaboration** - Clear folder organization makes handoffs smooth
+
+### Agent Design
+
+- **Detailed SKILL.md pays off** - The more specific the instructions, the better the results
+- **Error handling matters** - Agents need clear guidance for edge cases
+- **Cite everything** - Agents should always reference their sources
+
+---
+
 ## Philosophy
 
 Agent Architect is built on these principles:
@@ -265,6 +365,16 @@ Agent Architect is built on these principles:
 3. **Collaboration should be structured** - Briefings, not brain dumps
 4. **Humans should stay in control** - Review before handoff
 5. **Configuration should be conversation** - Archie asks, you answer
+
+---
+
+## Roadmap
+
+- [ ] Automated portal sync scheduling
+- [ ] Multi-agent orchestration workflows
+- [ ] Context bucket versioning
+- [ ] Team performance analytics
+- [ ] Additional MCP server integrations
 
 ---
 
