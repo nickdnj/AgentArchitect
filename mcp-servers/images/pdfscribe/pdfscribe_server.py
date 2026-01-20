@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 PDFScribe MCP Server
-An MCP server for transcribing PDFs using GPT-4o vision.
+An MCP server for transcribing PDFs using Claude Sonnet 4 vision.
 Wraps the pdfscribe_cli tool for use as Claude Code tools.
 """
 
@@ -45,7 +45,7 @@ async def list_tools():
     return [
         Tool(
             name="transcribe_pdf",
-            description="Transcribe a PDF file to text using GPT-4o vision. Handles both native text and scanned/image-based PDFs.",
+            description="Transcribe a PDF file to Markdown using Claude Sonnet 4 vision. Handles scanned/image-based PDFs with intelligent caching.",
             inputSchema={
                 "type": "object",
                 "properties": {
@@ -145,10 +145,10 @@ async def call_tool(name: str, arguments: dict):
         if not pdf_path.exists():
             return [TextContent(type="text", text=f"Error: PDF not found at {pdf_path}")]
 
-        # Determine output path
+        # Determine output path (now outputs .md files with caching)
         output_path = arguments.get("output_path")
         if not output_path:
-            output_path = OUTPUT_PATH / f"{pdf_path.stem}-transcribed.txt"
+            output_path = OUTPUT_PATH / f"{pdf_path.stem}-transcribed.md"
         else:
             output_path = Path(output_path)
 
@@ -320,15 +320,15 @@ async def call_tool(name: str, arguments: dict):
         if not output_dir.exists():
             return [TextContent(type="text", text=f"Output directory not found: {output_dir}")]
 
-        # Find all text and html files
-        txt_files = list(output_dir.glob("*.txt"))
+        # Find all markdown and html files
+        md_files = list(output_dir.glob("*-transcribed.md"))
         html_dirs = [d for d in output_dir.iterdir() if d.is_dir() and (d / "index.html").exists()]
 
         result = f"Transcriptions in {output_dir}:\n\n"
 
-        if txt_files:
-            result += "Text transcriptions:\n"
-            for f in sorted(txt_files):
+        if md_files:
+            result += "Markdown transcriptions:\n"
+            for f in sorted(md_files):
                 stat = f.stat()
                 size = stat.st_size / 1024
                 mtime = datetime.fromtimestamp(stat.st_mtime).strftime("%Y-%m-%d %H:%M")
@@ -339,7 +339,7 @@ async def call_tool(name: str, arguments: dict):
             for d in sorted(html_dirs):
                 result += f"  - {d.name}/ (open {d}/index.html)\n"
 
-        if not txt_files and not html_dirs:
+        if not md_files and not html_dirs:
             result += "No transcriptions found."
 
         return [TextContent(type="text", text=result)]

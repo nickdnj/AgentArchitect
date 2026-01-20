@@ -1,5 +1,5 @@
 # PDFScribe MCP Server
-# Transcribes PDFs using GPT-4o vision
+# Transcribes PDFs using Claude Sonnet 4 vision
 
 FROM python:3.12-slim
 
@@ -15,8 +15,9 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the pdfscribe_cli tool
-COPY pdfscribe_cli/ /app/pdfscribe_cli/
+# Copy the pdfscribe CLI tool
+COPY pdfscribe_cli.py .
+COPY pdf2website.py .
 
 # Copy the MCP server
 COPY pdfscribe_server.py .
@@ -25,7 +26,6 @@ COPY pdfscribe_server.py .
 RUN mkdir -p /workspace /outputs
 
 # Environment variables
-ENV PDFSCRIBE_CLI_PATH=/app/pdfscribe_cli
 ENV PDFSCRIBE_WORKSPACE=/workspace
 ENV PDFSCRIBE_OUTPUT=/outputs
 ENV PYTHONUNBUFFERED=1

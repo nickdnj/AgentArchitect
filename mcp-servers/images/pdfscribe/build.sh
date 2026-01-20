@@ -6,7 +6,7 @@ set -e
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 
-# Copy pdfscribe_cli into build context (temporarily)
+# Path to pdfscribe_cli
 PDFSCRIBE_CLI="${PDFSCRIBE_CLI_PATH:-/Users/nickd/Workspaces/pdfscribe_cli}"
 
 if [ ! -d "$PDFSCRIBE_CLI" ]; then
@@ -15,18 +15,18 @@ if [ ! -d "$PDFSCRIBE_CLI" ]; then
     exit 1
 fi
 
-echo "Copying pdfscribe_cli into build context..."
-rm -rf pdfscribe_cli
-cp -r "$PDFSCRIBE_CLI" pdfscribe_cli
+echo "Copying pdfscribe_cli files into build context..."
+cp "$PDFSCRIBE_CLI/pdfscribe_cli.py" .
+cp "$PDFSCRIBE_CLI/pdf2website.py" .
 
 echo "Building mcp-pdfscribe:latest..."
 docker build -t mcp-pdfscribe:latest .
 
 echo "Cleaning up..."
-rm -rf pdfscribe_cli
+rm -f pdfscribe_cli.py pdf2website.py
 
 echo ""
-echo "Build complete!"
+echo "✓ Build complete: mcp-pdfscribe:latest"
 echo ""
 echo "To run with Claude Code, update ~/.claude.json:"
 echo '  "pdfscribe": {'
