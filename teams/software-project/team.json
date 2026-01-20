@@ -45,6 +45,11 @@
       "agent_id": "legal",
       "role": "Legal advisor - risk assessment, compliance, and policy drafting",
       "context_override": null
+    },
+    {
+      "agent_id": "software-developer",
+      "role": "Full-stack developer - implements features based on requirements, architecture, and UX specs",
+      "context_override": null
     }
   ],
 
@@ -69,6 +74,12 @@
         "parallel": true,
         "inputs": ["PRD", "Architecture Doc", "UX Spec"],
         "outputs": ["GitHub Issues", "Test Plan"]
+      },
+      {
+        "name": "Implementation",
+        "agents": ["software-developer"],
+        "inputs": ["PRD", "Architecture Doc", "UX Spec", "GitHub Issues", "Test Plan"],
+        "outputs": ["Code", "Pull Requests", "Implementation Notes"]
       },
       {
         "name": "Go-to-Market",

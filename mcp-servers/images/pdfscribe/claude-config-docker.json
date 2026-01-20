@@ -1,0 +1,14 @@
+{
+  "_comment": "Add this to ~/.claude.json under mcpServers to use Docker version",
+  "pdfscribe": {
+    "type": "stdio",
+    "command": "docker",
+    "args": [
+      "run", "-i", "--rm",
+      "-e", "ANTHROPIC_API_KEY",
+      "-v", "/tmp/pdfscribe:/workspace",
+      "-v", "/tmp/pdfscribe/outputs:/outputs",
+      "mcp-pdfscribe:latest"
+    ]
+  }
+}

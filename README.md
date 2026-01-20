@@ -313,7 +313,8 @@ AgentArchitect/
 │   ├── qa-strategy/             # Test planning
 │   ├── marketing/               # Marketing content
 │   ├── sales/                   # Sales materials
-│   └── legal/                   # Legal review
+│   ├── legal/                   # Legal review
+│   └── pdf-scribe/              # PDF transcription (custom MCP server)
 │
 ├── teams/                       # Agent teams
 │   ├── _templates/
@@ -363,6 +364,31 @@ AgentArchitect/
 | **Google Docs** | Document creation & editing | Reports, meeting minutes |
 | **Chrome** | Browser automation | Portal sync, web scraping |
 | **PowerPoint** | Presentation creation | Board meeting presentations |
+| **PDFScribe** | PDF transcription | Scanned document extraction |
+
+### PDFScribe - Our First Custom MCP Server
+
+**PDFScribe** is our first homegrown MCP server, built to solve a real problem: making scanned PDFs searchable and accessible to AI agents.
+
+**The Problem:** Many critical documents (inspection reports, legacy contracts, handwritten notes) exist only as scanned images. Standard text extraction fails. AI agents can't read them.
+
+**The Solution:** PDFScribe uses Claude Sonnet 4's vision capabilities to transcribe image-based PDFs into structured Markdown. It's not OCR - it's AI-powered document understanding.
+
+**Key Features:**
+- **Vision-based transcription** - Reads scanned documents like a human would
+- **Intelligent caching** - Stores transcriptions next to source files, validates by checksum
+- **Google Drive integration** - Download PDFs, upload transcriptions automatically
+- **350x faster** on cache hits (~0.2s vs ~70s for a 12-page document)
+
+**Example:**
+```bash
+# Process a Google Drive PDF - downloads, transcribes, uploads MD next to source
+python pdfscribe_cli.py --gdrive 1xtoBO7vjnOfNoXmdDn7w3sg-Ds1zHmdt
+```
+
+**Production Use:** PDFScribe has transcribed 89 pages across 7 building inspection reports, making previously inaccessible information available to all agents.
+
+See [pdfscribe_cli](https://github.com/nickdnj/pdfscribe_cli) for the full documentation.
 
 ### MCP Server Assignment
 
@@ -482,12 +508,16 @@ Agent Architect is built on these principles:
 ## Roadmap
 
 - [x] Claude Code native agent integration (`/sync-agents`)
+- [x] **PDFScribe MCP Server** - Custom PDF transcription with Claude vision
+- [x] Google Drive integration for PDFScribe (download + upload)
+- [x] Intelligent caching with checksum validation
 - [ ] Automated portal sync scheduling
 - [ ] Multi-agent orchestration workflows (`/team-run` command)
 - [ ] Context bucket versioning
 - [ ] Team performance analytics
-- [ ] Additional MCP server integrations
+- [ ] Additional custom MCP server integrations
 - [ ] Watch mode for auto-regeneration on file changes
+- [ ] PDFScribe as a service (commercial offering)
 
 ---
 

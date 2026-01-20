@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "last_updated": "2026-01-19",
+  "last_updated": "2026-01-20",
   "teams": [
     {
       "id": "wharfside-board-assistant",
@@ -14,7 +14,7 @@
       "id": "software-project",
       "name": "Software Project Team",
       "folder": "teams/software-project",
-      "member_count": 8,
+      "member_count": 9,
       "created": "2026-01-19",
       "status": "active"
     }

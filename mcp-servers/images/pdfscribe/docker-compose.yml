@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  pdfscribe:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: mcp-pdfscribe:latest
+    container_name: mcp-pdfscribe
+    environment:
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - PDFSCRIBE_CLI_PATH=/app/pdfscribe_cli
+      - PDFSCRIBE_WORKSPACE=/workspace
+      - PDFSCRIBE_OUTPUT=/outputs
+    volumes:
+      # Mount the pdfscribe_cli tool (read-only)
+      - ${PDFSCRIBE_CLI_PATH:-/Users/nickd/Workspaces/pdfscribe_cli}:/app/pdfscribe_cli:ro
+      # Working directory for processing PDFs
+      - ${PDFSCRIBE_WORKSPACE:-/tmp/pdfscribe}:/workspace
+      # Output directory for transcriptions
+      - ${PDFSCRIBE_OUTPUT:-/tmp/pdfscribe/outputs}:/outputs
+    stdin_open: true
+    tty: true
+    restart: unless-stopped
+
+# For Claude Code MCP integration, use stdio mode:
+# docker run -i --rm \
+#   -e ANTHROPIC_API_KEY \
+#   -v /path/to/pdfscribe_cli:/app/pdfscribe_cli:ro \
+#   -v /tmp/pdfscribe:/workspace \
+#   -v /tmp/pdfscribe/outputs:/outputs \
+#   mcp-pdfscribe:latest

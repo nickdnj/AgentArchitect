@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "last_updated": "2026-01-19",
+  "last_updated": "2026-01-20",
   "agents": [
     {
       "id": "monthly-bulletin",
@@ -104,6 +104,22 @@
       "folder": "agents/legal",
       "teams": ["software-project"],
       "created": "2026-01-19",
+      "status": "active"
+    },
+    {
+      "id": "software-developer",
+      "name": "Software Developer",
+      "folder": "agents/software-developer",
+      "teams": ["software-project"],
+      "created": "2026-01-20",
+      "status": "active"
+    },
+    {
+      "id": "pdf-scribe",
+      "name": "PDFScribe",
+      "folder": "agents/pdf-scribe",
+      "teams": [],
+      "created": "2026-01-20",
       "status": "active"
     }
   ]

@@ -60,6 +60,43 @@
       },
       "wrapper": "mcp-powerpoint.sh",
       "status": "active"
+    },
+    "pdfscribe": {
+      "name": "PDFScribe MCP Server",
+      "description": "First homegrown MCP server - transforms scanned PDFs into searchable Markdown",
+      "package": "custom (pdfscribe_cli)",
+      "type": "python",
+      "version": "2.0.0",
+      "image": "mcp-pdfscribe:latest",
+      "accounts": ["default"],
+      "auth": "api_key",
+      "credentials": {
+        "required": ["ANTHROPIC_API_KEY"],
+        "optional": ["GOOGLE_DRIVE_CREDENTIALS"],
+        "notes": "Requires Anthropic API key for Claude Sonnet 4 vision transcription"
+      },
+      "capabilities": [
+        "PDF to Markdown transcription",
+        "Scanned/image-based PDF support",
+        "Intelligent caching with checksum validation",
+        "Google Drive integration (download + upload)",
+        "Handwriting recognition",
+        "Table extraction"
+      ],
+      "mounts": {
+        "cli": "/Users/nickd/Workspaces/pdfscribe_cli",
+        "workspace": "~/.config/mcp-pdfscribe/workspace",
+        "outputs": "~/.config/mcp-pdfscribe/outputs"
+      },
+      "wrapper": "mcp-pdfscribe.sh",
+      "repository": "https://github.com/nickdnj/pdfscribe_cli",
+      "status": "active",
+      "stats": {
+        "pages_transcribed": 89,
+        "documents_processed": 7,
+        "avg_time_per_page": "5.5s",
+        "cache_speedup": "350x"
+      }
     }
   }
 }

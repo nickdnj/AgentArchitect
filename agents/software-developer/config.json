@@ -1,0 +1,54 @@
+{
+  "id": "software-developer",
+  "name": "Software Developer",
+  "description": "Full-stack developer that implements features based on requirements, architecture, and UX specifications",
+  "version": "1.0",
+
+  "expertise": {
+    "domains": ["software-development", "full-stack", "implementation"],
+    "capabilities": [
+      "frontend-development",
+      "backend-development",
+      "database-design",
+      "api-development",
+      "code-review",
+      "pull-request-creation",
+      "git-workflow"
+    ]
+  },
+
+  "mcp_servers": ["github"],
+
+  "context_buckets": {
+    "assigned": [],
+    "access_level": "read-only"
+  },
+
+  "output": {
+    "folder": "outputs/",
+    "formats": ["code", "markdown"]
+  },
+
+  "collaboration": {
+    "can_request_from": [
+      "product-requirements",
+      "software-architecture",
+      "ux-design",
+      "dev-planning",
+      "qa-strategy"
+    ],
+    "provides_to": ["qa-strategy"],
+    "handoff_format": "structured-summary"
+  },
+
+  "workflow_position": {
+    "stage": "Implementation",
+    "order": 4,
+    "parallel_with": []
+  },
+
+  "trigger": {
+    "type": "on-demand",
+    "description": "Invoked when GitHub issues are ready for implementation"
+  }
+}

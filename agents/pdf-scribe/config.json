@@ -1,0 +1,64 @@
+{
+  "id": "pdf-scribe",
+  "name": "PDFScribe",
+  "description": "Extracts and transcribes PDF content (text and images) into detailed Markdown for reports",
+  "version": "2.0",
+
+  "expertise": {
+    "domains": ["document-processing", "ocr", "content-extraction", "transcription"],
+    "capabilities": [
+      "PDF text extraction",
+      "Image-based PDF transcription (Claude Sonnet 4 vision)",
+      "Visual content description",
+      "Table to HTML conversion",
+      "Multi-source PDF retrieval",
+      "Intelligent caching with checksum validation",
+      "Google Drive integration (download + upload)"
+    ]
+  },
+
+  "mcp_servers": [
+    "pdfscribe",
+    "gdrive",
+    "gmail",
+    "gmail-personal",
+    "chrome"
+  ],
+
+  "context_buckets": {
+    "assigned": [],
+    "access_level": "read-only"
+  },
+
+  "output": {
+    "folder": "outputs/",
+    "formats": ["markdown"],
+    "naming": "{original-filename}-transcribed.md"
+  },
+
+  "collaboration": {
+    "can_request_from": [],
+    "provides_to": ["all"],
+    "handoff_format": "structured-summary",
+    "primary_collaborators": ["archivist", "email-research", "proposal-review"]
+  },
+
+  "trigger": {
+    "type": "on-demand",
+    "description": "Called by other agents or users when PDF content extraction is needed"
+  },
+
+  "parameters": {
+    "detail_levels": ["summary", "standard", "detailed"],
+    "default_detail_level": "standard",
+    "supported_sources": ["gdrive", "email", "local", "url"]
+  },
+
+  "cli_tool": {
+    "path": "/Users/nickd/Workspaces/pdfscribe_cli",
+    "transcribe_command": "python pdfscribe_cli.py",
+    "website_command": "python pdf2website.py",
+    "split_command": "python src/split_pdf.py",
+    "requires": ["ANTHROPIC_API_KEY"]
+  }
+}
