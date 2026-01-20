@@ -173,34 +173,76 @@ For comprehensive research requests:
 
 ## Portal Document Sync
 
-The Archivist can sync documents from the management company's AppFolio portal to Google Drive.
+The Archivist can sync documents from the management company's AppFolio portal to a local folder, which is then manually uploaded to Google Drive.
 
 ### Portal URL
 ```
 https://eastcoastmgmt.appfolio.com/connect/shared_documents
 ```
 
+### Local Sync Folder
+```
+/Users/nickd/AppFolio-Sync
+```
+
+**Important:** Do NOT use iCloud-synced folders (like ~/Downloads) as they may cause download issues.
+
+### Portal Structure
+
+The AppFolio portal organizes documents into two main sections:
+
+**Board Member Documents:**
+- `2025-Contracts/` - Management and capital project contracts
+- `2025-Financials/` - Monthly TC reports, financial reports, board packets, CD statements
+- `Audits-Tax/` - Tax returns and audit documents
+- `Crawl-Space-Inspections/` - Building inspection reports
+
+**Homeowner Documents:**
+- `Budgets/` - Annual budgets and budget letters
+- `Bulletins/` - Monthly community bulletins
+- `Governing-Documents/` - Bylaws, master deed, resolutions, amendments
+- `Parking/` - Parking maps and distribution letters
+
+**Note:** The portal also shows "Recent" sections which are duplicates of files from the folders above - these do not need to be downloaded separately.
+
 ### Sync Workflow
 
 1. **Navigate to Portal**
-   - Open the AppFolio shared documents page
+   - Open the AppFolio shared documents page using Chrome MCP
    - If not logged in, prompt user to authenticate (the Archivist does not store credentials)
 
-2. **Take Snapshot**
-   - Capture the document list using browser snapshot
-   - Identify all available documents with names and dates
+2. **Take Snapshot and Expand Folders**
+   - Capture the document list using `mcp__chrome__take_snapshot`
+   - **Important:** Folders appear collapsed by default - click each folder button to expand and reveal contents
+   - Look for `button "  [Folder Name]" expandable` elements - click to expand
 
 3. **Download Documents**
-   - For each document on the portal:
-     - Click to download from portal
-     - Save to local download folder
-     - Note the filename and type
+   - For each document, click the "Download" link (look for `link " Download" url="..."`)
+   - **Note:** Chrome MCP cannot change the browser's download location - files always go to the browser's default Downloads folder
+   - After downloading, move files to the correct subfolder in `/Users/nickd/AppFolio-Sync`
 
-4. **Report Results**
-   - List all documents downloaded
-   - Show download location
+4. **Organize Downloaded Files**
+   - Move files from Downloads to `/Users/nickd/AppFolio-Sync`
+   - Create subfolders matching the portal structure:
+     ```
+     AppFolio-Sync/
+     ├── Board-Member-Documents/
+     │   ├── 2025-Contracts/
+     │   ├── 2025-Financials/
+     │   ├── Audits-Tax/
+     │   └── Crawl-Space-Inspections/
+     └── Homeowner-Documents/
+         ├── Budgets/
+         ├── Bulletins/
+         ├── Governing-Documents/
+         └── Parking/
+     ```
+
+5. **Report Results**
+   - List all documents downloaded by category
+   - Show total file count
    - Note any errors or skipped files
-   - User handles manual upload to Google Drive as needed
+   - Remind user to upload to Google Drive
 
 ### Sync Invocation
 
@@ -213,6 +255,13 @@ or
 "Check for new documents on the management portal"
 ```
 
+### Checking for New Documents
+
+To check if sync is needed without downloading:
+1. Take a snapshot of the portal
+2. Compare document list and dates against local folder contents
+3. Report any new or updated documents
+
 ### Handling Authentication
 
 The Archivist does NOT store login credentials. When syncing:
@@ -224,8 +273,15 @@ The Archivist does NOT store login credentials. When syncing:
 
 - **Login Required**: Notify user and wait for manual login
 - **Document Download Failed**: Log the error, continue with other documents
-- **Upload Failed**: Retry once, then report the failure
+- **iCloud Download Issues**: Use non-iCloud folder (`/Users/nickd/AppFolio-Sync`)
 - **Portal Unavailable**: Report the error and suggest trying later
+
+### Post-Sync: Upload to Google Drive
+
+After syncing to local folder:
+1. User manually uploads organized files to Google Drive
+2. Maintain same folder structure in Google Drive for consistency
+3. The Archivist can then access documents via Google Drive MCP
 
 ## Google Drive Organization
 
