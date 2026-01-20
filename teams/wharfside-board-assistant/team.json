@@ -1,0 +1,61 @@
+{
+  "id": "wharfside-board-assistant",
+  "name": "Wharfside Board Assistant Team",
+  "description": "Assists Wharfside Manor Condominium Association board members with bulletins, proposals, presentations, research, and document management",
+  "version": "1.0",
+  "created": "2026-01-19",
+
+  "members": [
+    {
+      "agent_id": "monthly-bulletin",
+      "role": "Newsletter creator - mines board email and generates monthly community bulletin",
+      "context_override": null
+    },
+    {
+      "agent_id": "proposal-review",
+      "role": "Vendor analyst - reviews and compares proposals from vendors",
+      "context_override": null
+    },
+    {
+      "agent_id": "presentation",
+      "role": "Presentation creator - builds PowerPoint decks for board meetings",
+      "context_override": null
+    },
+    {
+      "agent_id": "email-research",
+      "role": "Research specialist - searches email archives for topic information",
+      "context_override": null
+    },
+    {
+      "agent_id": "archivist",
+      "role": "Document keeper - maintains and retrieves governing documents",
+      "context_override": null
+    }
+  ],
+
+  "shared_context": {
+    "buckets": ["wharfside-docs"],
+    "outputs_folder": "teams/wharfside-board-assistant/outputs"
+  },
+
+  "collaboration_rules": {
+    "coordination_mode": "human-reviewed",
+    "handoff_protocol": "explicit-request",
+    "output_sharing": "summarized",
+    "notification_email": "nickd@wharfsidemb.com"
+  },
+
+  "gmail_accounts": {
+    "board": "nickd@wharfsidemb.com",
+    "personal": "nickd@demarconet.com"
+  },
+
+  "branding": {
+    "logo_url": "https://raw.githubusercontent.com/nickdnj/wharfside-assets/master/Wharfside_Logo_Cropped.png",
+    "colors": {
+      "navy": "#1a3a5c",
+      "gold": "#c9a227"
+    },
+    "location": "Wharfside Manor, Monmouth Beach, NJ"
+  }
+}

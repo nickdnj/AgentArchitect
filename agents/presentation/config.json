@@ -1,0 +1,44 @@
+{
+  "id": "presentation",
+  "name": "Presentation",
+  "description": "Creates PowerPoint presentations using templates for Wharfside Manor",
+  "version": "1.0",
+
+  "expertise": {
+    "domains": ["presentation design", "visual communication", "board reporting"],
+    "capabilities": ["slide creation", "template application", "content structuring", "brand compliance"]
+  },
+
+  "mcp_servers": ["powerpoint", "gdrive"],
+
+  "context_buckets": {
+    "assigned": ["wharfside-docs"],
+    "access_level": "read-only"
+  },
+
+  "output": {
+    "folder": "outputs/",
+    "formats": ["pptx"]
+  },
+
+  "collaboration": {
+    "can_request_from": ["email-research", "proposal-review", "archivist"],
+    "provides_to": [],
+    "handoff_format": "structured-summary"
+  },
+
+  "trigger": {
+    "type": "on-demand",
+    "description": "Triggered when user requests presentation creation"
+  },
+
+  "templates": {
+    "directory": "templates",
+    "default_template": "Wharfside_TEMPLATE.pptx"
+  },
+
+  "defaults": {
+    "output_directory": "~/Desktop",
+    "naming_convention": "{topic}_{date}.pptx"
+  }
+}

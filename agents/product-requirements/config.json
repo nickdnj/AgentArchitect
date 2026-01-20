@@ -1,0 +1,48 @@
+{
+  "id": "product-requirements",
+  "name": "Product Requirements",
+  "description": "Builds comprehensive Product Requirements Documents through interactive conversation",
+  "version": "1.0",
+
+  "expertise": {
+    "domains": ["product management", "requirements engineering", "user stories"],
+    "capabilities": [
+      "requirements gathering",
+      "PRD creation",
+      "user story writing",
+      "scope definition",
+      "stakeholder interviews"
+    ]
+  },
+
+  "mcp_servers": ["google-docs", "gdrive", "gmail-personal"],
+
+  "context_buckets": {
+    "assigned": [],
+    "access_level": "read-only"
+  },
+
+  "output": {
+    "folder": "docs/requirements",
+    "formats": ["google-doc", "markdown"],
+    "filename_format": "{project-name}_PRD_{date}.md"
+  },
+
+  "collaboration": {
+    "can_request_from": [],
+    "provides_to": ["software-architecture", "ux-design", "dev-planning", "qa-strategy", "marketing"],
+    "handoff_format": "structured-summary"
+  },
+
+  "trigger": {
+    "type": "on-demand",
+    "description": "Triggered when user wants to create or continue a PRD"
+  },
+
+  "workflow_position": {
+    "stage": "Discovery",
+    "order": 1,
+    "inputs": ["user ideas", "market research"],
+    "outputs": ["PRD"]
+  }
+}

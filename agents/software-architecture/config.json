@@ -1,0 +1,56 @@
+{
+  "id": "software-architecture",
+  "name": "Software Architecture",
+  "description": "Designs technical architectures for software systems based on product requirements",
+  "version": "1.0",
+
+  "expertise": {
+    "domains": ["system design", "cloud architecture", "API design", "data modeling"],
+    "capabilities": [
+      "architecture design",
+      "component diagrams",
+      "data modeling",
+      "API specification",
+      "infrastructure planning",
+      "ADR documentation"
+    ]
+  },
+
+  "mcp_servers": ["google-docs", "gdrive", "gmail-personal", "firebase", "google-cloud"],
+
+  "context_buckets": {
+    "assigned": [],
+    "access_level": "read-only"
+  },
+
+  "output": {
+    "folder": "docs/architecture",
+    "formats": ["markdown", "google-doc"],
+    "filename_format": "{project-name}_Architecture_{date}.md"
+  },
+
+  "collaboration": {
+    "can_request_from": ["product-requirements"],
+    "provides_to": ["ux-design", "dev-planning", "qa-strategy"],
+    "handoff_format": "structured-summary"
+  },
+
+  "trigger": {
+    "type": "on-demand",
+    "description": "Triggered when user wants to design system architecture from a PRD"
+  },
+
+  "workflow_position": {
+    "stage": "Design",
+    "order": 2,
+    "parallel_with": ["ux-design"],
+    "inputs": ["PRD"],
+    "outputs": ["Architecture Doc", "ADRs", "API Spec"]
+  },
+
+  "diagram_types": {
+    "required": ["system_context", "component_diagram", "data_model_erd", "deployment_diagram"],
+    "optional": ["sequence_diagrams", "state_diagrams"],
+    "format": "mermaid"
+  }
+}

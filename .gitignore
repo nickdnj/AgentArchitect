@@ -1,0 +1,25 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Editor
+*.swp
+*.swo
+*~
+
+# Node.js
+node_modules/
+npm-debug.log*
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Generated Claude Code agents (regenerate with /sync-agents)
+.claude/agents/*.md
+!.claude/agents/.gitkeep
+
+# Local settings (keep template, ignore local overrides)
+.claude/settings.local.json

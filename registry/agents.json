@@ -1,5 +1,110 @@
 {
   "version": "1.0",
   "last_updated": "2026-01-19",
-  "agents": []
+  "agents": [
+    {
+      "id": "monthly-bulletin",
+      "name": "Monthly Bulletin",
+      "folder": "agents/monthly-bulletin",
+      "teams": ["wharfside-board-assistant"],
+      "created": "2026-01-19",
+      "status": "active"
+    },
+    {
+      "id": "proposal-review",
+      "name": "Proposal Review",
+      "folder": "agents/proposal-review",
+      "teams": ["wharfside-board-assistant"],
+      "created": "2026-01-19",
+      "status": "active"
+    },
+    {
+      "id": "presentation",
+      "name": "Presentation",
+      "folder": "agents/presentation",
+      "teams": ["wharfside-board-assistant"],
+      "created": "2026-01-19",
+      "status": "active"
+    },
+    {
+      "id": "email-research",
+      "name": "Email Research",
+      "folder": "agents/email-research",
+      "teams": ["wharfside-board-assistant"],
+      "created": "2026-01-19",
+      "status": "active"
+    },
+    {
+      "id": "archivist",
+      "name": "Archivist",
+      "folder": "agents/archivist",
+      "teams": ["wharfside-board-assistant"],
+      "created": "2026-01-19",
+      "status": "active"
+    },
+    {
+      "id": "product-requirements",
+      "name": "Product Requirements",
+      "folder": "agents/product-requirements",
+      "teams": ["software-project"],
+      "created": "2026-01-19",
+      "status": "active"
+    },
+    {
+      "id": "software-architecture",
+      "name": "Software Architecture",
+      "folder": "agents/software-architecture",
+      "teams": ["software-project"],
+      "created": "2026-01-19",
+      "status": "active"
+    },
+    {
+      "id": "ux-design",
+      "name": "UX Design",
+      "folder": "agents/ux-design",
+      "teams": ["software-project"],
+      "created": "2026-01-19",
+      "status": "active"
+    },
+    {
+      "id": "dev-planning",
+      "name": "Dev Planning",
+      "folder": "agents/dev-planning",
+      "teams": ["software-project"],
+      "created": "2026-01-19",
+      "status": "active"
+    },
+    {
+      "id": "qa-strategy",
+      "name": "QA Strategy",
+      "folder": "agents/qa-strategy",
+      "teams": ["software-project"],
+      "created": "2026-01-19",
+      "status": "active"
+    },
+    {
+      "id": "marketing",
+      "name": "Marketing",
+      "folder": "agents/marketing",
+      "teams": ["software-project"],
+      "created": "2026-01-19",
+      "status": "active"
+    },
+    {
+      "id": "sales",
+      "name": "Sales",
+      "folder": "agents/sales",
+      "teams": ["software-project"],
+      "created": "2026-01-19",
+      "status": "active"
+    },
+    {
+      "id": "legal",
+      "name": "Legal",
+      "folder": "agents/legal",
+      "teams": ["software-project"],
+      "created": "2026-01-19",
+      "status": "active"
+    }
+  ]
 }

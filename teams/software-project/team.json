@@ -1,0 +1,124 @@
+{
+  "id": "software-project",
+  "name": "Software Project Team",
+  "description": "Full-stack product development team covering requirements, architecture, UX, development planning, QA, marketing, sales, and legal",
+  "version": "1.0",
+  "created": "2026-01-19",
+
+  "members": [
+    {
+      "agent_id": "product-requirements",
+      "role": "Product manager - gathers requirements and creates PRDs",
+      "context_override": null
+    },
+    {
+      "agent_id": "software-architecture",
+      "role": "Technical architect - designs system architecture from PRD",
+      "context_override": null
+    },
+    {
+      "agent_id": "ux-design",
+      "role": "UX designer - creates user flows, wireframes, and interaction specs",
+      "context_override": null
+    },
+    {
+      "agent_id": "dev-planning",
+      "role": "Dev lead - breaks work into epics, stories, and GitHub issues",
+      "context_override": null
+    },
+    {
+      "agent_id": "qa-strategy",
+      "role": "QA lead - defines testing approach, test plans, and quality gates",
+      "context_override": null
+    },
+    {
+      "agent_id": "marketing",
+      "role": "Marketing strategist - positioning, messaging, and go-to-market plans",
+      "context_override": null
+    },
+    {
+      "agent_id": "sales",
+      "role": "Sales strategist - playbooks, pricing, and sales enablement",
+      "context_override": null
+    },
+    {
+      "agent_id": "legal",
+      "role": "Legal advisor - risk assessment, compliance, and policy drafting",
+      "context_override": null
+    }
+  ],
+
+  "workflow": {
+    "description": "Standard product development flow with parallel design phases",
+    "stages": [
+      {
+        "name": "Discovery",
+        "agents": ["product-requirements"],
+        "outputs": ["PRD"]
+      },
+      {
+        "name": "Design",
+        "agents": ["software-architecture", "ux-design"],
+        "parallel": true,
+        "inputs": ["PRD"],
+        "outputs": ["Architecture Doc", "UX Spec"]
+      },
+      {
+        "name": "Planning",
+        "agents": ["dev-planning", "qa-strategy"],
+        "parallel": true,
+        "inputs": ["PRD", "Architecture Doc", "UX Spec"],
+        "outputs": ["GitHub Issues", "Test Plan"]
+      },
+      {
+        "name": "Go-to-Market",
+        "agents": ["marketing", "sales"],
+        "parallel": true,
+        "inputs": ["PRD"],
+        "outputs": ["Marketing Brief", "Launch Plan", "Sales Playbook"]
+      },
+      {
+        "name": "Support",
+        "agents": ["legal"],
+        "parallel_with_any": true,
+        "inputs": ["PRD", "Architecture Doc"],
+        "outputs": ["Risk Assessment", "Compliance Checklist", "Policy Drafts"]
+      }
+    ]
+  },
+
+  "shared_context": {
+    "buckets": [],
+    "outputs_folder": "teams/software-project/outputs"
+  },
+
+  "project_output": {
+    "base_path": "~/Workspaces",
+    "structure": "{project_name}/",
+    "subfolders": [
+      "docs/requirements",
+      "docs/architecture",
+      "docs/ux",
+      "docs/qa",
+      "docs/marketing",
+      "docs/sales",
+      "docs/legal"
+    ]
+  },
+
+  "mcp_servers": [
+    "google-docs",
+    "gdrive",
+    "gmail-personal",
+    "github",
+    "firebase",
+    "google-cloud"
+  ],
+
+  "collaboration_rules": {
+    "coordination_mode": "human-reviewed",
+    "handoff_protocol": "explicit-request",
+    "output_sharing": "summarized",
+    "notification_email": "nickd@demarconet.com"
+  }
+}

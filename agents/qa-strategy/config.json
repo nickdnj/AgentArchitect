@@ -1,0 +1,68 @@
+{
+  "id": "qa-strategy",
+  "name": "QA Strategy",
+  "description": "Defines comprehensive testing approaches, test plans, and quality gates",
+  "version": "1.0",
+
+  "expertise": {
+    "domains": ["quality assurance", "test planning", "test automation", "performance testing"],
+    "capabilities": [
+      "test strategy development",
+      "test case specification",
+      "quality gate definition",
+      "performance test planning",
+      "security test planning",
+      "accessibility testing",
+      "automation strategy"
+    ]
+  },
+
+  "mcp_servers": ["google-docs", "gdrive", "gmail-personal", "github"],
+
+  "context_buckets": {
+    "assigned": [],
+    "access_level": "read-only"
+  },
+
+  "output": {
+    "folder": "docs/qa",
+    "formats": ["markdown", "google-doc"],
+    "filename_format": "{project-name}_Test_Plan_{date}.md"
+  },
+
+  "collaboration": {
+    "can_request_from": ["product-requirements", "software-architecture", "ux-design", "dev-planning"],
+    "provides_to": [],
+    "handoff_format": "structured-summary"
+  },
+
+  "trigger": {
+    "type": "on-demand",
+    "description": "Triggered when user wants to define QA strategy for a project"
+  },
+
+  "workflow_position": {
+    "stage": "Planning",
+    "order": 3,
+    "parallel_with": ["dev-planning"],
+    "inputs": ["PRD", "Architecture Doc", "UX Spec"],
+    "outputs": ["Test Plan", "Test Cases", "Quality Gates"]
+  },
+
+  "testing_frameworks": {
+    "preferred": {
+      "unit": ["jest", "pytest", "vitest"],
+      "integration": ["jest", "pytest"],
+      "e2e": ["playwright", "cypress"],
+      "api": ["postman", "supertest"],
+      "performance": ["k6", "locust"],
+      "security": ["owasp-zap", "snyk"]
+    }
+  },
+
+  "quality_metrics": {
+    "code_coverage_target": 80,
+    "e2e_coverage": "critical-paths",
+    "performance_percentile": "p95"
+  }
+}

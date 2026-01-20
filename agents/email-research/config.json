@@ -1,0 +1,52 @@
+{
+  "id": "email-research",
+  "name": "Email Research",
+  "description": "Mines Gmail for topic-specific information and generates structured research reports",
+  "version": "1.0",
+
+  "expertise": {
+    "domains": ["email analysis", "research synthesis", "information retrieval"],
+    "capabilities": ["multi-account search", "thread analysis", "timeline construction", "stakeholder identification"]
+  },
+
+  "mcp_servers": ["gmail", "gmail-personal", "voicemode"],
+
+  "context_buckets": {
+    "assigned": ["wharfside-docs"],
+    "access_level": "read-only"
+  },
+
+  "output": {
+    "folder": "reports/",
+    "formats": ["markdown", "html-email"]
+  },
+
+  "collaboration": {
+    "can_request_from": ["archivist"],
+    "provides_to": ["presentation", "monthly-bulletin"],
+    "handoff_format": "structured-summary"
+  },
+
+  "trigger": {
+    "type": "on-demand",
+    "description": "Triggered when user requests email research"
+  },
+
+  "gmail_accounts": {
+    "board": {
+      "address": "nickd@wharfsidemb.com",
+      "mcp_server": "gmail",
+      "default": true
+    },
+    "personal": {
+      "address": "nickd@demarconet.com",
+      "mcp_server": "gmail-personal",
+      "default": false
+    }
+  },
+
+  "defaults": {
+    "lookback_days": 90,
+    "draft_only": true
+  }
+}

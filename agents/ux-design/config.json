@@ -1,0 +1,55 @@
+{
+  "id": "ux-design",
+  "name": "UX Design",
+  "description": "Creates user experience specifications, wireframe descriptions, and interaction designs",
+  "version": "1.0",
+
+  "expertise": {
+    "domains": ["user experience", "interaction design", "information architecture", "accessibility"],
+    "capabilities": [
+      "user flow mapping",
+      "wireframe specification",
+      "component library design",
+      "interaction patterns",
+      "accessibility compliance",
+      "responsive design"
+    ]
+  },
+
+  "mcp_servers": ["google-docs", "gdrive", "gmail-personal"],
+
+  "context_buckets": {
+    "assigned": [],
+    "access_level": "read-only"
+  },
+
+  "output": {
+    "folder": "docs/ux",
+    "formats": ["markdown", "google-doc"],
+    "filename_format": "{project-name}_UX_Spec_{date}.md"
+  },
+
+  "collaboration": {
+    "can_request_from": ["product-requirements", "software-architecture"],
+    "provides_to": ["dev-planning", "qa-strategy"],
+    "handoff_format": "structured-summary"
+  },
+
+  "trigger": {
+    "type": "on-demand",
+    "description": "Triggered when user wants to create UX specifications for a project"
+  },
+
+  "workflow_position": {
+    "stage": "Design",
+    "order": 2,
+    "parallel_with": ["software-architecture"],
+    "inputs": ["PRD", "API contracts"],
+    "outputs": ["UX Spec", "Wireframes", "Component Library"]
+  },
+
+  "accessibility": {
+    "default_target": "WCAG 2.1 AA",
+    "checklist_includes": ["color_contrast", "keyboard_navigation", "screen_reader_support", "focus_management"]
+  }
+}

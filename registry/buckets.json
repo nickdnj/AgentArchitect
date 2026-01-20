@@ -1,5 +1,15 @@
 {
   "version": "1.0",
   "last_updated": "2026-01-19",
-  "buckets": []
+  "buckets": [
+    {
+      "id": "wharfside-docs",
+      "name": "Wharfside Governing Documents",
+      "folder": "context-buckets/wharfside-docs",
+      "content_type": "documents",
+      "assigned_to": ["wharfside-board-assistant"],
+      "created": "2026-01-19",
+      "status": "active"
+    }
+  ]
 }

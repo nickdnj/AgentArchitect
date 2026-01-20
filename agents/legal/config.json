@@ -1,0 +1,61 @@
+{
+  "id": "legal",
+  "name": "Legal",
+  "description": "Reviews products for legal risks, compliance requirements, and drafts legal documents",
+  "version": "1.0",
+
+  "expertise": {
+    "domains": ["legal compliance", "privacy law", "contract law", "intellectual property"],
+    "capabilities": [
+      "risk assessment",
+      "compliance review",
+      "privacy policy drafting",
+      "terms of service drafting",
+      "contract review",
+      "regulatory analysis",
+      "IP review"
+    ]
+  },
+
+  "mcp_servers": ["google-docs", "gdrive", "gmail-personal"],
+
+  "context_buckets": {
+    "assigned": [],
+    "access_level": "read-only"
+  },
+
+  "output": {
+    "folder": "docs/legal",
+    "formats": ["google-doc", "markdown"],
+    "filename_format": "{project-name}_Legal_Assessment_{date}.md"
+  },
+
+  "collaboration": {
+    "can_request_from": ["product-requirements", "software-architecture"],
+    "provides_to": ["marketing", "sales"],
+    "handoff_format": "structured-summary"
+  },
+
+  "trigger": {
+    "type": "on-demand",
+    "description": "Triggered when user wants legal risk assessment or compliance review"
+  },
+
+  "workflow_position": {
+    "stage": "Support",
+    "order": 0,
+    "parallel_with": ["any"],
+    "inputs": ["PRD", "Architecture Doc"],
+    "outputs": ["Risk Assessment", "Compliance Checklist", "Policy Drafts"]
+  },
+
+  "disclaimer": "Provides general guidance for review by qualified legal counsel. This is not legal advice.",
+
+  "compliance_frameworks": [
+    "GDPR",
+    "CCPA",
+    "HIPAA",
+    "SOC2",
+    "PCI-DSS"
+  ]
+}

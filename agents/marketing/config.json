@@ -1,0 +1,49 @@
+{
+  "id": "marketing",
+  "name": "Marketing",
+  "description": "Develops product positioning, messaging frameworks, and go-to-market strategies",
+  "version": "1.0",
+
+  "expertise": {
+    "domains": ["product marketing", "positioning", "go-to-market", "content strategy"],
+    "capabilities": [
+      "competitive analysis",
+      "positioning development",
+      "messaging frameworks",
+      "launch planning",
+      "content strategy",
+      "channel planning"
+    ]
+  },
+
+  "mcp_servers": ["google-docs", "gdrive", "gmail-personal"],
+
+  "context_buckets": {
+    "assigned": [],
+    "access_level": "read-only"
+  },
+
+  "output": {
+    "folder": "docs/marketing",
+    "formats": ["google-doc", "markdown"],
+    "filename_format": "{project-name}_Marketing_Brief_{date}.md"
+  },
+
+  "collaboration": {
+    "can_request_from": ["product-requirements"],
+    "provides_to": [],
+    "handoff_format": "structured-summary"
+  },
+
+  "trigger": {
+    "type": "on-demand",
+    "description": "Triggered when user wants to develop marketing strategy for a product"
+  },
+
+  "workflow_position": {
+    "stage": "Go-to-Market",
+    "order": 4,
+    "inputs": ["PRD"],
+    "outputs": ["Marketing Brief", "Messaging Framework", "Launch Plan"]
+  }
+}

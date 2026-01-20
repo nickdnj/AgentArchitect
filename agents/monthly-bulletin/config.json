@@ -1,0 +1,55 @@
+{
+  "id": "monthly-bulletin",
+  "name": "Monthly Bulletin",
+  "description": "Generates monthly community bulletin for Wharfside Manor as HTML email with nautical theme",
+  "version": "3.0",
+
+  "expertise": {
+    "domains": ["community communications", "newsletter creation", "content curation"],
+    "capabilities": ["email mining", "content organization", "HTML email generation", "work order analysis"]
+  },
+
+  "mcp_servers": ["gmail"],
+
+  "context_buckets": {
+    "assigned": ["wharfside-docs"],
+    "access_level": "read-only"
+  },
+
+  "output": {
+    "folder": "outputs/",
+    "formats": ["html-email"]
+  },
+
+  "collaboration": {
+    "can_request_from": ["archivist", "email-research"],
+    "provides_to": [],
+    "handoff_format": "structured-summary"
+  },
+
+  "trigger": {
+    "type": "scheduled",
+    "schedule": {
+      "cron": "0 9 25 * *",
+      "description": "9:00 AM on the 25th of every month",
+      "timezone": "America/New_York"
+    }
+  },
+
+  "gmail": {
+    "account": "nickd@wharfsidemb.com",
+    "lookback_days": 30
+  },
+
+  "logo": {
+    "url": "https://raw.githubusercontent.com/nickdnj/wharfside-assets/master/Wharfside_Logo_Cropped.png",
+    "alt_text": "Wharfside Manor",
+    "width": "180px"
+  },
+
+  "email": {
+    "to": "nickd@wharfsidemb.com",
+    "subject_format": "{month} {year} Monthly Bulletin - Draft v{version}",
+    "mime_type": "text/html"
+  }
+}

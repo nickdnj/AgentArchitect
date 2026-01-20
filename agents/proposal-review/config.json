@@ -1,0 +1,51 @@
+{
+  "id": "proposal-review",
+  "name": "Proposal Review",
+  "description": "Analyzes vendor proposals and delivers structured assessments via email",
+  "version": "1.0",
+
+  "expertise": {
+    "domains": ["vendor analysis", "contract review", "risk assessment"],
+    "capabilities": ["proposal extraction", "comparative analysis", "cost evaluation", "recommendation generation"]
+  },
+
+  "mcp_servers": ["gmail", "gdrive"],
+
+  "context_buckets": {
+    "assigned": ["wharfside-docs"],
+    "access_level": "read-only"
+  },
+
+  "output": {
+    "folder": "outputs/",
+    "formats": ["markdown", "html-email"]
+  },
+
+  "collaboration": {
+    "can_request_from": ["archivist"],
+    "provides_to": ["presentation"],
+    "handoff_format": "structured-summary"
+  },
+
+  "trigger": {
+    "type": "on-demand",
+    "description": "Triggered when user requests proposal review"
+  },
+
+  "gmail": {
+    "account": "nickd@wharfsidemb.com",
+    "search_terms": ["proposal", "quote", "bid", "estimate", "pricing"],
+    "attachment_types": ["pdf", "docx", "xlsx"]
+  },
+
+  "notifications": {
+    "email": "nickd@wharfsidemb.com"
+  },
+
+  "analysis": {
+    "risk_thresholds": {
+      "high_deposit_percentage": 50,
+      "unusual_price_variance": 30
+    }
+  }
+}

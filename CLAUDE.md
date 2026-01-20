@@ -80,3 +80,33 @@ Available MCP servers (configured in `mcp-servers/`):
 ## Commands
 
 - `/architect` - Load the Architect agent for team/agent management
+- `/sync-agents` - Generate Claude Code native agents from Agent Architect definitions
+
+## Claude Code Native Agent Integration
+
+Agent Architect is the **source of truth** for agent definitions. Claude Code native agents are **generated** from `SKILL.md` + `config.json` files.
+
+### Architecture
+
+```
+agents/<agent-id>/              (SOURCE OF TRUTH - edit these)
+├── SKILL.md                    → Behavioral instructions
+└── config.json                 → Rich metadata
+
+        ↓ generate (via /sync-agents)
+
+.claude/agents/<agent-id>.md    (GENERATED - do not edit)
+```
+
+### Workflow
+
+1. **Create/Edit agents** in `agents/<agent-id>/` using `/architect`
+2. **Run `/sync-agents`** to generate Claude Code native format
+3. **Use agents** via Claude Code's native delegation or team orchestration
+
+### Key Points
+
+- **Never edit `.claude/agents/*.md` directly** - changes will be overwritten
+- **Generated files are git-ignored** - each user regenerates locally
+- **Rich metadata preserved** - collaboration rules, workflow position stored as HTML comments
+- **Team orchestration unchanged** - Architect still coordinates multi-agent workflows

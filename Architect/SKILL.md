@@ -460,3 +460,56 @@ If something goes wrong:
 2. Suggest how to fix it
 3. Offer to retry or take alternative action
 4. Never leave registries in inconsistent state
+
+---
+
+## Claude Code Native Agent Integration
+
+Agent Architect agents can be synced to Claude Code's native agent format, enabling Claude Code's built-in agent delegation.
+
+### Architecture
+
+```
+agents/<agent-id>/              (SOURCE OF TRUTH)
+├── SKILL.md                    → Behavioral instructions
+└── config.json                 → Rich metadata
+
+        ↓ generate (via /sync-agents)
+
+.claude/agents/<agent-id>.md    (GENERATED - native Claude Code format)
+```
+
+### `/sync-agents` Command
+
+Regenerates all Claude Code native agent files from Agent Architect definitions.
+
+**Usage:**
+```bash
+node scripts/generate-agents.js
+```
+
+**What it does:**
+1. Reads all `agents/*/config.json` files
+2. Reads corresponding `SKILL.md` files
+3. Maps MCP servers to Claude Code tool patterns
+4. Generates `.claude/agents/<agent-id>.md` files
+5. Preserves collaboration and workflow metadata as HTML comments
+
+**When to run:**
+- After creating a new agent
+- After modifying an agent's SKILL.md or config.json
+- After pulling updates that include agent changes
+
+### Generated File Format
+
+Generated files include:
+- **YAML Frontmatter**: name, description, tools
+- **Metadata Comments**: collaboration rules, workflow position, expertise
+- **Full SKILL.md Content**: The complete behavioral instructions
+
+### Important Notes
+
+- **Never edit `.claude/agents/*.md` directly** - they are regenerated
+- **Source of truth is `agents/` directory**
+- Generated files are git-ignored (except `.gitkeep`)
+- Team orchestration still uses Agent Architect patterns

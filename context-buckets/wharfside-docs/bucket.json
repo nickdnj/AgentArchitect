@@ -1,0 +1,50 @@
+{
+  "id": "wharfside-docs",
+  "name": "Wharfside Governing Documents",
+  "description": "Governing documents, resolutions, amendments, and historical records for Wharfside Manor Condominium Association",
+  "version": "1.1",
+  "created": "2026-01-19",
+  "updated": "2026-01-19",
+
+  "content_type": "documents",
+
+  "sources": [
+    {
+      "type": "local",
+      "path": "files/",
+      "format": "html",
+      "description": "Transcribed governing documents as searchable HTML"
+    },
+    {
+      "type": "gdrive",
+      "description": "Additional documents on Google Drive (meeting minutes, budgets, etc.)",
+      "folder_id": null,
+      "sync_mode": "on-access"
+    }
+  ],
+
+  "governing_documents": [
+    {"file": "WharfsideManorGoverningDocuments_CertMasterDeedreceivedfrommgt.html", "title": "Master Deed"},
+    {"file": "WharfsideManorGoverningDocuments_CertifiedCertofIncorporation.html", "title": "Certificate of Incorporation"},
+    {"file": "WharfsideManorGoverningDocuments_ResolutionsAddendumsAmendments.html", "title": "Resolutions, Addendums & Amendments"},
+    {"file": "WharfsideManorGoverningDocuments_2022311RecordedAmendmenttotheByLaws.html", "title": "2022 By-Laws Amendment"},
+    {"file": "WharfsideManorGoverningDocuments_2021512RecordedResolutionreRentalofUnits.html", "title": "Resolution re Rental of Units"},
+    {"file": "WharfsideManorGoverningDocuments_2021514RecordedResolutionreFines.html", "title": "Resolution re Fines"},
+    {"file": "WharfsideManorGoverningDocuments_2021108RecordedAmendmentreSuspensionofPrivileges.html", "title": "Amendment re Suspension of Privileges"},
+    {"file": "WharfsideManorGoverningDocuments_2021512RecordedCensusFormResolution.html", "title": "Census Form Resolution"},
+    {"file": "WharfsideManorGoverningDocuments_2024912RecordedInsuranceDeductibleResolution.html", "title": "2024 Insurance Deductible Resolution"},
+    {"file": "WharfsideManorGoverningDocuments_AmendmentremergingIandII.html", "title": "Amendment re Merging I and II"},
+    {"file": "WharfsideManorGoverningDocuments_ResolutionEstablishingtheRateofInteresttobeChargedOutstandingBalances.html", "title": "Interest Rate Resolution"},
+    {"file": "ParkingResolution_2025.pdf", "title": "2025 Parking Resolution", "format": "pdf", "added": "2026-01-19"},
+    {"file": "WMCA_Handbook_2025.docx", "title": "WMCA Handbook with Appendices", "format": "docx", "added": "2026-01-19"},
+    {"file": "Animal_Control_Procedures.pdf", "title": "Animal Control Procedures (2010)", "format": "pdf", "added": "2026-01-19"},
+    {"file": "Census_Form_2025.pdf", "title": "Census Form (Writable 2025)", "format": "pdf", "added": "2026-01-19"},
+    {"file": "Parking_Tag_Distribution_Letter_2025.docx", "title": "Parking Tag Distribution Letter (2025)", "format": "docx", "added": "2026-01-19"}
+  ],
+
+  "access_control": {
+    "default_level": "read-only",
+    "allowed_agents": [],
+    "allowed_teams": ["wharfside-board-assistant"]
+  }
+}
