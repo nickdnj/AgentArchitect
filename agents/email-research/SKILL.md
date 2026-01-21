@@ -4,14 +4,42 @@
 
 The Email Research Agent mines Gmail for emails on a specific topic and generates a structured research report. This report serves as an input to other agents (like Presentation) or as the basis for composing follow-up emails.
 
-## Core Workflow
+## Context Management Strategy
 
+Email research can generate significant context load due to full email content, PDF transcriptions, and iterative report versions. This agent uses a **three-phase approach** to keep conversation context minimal while producing comprehensive reports.
+
+### Principles
+1. **Discovery before extraction** - Show counts and metadata first, let user control scope
+2. **Working files over inline content** - Extract analysis to files, keep only summaries in conversation
+3. **PDF processing is opt-in** - Default to metadata only; user explicitly requests transcription
+4. **Iterate via files** - Update working files, summarize changes in conversation (not full content)
+
+### Context Boundaries
+- Never load full email content into conversation without user approval
+- PDF transcriptions go directly to working files
+- Report versions are file updates, not inline rebuilds
+- "Dig deeper" iterations write to files, report summary counts only
+
+## Core Workflow (Three Phases)
+
+### Phase 1: Discovery
+Search and count WITHOUT extracting full content:
 1. **Receive Research Topic** - User specifies what to research
-2. **Mine Gmail** - Search for relevant emails using Gmail MCP
-3. **Analyze & Organize** - Extract key information and themes
-4. **Generate Report** - Create draft HTML email report (v0.1) for user review
-5. **Iterate via Email** - User provides feedback, agent creates updated draft versions
-6. **Finalize** - Report ready for use by other agents
+2. **Run Discovery Search** - Search Gmail with topic keywords
+3. **Present Discovery Summary** - Show counts, date ranges, participants, PDF counts
+4. **User Decision Point** - Continue full analysis? Narrow scope? Include PDFs?
+
+### Phase 2: Extraction
+Extract content to working file, not conversation:
+1. **Extract to Working File** - Write analysis to `reports/{topic}_{date}_working.md`
+2. **Summarize in Conversation** - Keep only executive summary inline
+3. **PDF Processing (if requested)** - Transcribe to working file, not conversation
+
+### Phase 3: Report Delivery
+Iterate via files, deliver summaries:
+1. **Generate Report** - Create draft HTML email report (v0.1) for user review
+2. **Iterate via Files** - Update working file, summarize changes in conversation
+3. **Finalize** - Final report to file; email draft contains summary only
 
 ## Input Requirements
 
@@ -86,6 +114,57 @@ Two accounts are available for searching:
    - Track which time periods hit the limit and report this to the user
    - The goal is **complete coverage** - missing emails means missing important history
 
+### Discovery Phase (Context-Efficient)
+
+Before extracting full content, run a **discovery search** to assess scope:
+
+1. **Count emails** - Get total count per account without reading content
+2. **Identify date range** - Earliest and latest email dates
+3. **Extract participants** - Sender names/counts from search results metadata
+4. **Count PDF attachments** - Note how many PDFs exist (don't transcribe yet)
+5. **Check result limits** - Note if any search hit the 100-result cap
+
+**Discovery Summary Format:**
+```
+**Discovery: {Topic}**
+- Board account: {N} emails ({date range})
+- Personal account: {N} emails ({date range}) [if searched]
+- Key participants: {name} ({count}), {name} ({count}), ...
+- PDFs detected: {count}
+- Search limits: {hit/not hit}
+
+Proceed with full analysis, or narrow scope?
+Options:
+- Full analysis (all {total} emails)
+- Narrow by date range
+- Narrow by participant
+- Include PDF transcription (adds significant content)
+```
+
+**User must confirm** before proceeding to Phase 2 extraction.
+
+### Scope Boundaries
+
+To prevent unbounded context growth:
+
+1. **Default email threshold**: 50 emails
+   - If discovery finds >50 emails, prompt user before extraction
+   - User can approve full analysis or narrow scope
+
+2. **PDF transcription**: Opt-in only
+   - Default: Metadata only (filename, source email)
+   - User explicitly requests: "Include PDFs" or "Transcribe the proposals"
+   - When enabled: Transcribe to working file, summarize in conversation
+
+3. **"Dig deeper" writes to files**
+   - When breaking time ranges to find all emails, write results to working file
+   - Report counts to user, not full content
+   - Conversation sees: "Found 45 more emails in Q2, added to working file"
+
+4. **User override**
+   - User can always say "show me everything" to bypass boundaries
+   - Agent warns about context impact before proceeding
+
 ### Information Extraction
 
 For each relevant email/thread, extract:
@@ -96,6 +175,112 @@ For each relevant email/thread, extract:
 - **Status Updates**: Progress or current state
 - **Links/Attachments**: References to documents or resources
 - **Open Questions**: Unresolved issues
+
+#### Working File Strategy
+
+**All extraction goes to a working file, not conversation:**
+
+1. **Create working file** at start of Phase 2:
+   - Path: `reports/{topic-slug}_{date}_working.md`
+   - Example: `reports/marina-permits_2026-01-21_working.md`
+
+2. **Write extraction results to file:**
+   ```markdown
+   # Working Analysis: {Topic}
+   Generated: {Date}
+   Status: In Progress
+
+   ## Email Summaries
+   ### {Date} - {Subject}
+   From: {Sender}
+   Key Points:
+   - {point}
+   - {point}
+
+   ## Emerging Themes
+   - {theme}: {summary}
+
+   ## PDF Content (if requested)
+   ### {filename} (from {date} email)
+   {transcribed content}
+   ```
+
+3. **Conversation receives summary only:**
+   ```
+   **Extraction Complete** ({N} emails analyzed)
+   Key themes: {theme}, {theme}, {theme}
+   Working file: reports/{filename}
+
+   Ready to generate report?
+   ```
+
+### PDF Attachment Handling (Opt-In)
+
+**PDF transcription is OFF by default** to prevent context overload. PDFs are noted as metadata only unless user explicitly requests transcription.
+
+#### Default Behavior (Metadata Only)
+During discovery, report PDF attachments without transcribing:
+```
+**PDFs Detected:** 6
+- Boiler_Proposal.pdf (from ABC Plumbing, 2026-01-15)
+- Inspection_Report.pdf (from Engineer, 2026-01-10)
+- Quote_v2.pdf (from XYZ Contractors, 2026-01-08)
+...
+```
+
+#### User Triggers PDF Transcription
+User must explicitly request transcription:
+- "Include the PDFs"
+- "Transcribe the proposals"
+- "I need the PDF content"
+- "Yes, process PDFs"
+
+#### Transcription Workflow (When Requested)
+
+1. **Download and transcribe to working file:**
+   ```
+   # Download the attachment
+   mcp__gmail__download_attachment(messageId, attachmentId, savePath="/tmp/pdfscribe")
+
+   # Transcribe using PDFScribe
+   mcp__pdfscribe__transcribe_pdf(pdf_path="/tmp/pdfscribe/{filename}")
+   ```
+
+2. **Write transcription to working file (NOT conversation):**
+   - Add PDF content to `## PDF Content` section of working file
+   - Include source email reference and date
+
+3. **Report summary in conversation:**
+   ```
+   **PDF Transcription Complete**
+   - Boiler_Proposal.pdf: 3 pages, proposal details and pricing
+   - Inspection_Report.pdf: 5 pages, unit-by-unit findings
+
+   Key figures extracted to working file.
+   ```
+
+#### Common PDF Types
+- Vendor proposals and quotes
+- Inspection reports
+- Engineering assessments
+- Financial statements
+- Meeting minutes (scanned)
+- Contracts and agreements
+
+#### Example (Opt-In Flow)
+```
+Discovery shows: "PDFs detected: 3"
+
+User: Include the PDF proposals
+
+Agent: Transcribing 3 PDFs to working file...
+
+**PDF Transcription Complete**
+- Boiler_Proposal.pdf: Cost $47,500, timeline 6-8 weeks
+- Alt_Quote.pdf: Cost $52,000, timeline 4-6 weeks
+
+Details added to working file.
+```
 
 ## Report Structure
 
@@ -147,6 +332,12 @@ Organize discoveries into logical categories:
 
 ### Outstanding Questions
 List of unresolved issues or items needing follow-up
+
+### Attachments Analyzed
+List of PDF attachments that were transcribed and analyzed:
+- Filename and source email
+- Key information extracted
+- [Note if attachment was scanned/image-based]
 
 ### Source References
 List of email threads used in the report:
@@ -230,13 +421,16 @@ In addition to the HTML email, save a markdown file as a persistent record:
 - Each revision increments the version number
 - Version always appears in subject line for easy thread tracking
 
-### Email-Based Iteration
+### Email-Based Iteration (File-Based)
+
+**Key Principle:** Update files, summarize changes in conversation. Never rebuild full report inline.
 
 **Initial Report (v0.1):**
-1. Complete research and analysis
-2. Create HTML email draft with full report
-3. Subject: "Email Research: [Topic] - Draft v0.1"
-4. Notify user that draft is ready for review and sending
+1. Generate report from working file analysis
+2. Save report to `reports/{topic}_{date}.md`
+3. Create HTML email draft with **summary only** (not full report)
+4. Email body: Executive summary + link/reference to full report
+5. Subject: "Email Research: [Topic] - Draft v0.1"
 
 **User Feedback:**
 - User reviews the draft and provides feedback
@@ -245,14 +439,24 @@ In addition to the HTML email, save a markdown file as a persistent record:
 
 **Updated Versions (v0.2+):**
 1. Process feedback from user
-2. Update report accordingly
-3. Create new email draft with incremented version
-4. Subject: "Email Research: [Topic] - Draft v0.2"
-5. Continue until user is satisfied
+2. **Update the markdown report file** (not conversation)
+3. Create new email draft with **change summary:**
+   ```
+   Updated: Email Research: {Topic} - v0.2
+
+   Changes in this version:
+   - Added Phase 2 timeline details
+   - Included vendor contact information
+   - Expanded budget breakdown
+
+   Full report: reports/{topic}_{date}.md
+   ```
+4. Continue until user is satisfied
 
 **Finalized Report:**
 - When user approves, create final draft
 - Subject: "Email Research: [Topic] - v1.0 FINAL"
+- Email contains summary; full report in markdown file
 - Ready for handoff to other agents
 
 ### Supplementary Outputs
@@ -270,6 +474,72 @@ When user wants to draft a follow-up email:
 - Suggest recipients based on stakeholder analysis
 
 ## Usage Examples
+
+### Context-Efficient Flow (Recommended)
+
+This example demonstrates the three-phase workflow that minimizes context usage:
+
+```
+User: Research marina permits
+
+Agent: Running discovery search...
+
+**Discovery: Marina Permits**
+- Board account: 73 emails (Mar 2024 - Jan 2026)
+- Personal account: 12 emails (2019 - 2022)
+- Key participants: DEP (12), Harbor Master (8), Engineering (15), Marina Committee (22)
+- PDFs detected: 6
+- Search limits: Not hit
+
+Total: 85 emails across both accounts
+
+Proceed with full analysis, or narrow scope?
+Options:
+- Full analysis (all 85 emails)
+- Board account only (73 emails, recent)
+- Narrow by date range
+- Include PDF transcription
+
+User: Board account only, skip PDFs for now
+
+Agent: Extracting 73 emails to working file...
+
+**Extraction Complete** (73 emails)
+Key themes: DEP permit process, dock configuration, marina rules compliance
+Working file: reports/marina-permits_2026-01-21_working.md
+
+Ready to generate report?
+
+User: Yes
+
+Agent: Report generated.
+
+**Email Research: Marina Permits - Draft v0.1**
+Saved to: reports/marina-permits_2026-01-21.md
+Email draft created with summary.
+
+Key findings:
+- DEP permit approved October 2025
+- Dock reconfiguration planned for spring 2026
+- Marina rules update pending board vote
+
+Review the draft in your Gmail. Let me know if you'd like changes.
+
+User: Add the timeline details and include the DEP permit PDF
+
+Agent: Updating report and transcribing PDF...
+
+**Updates Complete**
+- Added detailed timeline to report
+- Transcribed DEP_Permit_2025.pdf (3 pages)
+
+Changes in v0.2:
+- Timeline section expanded with key dates
+- DEP permit conditions summarized
+
+Report updated: reports/marina-permits_2026-01-21.md
+New draft created: "Email Research: Marina Permits - Draft v0.2"
+```
 
 ### Basic Research Request
 ```
@@ -440,6 +710,7 @@ The Email Research Agent is working correctly when:
 
 - User can request research on any topic
 - Agent finds and organizes relevant emails
+- PDF attachments are transcribed and included in research
 - Report is comprehensive and well-structured
 - Findings are accurate and properly attributed
 - User can easily use report for next steps

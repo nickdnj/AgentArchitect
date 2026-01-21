@@ -9,7 +9,7 @@
     "capabilities": ["multi-account search", "thread analysis", "timeline construction", "stakeholder identification"]
   },
 
-  "mcp_servers": ["gmail", "gmail-personal", "voicemode"],
+  "mcp_servers": ["gmail", "gmail-personal", "voicemode", "pdfscribe"],
 
   "context_buckets": {
     "assigned": ["wharfside-docs"],
@@ -28,7 +28,7 @@
   },
 
   "collaboration": {
-    "can_request_from": ["archivist"],
+    "can_request_from": ["archivist", "pdf-scribe"],
     "provides_to": ["presentation", "monthly-bulletin"],
     "handoff_format": "structured-summary"
   },
@@ -53,6 +53,16 @@
 
   "defaults": {
     "lookback_days": 90,
-    "draft_only": true
+    "draft_only": true,
+    "pdf_processing": "opt-in",
+    "discovery_first": true,
+    "max_emails_before_prompt": 50,
+    "working_file_path": "reports/"
+  },
+
+  "context_management": {
+    "use_working_files": true,
+    "summary_only_in_conversation": true,
+    "iteration_via_files": true
   }
 }
