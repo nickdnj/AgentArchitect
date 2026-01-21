@@ -32,8 +32,14 @@
 
   "output": {
     "folder": "outputs/",
-    "formats": ["markdown"],
-    "naming": "{original-filename}-transcribed.md"
+    "formats": ["markdown", "html-email"],
+    "naming": "{original-filename}-transcribed.md",
+    "email_iteration": {
+      "enabled": true,
+      "template": "standard-report",
+      "subject_format": "PDF Transcription: {document} - v{version}",
+      "google_doc_finalize": false
+    }
   },
 
   "collaboration": {

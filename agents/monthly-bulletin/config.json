@@ -18,7 +18,13 @@
 
   "output": {
     "folder": "outputs/",
-    "formats": ["html-email"]
+    "formats": ["html-email"],
+    "email_iteration": {
+      "enabled": true,
+      "template": "wharfside-report",
+      "subject_format": "{month} {year} Monthly Bulletin - v{version}",
+      "google_doc_finalize": false
+    }
   },
 
   "collaboration": {

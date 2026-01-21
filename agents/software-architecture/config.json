@@ -25,8 +25,14 @@
 
   "output": {
     "folder": "docs/architecture",
-    "formats": ["markdown", "google-doc"],
-    "filename_format": "{project-name}_Architecture_{date}.md"
+    "formats": ["markdown", "google-doc", "html-email"],
+    "filename_format": "{project-name}_Architecture_{date}.md",
+    "email_iteration": {
+      "enabled": true,
+      "template": "standard-report",
+      "subject_format": "Architecture Review: {project} - v{version}",
+      "google_doc_finalize": true
+    }
   },
 
   "collaboration": {

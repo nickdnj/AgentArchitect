@@ -2,6 +2,16 @@
 
 This file provides guidance to Claude Code when working with this repository.
 
+## User Preferences
+
+### Contact Information
+- **Personal Email:** nickd@demarconet.com
+- **Wharfside Board Email:** nickd@wharfsidemb.com
+
+When sending emails or reports:
+- Use `nickd@demarconet.com` for personal matters and general research reports
+- Use `nickd@wharfsidemb.com` for Wharfside Manor board-related communications
+
 ## Getting Started
 
 **Always start by loading the Architect agent.** Read `Architect/SKILL.md` and follow its startup sequence. The Architect will:

@@ -26,8 +26,14 @@
 
   "output": {
     "folder": "docs/legal",
-    "formats": ["google-doc", "markdown"],
-    "filename_format": "{project-name}_Legal_Assessment_{date}.md"
+    "formats": ["google-doc", "markdown", "html-email"],
+    "filename_format": "{project-name}_Legal_Assessment_{date}.md",
+    "email_iteration": {
+      "enabled": true,
+      "template": "standard-report",
+      "subject_format": "Legal Review: {project} - v{version}",
+      "google_doc_finalize": true
+    }
   },
 
   "collaboration": {

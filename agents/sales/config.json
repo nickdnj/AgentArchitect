@@ -26,8 +26,14 @@
 
   "output": {
     "folder": "docs/sales",
-    "formats": ["google-doc", "markdown"],
-    "filename_format": "{project-name}_Sales_Playbook_{date}.md"
+    "formats": ["google-doc", "markdown", "html-email"],
+    "filename_format": "{project-name}_Sales_Playbook_{date}.md",
+    "email_iteration": {
+      "enabled": true,
+      "template": "standard-report",
+      "subject_format": "Sales Playbook Review: {project} - v{version}",
+      "google_doc_finalize": true
+    }
   },
 
   "collaboration": {

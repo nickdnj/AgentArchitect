@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "last_updated": "2026-01-20",
+  "last_updated": "2026-01-21",
   "agents": [
     {
       "id": "monthly-bulletin",
@@ -120,6 +120,14 @@
       "folder": "agents/pdf-scribe",
       "teams": [],
       "created": "2026-01-20",
+      "status": "active"
+    },
+    {
+      "id": "web-research",
+      "name": "Web Research",
+      "folder": "agents/web-research",
+      "teams": [],
+      "created": "2026-01-21",
       "status": "active"
     }
   ]

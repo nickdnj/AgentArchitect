@@ -26,7 +26,13 @@
 
   "output": {
     "folder": "outputs/",
-    "formats": ["code", "markdown"]
+    "formats": ["code", "markdown", "html-email"],
+    "email_iteration": {
+      "enabled": true,
+      "template": "standard-report",
+      "subject_format": "Implementation Summary: {feature} - v{version}",
+      "google_doc_finalize": false
+    }
   },
 
   "collaboration": {

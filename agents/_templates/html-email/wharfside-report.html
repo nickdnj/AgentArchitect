@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{report_title}</title>
+  <style>
+    /* Reset and base - Wharfside Branding */
+    body {
+      font-family: 'Georgia', serif;
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 20px;
+      color: #2c3e50;
+      line-height: 1.8;
+      background: #ffffff;
+      font-size: 15px;
+    }
+
+    /* Masthead with logo */
+    .masthead {
+      padding: 20px 0 25px 0;
+      margin-bottom: 30px;
+      border-bottom: 3px solid #1a3a5c;
+    }
+
+    .masthead-title {
+      font-size: 28px;
+      color: #1a3a5c;
+      margin: 0;
+      font-weight: normal;
+      letter-spacing: 1px;
+    }
+
+    .masthead-subtitle {
+      font-size: 13px;
+      color: #c9a227;
+      margin: 6px 0 0 0;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-family: Arial, sans-serif;
+      font-weight: bold;
+    }
+
+    .masthead-location {
+      font-size: 13px;
+      color: #7f8c8d;
+      margin: 4px 0 0 0;
+      font-style: italic;
+    }
+
+    .masthead-version {
+      font-size: 12px;
+      color: #c9a227;
+      font-family: Arial, sans-serif;
+      font-weight: bold;
+      background: #fdf6e3;
+      padding: 4px 10px;
+      border-radius: 4px;
+      display: inline-block;
+      margin-top: 8px;
+    }
+
+    /* Sections */
+    h2 {
+      font-size: 18px;
+      color: #1a3a5c;
+      margin: 35px 0 15px 0;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #ddd;
+      font-weight: normal;
+    }
+
+    h3 {
+      font-size: 16px;
+      color: #1a3a5c;
+      margin: 24px 0 12px 0;
+      font-weight: bold;
+    }
+
+    /* Content elements */
+    p {
+      margin: 0 0 16px 0;
+    }
+
+    ul, ol {
+      margin: 0 0 16px 0;
+      padding-left: 24px;
+    }
+
+    li {
+      margin-bottom: 8px;
+    }
+
+    strong {
+      color: #1a3a5c;
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+      font-size: 14px;
+    }
+
+    th {
+      background: #1a3a5c;
+      color: #ffffff;
+      font-weight: bold;
+      text-align: left;
+      padding: 12px;
+    }
+
+    td {
+      padding: 12px;
+      border-bottom: 1px solid #e5e7eb;
+      vertical-align: top;
+    }
+
+    tr:nth-child(even) td {
+      background: #f9fafb;
+    }
+
+    /* Highlight boxes - Wharfside style */
+    .highlight {
+      background: #f8f9fa;
+      padding: 18px 22px;
+      margin: 18px 0;
+      border-left: 3px solid #1a3a5c;
+    }
+
+    .highlight-gold {
+      background: #fdf6e3;
+      border-left-color: #c9a227;
+    }
+
+    .highlight-success {
+      background: #f0f7f4;
+      border-left-color: #1abc9c;
+    }
+
+    .highlight-warning {
+      background: #fef9e7;
+      border-left-color: #f39c12;
+    }
+
+    /* Contacts box - from bulletin style */
+    .contacts-box {
+      background: #fdf6e3;
+      padding: 18px 20px;
+      margin: 20px 0;
+      border-radius: 6px;
+    }
+
+    .contacts-box h3 {
+      margin-top: 0;
+      color: #1a3a5c;
+    }
+
+    /* Summary box */
+    .summary-box {
+      background: #f8f9fa;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 20px 24px;
+      margin: 20px 0;
+    }
+
+    .summary-box h3 {
+      margin-top: 0;
+      color: #1a3a5c;
+    }
+
+    /* Recommendation box */
+    .recommendation {
+      background: #fdf6e3;
+      border: 1px solid #c9a227;
+      border-radius: 4px;
+      padding: 20px 24px;
+      margin: 20px 0;
+    }
+
+    .recommendation h3 {
+      margin-top: 0;
+      color: #1a3a5c;
+    }
+
+    /* Key-value pairs */
+    .kv-row {
+      display: flex;
+      margin-bottom: 8px;
+    }
+
+    .kv-label {
+      font-weight: bold;
+      color: #1a3a5c;
+      min-width: 140px;
+    }
+
+    .kv-value {
+      color: #2c3e50;
+    }
+
+    /* Links */
+    a {
+      color: #1a3a5c;
+      text-decoration: underline;
+    }
+
+    a:hover {
+      color: #c9a227;
+    }
+
+    /* Divider - anchor style */
+    .divider {
+      text-align: center;
+      margin: 40px 0;
+      color: #c9a227;
+      letter-spacing: 8px;
+    }
+
+    hr {
+      border: none;
+      border-top: 1px solid #ddd;
+      margin: 24px 0;
+    }
+
+    /* New badge */
+    .new-badge {
+      background: #1abc9c;
+      color: white;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 3px;
+      font-family: Arial, sans-serif;
+      vertical-align: middle;
+      margin-left: 8px;
+    }
+
+    /* Footer - Wharfside style */
+    .footer {
+      text-align: center;
+      margin-top: 50px;
+      padding-top: 30px;
+      border-top: 3px solid #1a3a5c;
+    }
+
+    .footer p {
+      margin: 8px 0;
+      color: #7f8c8d;
+      font-size: 13px;
+    }
+
+    .footer strong {
+      color: #1a3a5c;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      body {
+        padding: 16px;
+      }
+
+      .kv-row {
+        flex-direction: column;
+      }
+
+      .kv-label {
+        min-width: auto;
+        margin-bottom: 2px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="masthead">
+    <table cellpadding="0" cellspacing="0" border="0" width="100%">
+      <tr>
+        <td width="200" valign="middle">
+          <img src="https://raw.githubusercontent.com/nickdnj/wharfside-assets/master/Wharfside_Logo_Cropped.png" alt="Wharfside Manor" style="width:180px;height:auto;">
+        </td>
+        <td valign="middle" style="padding-left:20px;">
+          <div class="masthead-title">{report_title}</div>
+          <div class="masthead-subtitle">{report_type}</div>
+          <div class="masthead-location">Wharfside Manor - Monmouth Beach, NJ</div>
+          <span class="masthead-version">Version {version}</span>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- CONTENT SECTIONS GO HERE -->
+
+  <!-- Example section structure:
+
+  <h2>Executive Summary</h2>
+  <div class="summary-box">
+    <p>Summary content here...</p>
+  </div>
+
+  <div class="divider">- - -</div>
+
+  <h2>Key Findings</h2>
+  <div class="highlight">
+    <p><strong>Finding 1:</strong> Description...</p>
+  </div>
+
+  <h2>Recommendations</h2>
+  <div class="recommendation">
+    <h3>Top Pick</h3>
+    <div class="kv-row">
+      <span class="kv-label">Vendor:</span>
+      <span class="kv-value">Vendor name</span>
+    </div>
+    <div class="kv-row">
+      <span class="kv-label">Cost:</span>
+      <span class="kv-value">$XX,XXX</span>
+    </div>
+  </div>
+
+  <h2>Detailed Analysis</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Option</th>
+        <th>Rating</th>
+        <th>Cost</th>
+        <th>Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Option 1</td>
+        <td>4.5/5</td>
+        <td>$XX,XXX</td>
+        <td>Notes...</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Contact Information</h2>
+  <div class="contacts-box">
+    <h3>Key Contacts</h3>
+    <div class="kv-row">
+      <span class="kv-label">Property Mgmt:</span>
+      <span class="kv-value"><a href="tel:732-970-6886">732-970-6886</a></span>
+    </div>
+  </div>
+
+  -->
+
+  <div class="footer">
+    <p><strong>Wharfside Manor Board of Trustees</strong></p>
+    <p>Wharfside Manor Condominium Association, Inc. - Monmouth Beach, NJ</p>
+    <p style="margin-top: 16px; font-style: italic;">Reply to this email with feedback for revisions</p>
+  </div>
+</body>
+</html>

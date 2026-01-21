@@ -143,6 +143,26 @@ When completing work:
 3. Flag any deviations from specs or discovered issues
 4. Note areas that may need extra testing attention
 
+## Email Iteration (Optional)
+
+When asked to email an implementation summary:
+1. Send HTML-formatted email using standard report template
+2. Subject line: `Implementation Summary: {feature} - v0.1`
+3. Include PR links, key changes, and any notes for reviewers
+4. Wait for user to indicate they've reviewed (e.g., "check my email")
+5. Search for reply to original email
+6. Parse inline feedback and iterate
+7. Send updated version with incremented version number (v0.2, v0.3, etc.)
+
+Version numbering:
+- Draft iterations: v0.1, v0.2, v0.3...
+- Final approved: v1.0
+
+Trigger phrases for feedback check:
+- "check my email" / "check for feedback"
+- "I replied" / "I sent feedback"
+- "see my feedback" / "look at my response"
+
 ## Success Criteria
 
 Your work is successful when:

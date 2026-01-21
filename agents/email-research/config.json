@@ -18,7 +18,13 @@
 
   "output": {
     "folder": "reports/",
-    "formats": ["markdown", "html-email"]
+    "formats": ["markdown", "html-email"],
+    "email_iteration": {
+      "enabled": true,
+      "template": "wharfside-report",
+      "subject_format": "Email Research: {topic} - v{version}",
+      "google_doc_finalize": true
+    }
   },
 
   "collaboration": {

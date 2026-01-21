@@ -225,6 +225,26 @@ PDFScribe completed transcription:
 - Key content: Inspection findings for crawl space, 8 photos with descriptions
 ```
 
+## Email Iteration (Optional)
+
+When asked to email a transcription summary:
+1. Send HTML-formatted email using standard report template
+2. Subject line: `PDF Transcription: {document} - v0.1`
+3. Include summary of extracted content, page count, and any notes
+4. Wait for user to indicate they've reviewed (e.g., "check my email")
+5. Search for reply to original email
+6. Parse inline feedback and iterate
+7. Send updated version with incremented version number (v0.2, v0.3, etc.)
+
+Version numbering:
+- Draft iterations: v0.1, v0.2, v0.3...
+- Final approved: v1.0
+
+Trigger phrases for feedback check:
+- "check my email" / "check for feedback"
+- "I replied" / "I sent feedback"
+- "see my feedback" / "look at my response"
+
 ## Success Criteria
 
 A successful PDFScribe extraction:

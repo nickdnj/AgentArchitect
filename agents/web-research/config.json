@@ -1,0 +1,54 @@
+{
+  "id": "web-research",
+  "name": "Web Research",
+  "description": "Researches products and local services to find best-value options with reviews from authoritative sources",
+  "version": "1.0",
+
+  "expertise": {
+    "domains": [
+      "consumer product research",
+      "local service evaluation",
+      "review aggregation",
+      "price/value analysis"
+    ],
+    "capabilities": [
+      "web search",
+      "review source discovery",
+      "multi-source synthesis",
+      "value scoring",
+      "local search",
+      "email report delivery"
+    ]
+  },
+
+  "mcp_servers": ["gmail-personal"],
+
+  "tools": ["WebSearch", "WebFetch", "mcp__chrome__*", "mcp__gmail-personal__*"],
+
+  "context_buckets": {
+    "assigned": [],
+    "access_level": "none"
+  },
+
+  "output": {
+    "folder": "outputs/",
+    "formats": ["markdown", "html-email"],
+    "email_iteration": {
+      "enabled": true,
+      "template": "standard-report",
+      "subject_format": "Research Report: {topic} - v{version}",
+      "google_doc_finalize": true
+    }
+  },
+
+  "collaboration": {
+    "can_request_from": [],
+    "provides_to": [],
+    "handoff_format": "none"
+  },
+
+  "trigger": {
+    "type": "on-demand",
+    "description": "User asks for product or service recommendations"
+  }
+}

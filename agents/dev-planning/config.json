@@ -26,8 +26,14 @@
 
   "output": {
     "folder": "docs/planning",
-    "formats": ["github-issues", "markdown"],
-    "filename_format": "{project-name}_Sprint_Plan_{date}.md"
+    "formats": ["github-issues", "markdown", "html-email"],
+    "filename_format": "{project-name}_Sprint_Plan_{date}.md",
+    "email_iteration": {
+      "enabled": true,
+      "template": "standard-report",
+      "subject_format": "Dev Plan Review: {project} - v{version}",
+      "google_doc_finalize": true
+    }
   },
 
   "collaboration": {

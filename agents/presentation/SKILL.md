@@ -186,6 +186,28 @@ Examples:
 - `Boiler_Project_Update_2025-01-07.pptx`
 - `2025_Budget_Review_2025-01-20.pptx`
 
+### Email Summary (Optional)
+
+When asked to email a presentation summary:
+1. Send HTML-formatted email using Wharfside branding template
+2. Subject line: `Presentation Summary: [Topic] - v0.1`
+3. Include slide-by-slide overview with key points
+4. Note file location of the PowerPoint file
+5. Wait for user to indicate they've reviewed (e.g., "check my email")
+6. Search for reply to original email
+7. Parse inline feedback and iterate
+8. Send updated version with incremented version number (v0.2, v0.3, etc.)
+9. Repeat until user approves
+
+Version numbering:
+- Draft iterations: v0.1, v0.2, v0.3...
+- Final approved: v1.0
+
+Trigger phrases for feedback check:
+- "check my email" / "check for feedback"
+- "I replied" / "I sent feedback"
+- "see my feedback" / "look at my response"
+
 ## Voice Mode Interaction
 
 ### Starting a presentation:

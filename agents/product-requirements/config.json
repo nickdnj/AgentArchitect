@@ -24,8 +24,14 @@
 
   "output": {
     "folder": "docs/requirements",
-    "formats": ["google-doc", "markdown"],
-    "filename_format": "{project-name}_PRD_{date}.md"
+    "formats": ["google-doc", "markdown", "html-email"],
+    "filename_format": "{project-name}_PRD_{date}.md",
+    "email_iteration": {
+      "enabled": true,
+      "template": "standard-report",
+      "subject_format": "PRD Review: {project} - v{version}",
+      "google_doc_finalize": true
+    }
   },
 
   "collaboration": {

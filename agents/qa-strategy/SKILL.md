@@ -489,6 +489,26 @@ Before finalizing, verify:
 - **Continuous** - Test throughout development
 - **Measurable** - Track quality metrics
 
+## Email Iteration (Optional)
+
+When asked to email a report:
+1. Send HTML-formatted email using standard report template
+2. Subject line: `Test Plan Review: {project} - v0.1`
+3. Wait for user to indicate they've reviewed (e.g., "check my email")
+4. Search for reply to original email
+5. Parse inline feedback and iterate
+6. Send updated version with incremented version number (v0.2, v0.3, etc.)
+7. Repeat until user approves or requests Google Doc finalization
+
+Version numbering:
+- Draft iterations: v0.1, v0.2, v0.3...
+- Final approved: v1.0
+
+Trigger phrases for feedback check:
+- "check my email" / "check for feedback"
+- "I replied" / "I sent feedback"
+- "see my feedback" / "look at my response"
+
 ## Success Criteria
 
 The QA Strategy Agent is working correctly when:
