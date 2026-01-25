@@ -78,11 +78,11 @@ Look for information related to:
 The header uses a clean, professional masthead with the logo integrated:
 - **White background** - no dark banner
 - **Two-column table layout:**
-  - **Left column (200px):** Cropped logo at 180px width, filling the space
-  - **Right column:** Title and tagline text
-- **Title:** "Monthly Bulletin" in 28px Georgia, navy (#1a3a5c)
-- **Subtitle:** Month/Year in gold (#c9a227), uppercase, letterspaced
-- **Location:** "Wharfside Manor • Monmouth Beach, NJ" in italic gray
+  - **Left column (200px):** Cropped logo at 180px width
+  - **Right column:** Title and tagline text, **right-aligned** (`text-align: right`)
+- **Title:** "Monthly Bulletin" in 28px Georgia, navy (#1a3a5c), right-aligned
+- **Subtitle:** Month/Year in gold (#c9a227), uppercase, letterspaced, right-aligned
+- **Location:** "Wharfside Manor • Monmouth Beach, NJ" in italic gray, right-aligned
 - **Bottom border:** 3px solid navy (#1a3a5c) separating header from content
 
 ### Community Message (Opening)
@@ -91,10 +91,15 @@ Always include:
 - Brief context-setting for the month
 
 ### Know Who to Call (Contacts Box)
-Use a compact 2x2 grid layout in a warm-toned box:
-- **Title:** "📞 Know Who to Call" in bold navy
-- **Grid layout:** 2 columns, 2 rows
-- **Each contact:** Small uppercase label + bold phone number below
+Use a visually distinct, professional contact card layout:
+- **Container:** Rounded box with light warm background (#fdf6e3), subtle navy left border (4px solid #1a3a5c)
+- **Title:** "📞 Important Contacts" centered, bold navy, with subtle bottom border
+- **Grid layout:** 2 columns, 2 rows with clear visual separation
+- **Each contact card:**
+  - Subtle background (#fff) with rounded corners
+  - Emoji + label on top line (uppercase, small, gray)
+  - Phone number below (larger, bold, navy)
+  - Consistent padding and spacing
 - **Contacts to include:**
   - 🚨 Emergency: 9-1-1
   - 🏢 Property Management (ECI): 732-970-6886
@@ -222,10 +227,11 @@ Keep it concise—no introduction needed:
 ## Output Requirements
 
 **Email Format:**
-- Send as HTML email using Gmail MCP
+- Send as HTML email using Gmail MCP `send_email` tool (not drafts)
 - Use `mimeType: "text/html"` for rich formatting
 - Include version in subject line: "[Month Year] Monthly Bulletin - Draft v0.X"
-- Send to: nickd@wharfsidemb.com
+- Send directly to: nickd@wharfsidemb.com
+- Do NOT save as draft - always send the bulletin directly for review
 
 **Logo Embedding (GitHub Hosted):**
 The cropped logo is served from GitHub for reliable display across all email clients:
@@ -244,7 +250,7 @@ The cropped logo is served from GitHub for reliable display across all email cli
   <style>
     body { font-family: 'Georgia', serif; max-width: 680px; margin: 0 auto; padding: 20px; color: #2c3e50; line-height: 1.8; background: white; }
 
-    /* Clean Masthead */
+    /* Clean Masthead - Logo left, Title right-aligned */
     .masthead { padding: 20px 0 25px 0; margin-bottom: 30px; border-bottom: 3px solid #1a3a5c; }
     .masthead-title { font-size: 28px; color: #1a3a5c; margin: 0; font-weight: normal; letter-spacing: 1px; }
     .masthead-subtitle { font-size: 13px; color: #c9a227; margin: 6px 0 0 0; letter-spacing: 2px; text-transform: uppercase; font-family: Arial, sans-serif; font-weight: bold; }
@@ -253,12 +259,13 @@ The cropped logo is served from GitHub for reliable display across all email cli
     /* Content */
     h2 { font-size: 18px; color: #1a3a5c; margin: 35px 0 15px 0; padding-bottom: 8px; border-bottom: 1px solid #ddd; font-weight: normal; }
 
-    /* Compact Contacts Box */
-    .contacts-box { background: #fdf6e3; padding: 18px 20px; margin: 20px 0; border-radius: 6px; }
-    .contacts-grid { width: 100%; border-collapse: collapse; }
-    .contacts-grid td { padding: 8px 10px; vertical-align: top; width: 50%; }
-    .contact-label { font-size: 12px; color: #7f8c8d; text-transform: uppercase; letter-spacing: 0.5px; margin: 0; }
-    .contact-number { font-size: 15px; font-weight: bold; color: #1a3a5c; margin: 2px 0 0 0; }
+    /* Professional Contacts Box */
+    .contacts-box { background: #fdf6e3; padding: 20px 24px; margin: 20px 0; border-radius: 8px; border-left: 4px solid #1a3a5c; }
+    .contacts-title { text-align: center; font-weight: bold; color: #1a3a5c; margin: 0 0 16px 0; padding-bottom: 12px; border-bottom: 1px solid #e8dcc8; font-size: 15px; }
+    .contacts-grid { width: 100%; border-collapse: separate; border-spacing: 8px; }
+    .contacts-grid td { padding: 12px 14px; vertical-align: top; width: 50%; background: #fff; border-radius: 6px; }
+    .contact-label { font-size: 11px; color: #7f8c8d; text-transform: uppercase; letter-spacing: 0.5px; margin: 0; }
+    .contact-number { font-size: 16px; font-weight: bold; color: #1a3a5c; margin: 4px 0 0 0; }
 
     .highlight { background: #f8f9fa; padding: 18px 22px; margin: 18px 0; border-left: 3px solid #1a3a5c; }
     .maintenance-box { background: #f0f7f4; padding: 18px 22px; margin: 18px 0; border-left: 3px solid #1abc9c; }
@@ -278,10 +285,37 @@ The cropped logo is served from GitHub for reliable display across all email cli
         <td width="200" valign="middle">
           <img src="https://raw.githubusercontent.com/nickdnj/wharfside-assets/master/Wharfside_Logo_Cropped.png" alt="Wharfside Manor" style="width:180px;height:auto;">
         </td>
-        <td valign="middle" style="padding-left:20px;">
+        <td valign="middle" style="text-align: right;">
           <div class="masthead-title">Monthly Bulletin</div>
           <div class="masthead-subtitle">{month} {year}</div>
           <div class="masthead-location">Wharfside Manor • Monmouth Beach, NJ</div>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Contacts Box -->
+  <div class="contacts-box">
+    <p class="contacts-title">📞 Important Contacts</p>
+    <table class="contacts-grid">
+      <tr>
+        <td>
+          <p class="contact-label">🚨 Emergency</p>
+          <p class="contact-number">9-1-1</p>
+        </td>
+        <td>
+          <p class="contact-label">🏢 Property Management (ECI)</p>
+          <p class="contact-number">732-970-6886</p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p class="contact-label">🔧 Heating & Plumbing Urgent</p>
+          <p class="contact-number">732-422-2424</p>
+        </td>
+        <td>
+          <p class="contact-label">📋 Non-Emergency Maintenance</p>
+          <p class="contact-number">ECI Work Order System</p>
         </td>
       </tr>
     </table>
