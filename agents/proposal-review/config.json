@@ -9,7 +9,7 @@
     "capabilities": ["proposal extraction", "comparative analysis", "cost evaluation", "recommendation generation"]
   },
 
-  "mcp_servers": ["gmail", "gdrive"],
+  "mcp_servers": ["gmail"],
 
   "context_buckets": {
     "assigned": ["wharfside-docs"],

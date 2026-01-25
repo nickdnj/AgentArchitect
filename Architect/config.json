@@ -6,7 +6,6 @@
 
   "mcp_servers": [
     "google-docs",
-    "gdrive",
     "gmail",
     "powerpoint"
   ],
@@ -30,10 +29,10 @@
 
   "defaults": {
     "coordination_mode": "human-reviewed",
-    "gdrive_sync_mode": "on-access",
     "output_sharing": "summarized",
     "timezone": "America/New_York",
-    "date_format": "%B %d, %Y"
+    "date_format": "%B %d, %Y",
+    "local_gdrive_path": "~/Library/CloudStorage/GoogleDrive-nickd@demarconet.com"
   },
 
   "trigger": {

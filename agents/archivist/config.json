@@ -9,7 +9,7 @@
     "capabilities": ["document search", "context provision", "policy lookup", "historical research", "portal document sync"]
   },
 
-  "mcp_servers": ["gdrive", "google-docs", "chrome"],
+  "mcp_servers": ["google-docs", "chrome"],
 
   "context_buckets": {
     "assigned": ["wharfside-docs"],
@@ -38,17 +38,24 @@
     "description": "Triggered when information is requested by other agents or user"
   },
 
-  "gdrive": {
-    "root_folder": "Wharfside Manor",
-    "document_categories": [
-      "governing-documents",
-      "meeting-minutes",
-      "financial",
-      "contracts",
-      "insurance",
-      "projects",
-      "permits"
-    ]
+  "local_storage": {
+    "base_path": "~/Library/CloudStorage/GoogleDrive-nickd@demarconet.com",
+    "shared_drives": "Shared drives",
+    "document_categories": {
+      "governing-documents": "Shared drives/Governing Documents",
+      "meeting-minutes": "Shared drives/Board Open Meetings",
+      "financial": "Shared drives/Financials",
+      "contracts": "Shared drives/Contracts",
+      "insurance": "Shared drives/Insurance",
+      "infrastructure": "Shared drives/Infrastructure",
+      "legal": "Shared drives/Legal",
+      "marina": "Shared drives/Marina Operations",
+      "maintenance": "Shared drives/Maintenance",
+      "operations": "Shared drives/Operations",
+      "community": "Shared drives/Community Documents",
+      "committees": "Shared drives/Committees",
+      "it": "Shared drives/Wharfside IT"
+    }
   },
 
   "search_behavior": {

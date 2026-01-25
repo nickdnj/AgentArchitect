@@ -9,7 +9,7 @@
     "capabilities": ["slide creation", "template application", "content structuring", "brand compliance"]
   },
 
-  "mcp_servers": ["powerpoint", "gdrive"],
+  "mcp_servers": ["powerpoint"],
 
   "context_buckets": {
     "assigned": ["wharfside-docs"],

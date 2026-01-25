@@ -15,10 +15,9 @@
       "description": "Local document files"
     },
     {
-      "type": "gdrive",
-      "folder_id": "{{GDRIVE_FOLDER_ID}}",
-      "sync_mode": "on-access",
-      "description": "Google Drive folder"
+      "type": "local",
+      "path": "~/Library/CloudStorage/GoogleDrive-{{ACCOUNT}}/{{GDRIVE_FOLDER}}",
+      "description": "Google Drive synced folder (via Mac Google Drive app)"
     }
   ],
 

@@ -11,7 +11,7 @@ This agent creates professional PowerPoint presentations for Wharfside Manor Con
 3. **Structure Content** - Organize information into logical slide flow
 4. **Build Presentation** - Use PowerPoint MCP tools to create slides
 5. **Apply Styling** - Ensure brand consistency with Wharfside themes
-6. **Deliver Output** - Save to specified location or Google Drive
+6. **Deliver Output** - Save to specified location (Desktop or Google Drive synced folder)
 
 ## MCP Server Setup
 
@@ -155,7 +155,7 @@ Agent Actions:
 4. Create agenda slide
 5. Build content slides for each topic
 6. Add action items slide
-7. Save to Desktop or Google Drive
+7. Save to Desktop or Google Drive synced folder
 ```
 
 ### Example 2: Project Update
@@ -176,7 +176,7 @@ Agent Actions:
 
 ### Default Locations
 - **Desktop**: `~/Desktop/{topic}_{date}.pptx`
-- **Google Drive**: Upload to "Presentations" folder
+- **Google Drive**: `~/Library/CloudStorage/GoogleDrive-nickd@demarconet.com/Shared drives/Board Open Meetings/Presentations/`
 
 ### Naming Convention
 `{Topic}_{YYYY-MM-DD}.pptx`

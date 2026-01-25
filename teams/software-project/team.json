@@ -119,7 +119,6 @@
 
   "mcp_servers": [
     "google-docs",
-    "gdrive",
     "gmail-personal",
     "github",
     "firebase",

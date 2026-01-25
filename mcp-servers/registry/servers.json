@@ -30,7 +30,9 @@
         "generated": ["credentials.json"]
       },
       "wrapper_pattern": "mcp-gdrive-{account}.sh",
-      "status": "active"
+      "status": "deprecated",
+      "deprecated_date": "2026-01-25",
+      "deprecated_reason": "Replaced by local file access via Mac Google Drive sync for reduced overhead and increased speed"
     },
     "google-docs": {
       "name": "Google Docs MCP Server",
@@ -79,7 +81,7 @@
         "PDF to Markdown transcription",
         "Scanned/image-based PDF support",
         "Intelligent caching with checksum validation",
-        "Google Drive integration (download + upload)",
+        "Local file system access",
         "Handwriting recognition",
         "Table extraction"
       ],

@@ -111,12 +111,22 @@ Look for information related to:
 The header uses a clean, professional masthead with the logo integrated:
 - **White background** - no dark banner
 - **Two-column table layout:**
-  - **Left column (200px):** Cropped logo at 180px width
-  - **Right column:** Title and tagline text, **right-aligned** (`text-align: right`)
-- **Title:** "Monthly Bulletin" in 28px Georgia, navy (#1a3a5c), right-aligned
-- **Subtitle:** Month/Year in gold (#c9a227), uppercase, letterspaced, right-aligned
-- **Location:** "Wharfside Manor • Monmouth Beach, NJ" in italic gray, right-aligned
+  - **Left column (200px):** Cropped logo at 180px width, vertically centered
+  - **Right column:** Title and tagline text, **RIGHT-ALIGNED** - this is critical!
+- **Title:** "Monthly Bulletin" in 28px Georgia, navy (#1a3a5c)
+- **Subtitle:** Month/Year in gold (#c9a227), uppercase, letterspaced
+- **Location:** "Wharfside Manor • Monmouth Beach, NJ" in italic gray
 - **Bottom border:** 3px solid navy (#1a3a5c) separating header from content
+
+**IMPORTANT - Right Column Styling:**
+The right column `<td>` MUST have `style="text-align: right;"` to right-justify all masthead text.
+```html
+<td valign="middle" style="text-align: right;">
+  <div class="masthead-title">Monthly Bulletin</div>
+  <div class="masthead-subtitle">February 2026</div>
+  <div class="masthead-location">Wharfside Manor • Monmouth Beach, NJ</div>
+</td>
+```
 
 ### Community Message (Opening)
 Always include:
@@ -290,7 +300,7 @@ The cropped logo is served from GitHub for reliable display across all email cli
     .masthead-location { font-size: 13px; color: #7f8c8d; margin: 4px 0 0 0; font-style: italic; }
 
     /* Content */
-    h2 { font-size: 18px; color: #1a3a5c; margin: 35px 0 15px 0; padding-bottom: 8px; border-bottom: 1px solid #ddd; font-weight: normal; }
+    h2 { font-size: 18px; color: #1a3a5c; margin: 20px 0 12px 0; padding-bottom: 6px; border-bottom: 1px solid #ddd; font-weight: normal; }
 
     /* Professional Contacts Box */
     .contacts-box { background: #fdf6e3; padding: 20px 24px; margin: 20px 0; border-radius: 8px; border-left: 4px solid #1a3a5c; }
@@ -303,7 +313,7 @@ The cropped logo is served from GitHub for reliable display across all email cli
     .highlight { background: #f8f9fa; padding: 18px 22px; margin: 18px 0; border-left: 3px solid #1a3a5c; }
     .maintenance-box { background: #f0f7f4; padding: 18px 22px; margin: 18px 0; border-left: 3px solid #1abc9c; }
     .pool-info { background: #f0faf8; padding: 20px 25px; margin: 20px 0; border-radius: 4px; text-align: center; }
-    .divider { text-align: center; margin: 40px 0; color: #c9a227; letter-spacing: 8px; }
+    .divider { text-align: center; margin: 25px 0; color: #c9a227; letter-spacing: 8px; }
     .new-badge { background: #1abc9c; color: white; font-size: 11px; padding: 2px 8px; border-radius: 3px; font-family: Arial, sans-serif; vertical-align: middle; margin-left: 8px; }
 
     /* Footer */

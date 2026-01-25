@@ -17,7 +17,7 @@
     ]
   },
 
-  "mcp_servers": ["google-docs", "gdrive", "gmail-personal"],
+  "mcp_servers": ["google-docs", "gmail-personal"],
 
   "context_buckets": {
     "assigned": [],

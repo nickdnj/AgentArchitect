@@ -25,7 +25,7 @@ This tool uses **Claude Sonnet 4** vision to transcribe scanned PDFs with high a
 - Sends images to Anthropic API for transcription
 - **Automatic caching** - stores transcriptions as `{filename}-transcribed.md` next to source
 - **Checksum validation** - re-transcribes only when source PDF changes
-- **Google Drive integration** - download PDFs and upload transcriptions
+- **Local file access** - works with local files including Google Drive synced folders
 - Handles handwritten annotations (enclosed in `{curly brackets}`)
 - Marks uncertain text appropriately
 - Converts tables to HTML table format
@@ -39,10 +39,10 @@ python pdfscribe_cli.py <pdf_file>
 # Output: <pdf_file>-transcribed.md (next to source)
 ```
 
-**Google Drive workflow (download → transcribe → upload):**
+**Google Drive synced folder:**
 ```bash
-python pdfscribe_cli.py --gdrive <FILE_ID>
-# Downloads PDF, transcribes, uploads MD next to source in Drive
+python pdfscribe_cli.py ~/Library/CloudStorage/GoogleDrive-nickd@demarconet.com/Shared\ drives/path/to/document.pdf
+# Transcribes and saves MD next to source (auto-syncs to cloud via Mac's Google Drive)
 ```
 
 **Force re-transcription (ignore cache):**
@@ -72,12 +72,7 @@ Requires `ANTHROPIC_API_KEY` environment variable set.
 
 **IMPORTANT:** Before any processing, always check if a cached transcription exists:
 
-For Google Drive files:
-```
-Search for: "{filename}-transcribed.md" in the same folder as the PDF
-```
-
-For local files:
+For local files (including Google Drive synced folders):
 ```
 Check if {filename}-transcribed.md exists next to the PDF
 ```
@@ -88,42 +83,39 @@ Check if {filename}-transcribed.md exists next to the PDF
 
 ### Step 2: Receive Request
 Accept PDF source in one of these formats:
-- Google Drive file ID
+- Local file path (including Google Drive synced folders)
 - Gmail message ID + attachment ID
-- Local file path
 - URL to PDF
 
 ### Step 3: Acquire PDF
 Based on source type:
-- **Google Drive**: Use `--gdrive FILE_ID` flag (handles download + upload automatically)
+- **Local / Google Drive synced**: Use directly (files in `~/Library/CloudStorage/GoogleDrive-*/` are local)
 - **Email**: Use `download_attachment` to retrieve
-- **Local**: Use directly
 - **URL**: Fetch and save locally
 
 ### Step 4: Run pdfscribe_cli
 
-**Preferred method (Google Drive source):**
+**For local files (including Google Drive synced folders):**
 ```bash
 cd /Users/nickd/Workspaces/pdfscribe_cli
-python pdfscribe_cli.py --gdrive <FILE_ID>
-```
-This will:
-1. Download the PDF from Google Drive
-2. Check for existing cache (by checksum)
-3. Transcribe if needed (or use cache)
-4. Upload the transcription MD back to Google Drive
-
-**For local files:**
-```bash
 python pdfscribe_cli.py /path/to/document.pdf
 ```
+
+**For Google Drive synced folders:**
+```bash
+python pdfscribe_cli.py ~/Library/CloudStorage/GoogleDrive-nickd@demarconet.com/Shared\ drives/Governing\ Documents/document.pdf
+```
+This will:
+1. Check for existing cache (by checksum)
+2. Transcribe if needed (or use cache)
+3. Save transcription next to source (auto-syncs via Mac's Google Drive)
 
 ### Step 5: Deliver Output
 
 The CLI automatically:
 - Generates Markdown with metadata header
 - Saves next to source as `{filename}-transcribed.md`
-- Uploads to Google Drive (when using `--gdrive`)
+- Auto-syncs to cloud when saved in Google Drive synced folders
 
 **Cache metadata format:**
 ```markdown
@@ -146,14 +138,14 @@ GDrive-Source: 1PqgmBTnXkZfxOe-... (if from Drive)
 PDFScribe accepts requests in this format:
 
 ```
-Source: [gdrive|email|local|url]
-Location: [file ID / message ID + attachment ID / file path / URL]
+Source: [email|local|url]
+Location: [message ID + attachment ID / file path / URL]
 Output Path: [where to save the Markdown] (optional, auto-cached by default)
 Force: [true|false] (optional, force re-transcription)
 ```
 
 **Examples:**
-- `Source: gdrive, Location: 1xtoBO7vjnOfNoXmdDn7w3sg-Ds1zHmdt`
+- `Source: local, Location: ~/Library/CloudStorage/GoogleDrive-nickd@demarconet.com/Shared drives/Governing Documents/document.pdf`
 - `Source: email, Location: msg:19718946218f8c38, att:ANGjdJ-LRHEUkw...`
 - `Source: local, Location: /path/to/document.pdf`
 
@@ -170,7 +162,7 @@ Force: [true|false] (optional, force re-transcription)
 
 **Location:**
 - Default: Next to source file as `{filename}-transcribed.md`
-- Google Drive: Uploaded to same folder as source PDF
+- Google Drive synced folders: Saved locally, auto-syncs to cloud
 - Can be overridden with `-o` flag
 
 **Naming Convention:** `{original-filename}-transcribed.md`
@@ -195,10 +187,9 @@ PDFScribe uses intelligent caching to avoid redundant processing:
 ## Context Access
 
 PDFScribe has access to:
-- Google Drive (via `gdrive` MCP server) - download and upload
+- Local file system for reading/writing (including Google Drive synced folders at `~/Library/CloudStorage/GoogleDrive-*/`)
 - Gmail attachments (via `gmail` and `gmail-personal` MCP servers)
 - Chrome browser for PDF rendering (via `chrome` MCP server)
-- Local file system for reading/writing
 
 ## Collaboration
 
@@ -210,7 +201,7 @@ PDFScribe has access to:
 - **Proposal Review** - Calls PDFScribe for vendor proposal documents
 
 **Handoff format:**
-- Returns path to generated Markdown file (local and/or Google Drive)
+- Returns path to generated Markdown file
 - Includes brief summary of what was extracted
 - Notes any pages that need human review (low confidence)
 
@@ -218,7 +209,7 @@ PDFScribe has access to:
 ```
 PDFScribe completed transcription:
 - Output: Building 7 Crawl Space Inspection-transcribed.md
-- Google Drive: Uploaded next to source PDF
+- Location: ~/Library/CloudStorage/GoogleDrive-nickd@demarconet.com/Shared drives/Infrastructure/
 - Pages: 12
 - Type: Image-based (scanned document)
 - Cache: Created (checksum: 8bd4cce9e085...)
@@ -254,7 +245,7 @@ A successful PDFScribe extraction:
 - [ ] Images described with sufficient detail
 - [ ] Tables properly converted
 - [ ] Cache created/updated with metadata
-- [ ] Uploaded to Google Drive (if source was from Drive)
+- [ ] Saved next to source file (auto-syncs if in Google Drive folder)
 - [ ] Requesting agent can use output directly
 
 ## Error Handling
@@ -272,14 +263,15 @@ A successful PDFScribe extraction:
 - Automatic retry with exponential backoff
 - Up to 5 attempts per page
 
-**Google Drive permission errors:**
-- Check credentials have write access
-- Run `setup_gdrive_auth.py` to re-authenticate if needed
+**Google Drive sync issues:**
+- Verify Mac's Google Drive app is running and syncing
+- Check that the target folder exists in `~/Library/CloudStorage/GoogleDrive-*/`
+- Ensure file permissions allow writing
 
 ## Tips for Best Results
 
 1. **Always check cache first** - Search for existing `-transcribed.md` files before processing
-2. **Use `--gdrive` flag** - Handles the full workflow automatically
+2. **Use full paths for Google Drive folders** - e.g., `~/Library/CloudStorage/GoogleDrive-nickd@demarconet.com/Shared drives/...`
 3. **Batch processing** - Process multiple PDFs in sequence to build up cache
 4. **For inspection reports:** Transcriptions capture photo descriptions well
 5. **For tables:** Converted to HTML format - verify complex tables manually

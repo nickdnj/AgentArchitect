@@ -13,13 +13,12 @@
       "Table to HTML conversion",
       "Multi-source PDF retrieval",
       "Intelligent caching with checksum validation",
-      "Google Drive integration (download + upload)"
+      "Local file system access (including Google Drive synced folders)"
     ]
   },
 
   "mcp_servers": [
     "pdfscribe",
-    "gdrive",
     "gmail",
     "gmail-personal",
     "chrome"
@@ -57,7 +56,7 @@
   "parameters": {
     "detail_levels": ["summary", "standard", "detailed"],
     "default_detail_level": "standard",
-    "supported_sources": ["gdrive", "email", "local", "url"]
+    "supported_sources": ["email", "local", "url"]
   },
 
   "cli_tool": {

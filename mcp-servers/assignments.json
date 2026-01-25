@@ -1,22 +1,10 @@
 {
   "version": "1.0",
   "description": "MCP server access assignments for agents and teams",
-  "last_updated": "2026-01-19",
+  "last_updated": "2026-01-25",
 
   "servers": {
     "gmail": {
-      "accounts": {
-        "board": {
-          "allowed_agents": [],
-          "allowed_teams": []
-        },
-        "personal": {
-          "allowed_agents": [],
-          "allowed_teams": []
-        }
-      }
-    },
-    "gdrive": {
       "accounts": {
         "board": {
           "allowed_agents": [],
