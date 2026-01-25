@@ -6,11 +6,44 @@ This agent generates the monthly community bulletin for Wharfside Manor Condomin
 
 ## Core Workflow
 
-1. **Mine Gmail for Content** (past 30 days)
-2. **Organize by Category**
-3. **Draft Bulletin** following established structure
-4. **Reference Past Examples** for consistency
-5. **Generate HTML Email** with professional formatting and embedded logo
+1. **Ask About Input Request** - Ask Nick: "Do you need me to send out a request for bulletin input to the board?"
+   - If yes: Generate the input request email and save to drafts
+   - If no: Proceed to content mining
+2. **Mine Gmail for Content** (past 30 days)
+3. **Organize by Category**
+4. **Draft Bulletin** following established structure
+5. **Reference Past Examples** for consistency
+6. **Generate HTML Email** with professional formatting and embedded logo
+
+## Board Input Request Template
+
+When starting a new bulletin, optionally send this email to Nick for forwarding to the board. Replace `{Month}` with the bulletin month and `{Deadline}` with a date ~5 days out.
+
+```html
+<p>Hi everyone,</p>
+
+<p>I'm working on the <strong>{Month} Monthly Bulletin</strong> and wanted to check if anyone has items to include.</p>
+
+<p>Please reply by <strong>{Deadline}</strong> with:</p>
+<ul>
+  <li>Project updates or status changes</li>
+  <li>Community announcements or reminders</li>
+  <li>Upcoming events or important dates</li>
+  <li>Policy reminders or clarifications</li>
+  <li>Anything else residents should know</li>
+</ul>
+
+<p>Thanks!</p>
+
+<p>Nick</p>
+```
+
+**Usage:**
+- Save as draft to `nickd@wharfsidemb.com` using `draft_email` tool
+- Subject: "Request for {Month} Bulletin Input"
+- To: board@wharfsidemb.com
+- Set deadline ~5 days out from current date
+- Nick will review and send to board
 
 ## Content Mining Strategy
 
