@@ -135,19 +135,46 @@ Always include:
 
 ### Know Who to Call (Contacts Box)
 Use a visually distinct, professional contact card layout:
-- **Container:** Rounded box with light warm background (#fdf6e3), subtle navy left border (4px solid #1a3a5c)
-- **Title:** "📞 Important Contacts" centered, bold navy, with subtle bottom border
-- **Grid layout:** 2 columns, 2 rows with clear visual separation
-- **Each contact card:**
-  - Subtle background (#fff) with rounded corners
-  - Emoji + label on top line (uppercase, small, gray)
+- **Container:** Rounded box with light warm background (#fdf6e3)
+- **Title:** "Know Who to Call" - bold navy, no emoji
+- **Grid layout:** 2 columns, 2 rows
+- **Each contact:**
+  - Label on top (uppercase, small, gray)
   - Phone number below (larger, bold, navy)
-  - Consistent padding and spacing
 - **Contacts to include:**
-  - 🚨 Emergency: 9-1-1
-  - 🏢 Property Management (ECI): 732-970-6886
-  - 🔧 Heating & Plumbing Urgent: 732-422-2424
-  - 📋 Non-Emergency Maintenance: ECI Work Order System
+  - Emergency: 9-1-1
+  - Property Management (ECI): 732-970-6886
+  - Heating & Plumbing Urgent: 732-422-2424
+  - Non-Emergency Maintenance: ECI Work Order System
+
+**Template:**
+```html
+<div class="contacts-box">
+  <p style="margin: 0 0 10px 0; font-weight: bold; color: #1a3a5c; font-size: 15px;">Know Who to Call</p>
+  <table class="contacts-grid">
+    <tr>
+      <td>
+        <p class="contact-label">Emergency</p>
+        <p class="contact-number">9-1-1</p>
+      </td>
+      <td>
+        <p class="contact-label">Property Management (ECI)</p>
+        <p class="contact-number">732-970-6886</p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <p class="contact-label">Heating & Plumbing Urgent</p>
+        <p class="contact-number">732-422-2424</p>
+      </td>
+      <td>
+        <p class="contact-label">Non-Emergency Maintenance</p>
+        <p class="contact-number">ECI Work Order System</p>
+      </td>
+    </tr>
+  </table>
+</div>
+```
 
 ### Content Sections
 Organize mined content into logical sections with emoji headers:
@@ -205,6 +232,77 @@ Study the example bulletins in the `examples/` folder to understand:
 - Appropriate closing messages for different times of year
 
 The examples represent the target quality and style - use them as your guide for structure, tone, and content decisions.
+
+## Pool Season Section
+
+The Pool Season section appears in every bulletin. Use the Archivist agent to verify dates from the pool contract if needed.
+
+**2026 Pool Schedule:**
+- **Opens:** May 23 (Saturday before Memorial Day)
+- **Closes:** September 8 (day after Labor Day)
+- **Hours:** 10:00 AM – 7:00 PM daily
+- **Weekends only:** May 23 – June 19 (until Monmouth Beach school ends)
+- **Open daily:** June 20 – September 8
+
+**Important:** Do NOT include "Lifeguard on duty weekends & holidays" - this is internal operational info.
+
+**Template:**
+```html
+<div class="pool-info">
+  <p style="margin: 0; font-size: 15px; color: #1a3a5c;"><strong>Mark Your Calendars!</strong></p>
+  <p style="margin: 8px 0 4px 0; font-size: 17px;"><strong>Opens:</strong> May 23 &nbsp;&nbsp;|&nbsp;&nbsp; <strong>Closes:</strong> September 8</p>
+  <p style="margin: 0; color: #7f8c8d;"><strong>Daily Hours:</strong> 10:00 AM – 7:00 PM</p>
+  <p style="margin: 8px 0 0 0; font-size: 13px; color: #1a3a5c;"><strong>Weekends only:</strong> May 23 – June 19<br><strong>Open daily:</strong> June 20 – September 8</p>
+</div>
+```
+
+## Board of Trustees Section
+
+Include a "Your Board of Trustees" section with current officers and trustees:
+
+**Current Board (as of January 2026):**
+- President: Giuseppe Gencarelli
+- Vice President: Thomas Bopp
+- Secretary: Nick DeMarco
+- Treasurer: Taryn Frost
+- Trustees: Roberta Attanasi, Anthony D'Anna, Timmy Mucaj, Gary Passenti, Mike Serhat
+
+**Template:**
+```html
+<h2>Your Board of Trustees</h2>
+<table class="board-grid">
+  <tr>
+    <td width="50%">
+      <span class="board-role">President</span><br>
+      <span class="board-name">Giuseppe Gencarelli</span>
+    </td>
+    <td width="50%">
+      <span class="board-role">Vice President</span><br>
+      <span class="board-name">Thomas Bopp</span>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <span class="board-role">Secretary</span><br>
+      <span class="board-name">Nick DeMarco</span>
+    </td>
+    <td>
+      <span class="board-role">Treasurer</span><br>
+      <span class="board-name">Taryn Frost</span>
+    </td>
+  </tr>
+</table>
+<p style="margin-top: 10px;"><strong>Trustees:</strong> Roberta Attanasi, Anthony D'Anna, Timmy Mucaj, Gary Passenti, Mike Serhat</p>
+```
+
+## February Dates Section
+
+For February bulletins, include a "February Dates to Remember" section:
+- National Freedom Day (Feb 1)
+- Groundhog Day (Feb 2)
+- Super Bowl Sunday & Board Meeting date
+- Valentine's Day (Feb 14)
+- Presidents Day / Lunar New Year / Mardi Gras (typically mid-Feb)
 
 ## Special Considerations
 
@@ -291,34 +389,46 @@ The cropped logo is served from GitHub for reliable display across all email cli
 <head>
   <meta charset="utf-8">
   <style>
-    body { font-family: 'Georgia', serif; max-width: 680px; margin: 0 auto; padding: 20px; color: #2c3e50; line-height: 1.8; background: white; }
+    body { font-family: 'Georgia', serif; max-width: 680px; margin: 0 auto; padding: 20px; color: #2c3e50; line-height: 1.7; background: white; }
 
-    /* Clean Masthead - Logo left, Title right-aligned */
-    .masthead { padding: 20px 0 25px 0; margin-bottom: 30px; border-bottom: 3px solid #1a3a5c; }
+    /* Clean Masthead - Logo left, Title RIGHT-ALIGNED */
+    .masthead { padding: 15px 0 20px 0; margin-bottom: 25px; border-bottom: 3px solid #1a3a5c; }
     .masthead-title { font-size: 28px; color: #1a3a5c; margin: 0; font-weight: normal; letter-spacing: 1px; }
     .masthead-subtitle { font-size: 13px; color: #c9a227; margin: 6px 0 0 0; letter-spacing: 2px; text-transform: uppercase; font-family: Arial, sans-serif; font-weight: bold; }
     .masthead-location { font-size: 13px; color: #7f8c8d; margin: 4px 0 0 0; font-style: italic; }
 
-    /* Content */
+    /* Content - compact spacing */
     h2 { font-size: 18px; color: #1a3a5c; margin: 20px 0 12px 0; padding-bottom: 6px; border-bottom: 1px solid #ddd; font-weight: normal; }
+    p { margin: 0 0 12px 0; }
 
-    /* Professional Contacts Box */
-    .contacts-box { background: #fdf6e3; padding: 20px 24px; margin: 20px 0; border-radius: 8px; border-left: 4px solid #1a3a5c; }
-    .contacts-title { text-align: center; font-weight: bold; color: #1a3a5c; margin: 0 0 16px 0; padding-bottom: 12px; border-bottom: 1px solid #e8dcc8; font-size: 15px; }
-    .contacts-grid { width: 100%; border-collapse: separate; border-spacing: 8px; }
-    .contacts-grid td { padding: 12px 14px; vertical-align: top; width: 50%; background: #fff; border-radius: 6px; }
-    .contact-label { font-size: 11px; color: #7f8c8d; text-transform: uppercase; letter-spacing: 0.5px; margin: 0; }
-    .contact-number { font-size: 16px; font-weight: bold; color: #1a3a5c; margin: 4px 0 0 0; }
+    /* Contacts Box */
+    .contacts-box { background: #fdf6e3; padding: 16px 18px; margin: 18px 0; border-radius: 6px; }
+    .contacts-grid { width: 100%; border-collapse: collapse; }
+    .contacts-grid td { padding: 6px 10px; vertical-align: top; width: 50%; }
+    .contact-label { font-size: 12px; color: #7f8c8d; text-transform: uppercase; letter-spacing: 0.5px; margin: 0; }
+    .contact-number { font-size: 15px; font-weight: bold; color: #1a3a5c; margin: 2px 0 0 0; }
 
-    .highlight { background: #f8f9fa; padding: 18px 22px; margin: 18px 0; border-left: 3px solid #1a3a5c; }
-    .maintenance-box { background: #f0f7f4; padding: 18px 22px; margin: 18px 0; border-left: 3px solid #1abc9c; }
-    .pool-info { background: #f0faf8; padding: 20px 25px; margin: 20px 0; border-radius: 4px; text-align: center; }
+    /* Content Boxes */
+    .highlight { background: #f8f9fa; padding: 14px 18px; margin: 14px 0; border-left: 3px solid #1a3a5c; }
+    .maintenance-box { background: #f0f7f4; padding: 14px 18px; margin: 14px 0; border-left: 3px solid #1abc9c; }
+    .alert-box { background: #fff5f5; padding: 14px 18px; margin: 14px 0; border-left: 3px solid #c53030; }
+    .info-box { background: #f0f4f8; padding: 14px 18px; margin: 14px 0; border-left: 3px solid #3182ce; }
+    .success-box { background: #f0fff4; padding: 14px 18px; margin: 14px 0; border-left: 3px solid #38a169; }
+    .pool-info { background: #e8f4f8; padding: 16px 20px; margin: 16px 0; border-radius: 6px; text-align: center; }
     .divider { text-align: center; margin: 25px 0; color: #c9a227; letter-spacing: 8px; }
     .new-badge { background: #1abc9c; color: white; font-size: 11px; padding: 2px 8px; border-radius: 3px; font-family: Arial, sans-serif; vertical-align: middle; margin-left: 8px; }
 
+    /* Board Members Grid */
+    .board-grid { width: 100%; border-collapse: collapse; margin: 12px 0; }
+    .board-grid td { padding: 4px 8px; vertical-align: top; }
+    .board-role { font-size: 12px; color: #7f8c8d; text-transform: uppercase; }
+    .board-name { font-weight: bold; color: #1a3a5c; }
+
     /* Footer */
-    .footer { text-align: center; margin-top: 50px; padding-top: 30px; border-top: 3px solid #1a3a5c; }
+    .footer { text-align: center; margin-top: 35px; padding-top: 25px; border-top: 3px solid #1a3a5c; }
     strong { color: #1a3a5c; }
+    ul { margin: 8px 0; padding-left: 20px; }
+    li { margin-bottom: 6px; }
   </style>
 </head>
 <body>
@@ -331,45 +441,39 @@ The cropped logo is served from GitHub for reliable display across all email cli
         <td valign="middle" style="text-align: right;">
           <div class="masthead-title">Monthly Bulletin</div>
           <div class="masthead-subtitle">{month} {year}</div>
-          <div class="masthead-location">Wharfside Manor • Monmouth Beach, NJ</div>
+          <div class="masthead-location">Wharfside Manor &bull; Monmouth Beach, NJ</div>
         </td>
       </tr>
     </table>
   </div>
+
+  <!-- Opening -->
+  <p>Dear Neighbors,</p>
+  <p>{seasonal greeting and context}</p>
 
   <!-- Contacts Box -->
   <div class="contacts-box">
-    <p class="contacts-title">📞 Important Contacts</p>
+    <p style="margin: 0 0 10px 0; font-weight: bold; color: #1a3a5c; font-size: 15px;">Know Who to Call</p>
     <table class="contacts-grid">
       <tr>
-        <td>
-          <p class="contact-label">🚨 Emergency</p>
-          <p class="contact-number">9-1-1</p>
-        </td>
-        <td>
-          <p class="contact-label">🏢 Property Management (ECI)</p>
-          <p class="contact-number">732-970-6886</p>
-        </td>
+        <td><p class="contact-label">Emergency</p><p class="contact-number">9-1-1</p></td>
+        <td><p class="contact-label">Property Management (ECI)</p><p class="contact-number">732-970-6886</p></td>
       </tr>
       <tr>
-        <td>
-          <p class="contact-label">🔧 Heating & Plumbing Urgent</p>
-          <p class="contact-number">732-422-2424</p>
-        </td>
-        <td>
-          <p class="contact-label">📋 Non-Emergency Maintenance</p>
-          <p class="contact-number">ECI Work Order System</p>
-        </td>
+        <td><p class="contact-label">Heating & Plumbing Urgent</p><p class="contact-number">732-422-2424</p></td>
+        <td><p class="contact-label">Non-Emergency Maintenance</p><p class="contact-number">ECI Work Order System</p></td>
       </tr>
     </table>
   </div>
 
-  <!-- Content sections with anchor (⚓) dividers -->
+  <p class="divider">&bull; &bull; &bull;</p>
+
+  <!-- Content sections here -->
 
   <div class="footer">
-    <p><strong>Warmly,</strong></p>
-    <p><strong>Wharfside Manor Board of Trustees</strong></p>
-    <p>Wharfside Manor Condominium Association, Inc. • Monmouth Beach, NJ</p>
+    <p style="margin: 0;"><strong>Warmly,</strong></p>
+    <p style="margin: 5px 0;"><strong>Wharfside Manor Board of Trustees</strong></p>
+    <p style="font-size: 13px; color: #7f8c8d; margin: 8px 0 0 0;">Wharfside Manor Condominium Association, Inc. &bull; Monmouth Beach, NJ</p>
   </div>
 </body>
 </html>
