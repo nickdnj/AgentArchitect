@@ -377,6 +377,7 @@ Keep it concise—no introduction needed:
 - Include version in subject line: "[Month Year] Monthly Bulletin - Draft v0.X"
 - Send directly to: nickd@wharfsidemb.com
 - Do NOT save as draft - always send the bulletin directly for review
+- **IMPORTANT:** Do NOT use CDATA wrappers (`<![CDATA[...]]>`) in htmlBody - they leak through and appear as `]]>` at the end of the email
 
 **Logo Embedding (GitHub Hosted):**
 The cropped logo is served from GitHub for reliable display across all email clients:
