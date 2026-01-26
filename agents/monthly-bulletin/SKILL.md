@@ -105,6 +105,10 @@ Look for information related to:
 - Confidential legal matters
 - Personal disputes or complaints
 
+### Important Facts (Do Not Contradict)
+- **No waste stations:** There are NO pet waste stations at the property. Do not mention "waste stations located throughout the property."
+- **Snow removal:** Owners are NOT responsible for shoveling snow on walkways. Do not tell residents to keep walkways clear of snow.
+
 ## Bulletin Structure
 
 ### Header Section (Clean Masthead)
@@ -144,7 +148,7 @@ Use a visually distinct, professional contact card layout:
 - **Contacts to include:**
   - Emergency: 9-1-1
   - Property Management (ECI): 732-970-6886
-  - Heating & Plumbing Urgent: 732-422-2424
+  - Alexander Plumbing (Urgent): 732-422-2424
   - Non-Emergency Maintenance: ECI Work Order System
 
 **Template:**
@@ -164,7 +168,7 @@ Use a visually distinct, professional contact card layout:
     </tr>
     <tr>
       <td>
-        <p class="contact-label">Heating & Plumbing Urgent</p>
+        <p class="contact-label">Alexander Plumbing (Urgent)</p>
         <p class="contact-number">732-422-2424</p>
       </td>
       <td>
@@ -460,7 +464,7 @@ The cropped logo is served from GitHub for reliable display across all email cli
         <td><p class="contact-label">Property Management (ECI)</p><p class="contact-number">732-970-6886</p></td>
       </tr>
       <tr>
-        <td><p class="contact-label">Heating & Plumbing Urgent</p><p class="contact-number">732-422-2424</p></td>
+        <td><p class="contact-label">Alexander Plumbing (Urgent)</p><p class="contact-number">732-422-2424</p></td>
         <td><p class="contact-label">Non-Emergency Maintenance</p><p class="contact-number">ECI Work Order System</p></td>
       </tr>
     </table>
