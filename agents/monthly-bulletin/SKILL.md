@@ -517,4 +517,107 @@ The cropped logo is served from GitHub for reliable display across all email cli
 - Published for review: same version, status change in subject
 - Final release: v1.0
 
+## Final Delivery: PDF for Distribution
+
+When the bulletin is approved and ready for ECI to distribute, generate a print-optimized PDF attachment. This preserves formatting and allows ECI to attach directly to their email blast.
+
+### Step 1: Create Print-Optimized HTML
+
+Save a print version of the bulletin with these CSS additions for proper pagination:
+
+```html
+<style>
+  @page {
+    size: letter;
+    margin: 0.75in 0.75in 0.75in 0.75in;
+  }
+
+  body {
+    font-family: 'Georgia', serif;
+    max-width: 7in;
+    margin: 0 auto;
+    padding: 0;
+    color: #2c3e50;
+    line-height: 1.6;
+    background: white;
+    font-size: 11pt;
+  }
+
+  /* Headings - prevent orphaned headers */
+  h2 {
+    font-size: 14pt;
+    page-break-after: avoid;
+  }
+
+  /* Content boxes - keep together */
+  .contacts-box, .highlight, .maintenance-box, .info-box,
+  .success-box, .pool-info, .section {
+    page-break-inside: avoid;
+  }
+
+  /* Print color support */
+  @media print {
+    body {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+  }
+</style>
+```
+
+**Key print optimizations:**
+- `@page` rule sets letter size with 0.75" margins
+- `page-break-inside: avoid` keeps boxes/sections together
+- `page-break-after: avoid` on h2 prevents orphaned headers
+- Font sizes adjusted for print (11pt body, 14pt headings)
+- Wrap each logical section in `<div class="section">` for grouping
+
+### Step 2: Generate PDF with Chrome Headless
+
+Use Chrome's headless mode to generate a clean PDF without browser headers/footers:
+
+```bash
+/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome \
+  --headless \
+  --disable-gpu \
+  --no-pdf-header-footer \
+  --print-to-pdf="path/to/bulletin-v0.X.pdf" \
+  "file:///path/to/bulletin-v0.X-print.html"
+```
+
+**Important flags:**
+- `--headless`: Run without UI
+- `--no-pdf-header-footer`: Suppresses file path and date in footer
+- `--print-to-pdf`: Output path for the PDF
+
+### Step 3: Send PDF as Email Attachment
+
+Send the PDF to Nick for forwarding to ECI:
+
+```
+mcp__gmail__send_email(
+  to: ["nickd@wharfsidemb.com"],
+  subject: "[Month Year] Monthly Bulletin - Final (PDF for Distribution)",
+  body: "Attached is the final [Month] bulletin PDF for ECI distribution.",
+  attachments: ["/path/to/bulletin-v0.X.pdf"]
+)
+```
+
+### File Naming Convention
+
+Save all bulletin files to the outputs folder:
+- `teams/wharfside-board-assistant/outputs/[month]-[year]-bulletin-v0.X.html` (email version)
+- `teams/wharfside-board-assistant/outputs/[month]-[year]-bulletin-v0.X-print.html` (print version)
+- `teams/wharfside-board-assistant/outputs/[month]-[year]-bulletin-v0.X.pdf` (final PDF)
+
+Example: `february-2026-bulletin-v0.13.pdf`
+
+### Delivery Options Summary
+
+| Format | Use Case | How to Send |
+|--------|----------|-------------|
+| HTML Email | Draft review with Nick | `send_email` with `mimeType: "text/html"` |
+| HTML File | ECI needs to embed in their system | Send as attachment |
+| PDF | ECI attaches to their email blast | Send as attachment (preferred for final) |
+
 The goal is to produce a bulletin that is informative, well-organized, and maintains the welcoming community tone that residents have come to expect.
