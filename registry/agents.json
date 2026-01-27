@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "last_updated": "2026-01-21",
+  "last_updated": "2026-01-27",
   "agents": [
     {
       "id": "monthly-bulletin",
@@ -118,7 +118,7 @@
       "id": "pdf-scribe",
       "name": "PDFScribe",
       "folder": "agents/pdf-scribe",
-      "teams": [],
+      "teams": ["wharfside-board-assistant"],
       "created": "2026-01-20",
       "status": "active"
     },

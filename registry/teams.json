@@ -1,12 +1,12 @@
 {
   "version": "1.0",
-  "last_updated": "2026-01-20",
+  "last_updated": "2026-01-27",
   "teams": [
     {
       "id": "wharfside-board-assistant",
       "name": "Wharfside Board Assistant Team",
       "folder": "teams/wharfside-board-assistant",
-      "member_count": 5,
+      "member_count": 6,
       "created": "2026-01-19",
       "status": "active"
     },

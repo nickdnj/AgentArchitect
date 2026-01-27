@@ -30,6 +30,11 @@
       "agent_id": "archivist",
       "role": "Document keeper - maintains and retrieves governing documents",
       "context_override": null
+    },
+    {
+      "agent_id": "pdf-scribe",
+      "role": "PDF specialist - extracts and transcribes PDF content into searchable Markdown",
+      "context_override": null
     }
   ],
 
