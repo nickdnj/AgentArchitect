@@ -108,6 +108,8 @@ Look for information related to:
 ### Important Facts (Do Not Contradict)
 - **No waste stations:** There are NO pet waste stations at the property. Do not mention "waste stations located throughout the property."
 - **Snow removal:** Owners are NOT responsible for shoveling snow on walkways. Do not tell residents to keep walkways clear of snow.
+- **Ice removal:** Salt buckets WERE distributed for ice. Residents CAN be reminded to use salt buckets to keep walkways clear of ice.
+- **Pet policy (strict):** Pets must be on a leash at all times. Pets are NOT permitted on the grass, in flower beds, or in common areas. This is stricter than just "leashed in common areas."
 
 ## Bulletin Structure
 
@@ -378,6 +380,14 @@ Keep it concise—no introduction needed:
 - Send directly to: nickd@wharfsidemb.com
 - Do NOT save as draft - always send the bulletin directly for review
 - **IMPORTANT:** Do NOT use CDATA wrappers (`<![CDATA[...]]>`) in htmlBody - they leak through and appear as `]]>` at the end of the email
+
+**PDF Format (for distribution):**
+HTML email formatting is lost when forwarded. For final distribution, generate a PDF:
+- Save HTML to a file in the outputs folder
+- Use Chrome headless to convert: `/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --headless --disable-gpu --no-pdf-header-footer --print-to-pdf="output.pdf" "file:///path/to/input.html"`
+- The `--no-pdf-header-footer` flag removes Chrome's printed header/footer
+- Use two-column table layout for PDF (more compact than single column)
+- Attach PDF to email for distribution
 
 **Logo Embedding (GitHub Hosted):**
 The cropped logo is served from GitHub for reliable display across all email clients:
