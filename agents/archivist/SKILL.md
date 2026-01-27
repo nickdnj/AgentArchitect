@@ -171,6 +171,79 @@ Use these tools for document access:
 - **Read**: Read document contents
 - **Bash ls**: List folder contents when needed
 
+### PDF Scribe MCP (For scanned PDFs)
+Use PDF Scribe to transcribe scanned/image-based PDFs into searchable Markdown:
+
+- **mcp__pdfscribe__transcribe_pdf**: Transcribe a PDF to Markdown using Claude vision
+- **mcp__pdfscribe__split_pdf**: Split large PDFs into smaller chunks before transcription
+- **mcp__pdfscribe__list_transcriptions**: List previously transcribed documents
+
+#### Alternative: pdfscribe CLI
+If the MCP server has path access issues, use the CLI directly:
+```bash
+source ~/.zshrc  # Loads ANTHROPIC_API_KEY
+cd /Users/nickd/Workspaces/pdfscribe_cli
+python pdfscribe_cli.py "/path/to/file.pdf" -o "/path/to/output.md" -b "backstory"
+```
+**Note:** The Anthropic API key is stored in `~/.zshrc` as `ANTHROPIC_API_KEY`.
+
+#### PDF Transcription Workflow
+
+When encountering a scanned PDF that cannot be searched with Grep:
+
+1. **Check for existing transcription** - Look for a `.md` file with the same name next to the PDF
+   - Verify the `.md` file is larger than 1KB (failed transcriptions leave empty/tiny files)
+   - The tool also creates a `-transcribed.md` cache file - this is normal
+2. **Check PDF size** - Use `Bash` to check page count: `pdfinfo "/path/to/file.pdf" | grep Pages`
+3. **For PDFs under 50 pages**, transcribe directly:
+   ```
+   mcp__pdfscribe__transcribe_pdf(
+     pdf_path="/path/to/document.pdf",
+     output_path="/path/to/document.md",
+     backstory="Wharfside Manor Condominium Association document"
+   )
+   ```
+4. **For PDFs 50+ pages**, MUST split first to avoid "Prompt is too long" errors:
+   ```
+   mcp__pdfscribe__split_pdf(
+     pdf_path="/path/to/large-document.pdf",
+     output_dir="/path/to/chunks/",
+     pages_per_chunk=50
+   )
+   ```
+   Then transcribe each chunk and optionally combine the results.
+5. **Output location** - Always save the `.md` file in the same directory as the original PDF with the same base filename
+
+#### Size Limits (IMPORTANT)
+
+- **Under 50 pages**: Direct transcription works reliably
+- **50-100 pages**: May work, but splitting recommended
+- **Over 100 pages**: MUST split first - direct transcription WILL fail
+- **400+ pages**: Split into 50-page chunks, transcribe separately
+
+#### When to Transcribe
+
+- User explicitly requests PDF transcription
+- Grep search returns no results on a PDF that should have relevant content
+- Bulk transcription of a folder requested
+- Document needed for text search but is image-only
+
+#### Batch Transcription
+
+When asked to transcribe all PDFs in a folder:
+1. Use Glob to find all `*.pdf` files in the target folder
+2. Check which already have corresponding `.md` files **larger than 1KB**
+3. Sort by file size - process smaller PDFs first for quick wins
+4. For large PDFs (50+ pages), split before transcribing
+5. Transcribe only those without existing valid transcriptions
+6. Report progress and results
+
+#### Output Files
+
+PDF Scribe creates two files per transcription:
+- `document.md` - Clean markdown output (use this one)
+- `document-transcribed.md` - Internal cache file (can be ignored)
+
 ### Google Docs MCP (For document creation)
 - Create formatted documents
 - Read Google Docs content
@@ -382,3 +455,5 @@ The Archivist is working correctly when:
 - Maintains clear organization of document knowledge
 - Provides appropriate level of detail for the request
 - Identifies when information may be incomplete or outdated
+- Transcribes scanned PDFs accurately and saves markdown next to originals
+- Makes previously unsearchable documents searchable via transcription

@@ -62,7 +62,14 @@ python pdf2website.py <pdf_or_directory> -o <output_dir> -t "Site Title" -b "bac
 
 ### Environment Requirements
 
-Requires `ANTHROPIC_API_KEY` environment variable set.
+Requires `ANTHROPIC_API_KEY` environment variable. This key is stored in `~/.zshrc`.
+
+**To access the API key when running CLI commands:**
+```bash
+source ~/.zshrc  # Loads ANTHROPIC_API_KEY into the current shell
+```
+
+Then run the pdfscribe CLI as normal.
 
 ---
 

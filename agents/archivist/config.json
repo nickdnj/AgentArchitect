@@ -5,11 +5,11 @@
   "version": "1.0",
 
   "expertise": {
-    "domains": ["document management", "information retrieval", "policy research", "web portal integration"],
-    "capabilities": ["document search", "context provision", "policy lookup", "historical research", "portal document sync"]
+    "domains": ["document management", "information retrieval", "policy research", "web portal integration", "PDF transcription"],
+    "capabilities": ["document search", "context provision", "policy lookup", "historical research", "portal document sync", "scanned PDF transcription", "batch PDF processing"]
   },
 
-  "mcp_servers": ["google-docs", "chrome"],
+  "mcp_servers": ["google-docs", "chrome", "pdfscribe"],
 
   "context_buckets": {
     "assigned": ["wharfside-docs"],
@@ -18,7 +18,7 @@
 
   "output": {
     "folder": "outputs/",
-    "formats": ["markdown", "summary", "html-email"],
+    "formats": ["markdown", "summary", "html-email", "pdf-transcription"],
     "email_iteration": {
       "enabled": true,
       "template": "wharfside-report",

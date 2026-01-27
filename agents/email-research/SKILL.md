@@ -237,27 +237,46 @@ User must explicitly request transcription:
 
 #### Transcription Workflow (When Requested)
 
-1. **Download and transcribe to working file:**
+**IMPORTANT:** Delegate PDF transcription to the PDFScribe agent rather than calling the MCP directly. This keeps the full transcription content out of Email Research's context.
+
+1. **Download the attachment:**
    ```
-   # Download the attachment
    mcp__gmail__download_attachment(messageId, attachmentId, savePath="/tmp/pdfscribe")
-
-   # Transcribe using PDFScribe
-   mcp__pdfscribe__transcribe_pdf(pdf_path="/tmp/pdfscribe/{filename}")
    ```
 
-2. **Write transcription to working file (NOT conversation):**
-   - Add PDF content to `## PDF Content` section of working file
+2. **Delegate to PDFScribe agent:**
+   Use the Task tool to spawn a PDFScribe agent:
+   ```
+   Task(
+     subagent_type="PDFScribe",
+     description="Transcribe PDF attachment",
+     prompt="Transcribe the PDF at /tmp/pdfscribe/{filename}. Save the output to the same location as {filename}.md. Return a summary of the key content (costs, dates, decisions) without the full transcription."
+   )
+   ```
+
+3. **Receive summary from PDFScribe:**
+   The agent returns only a summary (not full content), preserving Email Research's context budget.
+
+4. **Write summary to working file:**
+   - Add the PDFScribe summary to `## PDF Content` section of working file
+   - Note the full transcription path for reference
    - Include source email reference and date
 
-3. **Report summary in conversation:**
+5. **Report summary in conversation:**
    ```
    **PDF Transcription Complete**
    - Boiler_Proposal.pdf: 3 pages, proposal details and pricing
    - Inspection_Report.pdf: 5 pages, unit-by-unit findings
 
    Key figures extracted to working file.
+   Full transcriptions available at /tmp/pdfscribe/*.md
    ```
+
+**Why delegate instead of direct MCP call?**
+- Full PDF transcriptions can be very long (10+ pages of text)
+- Direct MCP calls load the entire transcription into this agent's context
+- Delegation keeps the transcription in PDFScribe's context; only the summary returns
+- Better context management for research sessions with many PDFs
 
 #### Common PDF Types
 - Vendor proposals and quotes
