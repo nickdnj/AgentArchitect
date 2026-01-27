@@ -27,3 +27,8 @@ npm-debug.log*
 # Context bucket content (backed up via Google Drive)
 context-buckets/*/files/
 !context-buckets/*/files/.gitkeep
+
+# Agent and team outputs (generated content)
+agents/*/reports/
+agents/*/outputs/
+teams/*/outputs/
