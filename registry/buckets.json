@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "last_updated": "2026-01-19",
+  "last_updated": "2026-01-27",
   "buckets": [
     {
       "id": "wharfside-docs",
@@ -9,6 +9,15 @@
       "content_type": "documents",
       "assigned_to": ["wharfside-board-assistant"],
       "created": "2026-01-19",
+      "status": "active"
+    },
+    {
+      "id": "altium-playbook",
+      "name": "Altium Sales Playbook",
+      "folder": "context-buckets/altium-playbook",
+      "content_type": "documents",
+      "assigned_to": ["altium-solutions"],
+      "created": "2026-01-27",
       "status": "active"
     }
   ]

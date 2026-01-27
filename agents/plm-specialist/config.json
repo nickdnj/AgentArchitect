@@ -1,0 +1,57 @@
+{
+  "id": "plm-specialist",
+  "name": "PLM Specialist",
+  "description": "PLM integration expert for Windchill, Teamcenter, Arena, and Oracle Agile, configuring data mapping, BOM publishing, lifecycle management, and ECO workflows",
+  "version": "1.0",
+
+  "expertise": {
+    "domains": [
+      "PLM integration",
+      "PTC Windchill",
+      "Siemens Teamcenter",
+      "Arena PLM",
+      "Oracle Agile",
+      "ECO workflow"
+    ],
+    "capabilities": [
+      "connector deployment",
+      "data mapping",
+      "BOM integration",
+      "lifecycle synchronization",
+      "change management integration"
+    ]
+  },
+
+  "mcp_servers": ["google-docs", "chrome"],
+
+  "tools": ["WebSearch", "WebFetch", "mcp__chrome__*", "mcp__google-docs-mcp__*"],
+
+  "context_buckets": {
+    "assigned": ["altium-playbook"],
+    "access_level": "read-only"
+  },
+
+  "output": {
+    "folder": "outputs/",
+    "formats": ["markdown", "google-doc"],
+    "naming": "plm-integration-{company}-{date}.md"
+  },
+
+  "collaboration": {
+    "can_request_from": ["deployment-manager"],
+    "coordinates_with": ["ecad-specialist"],
+    "provides_to": ["deployment-manager"],
+    "handoff_format": "plm-config"
+  },
+
+  "workflow_position": {
+    "stage": "deployment",
+    "domain": "plm-integration",
+    "order": 5
+  },
+
+  "trigger": {
+    "type": "on-demand",
+    "description": "PLM integration workstream activated"
+  }
+}

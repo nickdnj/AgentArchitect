@@ -1,0 +1,71 @@
+{
+  "id": "altium-playbook",
+  "name": "Altium Sales Playbook",
+  "description": "Shared knowledge base for Altium Solutions team including product information, ICP definition, competitor battle cards, case studies, common objections, and email templates",
+  "version": "1.0",
+  "created": "2026-01-27",
+  "updated": "2026-01-27",
+
+  "content_type": "documents",
+
+  "sources": [
+    {
+      "type": "local",
+      "path": "files/",
+      "format": "mixed",
+      "description": "Playbook documents, battle cards, and templates"
+    }
+  ],
+
+  "structure": {
+    "categories": [
+      {
+        "id": "product-info",
+        "name": "Product Information",
+        "description": "Altium Designer, Altium 365, Octopart features, pricing, licensing"
+      },
+      {
+        "id": "icp",
+        "name": "Ideal Customer Profile",
+        "description": "Target customer characteristics, firmographics, technographics"
+      },
+      {
+        "id": "competitors",
+        "name": "Competitor Intelligence",
+        "description": "Battle cards for Cadence, Mentor/Siemens, KiCad, etc."
+      },
+      {
+        "id": "case-studies",
+        "name": "Case Studies",
+        "description": "Customer success stories and reference accounts"
+      },
+      {
+        "id": "objections",
+        "name": "Objection Handling",
+        "description": "Common objections and proven responses"
+      },
+      {
+        "id": "templates",
+        "name": "Templates",
+        "description": "Email templates, talk tracks, proposal templates"
+      }
+    ]
+  },
+
+  "access_control": {
+    "default_level": "read-only",
+    "allowed_agents": [
+      "account-researcher",
+      "qualification-analyst",
+      "solution-architect",
+      "value-engineer",
+      "competitive-intel",
+      "proposal-writer",
+      "deal-strategist",
+      "customer-success"
+    ],
+    "allowed_teams": ["altium-solutions"]
+  },
+
+  "notes": "This bucket starts empty and will be populated as the user works at Altium. Content can be added via Google Drive, local files, or web research."
+}

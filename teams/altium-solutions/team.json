@@ -1,0 +1,218 @@
+{
+  "id": "altium-solutions",
+  "name": "Altium Solutions Team",
+  "description": "End-to-end customer lifecycle team for Altium sales and solutions, accelerating every phase: Lead → Qualification → Technical Sales → Business Sales → Deployment → Support → Expansion",
+  "version": "2.0",
+  "created": "2026-01-27",
+  "updated": "2026-01-27",
+
+  "members": [
+    {
+      "agent_id": "account-researcher",
+      "role": "Researches prospects and accounts, producing comprehensive account briefs",
+      "context_override": null
+    },
+    {
+      "agent_id": "qualification-analyst",
+      "role": "Assesses technical and business fit, produces MEDDPICC qualification scorecards",
+      "context_override": null
+    },
+    {
+      "agent_id": "solution-architect",
+      "role": "Designs technical solutions, creates demo scripts and competitive differentiation",
+      "context_override": null
+    },
+    {
+      "agent_id": "value-engineer",
+      "role": "Builds ROI models, TCO analyses, and business case presentations",
+      "context_override": null
+    },
+    {
+      "agent_id": "competitive-intel",
+      "role": "Monitors competitors, creates battle cards, handles objection responses",
+      "context_override": null
+    },
+    {
+      "agent_id": "proposal-writer",
+      "role": "Creates compelling proposals and RFP responses",
+      "context_override": null
+    },
+    {
+      "agent_id": "deal-strategist",
+      "role": "Navigates complex deals through close with strategy and negotiation guidance",
+      "context_override": null
+    },
+    {
+      "agent_id": "deployment-manager",
+      "role": "Orchestrates enterprise deployments across all technical domains",
+      "context_override": null
+    },
+    {
+      "agent_id": "ecad-specialist",
+      "role": "Altium Designer and Enterprise Server deployment expert",
+      "context_override": null
+    },
+    {
+      "agent_id": "migration-specialist",
+      "role": "Design data migration from legacy EDA tools (Cadence, Mentor, EAGLE, KiCad)",
+      "context_override": null
+    },
+    {
+      "agent_id": "mcad-specialist",
+      "role": "MCAD integration expert for SolidWorks, Creo, Inventor CoDesigner deployments",
+      "context_override": null
+    },
+    {
+      "agent_id": "plm-specialist",
+      "role": "PLM integration for Windchill, Teamcenter, Arena, Oracle Agile",
+      "context_override": null
+    },
+    {
+      "agent_id": "erp-supplychain-specialist",
+      "role": "ERP and supply chain integration for SAP, Oracle, Octopart, SiliconExpert",
+      "context_override": null
+    },
+    {
+      "agent_id": "infrastructure-specialist",
+      "role": "IT infrastructure for Windows Server, LDAP/SSO, network security, disaster recovery",
+      "context_override": null
+    },
+    {
+      "agent_id": "customer-support",
+      "role": "Ongoing support, training enablement, health monitoring, and expansion identification",
+      "context_override": null
+    }
+  ],
+
+  "workflow": {
+    "description": "Customer lifecycle from lead through deployment and ongoing support",
+    "stages": [
+      {
+        "name": "Discovery",
+        "agents": ["account-researcher"],
+        "outputs": ["Account Brief"],
+        "entry_point": true
+      },
+      {
+        "name": "Qualification",
+        "agents": ["qualification-analyst"],
+        "inputs": ["Account Brief"],
+        "outputs": ["Qualification Scorecard"]
+      },
+      {
+        "name": "Technical & Business Sales",
+        "agents": ["solution-architect", "value-engineer"],
+        "parallel": true,
+        "inputs": ["Qualification Scorecard"],
+        "outputs": ["Solution Design", "Business Case"]
+      },
+      {
+        "name": "Proposal",
+        "agents": ["proposal-writer"],
+        "inputs": ["Solution Design", "Business Case"],
+        "outputs": ["Proposal", "RFP Response"],
+        "supports": ["competitive-intel"]
+      },
+      {
+        "name": "Close",
+        "agents": ["deal-strategist"],
+        "inputs": ["Proposal"],
+        "outputs": ["Deal Strategy", "Close Plan", "Salesforce Notes"]
+      },
+      {
+        "name": "Deployment",
+        "agents": ["deployment-manager"],
+        "inputs": ["Deal Summary"],
+        "outputs": ["Deployment Plan", "Status Reports"],
+        "coordinates": [
+          "ecad-specialist",
+          "migration-specialist",
+          "mcad-specialist",
+          "plm-specialist",
+          "erp-supplychain-specialist",
+          "infrastructure-specialist"
+        ]
+      },
+      {
+        "name": "Domain Integration",
+        "agents": [
+          "ecad-specialist",
+          "migration-specialist",
+          "mcad-specialist",
+          "plm-specialist",
+          "erp-supplychain-specialist",
+          "infrastructure-specialist"
+        ],
+        "parallel": true,
+        "inputs": ["Deployment Plan"],
+        "outputs": [
+          "ECAD Config",
+          "Migration Report",
+          "MCAD Integration",
+          "PLM Integration",
+          "ERP Integration",
+          "Infrastructure Spec"
+        ],
+        "coordinator": "deployment-manager"
+      },
+      {
+        "name": "Ongoing Support",
+        "agents": ["customer-support"],
+        "inputs": ["Deployment Summary"],
+        "outputs": ["Training Plan", "Health Reports", "Expansion Recommendations"],
+        "loops_to": "Discovery"
+      }
+    ],
+    "support_agents": [
+      {
+        "agent_id": "competitive-intel",
+        "description": "Available on-demand throughout the sales process",
+        "triggers": ["Competitive situation", "RFP with competitor mentions", "Objection handling needed"]
+      }
+    ]
+  },
+
+  "shared_context": {
+    "buckets": ["altium-playbook"],
+    "outputs_folder": "teams/altium-solutions/outputs"
+  },
+
+  "project_output": {
+    "base_path": "~/Workspaces/Altium/Deals",
+    "structure": "{company_name}/",
+    "subfolders": [
+      "research",
+      "qualification",
+      "solution",
+      "proposal",
+      "close",
+      "deployment",
+      "support"
+    ]
+  },
+
+  "mcp_servers": [
+    "gmail",
+    "google-docs",
+    "google-drive",
+    "chrome",
+    "powerpoint"
+  ],
+
+  "collaboration_rules": {
+    "coordination_mode": "human-reviewed",
+    "handoff_protocol": "stage-based",
+    "output_sharing": "structured-summary",
+    "notification_email": "nickd@demarconet.com"
+  },
+
+  "customernode_integration": {
+    "enabled": false,
+    "notes": "Agent team prepares content that could feed into CustomerNode journeys. Proposal Writer outputs can be formatted for CustomerNode sharing. Deal Strategist can generate CustomerNode journey recommendations.",
+    "potential_touchpoints": [
+      "Proposal sharing via CustomerNode",
+      "Account research feeds CustomerNode AI",
+      "Customer support health data to CustomerNode"
+    ]
+  }
+}

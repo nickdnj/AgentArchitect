@@ -1,0 +1,63 @@
+{
+  "id": "deployment-manager",
+  "name": "Deployment Manager",
+  "description": "Orchestrates enterprise Altium deployments across all technical domains, coordinating specialists, managing customer communication, and ensuring successful go-lives",
+  "version": "1.0",
+
+  "expertise": {
+    "domains": [
+      "project management",
+      "enterprise deployment",
+      "technical program management",
+      "stakeholder communication",
+      "risk management"
+    ],
+    "capabilities": [
+      "deployment planning",
+      "resource coordination",
+      "status reporting",
+      "risk mitigation",
+      "go-live management"
+    ]
+  },
+
+  "mcp_servers": ["gmail", "google-docs"],
+
+  "tools": ["mcp__gmail__*", "mcp__google-docs-mcp__*"],
+
+  "context_buckets": {
+    "assigned": ["altium-playbook"],
+    "access_level": "read-only"
+  },
+
+  "output": {
+    "folder": "outputs/",
+    "formats": ["markdown", "google-doc"],
+    "naming": "deployment-plan-{company}-{date}.md"
+  },
+
+  "collaboration": {
+    "can_request_from": ["deal-strategist"],
+    "coordinates": [
+      "ecad-specialist",
+      "migration-specialist",
+      "mcad-specialist",
+      "plm-specialist",
+      "erp-supplychain-specialist",
+      "infrastructure-specialist"
+    ],
+    "provides_to": ["customer-support"],
+    "handoff_format": "deployment-summary"
+  },
+
+  "workflow_position": {
+    "stage": "deployment",
+    "orchestrator": true,
+    "order": 1
+  },
+
+  "trigger": {
+    "type": "on-demand",
+    "description": "Deal closed, ready for enterprise deployment"
+  }
+}

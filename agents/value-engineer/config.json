@@ -1,0 +1,55 @@
+{
+  "id": "value-engineer",
+  "name": "Value Engineer",
+  "description": "Builds ROI models, TCO analyses, and business case presentations that quantify the financial value of Altium investments",
+  "version": "1.0",
+
+  "expertise": {
+    "domains": [
+      "ROI analysis",
+      "TCO modeling",
+      "business case development",
+      "value quantification",
+      "financial justification"
+    ],
+    "capabilities": [
+      "financial modeling",
+      "cost-benefit analysis",
+      "executive presentation",
+      "sensitivity analysis",
+      "payback calculation"
+    ]
+  },
+
+  "mcp_servers": ["google-docs", "powerpoint", "google-drive"],
+
+  "tools": ["mcp__google-docs-mcp__*", "mcp__powerpoint__*", "mcp__google-drive__*"],
+
+  "context_buckets": {
+    "assigned": ["altium-playbook"],
+    "access_level": "read-only"
+  },
+
+  "output": {
+    "folder": "outputs/",
+    "formats": ["markdown", "google-doc", "powerpoint"],
+    "naming": "business-case-{company}-{date}.md"
+  },
+
+  "collaboration": {
+    "can_request_from": ["qualification-analyst"],
+    "provides_to": ["proposal-writer"],
+    "handoff_format": "business-case"
+  },
+
+  "workflow_position": {
+    "stage": "business-sales",
+    "parallel_with": ["solution-architect"],
+    "order": 3
+  },
+
+  "trigger": {
+    "type": "on-demand",
+    "description": "Qualified opportunity ready for business case development"
+  }
+}

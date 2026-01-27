@@ -17,6 +17,14 @@
       "member_count": 9,
       "created": "2026-01-19",
       "status": "active"
+    },
+    {
+      "id": "altium-solutions",
+      "name": "Altium Solutions Team",
+      "folder": "teams/altium-solutions",
+      "member_count": 15,
+      "created": "2026-01-27",
+      "status": "active"
     }
   ]
 }

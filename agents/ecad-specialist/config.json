@@ -1,0 +1,56 @@
+{
+  "id": "ecad-specialist",
+  "name": "ECAD Specialist",
+  "description": "Altium Designer and Enterprise Server deployment expert handling installation, configuration, workspace management, user administration, and design standards",
+  "version": "1.0",
+
+  "expertise": {
+    "domains": [
+      "Altium Designer",
+      "Altium 365",
+      "Enterprise Server",
+      "ECAD administration",
+      "design standards"
+    ],
+    "capabilities": [
+      "server deployment",
+      "client installation",
+      "workspace configuration",
+      "user management",
+      "licensing configuration"
+    ]
+  },
+
+  "mcp_servers": ["google-docs", "chrome"],
+
+  "tools": ["WebSearch", "WebFetch", "mcp__chrome__*", "mcp__google-docs-mcp__*"],
+
+  "context_buckets": {
+    "assigned": ["altium-playbook"],
+    "access_level": "read-only"
+  },
+
+  "output": {
+    "folder": "outputs/",
+    "formats": ["markdown", "google-doc"],
+    "naming": "ecad-deployment-{company}-{date}.md"
+  },
+
+  "collaboration": {
+    "can_request_from": ["deployment-manager"],
+    "coordinates_with": ["infrastructure-specialist", "migration-specialist"],
+    "provides_to": ["deployment-manager"],
+    "handoff_format": "ecad-config"
+  },
+
+  "workflow_position": {
+    "stage": "deployment",
+    "domain": "ecad-core",
+    "order": 2
+  },
+
+  "trigger": {
+    "type": "on-demand",
+    "description": "ECAD deployment workstream activated"
+  }
+}

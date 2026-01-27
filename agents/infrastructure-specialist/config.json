@@ -1,0 +1,58 @@
+{
+  "id": "infrastructure-specialist",
+  "name": "Infrastructure Specialist",
+  "description": "IT infrastructure expert for Windows Server deployment, LDAP/Active Directory integration, SSO configuration, network security, and disaster recovery for Altium enterprise deployments",
+  "version": "1.0",
+
+  "expertise": {
+    "domains": [
+      "Windows Server",
+      "Active Directory",
+      "LDAP integration",
+      "SSO configuration",
+      "network security",
+      "disaster recovery"
+    ],
+    "capabilities": [
+      "server deployment",
+      "authentication setup",
+      "firewall configuration",
+      "SSL/TLS management",
+      "backup planning",
+      "IT documentation"
+    ]
+  },
+
+  "mcp_servers": ["google-docs", "chrome"],
+
+  "tools": ["WebSearch", "WebFetch", "mcp__chrome__*", "mcp__google-docs-mcp__*"],
+
+  "context_buckets": {
+    "assigned": ["altium-playbook"],
+    "access_level": "read-only"
+  },
+
+  "output": {
+    "folder": "outputs/",
+    "formats": ["markdown", "google-doc"],
+    "naming": "infrastructure-{company}-{date}.md"
+  },
+
+  "collaboration": {
+    "can_request_from": ["deployment-manager"],
+    "coordinates_with": ["ecad-specialist"],
+    "provides_to": ["deployment-manager"],
+    "handoff_format": "infrastructure-spec"
+  },
+
+  "workflow_position": {
+    "stage": "deployment",
+    "domain": "infrastructure",
+    "order": 7
+  },
+
+  "trigger": {
+    "type": "on-demand",
+    "description": "Infrastructure workstream activated"
+  }
+}

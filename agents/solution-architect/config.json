@@ -1,0 +1,55 @@
+{
+  "id": "solution-architect",
+  "name": "Solution Architect",
+  "description": "Designs technical solutions mapped to customer requirements, creates customized demo scripts, and develops competitive differentiation points for Altium products",
+  "version": "1.0",
+
+  "expertise": {
+    "domains": [
+      "PCB design software",
+      "Altium product portfolio",
+      "technical solution design",
+      "competitive analysis",
+      "systems integration"
+    ],
+    "capabilities": [
+      "requirements mapping",
+      "solution configuration",
+      "demo script creation",
+      "competitive positioning",
+      "integration architecture"
+    ]
+  },
+
+  "mcp_servers": ["google-docs", "chrome", "powerpoint"],
+
+  "tools": ["WebSearch", "WebFetch", "mcp__chrome__*", "mcp__google-docs-mcp__*", "mcp__powerpoint__*"],
+
+  "context_buckets": {
+    "assigned": ["altium-playbook"],
+    "access_level": "read-only"
+  },
+
+  "output": {
+    "folder": "outputs/",
+    "formats": ["markdown", "google-doc", "powerpoint"],
+    "naming": "solution-design-{company}-{date}.md"
+  },
+
+  "collaboration": {
+    "can_request_from": ["qualification-analyst", "competitive-intel"],
+    "provides_to": ["proposal-writer"],
+    "handoff_format": "solution-design"
+  },
+
+  "workflow_position": {
+    "stage": "technical-sales",
+    "parallel_with": ["value-engineer"],
+    "order": 3
+  },
+
+  "trigger": {
+    "type": "on-demand",
+    "description": "Qualified opportunity ready for technical solutioning"
+  }
+}
