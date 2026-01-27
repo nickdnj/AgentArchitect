@@ -1,19 +1,22 @@
 {
   "id": "pdf-scribe",
   "name": "PDFScribe",
-  "description": "Extracts and transcribes PDF content (text and images) into detailed Markdown for reports",
-  "version": "2.0",
+  "description": "Extracts and transcribes PDF content into detailed Markdown with optional RAG ingestion for semantic search",
+  "version": "2.1",
 
   "expertise": {
-    "domains": ["document-processing", "ocr", "content-extraction", "transcription"],
+    "domains": ["document-processing", "ocr", "content-extraction", "transcription", "rag", "semantic-search"],
     "capabilities": [
       "PDF text extraction",
-      "Image-based PDF transcription (Claude Sonnet 4 vision)",
+      "Image-based PDF transcription (Claude Sonnet 4 or GPT-4o vision)",
       "Visual content description",
       "Table to HTML conversion",
       "Multi-source PDF retrieval",
       "Intelligent caching with checksum validation",
-      "Local file system access (including Google Drive synced folders)"
+      "Local file system access (including Google Drive synced folders)",
+      "RAG ingestion (chunk + embed + store in pgvector)",
+      "Semantic search across indexed documents",
+      "Multi-provider AI support (Anthropic/OpenAI)"
     ]
   },
 
@@ -64,6 +67,34 @@
     "transcribe_command": "python pdfscribe_cli.py",
     "website_command": "python pdf2website.py",
     "split_command": "python src/split_pdf.py",
-    "requires": ["ANTHROPIC_API_KEY"]
+    "rag_command": "python src/rag.py",
+    "requires_one_of": ["ANTHROPIC_API_KEY", "OPENAI_API_KEY"],
+    "rag_requires": ["OPENAI_API_KEY", "RAG_DB_HOST or localhost:5433"]
+  },
+
+  "rag_integration": {
+    "database": {
+      "type": "postgres+pgvector",
+      "host": "localhost",
+      "port": 5433,
+      "name": "rag",
+      "docker_compose": "/Users/nickd/Workspaces/AgentArchitect/docker-compose.yml"
+    },
+    "embeddings": {
+      "provider": "openai",
+      "model": "text-embedding-3-small",
+      "dimensions": 1536
+    },
+    "chunking": {
+      "size": 800,
+      "overlap": 120,
+      "method": "paragraph-aware"
+    },
+    "tools": {
+      "ingest": "python src/rag.py ingest <file> --bucket <bucket_id>",
+      "search": "python src/rag.py search '<query>' --bucket <bucket_id>",
+      "list": "python src/rag.py list --bucket <bucket_id>",
+      "stats": "python src/rag.py stats"
+    }
   }
 }

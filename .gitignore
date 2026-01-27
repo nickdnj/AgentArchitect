@@ -23,3 +23,7 @@ npm-debug.log*
 
 # Local settings (keep template, ignore local overrides)
 .claude/settings.local.json
+
+# Context bucket content (backed up via Google Drive)
+context-buckets/*/files/
+!context-buckets/*/files/.gitkeep

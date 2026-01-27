@@ -65,17 +65,17 @@
     },
     "pdfscribe": {
       "name": "PDFScribe MCP Server",
-      "description": "First homegrown MCP server - transforms scanned PDFs into searchable Markdown",
+      "description": "Transforms scanned PDFs into searchable Markdown with optional RAG ingestion",
       "package": "custom (pdfscribe_cli)",
       "type": "python",
-      "version": "2.0.0",
+      "version": "2.1.0",
       "image": "mcp-pdfscribe:latest",
       "accounts": ["default"],
       "auth": "api_key",
       "credentials": {
-        "required": ["ANTHROPIC_API_KEY"],
-        "optional": ["GOOGLE_DRIVE_CREDENTIALS"],
-        "notes": "Requires Anthropic API key for Claude Sonnet 4 vision transcription"
+        "required_one_of": ["ANTHROPIC_API_KEY", "OPENAI_API_KEY"],
+        "optional": ["GOOGLE_DRIVE_CREDENTIALS", "RAG_DB_HOST", "RAG_DB_PASSWORD"],
+        "notes": "Supports both Anthropic (Claude Sonnet 4) and OpenAI (GPT-4o) for vision. Set AI_PROVIDER=openai to switch."
       },
       "capabilities": [
         "PDF to Markdown transcription",
@@ -83,8 +83,18 @@
         "Intelligent caching with checksum validation",
         "Local file system access",
         "Handwriting recognition",
-        "Table extraction"
+        "Table extraction",
+        "RAG ingestion (chunk + embed + store)",
+        "Semantic search via pgvector",
+        "Multi-provider AI support (Anthropic/OpenAI)"
       ],
+      "rag": {
+        "database": "pgvector (Postgres)",
+        "embeddings": "OpenAI text-embedding-3-small",
+        "chunk_size": 800,
+        "chunk_overlap": 120,
+        "tools": ["ingest_document", "search_documents", "list_indexed"]
+      },
       "mounts": {
         "cli": "/Users/nickd/Workspaces/pdfscribe_cli",
         "workspace": "~/.config/mcp-pdfscribe/workspace",
