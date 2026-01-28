@@ -249,6 +249,14 @@
       "teams": ["altium-solutions"],
       "created": "2026-01-27",
       "status": "active"
+    },
+    {
+      "id": "rag-search",
+      "name": "RAG Search",
+      "folder": "agents/rag-search",
+      "teams": ["wharfside-board-assistant"],
+      "created": "2026-01-28",
+      "status": "active"
     }
   ]
 }
