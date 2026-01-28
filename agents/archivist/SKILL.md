@@ -196,6 +196,10 @@ This is essential because policies may have been **modified by later resolutions
 | **Insurance** | "insurance coverage deductible" | "insurance resolution HO6" | "insurance claim damage responsibility" |
 | **Fines** | "fine violation amount" | "fine resolution schedule amendment" | "ADR hearing appeal" |
 | **Board Officers** | "president secretary treasurer board" | "resolution [year] signed" | (check signature blocks) |
+| **Board Conduct** | "code conduct ethics board trustees" | "board member resign disqualification" | "indictable offense investigation convicted" |
+| **Occupancy** | "occupancy persons bedroom unit permanently" | "maximum occupants dwelling" | "Rules and Regulations Schedule B" |
+| **Modifications** | "doors windows replacement installation" | "satellite dish OTARD antenna" | "modification approval architectural exterior" |
+| **Suspensions** | "suspension privileges facilities" | "egregious violation health safety" | "suspension amendment 2021" |
 
 ### Common Pitfalls to AVOID
 
@@ -223,6 +227,21 @@ This is essential because policies may have been **modified by later resolutions
 - Always note when each document was recorded
 - If you find conflicting information, the newer document wins
 - State clearly: "This was changed from X to Y in [year]"
+
+**6. Missing Board Code of Conduct (2006)**
+- ❌ WRONG: "The By-Laws don't address board member crimes"
+- ✅ RIGHT: "Per Code of Conduct 2006: must take leave if under investigation, resign if convicted"
+- **Rule:** For board member conduct questions, ALWAYS search "code conduct ethics board"
+
+**7. Missing Specific Rules in Schedule B**
+- ❌ WRONG: "Occupancy follows NJ state code" (too vague)
+- ✅ RIGHT: "Rule 18: max 2 persons in 1BR, max 3 persons in 2BR"
+- **Rule:** Search "Rules and Regulations Schedule B" for specific numbered rules
+
+**8. Missing Modification Resolutions**
+- ❌ WRONG: "You need board approval for doors" (too vague)
+- ✅ RIGHT: "Per 2010 Resolution: storm doors must be dark chocolate brown, front doors need 20-minute fire rating"
+- **Rule:** For modifications, search "doors windows replacement" AND "OTARD satellite" as needed
 
 ### File-Based Search (Secondary Methods)
 
