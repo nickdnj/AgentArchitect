@@ -1,12 +1,12 @@
 {
   "id": "archivist",
   "name": "Archivist",
-  "description": "Maintains and retrieves governing documents, meeting minutes, and historical records for Wharfside Manor",
-  "version": "1.0",
+  "description": "Maintains and retrieves governing documents, meeting minutes, and historical records for Wharfside Manor with RAG-powered semantic search",
+  "version": "2.0",
 
   "expertise": {
-    "domains": ["document management", "information retrieval", "policy research", "web portal integration", "PDF transcription"],
-    "capabilities": ["document search", "context provision", "policy lookup", "historical research", "portal document sync", "scanned PDF transcription", "batch PDF processing"]
+    "domains": ["document management", "information retrieval", "policy research", "web portal integration", "PDF transcription", "semantic search", "RAG"],
+    "capabilities": ["semantic document search", "context provision", "policy lookup", "historical research", "portal document sync", "scanned PDF transcription", "batch PDF processing", "RAG query", "vector database search"]
   },
 
   "mcp_servers": ["google-docs", "chrome", "pdfscribe"],
@@ -59,9 +59,24 @@
   },
 
   "search_behavior": {
+    "primary_method": "rag_semantic",
+    "fallback_methods": ["glob", "grep"],
     "include_file_contents": true,
     "search_subdirectories": true,
     "max_results": 20
+  },
+
+  "rag_integration": {
+    "enabled": true,
+    "database": {
+      "type": "postgres+pgvector",
+      "host": "localhost",
+      "port": 5433,
+      "name": "rag"
+    },
+    "default_bucket": "wharfside-docs",
+    "cli_path": "/Users/nickd/Workspaces/pdfscribe_cli",
+    "search_command": "python -c \"from src.rag import search_documents; results = search_documents('{query}', bucket_id='{bucket}', limit={limit}); [print(f'{r.source_file}: {r.chunk_text[:300]}...') for r in results]\""
   },
 
   "portal_sync": {

@@ -2,9 +2,11 @@
 
 ## Purpose
 
-PDFScribe is a specialized content extraction agent that transforms PDF documents into detailed, structured Markdown. Whether dealing with native text PDFs or scanned image-based documents, PDFScribe ensures no information is lost by extracting both textual content and visual elements with detailed descriptions.
+PDFScribe is a specialized content extraction agent that transforms PDF documents into detailed, structured Markdown with optional semantic search indexing. Whether dealing with native text PDFs or scanned image-based documents, PDFScribe ensures no information is lost by extracting both textual content and visual elements with detailed descriptions.
 
-This agent solves the common problem of image-based PDFs (scanned documents, inspection reports, legacy files) that cannot be searched or processed by text-based tools. PDFScribe makes this content accessible and actionable.
+This agent solves the common problem of image-based PDFs (scanned documents, inspection reports, legacy files) that cannot be searched or processed by text-based tools. PDFScribe makes this content accessible, searchable, and actionable through:
+1. **Transcription** - Converting PDFs to structured Markdown
+2. **RAG Ingestion** - Chunking, embedding, and storing in a vector database for semantic search
 
 ## Core Responsibilities
 
@@ -20,11 +22,27 @@ This agent solves the common problem of image-based PDFs (scanned documents, ins
 
 PDFScribe leverages the **pdfscribe_cli** tool located at `/Users/nickd/Workspaces/pdfscribe_cli/`.
 
-This tool uses **Claude Sonnet 4** vision to transcribe scanned PDFs with high accuracy:
+This tool uses AI vision models to transcribe scanned PDFs with high accuracy:
+
+### AI Provider Options
+
+| Provider | Model | Best For |
+|----------|-------|----------|
+| **OpenAI** (default) | gpt-4.1-mini | Fast, cost-effective transcription |
+| Anthropic | claude-sonnet-4 | Highest accuracy, higher cost |
+
+**Set provider via environment variable:**
+```bash
+export AI_PROVIDER=openai    # Default - faster and cheaper
+export AI_PROVIDER=anthropic  # Higher accuracy when needed
+```
+
+### Features
 - Converts PDF pages to images via `pdf2image` (poppler)
-- Sends images to Anthropic API for transcription
+- **Multi-provider AI** - OpenAI (default) or Anthropic for transcription
 - **Automatic caching** - stores transcriptions as `{filename}-transcribed.md` next to source
 - **Checksum validation** - re-transcribes only when source PDF changes
+- **RAG ingestion** - optional embedding and storage in pgvector for semantic search
 - **Local file access** - works with local files including Google Drive synced folders
 - Handles handwritten annotations (enclosed in `{curly brackets}`)
 - Marks uncertain text appropriately
@@ -62,14 +80,26 @@ python pdf2website.py <pdf_or_directory> -o <output_dir> -t "Site Title" -b "bac
 
 ### Environment Requirements
 
-Requires `ANTHROPIC_API_KEY` environment variable. This key is stored in `~/.zshrc`.
+**Required for transcription (one of):**
+- `OPENAI_API_KEY` - Required for OpenAI provider (default)
+- `ANTHROPIC_API_KEY` - Required for Anthropic provider
 
-**To access the API key when running CLI commands:**
+**Required for RAG:**
+- `OPENAI_API_KEY` - Always required for embeddings (text-embedding-3-small)
+- PostgreSQL with pgvector running on localhost:5433
+
+Keys are stored in `~/.zshrc`. To access:
 ```bash
-source ~/.zshrc  # Loads ANTHROPIC_API_KEY into the current shell
+source ~/.zshrc  # Loads API keys into the current shell
 ```
 
-Then run the pdfscribe CLI as normal.
+### RAG Database Setup
+
+The pgvector database runs via Docker:
+```bash
+cd /Users/nickd/Workspaces/AgentArchitect
+docker-compose up -d  # Starts pgvector on port 5433
+```
 
 ---
 
@@ -190,6 +220,80 @@ PDFScribe uses intelligent caching to avoid redundant processing:
 | 12-page PDF (first run) | ~70 seconds |
 | 12-page PDF (cache hit) | ~0.2 seconds |
 | Speedup | **350x faster** |
+
+## RAG Integration
+
+PDFScribe can ingest documents into a vector database for semantic search, enabling intelligent document retrieval across your knowledge base.
+
+### Architecture
+
+```
+PDF → Transcribe → Markdown → Chunk (800 tokens) → Embed (OpenAI) → pgvector
+                                                                        ↓
+                                                              Semantic Search
+```
+
+### Database
+
+- **PostgreSQL + pgvector** running in Docker on port 5433
+- Database: `rag`, User: `rag`, Password: `localdev`
+- Embeddings: OpenAI `text-embedding-3-small` (1536 dimensions)
+- Chunking: 800 tokens with 15% overlap (120 tokens)
+
+### CLI Commands for RAG
+
+**Transcribe and ingest a single document:**
+```bash
+cd /Users/nickd/Workspaces/pdfscribe_cli
+AI_PROVIDER=openai python pdfscribe_cli.py document.pdf --ingest --bucket wharfside-docs
+```
+
+**Ingest all PDFs in a directory:**
+```bash
+AI_PROVIDER=openai python pdfscribe_cli.py /path/to/pdfs/ --ingest --bucket wharfside-docs
+```
+
+**Semantic search:**
+```bash
+python -c "
+from src.rag import search_documents
+results = search_documents('What are the rental restrictions?', bucket_id='wharfside-docs', limit=5)
+for r in results:
+    print(f'{r.source_file}: {r.chunk_text[:200]}...')
+"
+```
+
+**Check index stats:**
+```bash
+python -c "from src.rag import get_index_stats; print(get_index_stats())"
+```
+
+### Context Buckets
+
+Documents are organized by bucket ID (e.g., `wharfside-docs`). Each bucket isolates content for specific teams or purposes:
+
+| Bucket | Description |
+|--------|-------------|
+| `wharfside-docs` | Governing documents, resolutions, handbooks |
+| `wharfside-financials` | Financial reports, budgets |
+| `wharfside-infrastructure` | Inspection reports, maintenance docs |
+
+### RAG Workflow
+
+1. **Transcribe** - Convert PDF to Markdown (cached for future use)
+2. **Chunk** - Split into ~800 token paragraphs with overlap
+3. **Embed** - Generate 1536-dimension vectors via OpenAI
+4. **Store** - Insert into pgvector with metadata (source, page, bucket)
+5. **Search** - Query semantically, return ranked results
+
+### When to Use RAG vs Direct Transcription
+
+| Use Case | Approach |
+|----------|----------|
+| One-time document read | Transcribe only |
+| Building searchable knowledge base | Transcribe + Ingest |
+| Answering questions across documents | Semantic search |
+| Finding specific clauses/policies | Semantic search |
 
 ## Context Access
 

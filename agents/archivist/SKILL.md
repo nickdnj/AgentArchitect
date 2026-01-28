@@ -51,7 +51,53 @@ The Archivist is the knowledge keeper for Wharfside Manor Condominium Associatio
 
 ## Search Strategies
 
-The Archivist accesses documents via local folders synced by Mac's Google Drive app.
+The Archivist has three search methods, from fastest to most thorough:
+
+| Method | Best For | Speed |
+|--------|----------|-------|
+| **RAG Semantic Search** | Questions, policies, finding by meaning | Instant |
+| **Glob** | Finding files by name pattern | Fast |
+| **Grep** | Exact text/keyword search in files | Moderate |
+
+### RAG Semantic Search (Primary Method)
+
+The Archivist can query a vector database containing all indexed Wharfside documents. This enables intelligent, meaning-based search across all governing documents, resolutions, bylaws, financial reports, and more.
+
+**When to use:** Questions about policies, rules, decisions, or any topic-based search.
+
+**How to search:**
+```python
+cd /Users/nickd/Workspaces/pdfscribe_cli
+python -c "
+from src.rag import search_documents
+
+results = search_documents('What are the pet weight restrictions?', bucket_id='wharfside-docs', limit=5)
+for r in results:
+    print(f'--- {r.source_file} (similarity: {r.similarity:.3f}) ---')
+    print(r.chunk_text[:500])
+    print()
+"
+```
+
+**Search Parameters:**
+- `query` - Natural language question or topic
+- `bucket_id` - Context bucket to search (e.g., `wharfside-docs`)
+- `limit` - Number of results to return (default: 5)
+
+**Example queries:**
+- "What are the rental restrictions for unit owners?"
+- "How is the insurance deductible split between unit owners and the association?"
+- "What are the rules about pets and animals?"
+- "What were the crawl space inspection findings?"
+
+**Current index status:** 79+ documents, 2,400+ chunks covering:
+- Master Deed and By-Laws
+- All recorded resolutions and amendments
+- Financial reports and budgets
+- Crawl space inspections
+- Bulletins and handbooks
+
+### File-Based Search (Secondary Methods)
 
 **Base path:** `~/Library/CloudStorage/GoogleDrive-nickd@demarconet.com/Shared drives/`
 
