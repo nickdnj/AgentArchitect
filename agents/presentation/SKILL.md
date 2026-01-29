@@ -200,7 +200,7 @@ When using the Altium template, consult the `altium-presentation-guide` context 
 
 ### Presentation Management
 - `create_presentation` - Create new blank presentation
-- `create_presentation_from_template` - Create from template file (use `template_path` and `output_path`)
+- `create_presentation_from_template` - Create from template file (params: `template_path`, optional `id`; does NOT accept `output_path`)
 - `open_presentation` - Open existing .pptx file
 - `save_presentation` - Save presentation (use `file_path` parameter; requires active presentation via `switch_presentation` if multiple open)
 - `get_presentation_info` - Get metadata about current presentation
@@ -249,16 +249,30 @@ When using the Altium template, consult the `altium-presentation-guide` context 
 
 ### Key Tool Usage Patterns
 
-**Creating a presentation:**
+**CRITICAL: The correct workflow for creating a presentation:**
+
 ```
-1. create_presentation_from_template(template_path="/app/templates/Altium_TEMPLATE.pptx", output_path="/app/workspace/Output.pptx")
+1. create_presentation_from_template(template_path="/app/templates/Altium_TEMPLATE.pptx")
    → Returns presentation_id (e.g., "presentation_1")
-2. populate_placeholder / add_bullet_points / add_slide  (use file_path="/app/workspace/Output.pptx")
-3. save_presentation(file_path="/app/workspace/Output.pptx")
-   → If "no presentation loaded" error, first: switch_presentation(presentation_id="presentation_1")
+   → Does NOT accept output_path — that param is silently ignored
+   → Does NOT set this as the active presentation
+
+2. switch_presentation(presentation_id="presentation_1")         ← MANDATORY
+   → Sets this as the active presentation for all subsequent operations
+   → Without this step, all content operations silently fail
+
+3. Content operations — NO file_path or presentation_id params needed:
+   populate_placeholder(slide_index=0, placeholder_idx=0, text="Title")
+   add_slide(layout_index=4)
+   add_bullet_points(slide_index=1, placeholder_idx=1, bullet_points=[...])
+
+4. save_presentation(file_path="/app/workspace/Output.pptx")
+   → Saves the active presentation to the specified path
 ```
 
-**Important: The server tracks presentations by ID.** If multiple presentations are created in one session, use `switch_presentation` to select the active one before saving.
+**Why `switch_presentation` is mandatory:** The MCP server stores presentations in memory by ID, but `create_presentation_from_template` does NOT call `set_current_presentation_id()` internally. Without `switch_presentation`, all content tools call `get_current_presentation_id()` which returns `None`, and operations silently do nothing.
+
+**Common mistake:** Passing `file_path` to `populate_placeholder`, `add_slide`, or `add_bullet_points`. These tools do NOT accept `file_path` — they always operate on the current active presentation. Extra params are silently ignored.
 
 ## Content Guidelines
 
