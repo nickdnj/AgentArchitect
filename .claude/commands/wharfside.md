@@ -17,48 +17,14 @@ Delegate to these agents based on the task:
 | **proposal-review** | Vendor analyst | Review and compare vendor proposals |
 | **presentation** | Presentation creator | Build PowerPoint decks for board meetings |
 | **email-research** | Research specialist | Search email archives for topic information |
-| **archivist** | Document keeper | Retrieve governing documents, meeting minutes, historical records |
 
-## How to Delegate
+## CRITICAL: Document/Policy Questions - Run RAG Directly
 
-Use the Task tool with the appropriate `subagent_type`:
-- `Monthly Bulletin` - for bulletin generation
-- `Proposal Review` - for vendor proposal analysis
-- `Presentation` - for PowerPoint creation
-- `Email Research` - for email mining and research
+**For ANY question about policies, rules, bylaws, resolutions, or documents:**
 
-### CRITICAL: Document/Policy Questions - Use RAG Wrapper
+**DO NOT delegate to any agent.** Run RAG search commands yourself using Bash.
 
-**For ANY question about policies, rules, bylaws, resolutions, or documents, DO NOT use `subagent_type: "Archivist"`.**
-
-Instead, use `subagent_type: "general-purpose"` with embedded RAG commands:
-
-```
-Task(
-  subagent_type="general-purpose",
-  prompt="""You are the Archivist for Wharfside Manor. Answer this question: "[USER QUESTION]"
-
-## MANDATORY: Run these Bash commands FIRST
-
-**Query 1 - Main topic:**
-```bash
-cd /Users/nickd/Workspaces/pdfscribe_cli && python -c "from src.rag import search_documents; results = search_documents('[MAPPED_QUERY]', bucket_id='wharfside-docs', limit=10, similarity_threshold=0.35); [print(f'[{r.similarity:.3f}] {r.source_file}\\n{r.chunk_text[:300]}\\n') for r in results]"
-```
-
-**Query 2 - Amendments/Resolutions:**
-```bash
-cd /Users/nickd/Workspaces/pdfscribe_cli && python -c "from src.rag import search_documents; results = search_documents('[TOPIC] resolution amendment', bucket_id='wharfside-docs', limit=5, similarity_threshold=0.35); [print(f'[{r.similarity:.3f}] {r.source_file}') for r in results]"
-```
-
-Run BOTH commands, then read the most relevant files, and provide the answer with sources.
-Always note if a rule was CHANGED from its original version.
-The NEWEST document on a topic supersedes older ones."""
-)
-```
-
-### Keyword Mapping (CRITICAL)
-
-When constructing RAG queries, map user language to document language:
+### Step 1: Map User Language to Document Language
 
 | User Says | Use in Query |
 |-----------|--------------|
@@ -73,74 +39,102 @@ When constructing RAG queries, map user language to document language:
 | "storm door" / "front door" | `doors windows chocolate brown fire rated` |
 | "occupancy" / "how many people" | `occupancy persons bedroom` |
 | "suspension" / "privileges" | `egregious violation suspension` |
+| "insurance" / "deductible" | `insurance deductible HO6 policy` |
+| "board president" / "officers" | `president secretary treasurer board resolution` |
 
-### Example: Pet Policy Question
+### Step 2: Run RAG Search (MANDATORY)
+
+Run these Bash commands DIRECTLY (do not delegate):
+
+**Query 1 - Main topic:**
+```bash
+cd /Users/nickd/Workspaces/pdfscribe_cli && python -c "from src.rag import search_documents; results = search_documents('[MAPPED_QUERY]', bucket_id='wharfside-docs', limit=10, similarity_threshold=0.35); [print(f'[{r.similarity:.3f}] {r.source_file}\n{r.chunk_text[:300]}\n') for r in results]"
+```
+
+**Query 2 - Amendments/Resolutions (REQUIRED):**
+```bash
+cd /Users/nickd/Workspaces/pdfscribe_cli && python -c "from src.rag import search_documents; results = search_documents('[TOPIC] resolution amendment', bucket_id='wharfside-docs', limit=5, similarity_threshold=0.35); [print(f'[{r.similarity:.3f}] {r.source_file}') for r in results]"
+```
+
+### Step 3: Read Source Documents
+
+Based on RAG results, use the Read tool to get full content from the most relevant files.
+- Files are located in `~/AppFolio-Sync/` or indexed from there
+- If RAG returns a filename like `Dog Weight Restrictions.md`, search for the full chunk text
+
+### Step 4: Answer with Sources
+
+- State the CURRENT rule (from newest document)
+- Note if it was CHANGED from an earlier version
+- Cite document name and date
+
+**IMPORTANT:** The NEWEST document on a topic supersedes older ones.
+
+## Example: Pet Policy Question
 
 User asks: "What is the pet policy?"
 
-Construct prompt:
-```
-subagent_type="general-purpose"
-prompt="""You are the Archivist for Wharfside Manor. Answer: "What is the pet policy?"
-
-## MANDATORY: Run these Bash commands FIRST
-
-**Query 1:**
+1. **Map terms:** "pet policy" → `pet policy dog weight`
+2. **Run RAG Query 1:**
 ```bash
-cd /Users/nickd/Workspaces/pdfscribe_cli && python -c "from src.rag import search_documents; results = search_documents('pet policy dog cat weight', bucket_id='wharfside-docs', limit=10, similarity_threshold=0.35); [print(f'[{r.similarity:.3f}] {r.source_file}\\n{r.chunk_text[:300]}\\n') for r in results]"
+cd /Users/nickd/Workspaces/pdfscribe_cli && python -c "from src.rag import search_documents; results = search_documents('pet policy dog cat weight', bucket_id='wharfside-docs', limit=10, similarity_threshold=0.35); [print(f'[{r.similarity:.3f}] {r.source_file}\n{r.chunk_text[:300]}\n') for r in results]"
 ```
-
-**Query 2:**
+3. **Run RAG Query 2 (amendments):**
 ```bash
 cd /Users/nickd/Workspaces/pdfscribe_cli && python -c "from src.rag import search_documents; results = search_documents('pet weight resolution amendment eliminated', bucket_id='wharfside-docs', limit=5, similarity_threshold=0.35); [print(f'[{r.similarity:.3f}] {r.source_file}') for r in results]"
 ```
+4. **Read relevant files** from RAG results
+5. **Answer:** "The pet weight restriction was eliminated by a 2014 resolution. Current rules require licensing, leashing (max 8 feet), and waste cleanup..."
 
-Run BOTH, read relevant files, answer with sources."""
-```
-
-### Example: Utility Shutoff Question
+## Example: Utility Shutoff Question
 
 User asks: "Can we shut off water?"
 
-Construct prompt:
-```
-subagent_type="general-purpose"
-prompt="""You are the Archivist for Wharfside Manor. Answer: "Can we shut off water if someone doesn't pay?"
-
-## MANDATORY: Run these Bash commands FIRST
-
-**Query 1:**
+1. **Map terms:** "shut off water" → `terminate utilities delinquent`
+2. **Run RAG Query 1:**
 ```bash
-cd /Users/nickd/Workspaces/pdfscribe_cli && python -c "from src.rag import search_documents; results = search_documents('terminate utilities delinquent', bucket_id='wharfside-docs', limit=10, similarity_threshold=0.35); [print(f'[{r.similarity:.3f}] {r.source_file}\\n{r.chunk_text[:300]}\\n') for r in results]"
+cd /Users/nickd/Workspaces/pdfscribe_cli && python -c "from src.rag import search_documents; results = search_documents('terminate utilities delinquent', bucket_id='wharfside-docs', limit=10, similarity_threshold=0.35); [print(f'[{r.similarity:.3f}] {r.source_file}\n{r.chunk_text[:300]}\n') for r in results]"
 ```
-
-**Query 2:**
+3. **Run RAG Query 2:**
 ```bash
 cd /Users/nickd/Workspaces/pdfscribe_cli && python -c "from src.rag import search_documents; results = search_documents('utility resolution 99-02 court order', bucket_id='wharfside-docs', limit=5, similarity_threshold=0.35); [print(f'[{r.similarity:.3f}] {r.source_file}') for r in results]"
 ```
+4. **Read** the Resolution 99-02 document
+5. **Answer** with the court order basis and procedure
 
-Run BOTH, read relevant files, answer with sources."""
-```
+## Delegating to Other Agents
+
+For non-document tasks, use the Task tool:
+
+| Task Type | subagent_type |
+|-----------|---------------|
+| Monthly bulletin | `Monthly Bulletin` |
+| Vendor proposal analysis | `Proposal Review` |
+| PowerPoint creation | `Presentation` |
+| Email search/research | `Email Research` |
 
 ## Team Resources
 - **Gmail (Board)**: nickd@wharfsidemb.com
 - **Gmail (Personal)**: nickd@demarconet.com
 - **Output Folder**: teams/wharfside-board-assistant/outputs
-- **Shared Context**: wharfside-docs bucket
+- **RAG Database**: wharfside-docs bucket in pdfscribe_cli
 
 ## Branding
 - **Colors**: Navy (#1a3a5c), Gold (#c9a227)
 - **Location**: Wharfside Manor, Monmouth Beach, NJ
 
-## Workflow
+## Workflow Summary
 
 1. **Receive user request**
-2. **Classify the request type:**
-   - Document/policy question → Use RAG wrapper pattern above
+2. **Classify:**
+   - Document/policy question → **Run RAG directly (no delegation)**
    - Bulletin request → Delegate to `Monthly Bulletin`
    - Proposal review → Delegate to `Proposal Review`
    - Presentation → Delegate to `Presentation`
    - Email search → Delegate to `Email Research`
-3. **For document questions:** Construct the RAG prompt with mapped keywords
-4. **Execute the appropriate Task**
-5. **Return results to user**
+3. **For document questions:**
+   - Map user terms to document terms
+   - Run both RAG queries via Bash
+   - Read relevant source files
+   - Answer with sources and dates
+4. **Return results to user**

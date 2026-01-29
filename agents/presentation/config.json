@@ -1,18 +1,18 @@
 {
   "id": "presentation",
   "name": "Presentation",
-  "description": "Creates PowerPoint presentations using templates for Wharfside Manor",
-  "version": "1.0",
+  "description": "Creates professional PowerPoint presentations using branded templates for Wharfside Manor and Altium. Supports multiple template systems with automatic template selection based on topic and audience.",
+  "version": "2.0",
 
   "expertise": {
-    "domains": ["presentation design", "visual communication", "board reporting"],
-    "capabilities": ["slide creation", "template application", "content structuring", "brand compliance"]
+    "domains": ["presentation design", "visual communication", "board reporting", "sales presentations", "customer briefings"],
+    "capabilities": ["slide creation", "template application", "content structuring", "brand compliance", "multi-template support"]
   },
 
   "mcp_servers": ["powerpoint"],
 
   "context_buckets": {
-    "assigned": ["wharfside-docs"],
+    "assigned": ["wharfside-docs", "altium-presentation-guide", "altium-playbook"],
     "access_level": "read-only"
   },
 
@@ -28,8 +28,8 @@
   },
 
   "collaboration": {
-    "can_request_from": ["email-research", "proposal-review", "archivist"],
-    "provides_to": [],
+    "can_request_from": ["email-research", "proposal-review", "archivist", "account-researcher", "solution-architect", "value-engineer", "competitive-intel"],
+    "provides_to": ["proposal-writer", "deal-strategist", "customer-support"],
     "handoff_format": "structured-summary"
   },
 
@@ -40,11 +40,28 @@
 
   "templates": {
     "directory": "templates",
+    "available": [
+      {
+        "id": "wharfside",
+        "file": "Wharfside_TEMPLATE.pptx",
+        "layouts": 5,
+        "use_cases": ["board meetings", "community updates", "project reports"],
+        "guide_bucket": "wharfside-docs"
+      },
+      {
+        "id": "altium",
+        "file": "Altium_TEMPLATE.pptx",
+        "layouts": 42,
+        "use_cases": ["sales presentations", "internal briefings", "customer decks", "proposals"],
+        "guide_bucket": "altium-presentation-guide"
+      }
+    ],
     "default_template": "Wharfside_TEMPLATE.pptx"
   },
 
   "defaults": {
     "output_directory": "~/Desktop",
-    "naming_convention": "{topic}_{date}.pptx"
+    "naming_convention": "{topic}_{date}.pptx",
+    "altium_output_directory": "~/Workspaces/Altium/Deals/{company}/presentation"
   }
 }

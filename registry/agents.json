@@ -22,7 +22,7 @@
       "id": "presentation",
       "name": "Presentation",
       "folder": "agents/presentation",
-      "teams": ["wharfside-board-assistant"],
+      "teams": ["wharfside-board-assistant", "altium-solutions"],
       "created": "2026-01-19",
       "status": "active"
     },

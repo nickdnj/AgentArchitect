@@ -53,14 +53,35 @@
       "name": "PowerPoint MCP Server",
       "package": "custom (python-pptx)",
       "type": "python",
-      "image": "mcp-powerpoint:latest",
+      "version": "1.21.1",
+      "image": "powerpoint-mcp-server:latest",
+      "container_name": "powerpoint-mcp-server",
+      "transport": "streamable-http",
+      "port": 8001,
+      "url": "http://localhost:8001/mcp",
       "accounts": ["default"],
       "auth": "none",
       "mounts": {
-        "templates": "~/.config/mcp-powerpoint/templates",
-        "workspace": "~/.config/mcp-powerpoint/workspace"
+        "templates": {
+          "host": "/Users/nickd/Workspaces/mcp_servers/Office-PowerPoint-MCP-Server/templates",
+          "container": "/app/templates",
+          "mode": "ro"
+        },
+        "workspace": {
+          "host": "/Users/nickd/Workspaces/mcp_servers/Office-PowerPoint-MCP-Server/workspace",
+          "container": "/app/workspace",
+          "mode": "rw"
+        }
       },
-      "wrapper": "mcp-powerpoint.sh",
+      "available_templates": [
+        "Wharfside_TEMPLATE.pptx",
+        "Altium_TEMPLATE.pptx"
+      ],
+      "claude_code_config": {
+        "type": "streamable-http",
+        "url": "http://localhost:8001/mcp"
+      },
+      "tool_count": 37,
       "status": "active"
     },
     "pdfscribe": {

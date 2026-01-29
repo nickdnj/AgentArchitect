@@ -1,0 +1,47 @@
+{
+  "id": "altium-presentation-guide",
+  "name": "Altium Presentation Template Guide",
+  "description": "Comprehensive guide for the Altium_TEMPLATE.pptx corporate template including 42 layouts, placeholder indices, content transformation principles, and workflow examples",
+  "version": "1.0",
+  "created": "2026-01-29",
+  "updated": "2026-01-29",
+
+  "content_type": "documents",
+
+  "sources": [
+    {
+      "type": "local",
+      "path": "files/",
+      "format": "markdown",
+      "description": "Template guide documents covering layout reference, quick start, and universal presentation principles"
+    }
+  ],
+
+  "structure": {
+    "categories": [
+      {
+        "id": "template-guide",
+        "name": "Altium Template Guide",
+        "description": "Complete reference for all 42 layouts, placeholder indices, and code examples"
+      },
+      {
+        "id": "quick-start",
+        "name": "Quick Start",
+        "description": "5-minute workflow, layout cheat sheet, and common patterns"
+      },
+      {
+        "id": "universal-principles",
+        "name": "Universal Presentation Principles",
+        "description": "Content transformation principles, quality checklists, and meta-template methodology"
+      }
+    ]
+  },
+
+  "access_control": {
+    "default_level": "read-only",
+    "allowed_agents": ["presentation"],
+    "allowed_teams": ["altium-solutions", "wharfside-board-assistant"]
+  },
+
+  "notes": "Sourced from /Users/nickd/Workspaces/AltiumTestMCP/. The Altium_TEMPLATE.pptx file itself lives in agents/presentation/templates/ and at the MCP server path /Users/nickd/Workspaces/mcp_servers/Office-PowerPoint-MCP-Server/templates/Altium_TEMPLATE.pptx"
+}

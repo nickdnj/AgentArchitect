@@ -81,6 +81,11 @@
       "agent_id": "customer-support",
       "role": "Ongoing support, training enablement, health monitoring, and expansion identification",
       "context_override": null
+    },
+    {
+      "agent_id": "presentation",
+      "role": "Creates professional Altium-branded presentations using the corporate template with 42 layouts",
+      "context_override": null
     }
   ],
 
@@ -168,6 +173,11 @@
         "agent_id": "competitive-intel",
         "description": "Available on-demand throughout the sales process",
         "triggers": ["Competitive situation", "RFP with competitor mentions", "Objection handling needed"]
+      },
+      {
+        "agent_id": "presentation",
+        "description": "Available on-demand for creating Altium-branded presentations",
+        "triggers": ["Presentation needed", "Customer deck requested", "Internal briefing", "Deal review deck"]
       }
     ]
   },
