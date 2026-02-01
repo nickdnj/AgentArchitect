@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "last_updated": "2026-01-27",
+  "last_updated": "2026-02-01",
   "agents": [
     {
       "id": "monthly-bulletin",
@@ -256,6 +256,14 @@
       "folder": "agents/rag-search",
       "teams": ["wharfside-board-assistant"],
       "created": "2026-01-28",
+      "status": "active"
+    },
+    {
+      "id": "personal-assistant",
+      "name": "Max - Personal Assistant",
+      "folder": "agents/personal-assistant",
+      "teams": ["personal-assistant"],
+      "created": "2026-02-01",
       "status": "active"
     }
   ]

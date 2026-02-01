@@ -1,0 +1,24 @@
+{
+  "id": "personal-notes",
+  "name": "Personal Notes",
+  "description": "Persistent personal knowledge base for Max. Contains to-do lists, project notes, preferences, reminders, and any other personal information that should persist across sessions.",
+  "version": "1.0",
+  "created": "2026-02-01",
+
+  "content_type": "documents",
+
+  "sources": [
+    {
+      "type": "local",
+      "path": "files/",
+      "file_types": ["md"],
+      "organization": "category-based"
+    }
+  ],
+
+  "access_control": {
+    "default_level": "read-write",
+    "allowed_agents": ["personal-assistant"],
+    "allowed_teams": ["personal-assistant"]
+  }
+}

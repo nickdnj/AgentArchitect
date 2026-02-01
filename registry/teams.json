@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "last_updated": "2026-01-27",
+  "last_updated": "2026-02-01",
   "teams": [
     {
       "id": "wharfside-board-assistant",
@@ -24,6 +24,14 @@
       "folder": "teams/altium-solutions",
       "member_count": 15,
       "created": "2026-01-27",
+      "status": "active"
+    },
+    {
+      "id": "personal-assistant",
+      "name": "Personal Assistant Team",
+      "folder": "teams/personal-assistant",
+      "member_count": 1,
+      "created": "2026-02-01",
       "status": "active"
     }
   ]

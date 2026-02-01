@@ -1,0 +1,27 @@
+{
+  "id": "personal-assistant",
+  "name": "Personal Assistant Team",
+  "description": "Nick's personal assistant team led by Max. Handles research with persistent caching, email management, document creation, knowledge management, and task tracking.",
+  "version": "1.0",
+  "created": "2026-02-01",
+
+  "members": [
+    {
+      "agent_id": "personal-assistant",
+      "role": "Primary personal assistant - handles all requests, manages research cache and personal notes",
+      "context_override": null
+    }
+  ],
+
+  "shared_context": {
+    "buckets": ["research-cache", "personal-notes"],
+    "outputs_folder": "teams/personal-assistant/outputs"
+  },
+
+  "collaboration_rules": {
+    "coordination_mode": "direct",
+    "handoff_protocol": "none",
+    "output_sharing": "full",
+    "notification_email": "nickd@demarconet.com"
+  }
+}
