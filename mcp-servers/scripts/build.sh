@@ -39,6 +39,7 @@ build_image "mcp-gdrive" "$PROJECT_DIR/images/gdrive/"
 build_image "mcp-google-docs" "$PROJECT_DIR/images/google-docs/"
 build_image "mcp-chrome" "$PROJECT_DIR/images/chrome/"
 build_image "mcp-powerpoint" "$PROJECT_DIR/images/powerpoint/"
+build_image "mcp-gtasks" "$PROJECT_DIR/images/gtasks/"
 build_image "mcp-github" "$PROJECT_DIR/images/github/"
 
 echo "=== Build Summary ==="

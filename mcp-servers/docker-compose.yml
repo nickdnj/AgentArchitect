@@ -126,6 +126,23 @@ services:
       - ppt
       - all
 
+  # ========== Google Tasks MCP Server ==========
+  gtasks:
+    build:
+      context: ./images/gtasks
+      dockerfile: Dockerfile
+    image: mcp-gtasks:latest
+    container_name: mcp-gtasks
+    stdin_open: true
+    tty: false
+    volumes:
+      - ${MCP_GTASKS_CREDS:-~/.config/mcp-gtasks}:/mcp/credentials:rw
+    restart: "no"
+    profiles:
+      - gtasks
+      - tasks
+      - all
+
   # ========== GitHub MCP Server ==========
   github:
     build:

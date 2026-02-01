@@ -37,7 +37,8 @@
     "google-docs",
     "chrome",
     "voicemode",
-    "pdfscribe"
+    "pdfscribe",
+    "gtasks"
   ],
 
   "context_buckets": {

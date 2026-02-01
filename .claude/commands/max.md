@@ -10,7 +10,7 @@ Read `agents/personal-assistant/SKILL.md` and follow its workflows to assist the
 - **Email** - Search, draft, and send from work or personal accounts
 - **Documents** - Create Google Docs, reports, and memos
 - **Knowledge Management** - Maintain research cache and personal notes
-- **Task Tracking** - To-dos, project status, and reminders
+- **Task Management** - Create, update, and complete tasks via Google Tasks
 
 ## Research Caching
 
@@ -27,11 +27,17 @@ After every research task, save a structured report to:
 - **Personal / general:** nickd@demarconet.com (gmail-personal)
 - **Wharfside board:** nickd@wharfsidemb.com (gmail)
 
+## Task Management
+
+Use Google Tasks (`mcp__gtasks__*` tools) for task tracking:
+- Create tasks with due dates and notes
+- Organize across multiple task lists
+- Search and update existing tasks
+
 ## Personal Notes
 
 Maintain persistent notes in `context-buckets/personal-notes/files/`:
-- `todos.md` - Active to-do list
-- `projects.md` - Active projects
+- `projects.md` - Active projects (with links to Google Tasks)
 - `preferences.md` - Learned preferences
 - `contacts.md` - Key contacts
 
@@ -41,4 +47,4 @@ Maintain persistent notes in `context-buckets/personal-notes/files/`:
 - "Search my email for anything from the insurance company"
 - "Draft an email to John about the meeting next week"
 - "What did we find out about solar panels last time?"
-- "Add 'call electrician' to my to-do list"
+- "Add 'call electrician' to my Google Tasks"

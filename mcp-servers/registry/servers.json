@@ -84,6 +84,21 @@
       "tool_count": 37,
       "status": "active"
     },
+    "gtasks": {
+      "name": "Google Tasks MCP Server",
+      "package": "@brandcast_app/google-tasks-mcp@0.1.0",
+      "type": "nodejs",
+      "image": "mcp-gtasks:latest",
+      "accounts": ["default"],
+      "auth": "oauth",
+      "credentials": {
+        "pattern": "~/.config/mcp-gtasks/",
+        "required": [".env"],
+        "notes": "Requires GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_REFRESH_TOKEN in .env file"
+      },
+      "wrapper": "mcp-gtasks.sh",
+      "status": "active"
+    },
     "pdfscribe": {
       "name": "PDFScribe MCP Server",
       "description": "Transforms scanned PDFs into searchable Markdown with optional RAG ingestion",

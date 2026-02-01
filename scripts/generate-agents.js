@@ -31,6 +31,7 @@ const MCP_SERVER_MAPPING = {
   'powerpoint': 'mcp__powerpoint__*',
   'voicemode': 'mcp__voicemode__*',
   'pdfscribe': 'mcp__pdfscribe__*',
+  'gtasks': 'mcp__gtasks__*',
 };
 
 // Base tools that all agents should have access to

@@ -23,6 +23,10 @@
     "powerpoint": {
       "allowed_agents": [],
       "allowed_teams": []
+    },
+    "gtasks": {
+      "allowed_agents": [],
+      "allowed_teams": []
     }
   },
 
