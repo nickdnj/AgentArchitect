@@ -32,3 +32,6 @@ context-buckets/*/files/
 agents/*/reports/
 agents/*/outputs/
 teams/*/outputs/
+
+# Top-level outputs
+outputs/
