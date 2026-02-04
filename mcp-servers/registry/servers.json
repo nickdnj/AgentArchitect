@@ -99,6 +99,41 @@
       "wrapper": "mcp-gtasks.sh",
       "status": "active"
     },
+    "apple-reminders": {
+      "name": "Apple Reminders MCP Server",
+      "package": "custom (cloned from github.com/dbmcco/apple-reminders-mcp)",
+      "type": "nodejs",
+      "repository": "https://github.com/dbmcco/apple-reminders-mcp",
+      "install_path": "/Users/nickd/Workspaces/mcp_servers/apple-reminders-mcp",
+      "accounts": ["default"],
+      "auth": "none",
+      "credentials": {
+        "notes": "Uses macOS system permissions for Reminders.app access. Grant when prompted on first use."
+      },
+      "capabilities": [
+        "List all reminder lists",
+        "Get reminders with filtering",
+        "Create reminders with due dates and priorities",
+        "Update reminder properties",
+        "Delete reminders",
+        "Search reminders by text"
+      ],
+      "claude_code_config": {
+        "type": "stdio",
+        "command": "node",
+        "args": ["/Users/nickd/Workspaces/mcp_servers/apple-reminders-mcp/dist/index.js"]
+      },
+      "requires_build": true,
+      "tool_count": 6,
+      "platform": "macOS",
+      "status": "active",
+      "notes": [
+        "Not published to npm - cloned and built from source",
+        "Uses native AppleScript via osascript",
+        "No Docker needed - runs directly via Node.js",
+        "Requires Reminders.app permissions on first use"
+      ]
+    },
     "pdfscribe": {
       "name": "PDFScribe MCP Server",
       "description": "Transforms scanned PDFs into searchable Markdown with optional RAG ingestion",

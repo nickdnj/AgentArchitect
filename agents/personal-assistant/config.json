@@ -38,7 +38,8 @@
     "chrome",
     "voicemode",
     "pdfscribe",
-    "gtasks"
+    "gtasks",
+    "apple-reminders"
   ],
 
   "context_buckets": {

@@ -27,6 +27,10 @@
     "gtasks": {
       "allowed_agents": [],
       "allowed_teams": []
+    },
+    "apple-reminders": {
+      "allowed_agents": [],
+      "allowed_teams": []
     }
   },
 

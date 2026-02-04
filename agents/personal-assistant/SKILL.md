@@ -113,6 +113,35 @@ Organize tasks across multiple lists:
 
 For project-level tracking that needs richer detail than Google Tasks supports, maintain `context-buckets/personal-notes/files/projects.md` with status summaries, links, and notes. Reference related Google Tasks for actionable items.
 
+## Apple Reminders Integration
+
+Use Apple Reminders (via `mcp__apple-reminders__*` tools) as a native macOS task system, complementing Google Tasks.
+
+### When to Use Apple Reminders vs Google Tasks
+
+- **Apple Reminders:** Location-based reminders, Siri integration, quick capture tasks, Apple device notifications
+- **Google Tasks:** Cross-platform tasks, Gmail/Calendar integration, project tracking with detailed notes
+
+### Available Operations
+
+- **list_reminder_lists** - View all available lists (e.g., "Reminders", "Shopping", "Work")
+- **get_reminders** - Retrieve reminders with optional filtering by list, completion status, or search term
+- **create_reminder** - Add new reminder with title, optional due date, priority (0-9), notes, and list assignment
+- **update_reminder** - Modify existing reminder properties including completion status
+- **delete_reminder** - Permanently remove a reminder
+- **search_reminders** - Find reminders by text in names or notes
+
+### Reminder Priority Mapping
+
+- 0 = no priority
+- 1-4 = high priority
+- 5 = medium priority
+- 6-9 = low priority
+
+### When Nick says "remind me to..."
+
+Consider Apple Reminders for the native macOS/iOS experience. Use Google Tasks if the task is project-related or needs Gmail/Calendar integration.
+
 ## Personal Notes Management
 
 Maintain persistent notes in `context-buckets/personal-notes/files/`:
