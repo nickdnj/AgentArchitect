@@ -100,39 +100,34 @@
       "status": "active"
     },
     "apple-mcp": {
-      "name": "Apple MCP Server",
-      "package": "apple-mcp@latest",
+      "name": "Apple Events MCP Server",
+      "package": "mcp-server-apple-events",
       "type": "nodejs",
-      "runtime": "bun",
-      "repository": "https://github.com/supermemoryai/apple-mcp",
+      "version": "1.3.0",
+      "repository": "https://github.com/FradSer/mcp-server-apple-events",
       "accounts": ["default"],
       "auth": "none",
       "credentials": {
-        "notes": "Uses macOS system permissions. Grant access to Reminders, Calendar, Notes, etc. when prompted."
+        "notes": "Uses macOS EventKit + Swift binaries for Reminders/Calendar. Grant permissions when prompted."
       },
       "capabilities": [
-        "Reminders: create, search, list",
-        "Notes: create, search",
-        "Calendar: create events, search, list",
-        "Messages: send, read, schedule",
-        "Contacts: find, lookup",
-        "Mail: send, search, schedule",
-        "Maps: search, directions, favorites"
+        "Reminders: full CRUD with priorities, alarms, recurrence, location triggers, tags, subtasks",
+        "Calendar: create events, search, list (via EventKit)"
       ],
       "claude_code_config": {
         "type": "stdio",
-        "command": "bunx",
-        "args": ["--no-cache", "apple-mcp@latest"]
+        "command": "npx",
+        "args": ["-y", "mcp-server-apple-events"]
       },
       "platform": "macOS",
       "status": "active",
-      "stars": 3000,
-      "archived": "2026-01-01",
+      "stars": 15,
       "notes": [
-        "Archived repo but stable and battle-tested (3k stars)",
-        "Covers Reminders, Notes, Calendar, Messages, Contacts, Mail, Maps",
-        "Runs via bunx (requires bun runtime)",
-        "No Docker needed"
+        "Actively maintained (431 commits, v1.3.0)",
+        "Swift-compiled binaries for performance-critical operations",
+        "AppleScript fallback for permissions handling",
+        "Covers Reminders + Calendar via EventKit",
+        "No Docker needed - runs via npx"
       ]
     },
     "pdfscribe": {
