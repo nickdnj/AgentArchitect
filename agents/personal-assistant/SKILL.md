@@ -115,24 +115,31 @@ For project-level tracking that needs richer detail than Google Tasks supports, 
 
 ## Apple Native Apps Integration
 
-Use Apple's native apps (via `mcp__apple-mcp__*` tools) for macOS/iOS-native task management, notes, calendar, and more.
+Use Apple's native apps (via `mcp__apple-mcp__*` tools) for macOS/iOS-native task management and calendar.
 
-### Covered Apps
+### Available Tools
 
-- **Reminders** - Create, search, and list reminders
-- **Notes** - Create and search Apple Notes
-- **Calendar** - Create events, search schedules, list upcoming
-- **Messages** - Send and read iMessages
-- **Contacts** - Look up contact info
-- **Mail** - Send, search, check unread
-- **Maps** - Search locations, get directions
+- **reminders_tasks** - Full CRUD for reminders (read, create, update, delete). Supports filtering by list, search, completed items, priorities, due dates, notes
+- **reminders_lists** - Manage reminder lists (read, create, rename, delete)
+- **calendar_events** - Calendar events (read, create, update, delete). Supports filtering by calendar, search, date ranges, locations
+
+### Adding Items to a Reminder List
+
+**IMPORTANT: Always search for existing completed items before creating new ones.** Nick's reminder lists are used as recurring grocery/shopping lists. Items get completed when purchased and should be uncompleted (not re-created) when needed again.
+
+**Workflow when Nick asks to add an item to a list:**
+1. First, read the list with `showCompleted: true` and `search` for the item
+2. If a matching completed item exists, **update it** to set `completed: false` (uncheck it)
+3. Only create a new reminder if no matching item exists
+
+This prevents duplicate entries and preserves the item history.
 
 ### When to Use Apple Reminders vs Google Tasks
 
-- **Apple Reminders:** Location-based reminders, Siri integration, quick capture tasks, Apple device notifications
+- **Apple Reminders:** Grocery/shopping lists, location-based reminders, Siri integration, quick capture tasks, Apple device notifications
 - **Google Tasks:** Cross-platform tasks, Gmail/Calendar integration, project tracking with detailed notes
 
-### When Nick says "remind me to..."
+### When Nick says "remind me to..." or "add X to the list"
 
 Consider Apple Reminders for the native macOS/iOS experience. Use Google Tasks if the task is project-related or needs Gmail/Calendar integration.
 
