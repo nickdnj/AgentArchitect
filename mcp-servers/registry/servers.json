@@ -99,39 +99,40 @@
       "wrapper": "mcp-gtasks.sh",
       "status": "active"
     },
-    "apple-reminders": {
-      "name": "Apple Reminders MCP Server",
-      "package": "custom (cloned from github.com/dbmcco/apple-reminders-mcp)",
+    "apple-mcp": {
+      "name": "Apple MCP Server",
+      "package": "apple-mcp@latest",
       "type": "nodejs",
-      "repository": "https://github.com/dbmcco/apple-reminders-mcp",
-      "install_path": "/Users/nickd/Workspaces/mcp_servers/apple-reminders-mcp",
+      "runtime": "bun",
+      "repository": "https://github.com/supermemoryai/apple-mcp",
       "accounts": ["default"],
       "auth": "none",
       "credentials": {
-        "notes": "Uses macOS system permissions for Reminders.app access. Grant when prompted on first use."
+        "notes": "Uses macOS system permissions. Grant access to Reminders, Calendar, Notes, etc. when prompted."
       },
       "capabilities": [
-        "List all reminder lists",
-        "Get reminders with filtering",
-        "Create reminders with due dates and priorities",
-        "Update reminder properties",
-        "Delete reminders",
-        "Search reminders by text"
+        "Reminders: create, search, list",
+        "Notes: create, search",
+        "Calendar: create events, search, list",
+        "Messages: send, read, schedule",
+        "Contacts: find, lookup",
+        "Mail: send, search, schedule",
+        "Maps: search, directions, favorites"
       ],
       "claude_code_config": {
         "type": "stdio",
-        "command": "node",
-        "args": ["/Users/nickd/Workspaces/mcp_servers/apple-reminders-mcp/dist/index.js"]
+        "command": "bunx",
+        "args": ["--no-cache", "apple-mcp@latest"]
       },
-      "requires_build": true,
-      "tool_count": 6,
       "platform": "macOS",
       "status": "active",
+      "stars": 3000,
+      "archived": "2026-01-01",
       "notes": [
-        "Not published to npm - cloned and built from source",
-        "Uses native AppleScript via osascript",
-        "No Docker needed - runs directly via Node.js",
-        "Requires Reminders.app permissions on first use"
+        "Archived repo but stable and battle-tested (3k stars)",
+        "Covers Reminders, Notes, Calendar, Messages, Contacts, Mail, Maps",
+        "Runs via bunx (requires bun runtime)",
+        "No Docker needed"
       ]
     },
     "pdfscribe": {

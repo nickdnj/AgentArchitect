@@ -32,7 +32,7 @@ const MCP_SERVER_MAPPING = {
   'voicemode': 'mcp__voicemode__*',
   'pdfscribe': 'mcp__pdfscribe__*',
   'gtasks': 'mcp__gtasks__*',
-  'apple-reminders': 'mcp__apple-reminders__*',
+  'apple-mcp': 'mcp__apple-mcp__*',
 };
 
 // Base tools that all agents should have access to
