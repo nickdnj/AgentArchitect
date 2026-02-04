@@ -513,3 +513,76 @@ Generated files include:
 - **Source of truth is `agents/` directory**
 - Generated files are git-ignored (except `.gitkeep`)
 - Team orchestration still uses Agent Architect patterns
+
+---
+
+## OpenClaw Integration
+
+Agent Architect agents can be synced to OpenClaw's multi-file workspace format, enabling OpenClaw's multi-agent routing and skill system.
+
+### Architecture
+
+```
+agents/<agent-id>/              (SOURCE OF TRUTH)
+├── SKILL.md                    → Split into SOUL.md + AGENTS.md
+└── config.json                 → IDENTITY.md + TOOLS.md + MEMORY.md
+
+teams/<team-id>/
+└── team.json                   → Team workflow skills + dispatcher routing
+
+        ↓ generate (via /sync-openclaw)
+
+openclaw-output/
+├── openclaw.json               # Main config: dispatcher + bindings
+├── workspace-dispatcher/       # Central routing agent
+│   ├── SOUL.md                 # Archie-like dispatcher persona
+│   ├── AGENTS.md               # Team registry + routing logic
+│   ├── IDENTITY.md             # Agent Dispatcher identity
+│   ├── TOOLS.md                # Skill invocation docs
+│   ├── USER.md                 # Nick's user profile
+│   └── skills/                 # All agents + teams as callable skills
+│       ├── <agent-id>/SKILL.md # One per Agent Architect agent
+│       └── team-<id>/SKILL.md  # One per team workflow
+└── workspace-<agent-id>/       # Per-agent workspace (for standalone use)
+    ├── SOUL.md                 # Persona (from SKILL.md persona sections)
+    ├── AGENTS.md               # Operations (from SKILL.md other sections)
+    ├── IDENTITY.md             # Name, description, expertise
+    ├── TOOLS.md                # MCP server usage notes
+    ├── USER.md                 # User profile
+    └── MEMORY.md               # Context bucket summaries
+```
+
+### `/sync-openclaw` Command
+
+Regenerates all OpenClaw workspace files from Agent Architect definitions.
+
+**Usage:**
+```bash
+node scripts/generate-openclaw.js
+node scripts/generate-openclaw.js --agent <agent-id>
+node scripts/generate-openclaw.js --output ~/path/to/output
+```
+
+**What it does:**
+1. Reads all `agents/*/config.json` and `SKILL.md` files
+2. Reads all `teams/*/team.json` files
+3. Splits each SKILL.md into persona (SOUL.md) and operational (AGENTS.md) content
+4. Maps config.json to IDENTITY.md, TOOLS.md, and MEMORY.md
+5. Generates a dispatcher agent with all agents as skills
+6. Generates team workflow skills from team.json definitions
+7. Creates `openclaw.json` with agent list and default bindings
+
+**When to run:**
+- After creating or modifying agents
+- After updating team configurations
+- Before deploying to OpenClaw
+
+### Dispatcher Strategy
+
+OpenClaw routes messages by channel (WhatsApp → agent A, Slack → agent B). Agent Architect uses task-based routing. The sync bridges this gap with a **dispatcher agent**:
+
+- All channels route to the dispatcher by default
+- The dispatcher knows all agents and their capabilities
+- Each agent is available as a callable skill
+- Team workflows are also available as skills
+- Users can customize `openclaw.json` bindings to route specific channels directly to specific agents

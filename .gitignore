@@ -35,3 +35,6 @@ teams/*/outputs/
 
 # Top-level outputs
 outputs/
+
+# Generated OpenClaw workspaces (regenerate with /sync-openclaw)
+openclaw-output/
