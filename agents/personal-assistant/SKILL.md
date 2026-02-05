@@ -120,7 +120,7 @@ Use Apple's native apps (via `mcp__apple-mcp__*` tools) for macOS/iOS-native tas
 ### Available Tools
 
 - **reminders_tasks** - Full CRUD for reminders (read, create, update, delete). Supports filtering by list, search, completed items, priorities, due dates, notes
-- **reminders_lists** - Manage reminder lists (read, create, rename, delete)
+- **reminders_lists** - Manage reminder lists (read, rename, delete). **Note:** Creating new lists via the MCP server fails with a system error. If Nick wants a new list, ask him to create it manually in the Reminders app, then you can add items to it.
 - **calendar_events** - Calendar events (read, create, update, delete). Supports filtering by calendar, search, date ranges, locations
 
 ### Adding Items to a Reminder List
