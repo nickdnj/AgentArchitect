@@ -130,6 +130,37 @@
         "No Docker needed - runs via npx"
       ]
     },
+    "apple-contacts": {
+      "name": "Apple Contacts MCP Server",
+      "package": "contactbook (custom Swift build)",
+      "type": "swift",
+      "version": "0.1.0",
+      "repository": "https://github.com/RyanLisse/Contactbook",
+      "accounts": ["default"],
+      "auth": "none",
+      "credentials": {
+        "notes": "Uses Apple Contacts framework via Swift. Grant permissions when prompted."
+      },
+      "capabilities": [
+        "Contacts: list, search, get, create, update, delete",
+        "Groups: list groups, view group members",
+        "Phone lookup: reverse phone number search"
+      ],
+      "claude_code_config": {
+        "type": "stdio",
+        "command": "/Users/nickd/Workspaces/Contactbook/.build/release/contactbook",
+        "args": ["mcp", "serve"]
+      },
+      "platform": "macOS",
+      "status": "active",
+      "stars": 1,
+      "notes": [
+        "Lightweight Contacts-only MCP server",
+        "Built in Swift with native Contacts framework",
+        "Full CRUD plus group management",
+        "No Docker needed - local binary"
+      ]
+    },
     "pdfscribe": {
       "name": "PDFScribe MCP Server",
       "description": "Transforms scanned PDFs into searchable Markdown with optional RAG ingestion",

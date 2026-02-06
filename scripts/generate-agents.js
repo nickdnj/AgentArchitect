@@ -33,6 +33,7 @@ const MCP_SERVER_MAPPING = {
   'pdfscribe': 'mcp__pdfscribe__*',
   'gtasks': 'mcp__gtasks__*',
   'apple-mcp': 'mcp__apple-mcp__*',
+  'apple-contacts': 'mcp__apple-contacts__*',
 };
 
 // Base tools that all agents should have access to

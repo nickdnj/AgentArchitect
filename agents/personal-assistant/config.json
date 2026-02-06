@@ -39,7 +39,8 @@
     "voicemode",
     "pdfscribe",
     "gtasks",
-    "apple-mcp"
+    "apple-mcp",
+    "apple-contacts"
   ],
 
   "context_buckets": {
