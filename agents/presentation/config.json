@@ -9,7 +9,7 @@
     "capabilities": ["slide creation", "template application", "content structuring", "brand compliance", "multi-template support"]
   },
 
-  "mcp_servers": ["powerpoint"],
+  "mcp_servers": ["powerpoint", "openai-image"],
 
   "context_buckets": {
     "assigned": ["wharfside-docs", "altium-presentation-guide", "altium-playbook"],

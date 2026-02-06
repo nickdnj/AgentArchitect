@@ -40,7 +40,8 @@
     "pdfscribe",
     "gtasks",
     "apple-mcp",
-    "apple-contacts"
+    "apple-contacts",
+    "openai-image"
   ],
 
   "context_buckets": {

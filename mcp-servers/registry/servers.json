@@ -161,6 +161,37 @@
         "No Docker needed - local binary"
       ]
     },
+    "openai-image": {
+      "name": "OpenAI Image Generation MCP Server",
+      "package": "@lpenguin/openai-image-mcp",
+      "type": "nodejs",
+      "repository": "https://github.com/lpenguin/openai-image-mcp",
+      "accounts": ["default"],
+      "auth": "api_key",
+      "credentials": {
+        "required": ["OPENAI_API_KEY"],
+        "notes": "Uses OPENAI_API_KEY environment variable. Nick's Pro plan key is already in the shell environment."
+      },
+      "capabilities": [
+        "Image generation (gpt-image-1, gpt-image-1-mini, DALL-E 3, DALL-E 2)",
+        "Image editing (gpt-image-1)",
+        "Transparency support (transparent/opaque/auto)",
+        "Multiple output formats (PNG, JPEG, WebP)",
+        "Quality controls (low/medium/high/auto)",
+        "Size options (1024x1024, 1536x1024, 1024x1536, auto)"
+      ],
+      "claude_code_config": {
+        "type": "stdio",
+        "command": "npx",
+        "args": ["-y", "@lpenguin/openai-image-mcp"]
+      },
+      "status": "active",
+      "notes": [
+        "Most comprehensive OpenAI image MCP - supports all current models",
+        "No Docker needed - runs via npx",
+        "API key inherited from environment"
+      ]
+    },
     "pdfscribe": {
       "name": "PDFScribe MCP Server",
       "description": "Transforms scanned PDFs into searchable Markdown with optional RAG ingestion",

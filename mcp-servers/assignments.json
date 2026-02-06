@@ -1,7 +1,7 @@
 {
   "version": "1.0",
   "description": "MCP server access assignments for agents and teams",
-  "last_updated": "2026-01-25",
+  "last_updated": "2026-02-06",
 
   "servers": {
     "gmail": {
@@ -29,6 +29,10 @@
       "allowed_teams": []
     },
     "apple-mcp": {
+      "allowed_agents": [],
+      "allowed_teams": []
+    },
+    "openai-image": {
       "allowed_agents": [],
       "allowed_teams": []
     }

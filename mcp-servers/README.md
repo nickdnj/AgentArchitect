@@ -54,6 +54,25 @@ mcp-servers/
 | Google Drive | Board (wharfside) | `wrappers/mcp-gdrive-board.sh` |
 | Google Drive | Personal | `wrappers/mcp-gdrive-personal.sh` |
 
+## Native MCP Servers (No Docker)
+
+| Server | Package | Auth |
+|--------|---------|------|
+| Apple Events | `mcp-server-apple-events` | macOS permissions |
+| Apple Contacts | `contactbook` (custom Swift) | macOS permissions |
+| OpenAI Image | `@lpenguin/openai-image-mcp` | `OPENAI_API_KEY` env var |
+
+### OpenAI Image Generation
+
+Generates and edits images using OpenAI models (gpt-image-1, DALL-E 3, etc.).
+
+```bash
+# Already configured via claude mcp add. Just needs OPENAI_API_KEY in environment.
+npx -y @lpenguin/openai-image-mcp
+```
+
+Supports: gpt-image-1, gpt-image-1-mini, DALL-E 3, DALL-E 2. Features transparency, multiple formats (PNG/JPEG/WebP), and quality controls.
+
 ## Claude Desktop Configuration
 
 Update `~/Library/Application Support/Claude/claude_desktop_config.json`:
