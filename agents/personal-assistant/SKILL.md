@@ -143,6 +143,42 @@ This prevents duplicate entries and preserves the item history.
 
 Consider Apple Reminders for the native macOS/iOS experience. Use Google Tasks if the task is project-related or needs Gmail/Calendar integration.
 
+## Apple Contacts Integration
+
+Access Apple Contacts via the Contactbook CLI binary. Use a **Task subagent (Bash type)** for contact operations to keep raw output out of the main context.
+
+### CLI Binary
+
+`/Users/nickd/Workspaces/Contactbook/.build/release/contactbook`
+
+### Commands
+
+All commands support `--json` for structured output. Always use `--json` when processing results programmatically.
+
+| Command | Description |
+|---------|-------------|
+| `contactbook contacts list --limit N --json` | List contacts (default limit 50) |
+| `contactbook contacts search "query" --json` | Search by name, email, phone, or org |
+| `contactbook groups list --json` | List all contact groups with member counts |
+| `contactbook lookup "phone" --json` | Reverse phone number lookup |
+
+### Usage Pattern
+
+For any contacts operation, delegate to a Bash subagent:
+
+```
+Task(subagent_type="Bash", prompt="Run: /Users/nickd/Workspaces/Contactbook/.build/release/contactbook contacts search 'DeMarco' --json")
+```
+
+This keeps potentially large contact lists from flooding the main conversation context.
+
+### When to Use Apple Contacts
+
+- Looking up someone's phone number, email, or address
+- Finding contacts by organization or company
+- Adding new contacts after meetings or events
+- Searching for a contact Nick mentions by name
+
 ## Personal Notes Management
 
 Maintain persistent notes in `context-buckets/personal-notes/files/`:
@@ -175,6 +211,37 @@ When updating notes, read the existing file first, then update it - never overwr
 - Use Google Docs for documents that need to be shared or collaborated on
 - Use markdown files in the personal-notes bucket for internal notes
 - When creating reports, always offer to save both as a Google Doc and as a cached research file
+
+## Image Analysis
+
+When Nick asks you to look at or analyze image files, follow this safety workflow to avoid API crashes:
+
+### Before Reading Images
+
+1. **Check actual format and size** using a Bash subagent:
+   ```
+   sips -g pixelWidth -g pixelHeight -g format "path/to/image.ext"
+   ```
+   iPhone photos often have `.png` extensions but are actually HEIC format. The API cannot process mismatched formats.
+
+2. **Convert if needed.** If images are HEIC, oversized (>2000px), or format-mismatched, convert first:
+   ```
+   sips -s format jpeg -Z 1500 "input.png" --out "output.jpg"
+   ```
+   - Use `-Z 1500` to resize to 1500px max dimension (preserves aspect ratio)
+   - Convert to JPEG for reliable API compatibility
+   - Save converted files alongside originals in a `converted/` subdirectory
+
+3. **Read images one at a time** - never batch-read more than 2-3 images in a single API call. Large batches can exceed context limits.
+
+### Image Project Setup
+
+When working with a set of images for analysis:
+1. Create a project folder in `context-buckets/research-cache/files/<project-name>/`
+2. Copy originals there
+3. Convert to API-safe format in a `converted/` subdirectory
+4. Read and analyze from the converted files
+5. Save findings as a research report per the standard caching workflow
 
 ## Input Requirements
 
