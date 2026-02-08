@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "last_updated": "2026-02-01",
+  "last_updated": "2026-02-07",
   "agents": [
     {
       "id": "monthly-bulletin",
@@ -264,6 +264,14 @@
       "folder": "agents/personal-assistant",
       "teams": ["personal-assistant"],
       "created": "2026-02-01",
+      "status": "active"
+    },
+    {
+      "id": "youtube-creator",
+      "name": "YouTube Creator",
+      "folder": "agents/youtube-creator",
+      "teams": [],
+      "created": "2026-02-07",
       "status": "active"
     }
   ]

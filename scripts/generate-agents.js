@@ -34,6 +34,8 @@ const MCP_SERVER_MAPPING = {
   'gtasks': 'mcp__gtasks__*',
   'apple-mcp': 'mcp__apple-mcp__*',
   'apple-contacts': 'mcp__apple-contacts__*',
+  'video-editor': 'mcp__video-editor__*',
+  'openai-image': 'mcp__openai-image__*',
 };
 
 // Base tools that all agents should have access to

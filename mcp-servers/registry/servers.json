@@ -192,6 +192,41 @@
         "API key inherited from environment"
       ]
     },
+    "video-editor": {
+      "name": "FFmpeg Video Editor MCP Server",
+      "package": "video-editor==0.1.0 (from GitHub)",
+      "type": "python",
+      "repository": "https://github.com/Kush36Agrawal/Video_Editor_MCP",
+      "accounts": ["default"],
+      "auth": "none",
+      "credentials": {
+        "notes": "Requires FFmpeg installed in system PATH (brew install ffmpeg)"
+      },
+      "capabilities": [
+        "Video trimming and cutting",
+        "Video merging and concatenation",
+        "Format conversion",
+        "Audio extraction and mixing",
+        "Image-to-video conversion (Ken Burns effects)",
+        "Subtitle integration",
+        "Basic filters (brightness, contrast, pan/zoom)"
+      ],
+      "install": "uv pip install 'git+https://github.com/Kush36Agrawal/Video_Editor_MCP.git'",
+      "claude_code_config": {
+        "type": "stdio",
+        "command": "python",
+        "args": ["-c", "from video_editor.server import mcp; mcp.run(transport='stdio')"]
+      },
+      "status": "active",
+      "notes": [
+        "PyPI 'video-editor' package is a different tool - must install from GitHub",
+        "Entry point bug: use python -c import instead of 'video-editor' CLI",
+        "Wraps FFmpeg with natural language interface",
+        "Provides execute_ffmpeg tool",
+        "No Docker needed",
+        "Fallback: run ffmpeg directly via Bash"
+      ]
+    },
     "pdfscribe": {
       "name": "PDFScribe MCP Server",
       "description": "Transforms scanned PDFs into searchable Markdown with optional RAG ingestion",

@@ -1,0 +1,108 @@
+{
+  "id": "youtube-creator",
+  "name": "YouTube Creator",
+  "description": "General-purpose YouTube video production agent that handles the full pipeline from content planning through script writing, asset generation, video assembly, and metadata creation.",
+  "version": "1.0",
+
+  "expertise": {
+    "domains": [
+      "video-production",
+      "content-creation",
+      "script-writing",
+      "visual-storytelling",
+      "youtube-seo",
+      "audio-production"
+    ],
+    "capabilities": [
+      "video-outline-creation",
+      "narration-script-writing",
+      "storyboard-design",
+      "ai-image-generation",
+      "text-to-speech-narration",
+      "ffmpeg-video-assembly",
+      "ken-burns-effects",
+      "thumbnail-design",
+      "youtube-metadata-optimization",
+      "youtube-upload-via-chrome",
+      "kokoro-tts-fallback",
+      "ambient-music-generation",
+      "book-page-rendering"
+    ]
+  },
+
+  "mcp_servers": [
+    "openai-image",
+    "video-editor",
+    "voicemode",
+    "chrome",
+    "pdfscribe",
+    "google-docs",
+    "gmail-personal"
+  ],
+
+  "context_buckets": {
+    "assigned": [],
+    "access_level": "none"
+  },
+
+  "output": {
+    "folder": "~/Desktop/youtube-projects/",
+    "formats": ["mp4", "png", "json", "markdown"]
+  },
+
+  "collaboration": {
+    "can_request_from": ["web-research", "pdf-scribe"],
+    "provides_to": [],
+    "handoff_format": "structured-summary"
+  },
+
+  "trigger": {
+    "type": "on-demand",
+    "description": "Invoked when user wants to create a YouTube video on any topic"
+  },
+
+  "video_types": [
+    {
+      "id": "documentary",
+      "name": "Documentary/Explainer",
+      "typical_length_minutes": "8-15",
+      "description": "Narrated exploration of a topic with historical or educational visuals"
+    },
+    {
+      "id": "tutorial",
+      "name": "Tutorial/How-To",
+      "typical_length_minutes": "5-12",
+      "description": "Step-by-step instructional content with demonstrations"
+    },
+    {
+      "id": "showcase",
+      "name": "Showcase/Gallery",
+      "typical_length_minutes": "3-8",
+      "description": "Visual showcase with minimal narration, ideal for collections or portfolios"
+    },
+    {
+      "id": "listicle",
+      "name": "Listicle",
+      "typical_length_minutes": "5-10",
+      "description": "Numbered segment format for top-N style content"
+    },
+    {
+      "id": "narrative",
+      "name": "Story/Narrative",
+      "typical_length_minutes": "8-20",
+      "description": "Personal story or journey with atmospheric visuals and music"
+    }
+  ],
+
+  "defaults": {
+    "output_directory": "~/Desktop/youtube-projects",
+    "resolution": "1920x1080",
+    "fps": 30,
+    "encoding": "h264",
+    "audio_codec": "aac",
+    "audio_bitrate": "192k",
+    "video_bitrate": "8M",
+    "thumbnail_resolution": "1280x720",
+    "narration_speed_wpm": 150
+  }
+}

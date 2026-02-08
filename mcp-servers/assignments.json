@@ -35,6 +35,10 @@
     "openai-image": {
       "allowed_agents": [],
       "allowed_teams": []
+    },
+    "video-editor": {
+      "allowed_agents": [],
+      "allowed_teams": []
     }
   },
 
