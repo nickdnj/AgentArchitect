@@ -47,7 +47,7 @@ Found [N] memory files in [bucket-name]:
 
 1. 2026-02-04 - Goodbye Command Creation (session-logs)
    Session type: execution | Agents: Architect
-   Summary: Designed and implemented the /goodbye session persistence command...
+   Summary: Designed and implemented the /save session persistence command...
 
 2. 2026-02-01 - Garage Door Opener Research (research-cache)
    Session type: research | Agents: Max
@@ -72,7 +72,7 @@ When the user selects files:
 ### Special Cases
 
 **If no memory files are found:**
-- Report: "No memory files found in [bucket]. This is either a fresh topic or nothing has been persisted with /goodbye yet."
+- Report: "No memory files found in [bucket]. This is either a fresh topic or nothing has been persisted with /save yet."
 
 **If searching across all buckets returns many results (>10):**
 - Show only the 10 most recent
@@ -88,4 +88,4 @@ When the user selects files:
 - This command is read-only — it never modifies memory files
 - Loading files adds them to the current conversation context, which uses up context window
 - For large memory files, consider loading just the Summary and Open Items sections
-- Memory files are created by `/goodbye` — if none exist, suggest running `/goodbye` at the end of future sessions
+- Memory files are created by `/save` — if none exist, suggest running `/save` at the end of future sessions

@@ -1,10 +1,15 @@
-# Goodbye - Session Persistence
+# Save - Session Persistence
 
-Save the current session's context to memory before closing out.
+Save the current session's context to memory, commit all changes, and push to remote. Use this as a save point any time — mid-session when context is getting large, or at the end of a session.
 
 ## What This Does
 
-When invoked, this command analyzes the current conversation and persists key information as markdown files in the appropriate context buckets. This ensures continuity between sessions and prevents redundant research.
+When invoked, this command:
+1. Analyzes the conversation and persists key information as markdown files in the appropriate context buckets
+2. Stages and commits all uncommitted changes in the repo
+3. Pushes to the remote
+
+This ensures continuity between sessions and prevents losing any work.
 
 ## Procedure
 
@@ -85,13 +90,30 @@ If multiple distinct topics were covered for the same bucket, write separate fil
 
 ### Step 4: Update Bucket Registries
 
-If any new context buckets were created (like `session-logs`), update `registry/buckets.json`.
+If any new context buckets were created, update `registry/buckets.json`.
 
-### Step 5: Confirm and Summarize
+### Step 5: Stage & Commit All Changes
+
+1. Run `git status` to see all uncommitted changes (staged, unstaged, and untracked)
+2. Stage all changes — memory files, SKILL.md edits, config.json updates, and any other repo modifications made during the session
+3. Compose a descriptive commit message based on the session analysis:
+   - Summarize what was accomplished (e.g., "Add web-research agent and persist garage door research")
+   - Reference which agents/teams were involved if relevant
+   - Keep it concise (1-2 lines)
+4. Commit with the standard Co-Authored-By trailer
+5. If there are no changes to commit, skip this step
+
+### Step 6: Push to Remote
+
+1. Push to the current branch's remote tracking branch
+2. If push fails (auth issues, conflicts, etc.), note the error in the summary but don't block the rest of the save
+
+### Step 7: Confirm and Summarize
 
 Present a summary to the user showing:
-- How many memory files were written
-- Which context buckets received updates
+- How many memory files were written and to which context buckets
+- Git commit hash and summary of what was committed (or "No changes to commit")
+- Push status (success, failed with reason, or skipped)
 - Key open items that need attention next time
 - Any files or artifacts that were created during the session
 
@@ -99,7 +121,8 @@ Present a summary to the user showing:
 
 **If the session was trivial** (just a quick question, no meaningful research or work):
 - Skip writing memory files
-- Just confirm: "This session didn't produce anything worth persisting. Goodbye!"
+- Still run the git commit/push steps (there may be uncommitted changes from earlier work)
+- Confirm: "No session context to persist, but checked for uncommitted changes."
 
 **If research was conducted that duplicates an existing cache file:**
 - Update the existing file rather than creating a duplicate
@@ -116,4 +139,5 @@ Present a summary to the user showing:
 - Keep summaries concise but complete enough to be useful months later
 - Include enough context that a future session can pick up without re-reading the full conversation
 - Don't persist sensitive information (API keys, passwords) in memory files
-- If in voice mode, announce the summary verbally before closing
+- If in voice mode, announce the summary verbally
+- This command can be used mid-session as a save point — it does not end the conversation

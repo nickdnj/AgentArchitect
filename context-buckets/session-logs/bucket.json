@@ -1,7 +1,7 @@
 {
   "id": "session-logs",
   "name": "Session Logs",
-  "description": "Persistent session memory files created by the /goodbye command. Captures key findings, decisions, research, and open items from each session to enable continuity across conversations. Used as a catch-all for general or unaffiliated session data.",
+  "description": "Persistent session memory files created by the /save command. Captures key findings, decisions, research, and open items from each session to enable continuity across conversations. Used as a catch-all for general or unaffiliated session data.",
   "version": "1.0",
   "created": "2026-02-04",
 
