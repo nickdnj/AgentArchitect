@@ -45,7 +45,7 @@
   ],
 
   "context_buckets": {
-    "assigned": ["research-cache", "personal-notes"],
+    "assigned": ["research-cache", "personal-notes", "ai-journey"],
     "access_level": "read-write"
   },
 

@@ -1,0 +1,29 @@
+{
+  "id": "ai-journey",
+  "name": "AI Journey Research & Narrative",
+  "description": "Evidence, timeline, narrative drafts, and production assets for Nick's 3-year AI journey story. 6-episode YouTube micro-series.",
+  "version": "1.0",
+  "created": "2026-02-09",
+  "content_type": "mixed",
+  "sources": [
+    {
+      "type": "local",
+      "path": "files/",
+      "file_types": ["md", "json", "png", "jpg"],
+      "description": "Research documents, timelines, narrative drafts, and evidence"
+    }
+  ],
+  "organization": {
+    "categories": ["research", "timeline", "evidence", "narrative", "production"],
+    "naming_convention": "category/YYYY-MM-DD_slug.md"
+  },
+  "access_control": {
+    "default_level": "read-write",
+    "allowed_agents": ["personal-assistant", "youtube-creator"],
+    "allowed_teams": []
+  },
+  "metadata": {
+    "document_count": 0,
+    "last_updated": "2026-02-09"
+  }
+}

@@ -46,6 +46,15 @@
       "assigned_to": [],
       "created": "2026-02-04",
       "status": "active"
+    },
+    {
+      "id": "ai-journey",
+      "name": "AI Journey Research & Narrative",
+      "folder": "context-buckets/ai-journey",
+      "content_type": "mixed",
+      "assigned_to": ["personal-assistant", "youtube-creator"],
+      "created": "2026-02-09",
+      "status": "active"
     }
   ]
 }
