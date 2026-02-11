@@ -35,7 +35,6 @@
     "gmail-personal",
     "google-drive",
     "google-docs",
-    "chrome",
     "voicemode",
     "pdfscribe",
     "gtasks",
@@ -55,7 +54,7 @@
   },
 
   "collaboration": {
-    "can_request_from": [],
+    "can_request_from": ["chrome-browser"],
     "provides_to": [],
     "handoff_format": "structured-summary"
   },

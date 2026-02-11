@@ -21,7 +21,7 @@
     ]
   },
 
-  "mcp_servers": ["google-docs", "chrome", "powerpoint"],
+  "mcp_servers": ["google-docs", "powerpoint"],
 
   "tools": ["WebSearch", "WebFetch", "mcp__chrome__*", "mcp__google-docs-mcp__*", "mcp__powerpoint__*"],
 
@@ -37,7 +37,7 @@
   },
 
   "collaboration": {
-    "can_request_from": ["qualification-analyst", "competitive-intel"],
+    "can_request_from": ["qualification-analyst", "competitive-intel", "chrome-browser"],
     "provides_to": ["proposal-writer"],
     "handoff_format": "solution-design"
   },

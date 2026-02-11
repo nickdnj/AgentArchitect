@@ -1,0 +1,62 @@
+{
+  "id": "chrome-browser",
+  "name": "Chrome Browser",
+  "description": "Browser automation service agent that handles all Chrome MCP tasks for other agents.",
+  "version": "1.0",
+
+  "expertise": {
+    "domains": [
+      "browser-automation",
+      "web-scraping",
+      "form-filling",
+      "screenshot-capture"
+    ],
+    "capabilities": [
+      "page-navigation",
+      "form-automation",
+      "data-extraction",
+      "screenshot-capture",
+      "file-upload-download",
+      "multi-page-workflows"
+    ]
+  },
+
+  "mcp_servers": ["chrome"],
+
+  "context_buckets": {
+    "assigned": [],
+    "access_level": "none"
+  },
+
+  "output": {
+    "folder": "outputs/",
+    "formats": ["screenshot", "html-snapshot", "json", "markdown"]
+  },
+
+  "collaboration": {
+    "can_request_from": [],
+    "provides_to": [
+      "personal-assistant",
+      "youtube-creator",
+      "short-form-video",
+      "archivist",
+      "customer-support",
+      "infrastructure-specialist",
+      "erp-supplychain-specialist",
+      "plm-specialist",
+      "mcad-specialist",
+      "migration-specialist",
+      "ecad-specialist",
+      "competitive-intel",
+      "solution-architect",
+      "account-researcher",
+      "pdf-scribe"
+    ],
+    "handoff_format": "structured-results"
+  },
+
+  "trigger": {
+    "type": "on-demand",
+    "description": "Called by other agents when browser automation is needed"
+  }
+}

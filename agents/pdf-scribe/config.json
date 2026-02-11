@@ -23,8 +23,7 @@
   "mcp_servers": [
     "pdfscribe",
     "gmail",
-    "gmail-personal",
-    "chrome"
+    "gmail-personal"
   ],
 
   "context_buckets": {
@@ -45,7 +44,7 @@
   },
 
   "collaboration": {
-    "can_request_from": [],
+    "can_request_from": ["chrome-browser"],
     "provides_to": ["all"],
     "handoff_format": "structured-summary",
     "primary_collaborators": ["archivist", "email-research", "proposal-review"]

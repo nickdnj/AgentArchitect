@@ -42,7 +42,7 @@
   },
 
   "collaboration": {
-    "can_request_from": [],
+    "can_request_from": ["chrome-browser"],
     "provides_to": [],
     "handoff_format": "none"
   },

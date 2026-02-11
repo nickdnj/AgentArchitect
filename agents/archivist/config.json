@@ -9,7 +9,7 @@
     "capabilities": ["semantic document search", "context provision", "policy lookup", "historical research", "portal document sync", "scanned PDF transcription", "batch PDF processing", "RAG query", "vector database search"]
   },
 
-  "mcp_servers": ["google-docs", "chrome", "pdfscribe"],
+  "mcp_servers": ["google-docs", "pdfscribe"],
 
   "context_buckets": {
     "assigned": ["wharfside-docs"],
@@ -28,7 +28,7 @@
   },
 
   "collaboration": {
-    "can_request_from": [],
+    "can_request_from": ["chrome-browser"],
     "provides_to": ["monthly-bulletin", "proposal-review", "email-research", "presentation"],
     "handoff_format": "structured-summary"
   },

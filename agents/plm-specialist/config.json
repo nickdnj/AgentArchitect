@@ -22,7 +22,7 @@
     ]
   },
 
-  "mcp_servers": ["google-docs", "chrome"],
+  "mcp_servers": ["google-docs"],
 
   "tools": ["WebSearch", "WebFetch", "mcp__chrome__*", "mcp__google-docs-mcp__*"],
 
@@ -38,7 +38,7 @@
   },
 
   "collaboration": {
-    "can_request_from": ["deployment-manager"],
+    "can_request_from": ["deployment-manager", "chrome-browser"],
     "coordinates_with": ["ecad-specialist"],
     "provides_to": ["deployment-manager"],
     "handoff_format": "plm-config"

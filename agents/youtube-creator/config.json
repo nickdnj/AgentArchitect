@@ -34,7 +34,6 @@
     "openai-image",
     "video-editor",
     "voicemode",
-    "chrome",
     "pdfscribe",
     "google-docs",
     "gmail-personal"
@@ -51,8 +50,8 @@
   },
 
   "collaboration": {
-    "can_request_from": ["web-research", "pdf-scribe"],
-    "provides_to": [],
+    "can_request_from": ["web-research", "pdf-scribe", "chrome-browser"],
+    "provides_to": ["short-form-video"],
     "handoff_format": "structured-summary"
   },
 

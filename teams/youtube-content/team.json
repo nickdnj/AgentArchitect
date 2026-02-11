@@ -1,0 +1,32 @@
+{
+  "id": "youtube-content",
+  "name": "YouTube Content Team",
+  "description": "Video production and multi-platform short-form content strategy.",
+  "version": "1.0",
+  "created": "2026-02-11",
+
+  "members": [
+    {
+      "agent_id": "youtube-creator",
+      "role": "Full-length video production - script, assets, assembly, upload",
+      "context_override": null
+    },
+    {
+      "agent_id": "short-form-video",
+      "role": "Shorts/Reels/TikTok extraction and posting strategy",
+      "context_override": null
+    }
+  ],
+
+  "shared_context": {
+    "buckets": ["ai-journey"],
+    "outputs_folder": "teams/youtube-content/outputs"
+  },
+
+  "collaboration_rules": {
+    "coordination_mode": "sequential",
+    "handoff_protocol": "youtube-creator produces full video -> short-form-video extracts clips",
+    "output_sharing": "full",
+    "notification_email": "nickd@demarconet.com"
+  }
+}

@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "last_updated": "2026-02-07",
+  "last_updated": "2026-02-11",
   "agents": [
     {
       "id": "monthly-bulletin",
@@ -270,8 +270,24 @@
       "id": "youtube-creator",
       "name": "YouTube Creator",
       "folder": "agents/youtube-creator",
-      "teams": [],
+      "teams": ["youtube-content"],
       "created": "2026-02-07",
+      "status": "active"
+    },
+    {
+      "id": "chrome-browser",
+      "name": "Chrome Browser",
+      "folder": "agents/chrome-browser",
+      "teams": [],
+      "created": "2026-02-11",
+      "status": "active"
+    },
+    {
+      "id": "short-form-video",
+      "name": "Short-Form Video Strategy",
+      "folder": "agents/short-form-video",
+      "teams": ["youtube-content"],
+      "created": "2026-02-11",
       "status": "active"
     }
   ]

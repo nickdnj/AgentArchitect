@@ -21,7 +21,7 @@
     ]
   },
 
-  "mcp_servers": ["chrome", "google-docs"],
+  "mcp_servers": ["google-docs"],
 
   "tools": ["WebSearch", "WebFetch", "mcp__chrome__*", "mcp__google-docs-mcp__*"],
 
@@ -37,7 +37,7 @@
   },
 
   "collaboration": {
-    "can_request_from": [],
+    "can_request_from": ["chrome-browser"],
     "provides_to": ["solution-architect", "proposal-writer"],
     "handoff_format": "battle-card"
   },

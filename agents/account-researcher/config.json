@@ -21,7 +21,7 @@
     ]
   },
 
-  "mcp_servers": ["chrome", "gmail", "google-drive"],
+  "mcp_servers": ["gmail", "google-drive"],
 
   "tools": ["WebSearch", "WebFetch", "mcp__chrome__*", "mcp__gmail__*", "mcp__google-drive__*"],
 
@@ -37,7 +37,7 @@
   },
 
   "collaboration": {
-    "can_request_from": [],
+    "can_request_from": ["chrome-browser"],
     "provides_to": ["qualification-analyst"],
     "handoff_format": "account-brief"
   },
