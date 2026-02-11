@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The AI Migration Engine — White Paper</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap');
+
+  :root {
+    --navy: #0a1628;
+    --deep-blue: #1a365d;
+    --blue: #2b6cb0;
+    --teal: #0d7377;
+    --light-teal: #38b2ac;
+    --green: #38a169;
+    --gold: #d69e2e;
+    --red: #e53e3e;
+    --light-gray: #f7fafc;
+    --gray: #e2e8f0;
+    --dark-gray: #4a5568;
+    --text: #2d3748;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--text);
+    line-height: 1.7;
+    font-size: 16px;
+    background: #fff;
+  }
+
+  /* Cover Page */
+  .cover {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    overflow: hidden;
+    background: var(--navy);
+    page-break-after: always;
+  }
+  .cover-bg {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: url('images/00-cover.png');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.6;
+  }
+  .cover-content {
+    position: relative;
+    z-index: 2;
+    max-width: 800px;
+    padding: 40px;
+  }
+  .cover-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.25);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 8px 24px;
+    border-radius: 30px;
+    margin-bottom: 32px;
+  }
+  .cover h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 56px;
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.15;
+    margin-bottom: 24px;
+    text-shadow: 0 2px 40px rgba(0,0,0,0.3);
+  }
+  .cover h1 span {
+    background: linear-gradient(135deg, var(--light-teal), var(--gold));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .cover .subtitle {
+    font-size: 20px;
+    color: rgba(255,255,255,0.8);
+    font-weight: 300;
+    margin-bottom: 48px;
+    line-height: 1.6;
+  }
+  .cover-meta {
+    color: rgba(255,255,255,0.5);
+    font-size: 14px;
+  }
+  .cover-meta strong { color: rgba(255,255,255,0.7); }
+
+  /* Main Content */
+  .content {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 60px 40px;
+  }
+
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--deep-blue);
+    margin: 60px 0 24px 0;
+    line-height: 1.2;
+    page-break-after: avoid;
+  }
+  h2:first-of-type { margin-top: 0; }
+
+  h3 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--teal);
+    margin: 40px 0 16px 0;
+    page-break-after: avoid;
+  }
+
+  h4 {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--dark-gray);
+    margin: 28px 0 12px 0;
+  }
+
+  p {
+    margin-bottom: 16px;
+    color: var(--text);
+  }
+
+  .lead {
+    font-size: 19px;
+    font-weight: 400;
+    color: var(--dark-gray);
+    line-height: 1.8;
+    margin-bottom: 24px;
+  }
+
+  /* Callout boxes */
+  .callout {
+    background: linear-gradient(135deg, #ebf8ff, #f0fff4);
+    border-left: 4px solid var(--teal);
+    padding: 24px 28px;
+    margin: 32px 0;
+    border-radius: 0 12px 12px 0;
+    page-break-inside: avoid;
+  }
+  .callout p { margin-bottom: 8px; }
+  .callout p:last-child { margin-bottom: 0; }
+  .callout strong { color: var(--deep-blue); }
+
+  .callout-red {
+    background: linear-gradient(135deg, #fff5f5, #fffaf0);
+    border-left: 4px solid var(--red);
+  }
+
+  .callout-gold {
+    background: linear-gradient(135deg, #fffff0, #fffaf0);
+    border-left: 4px solid var(--gold);
+  }
+
+  /* Stats row */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin: 40px 0;
+    page-break-inside: avoid;
+  }
+  .stat {
+    text-align: center;
+    padding: 28px 16px;
+    background: var(--light-gray);
+    border-radius: 12px;
+    border: 1px solid var(--gray);
+  }
+  .stat-value {
+    font-size: 36px;
+    font-weight: 800;
+    color: var(--deep-blue);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .stat-label {
+    font-size: 13px;
+    color: var(--dark-gray);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* Images */
+  .figure {
+    margin: 40px 0;
+    page-break-inside: avoid;
+  }
+  .figure img {
+    width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  }
+  .figure-caption {
+    text-align: center;
+    font-size: 14px;
+    color: var(--dark-gray);
+    font-style: italic;
+    margin-top: 12px;
+  }
+
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 24px 0;
+    font-size: 15px;
+    page-break-inside: avoid;
+  }
+  thead th {
+    background: var(--deep-blue);
+    color: #fff;
+    padding: 14px 16px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  thead th:first-child { border-radius: 8px 0 0 0; }
+  thead th:last-child { border-radius: 0 8px 0 0; }
+  tbody td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--gray);
+  }
+  tbody tr:nth-child(even) { background: var(--light-gray); }
+  tbody tr:hover { background: #ebf8ff; }
+
+  /* Lists */
+  ul, ol {
+    margin: 16px 0 16px 24px;
+  }
+  li {
+    margin-bottom: 8px;
+    color: var(--text);
+  }
+  li strong { color: var(--deep-blue); }
+
+  /* Divider */
+  hr {
+    border: none;
+    height: 2px;
+    background: linear-gradient(to right, var(--teal), var(--gold));
+    margin: 60px 0;
+    border-radius: 2px;
+  }
+
+  /* Page break helper */
+  .page-break { page-break-before: always; }
+
+  /* Print styles */
+  @media print {
+    .cover { min-height: auto; padding: 100px 40px; }
+    .content { padding: 40px 20px; }
+    h2 { font-size: 28px; margin-top: 40px; }
+    .stats { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  /* Quote */
+  blockquote {
+    border-left: 4px solid var(--gold);
+    padding: 20px 28px;
+    margin: 32px 0;
+    background: #fffff0;
+    border-radius: 0 12px 12px 0;
+    font-size: 18px;
+    font-style: italic;
+    color: var(--dark-gray);
+  }
+  blockquote cite {
+    display: block;
+    font-style: normal;
+    font-size: 14px;
+    color: var(--dark-gray);
+    margin-top: 12px;
+    font-weight: 600;
+  }
+
+  /* Two column */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    margin: 32px 0;
+  }
+  .col {
+    padding: 24px;
+    background: var(--light-gray);
+    border-radius: 12px;
+    border: 1px solid var(--gray);
+  }
+  .col h4 { margin-top: 0; }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 40px;
+    color: var(--dark-gray);
+    font-size: 13px;
+    border-top: 1px solid var(--gray);
+    margin-top: 60px;
+  }
+</style>
+</head>
+<body>
+
+<!-- ============================================ -->
+<!-- COVER PAGE -->
+<!-- ============================================ -->
+<div class="cover">
+  <div class="cover-bg"></div>
+  <div class="cover-content">
+    <div class="cover-badge">White Paper &mdash; February 2026</div>
+    <h1>The <span>AI Migration Engine</span></h1>
+    <p class="subtitle">
+      An AI-Powered Platform for Frictionless Enterprise Migration to Altium,<br>
+      Orchestrated by CustomerNode
+    </p>
+    <p class="cover-meta">
+      <strong>Confidential</strong> &mdash; For Internal Discussion
+    </p>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- EXECUTIVE SUMMARY -->
+<!-- ============================================ -->
+<div class="content">
+
+<h2>Executive Summary</h2>
+
+<p class="lead">
+  The enterprise EDA migration market has a $500M+ problem with no AI solution. Every large company that adopts Altium faces the same wall: converting decades of legacy PCB designs, libraries, and workflows from Cadence, Siemens, Zuken, and others is a manual, expensive, multi-month ordeal that kills deals and slows adoption.
+</p>
+
+<p class="lead">
+  We propose building the <strong>AI Migration Engine</strong> &mdash; an agentic platform that automates enterprise EDA migration end-to-end, from first sales touch through ongoing success. Powered by the Altium 365 SDK, orchestrated by CustomerNode's journey platform, and driven by 22+ specialized AI agents, this system would turn a 6-18 month consulting engagement into a 2-4 week automated process.
+</p>
+
+<div class="callout">
+  <p><strong>The pitch to enterprise customers:</strong></p>
+  <p><em>"Give us your PCB designs and libraries. In weeks &mdash; not months &mdash; we'll give you a fully working Altium environment that mirrors your existing setup, validated and ready for your engineers."</em></p>
+</div>
+
+<div class="stats">
+  <div class="stat">
+    <div class="stat-value">$0</div>
+    <div class="stat-label">AI Migration Tools Exist Today</div>
+  </div>
+  <div class="stat">
+    <div class="stat-value">14+</div>
+    <div class="stat-label">Legacy EDA Platforms Supported</div>
+  </div>
+  <div class="stat">
+    <div class="stat-value">80%</div>
+    <div class="stat-label">Cost Reduction Target</div>
+  </div>
+  <div class="stat">
+    <div class="stat-value">10x</div>
+    <div class="stat-label">Faster Than Manual Migration</div>
+  </div>
+</div>
+
+<hr>
+
+<!-- ============================================ -->
+<!-- THE PROBLEM -->
+<!-- ============================================ -->
+<h2>The Problem: Migration Is the #1 Barrier to Enterprise Altium Adoption</h2>
+
+<p>
+  Altium has transformed from a seat-based PCB design tool into a full enterprise platform. With the Renesas acquisition ($9.1B, August 2024), the launch of Altium Discover/Develop/Agile (October 2025), and Renesas 365 arriving in early 2026, the product is ready for the enterprise.
+</p>
+
+<p>
+  But the enterprise isn't ready for the migration. Here's why:
+</p>
+
+<div class="figure">
+  <img src="images/01-migration-crisis.png" alt="The Enterprise EDA Migration Crisis">
+  <p class="figure-caption">Figure 1: The migration wall between legacy EDA tools and Altium adoption</p>
+</div>
+
+<h3>The Pain Is Real and Quantifiable</h3>
+
+<p>
+  Enterprise customers considering Altium face a migration wall that kills deals and delays adoption:
+</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Pain Point</th>
+      <th>Impact</th>
+      <th>Current Solution</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Library conversion</strong></td>
+      <td>1-2 days per 5-day project; months for enterprise-scale libraries</td>
+      <td>Manual, one component at a time</td>
+    </tr>
+    <tr>
+      <td><strong>Design fidelity loss</strong></td>
+      <td>Copper pours, pad stacks, design rules corrupted in translation</td>
+      <td>Manual post-import cleanup by engineers</td>
+    </tr>
+    <tr>
+      <td><strong>Design rule translation</strong></td>
+      <td>Each EDA tool has a fundamentally different rule model</td>
+      <td>Manual recreation in Altium's Rules Editor</td>
+    </tr>
+    <tr>
+      <td><strong>Multi-site rollout</strong></td>
+      <td>Dual-tool maintenance, staggered adoption, interop issues</td>
+      <td>6-18 months of phased deployment</td>
+    </tr>
+    <tr>
+      <td><strong>Training &amp; adoption</strong></td>
+      <td>3-6 month productivity dip; engineer resistance</td>
+      <td>Classroom training, hope for adoption</td>
+    </tr>
+    <tr>
+      <td><strong>Cost</strong></td>
+      <td>$150-300/hr consulting fees; $200K+ per enterprise migration</td>
+      <td>Fragmented partner ecosystem</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout-red callout">
+  <p><strong>Critical gap:</strong> Altium has no dedicated enterprise migration services offering. Migration support is fragmented across partners with varying levels of capability. Meanwhile, AI startups like Quilter ($25M Series B), CELUS ($25M), DeepPCB, and AutoCuro are all building AI for PCB <em>design</em> &mdash; but <strong>none are building AI for migration</strong>.</p>
+  <p>This is the single largest unaddressed gap in the EDA market.</p>
+</div>
+
+<hr>
+
+<!-- ============================================ -->
+<!-- THE VISION -->
+<!-- ============================================ -->
+<h2>The Vision: A Self-Deploying AI Migration Engine</h2>
+
+<p class="lead">
+  We envision a platform where AI agents, compute, and tokens do the heavy lifting &mdash; and humans supervise, guide, and validate. A system that gets smarter with every migration, until the 50th Cadence migration takes a fraction of the effort of the 5th.
+</p>
+
+<div class="figure">
+  <img src="images/04-before-after.png" alt="Before and After: Manual vs AI-Powered Migration">
+  <p class="figure-caption">Figure 2: The transformation from manual consulting engagements to AI-powered migration</p>
+</div>
+
+<h3>The Core Idea</h3>
+
+<p>
+  Combine three powerful technologies into a unified platform:
+</p>
+
+<div class="two-col">
+  <div class="col">
+    <h4>CustomerNode</h4>
+    <p>Customer journey orchestration platform with 50+ AI agents. Manages the buyer-seller relationship from first touch through ongoing success. Solves the "Bosch problem" &mdash; unifying fragmented enterprise identities across Salesforce.</p>
+    <p><strong>Role:</strong> Journey orchestration, entity resolution, buyer-seller alignment</p>
+  </div>
+  <div class="col">
+    <h4>Altium 365 SDK/API</h4>
+    <p>Direct programmatic access to Altium's platform &mdash; import wizards, library management, workspace provisioning, design validation, and more.</p>
+    <p><strong>Role:</strong> Conversion engine, validation pipeline, environment provisioning</p>
+  </div>
+</div>
+
+<div class="two-col">
+  <div class="col">
+    <h4>AI Agent Team</h4>
+    <p>22+ specialized agents spanning pre-sales, migration, and post-deployment. Each agent is an expert in its domain &mdash; from qualification analysis to library translation to health monitoring.</p>
+    <p><strong>Role:</strong> Domain expertise, orchestration, exception handling, continuous learning</p>
+  </div>
+  <div class="col">
+    <h4>Migration Knowledge Base</h4>
+    <p>A compound learning system that grows with every migration. Component mappings, conversion patterns, effort estimates &mdash; all anonymized and shared across engagements.</p>
+    <p><strong>Role:</strong> Institutional memory, prediction, acceleration</p>
+  </div>
+</div>
+
+<blockquote>
+  "The traditional model asks: how many consultants do we need? The new model asks: how much compute do we need? The answer is always cheaper, faster, and more scalable."
+</blockquote>
+
+<hr>
+
+<!-- ============================================ -->
+<!-- HOW IT WORKS -->
+<!-- ============================================ -->
+
+<h2>How It Works: The Customer Journey</h2>
+
+<p class="lead">
+  The platform spans the entire customer lifecycle &mdash; not just the technical migration, but everything from identifying the enterprise target to monitoring long-term adoption health.
+</p>
+
+<div class="figure">
+  <img src="images/03-customer-journey.png" alt="End-to-End Customer Journey">
+  <p class="figure-caption">Figure 3: The complete customer journey, orchestrated by CustomerNode with AI agents at every stage</p>
+</div>
+
+<h3>Stage-by-Stage Breakdown</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Stage</th>
+      <th>AI Agent(s)</th>
+      <th>What Happens</th>
+      <th>Output</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Discovery</strong></td>
+      <td>Account Researcher</td>
+      <td>Identifies enterprise targets, maps their EDA stack, finds migration triggers (M&amp;A, tool EOL, cost pressure)</td>
+      <td>Account Brief</td>
+    </tr>
+    <tr>
+      <td><strong>Qualification</strong></td>
+      <td>Qualification Analyst</td>
+      <td>MEDDPICC scoring, technical fit assessment, ICP matching with KB-backed pattern recognition</td>
+      <td>Qualification Scorecard</td>
+    </tr>
+    <tr>
+      <td><strong>Solution Design</strong></td>
+      <td>Solution Architect + Value Engineer</td>
+      <td>Technical solution design with migration scope estimate; ROI model and business case</td>
+      <td>Solution Design + Business Case</td>
+    </tr>
+    <tr>
+      <td><strong>Proposal</strong></td>
+      <td>Proposal Writer + Competitive Intel</td>
+      <td>Auto-populated migration scope from discovery; competitive differentiation</td>
+      <td>Proposal / RFP Response</td>
+    </tr>
+    <tr>
+      <td><strong>Close</strong></td>
+      <td>Deal Strategist</td>
+      <td>Negotiation playbook, close plan, stakeholder alignment via CustomerNode shared journey</td>
+      <td>Close Plan + CRM Notes</td>
+    </tr>
+    <tr>
+      <td><strong>Migration</strong></td>
+      <td>Library Translator + Design Converter</td>
+      <td>Automated ingestion, conversion via A365 SDK, AI-powered exception handling</td>
+      <td>Converted Altium Environment</td>
+    </tr>
+    <tr>
+      <td><strong>Validation</strong></td>
+      <td>Validation Orchestrator</td>
+      <td>Netlist diff, BOM compare, visual overlay, DRC &mdash; automated multi-layer verification</td>
+      <td>Validation Report</td>
+    </tr>
+    <tr>
+      <td><strong>Deployment</strong></td>
+      <td>Deployment Manager + Domain Specialists</td>
+      <td>Workspace provisioning, SSO setup, PLM/MCAD/ERP integration, user rollout</td>
+      <td>Live Environment</td>
+    </tr>
+    <tr>
+      <td><strong>Ongoing Success</strong></td>
+      <td>Training Agent + Health Monitor</td>
+      <td>Personalized learning paths, adoption tracking, proactive issue detection, expansion opportunities</td>
+      <td>Health Reports + Expansion Recommendations</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout">
+  <p><strong>Key insight:</strong> CustomerNode's shared buyer-seller journey model means the customer can see their migration progress in real time &mdash; not through status update emails, but through a live, AI-guided dashboard they navigate alongside us.</p>
+</div>
+
+<hr>
+
+<!-- ============================================ -->
+<!-- THE MIGRATION ENGINE -->
+<!-- ============================================ -->
+
+<h2>The Migration Engine: Technical Deep Dive</h2>
+
+<p class="lead">
+  The heart of the platform is the automated migration pipeline &mdash; a system that ingests legacy EDA data, converts it through the Altium 365 SDK, validates the output, and learns from every conversion.
+</p>
+
+<div class="figure">
+  <img src="images/05-migration-pipeline.png" alt="Migration Engine Pipeline">
+  <p class="figure-caption">Figure 4: The five-stage migration pipeline with continuous learning feedback loop</p>
+</div>
+
+<h3>Stage 1: Ingest</h3>
+<p>
+  Enterprise customers upload their legacy design files through a secure portal. The system automatically detects file formats, tool versions, and project structures across 14+ supported EDA platforms including Cadence Allegro/OrCAD, Siemens Xpedition/PADS, Zuken CADSTAR/CR-5000, EAGLE, and KiCad.
+</p>
+
+<h3>Stage 2: Analyze</h3>
+<p>
+  AI agents perform a comprehensive pre-migration assessment:
+</p>
+<ul>
+  <li><strong>Complexity scoring</strong> &mdash; Estimate conversion difficulty per design</li>
+  <li><strong>Knowledge Base lookup</strong> &mdash; Find component mappings from previous migrations</li>
+  <li><strong>Risk identification</strong> &mdash; Flag known problem areas (copper pours, complex pad stacks, custom footprints)</li>
+  <li><strong>Effort prediction</strong> &mdash; Generate time and cost estimates based on historical data</li>
+</ul>
+
+<h3>Stage 3: Convert</h3>
+<p>
+  The conversion engine leverages the <strong>Altium 365 SDK</strong> directly &mdash; not screen scraping, not approximation, but native API-driven conversion that produces guaranteed-valid Altium output. AI agents orchestrate the process and handle exceptions:
+</p>
+<ul>
+  <li><strong>Library translation</strong> &mdash; Symbols, footprints, 3D models, parametric data</li>
+  <li><strong>Schematic conversion</strong> &mdash; Hierarchical designs, multi-sheet, variants</li>
+  <li><strong>PCB layout migration</strong> &mdash; Copper pours, routing, planes, board shape</li>
+  <li><strong>Design rule translation</strong> &mdash; Semantic mapping between different rule models (not just syntactic copy)</li>
+</ul>
+
+<div class="callout-gold callout">
+  <p><strong>The compound learning advantage:</strong> Every migration enriches the Knowledge Base. Component mappings, conversion patterns, and effort data are anonymized and shared. The 50th Cadence migration is dramatically faster and more accurate than the 5th. This compounds into an unassailable competitive moat.</p>
+</div>
+
+<h3>Stage 4: Validate</h3>
+<p>
+  Multi-layer automated validation ensures conversion accuracy:
+</p>
+<ul>
+  <li><strong>Netlist comparison</strong> &mdash; Verify every electrical connection matches the original</li>
+  <li><strong>BOM validation</strong> &mdash; Ensure all components, values, and parameters transferred</li>
+  <li><strong>Visual overlay</strong> &mdash; Automated comparison of PCB layouts for geometric accuracy</li>
+  <li><strong>Design Rule Check</strong> &mdash; Full DRC on converted designs</li>
+  <li><strong>Confidence scoring</strong> &mdash; Flag low-confidence conversions for human review</li>
+</ul>
+
+<h3>Stage 5: Deliver</h3>
+<p>
+  Converted designs are delivered as a fully configured Altium 365 workspace:
+</p>
+<ul>
+  <li>Organized project structure matching the customer's original hierarchy</li>
+  <li>Centralized, version-controlled library in the workspace vault</li>
+  <li>Detailed migration report explaining every conversion decision</li>
+  <li>Training materials personalized to the customer's specific design patterns</li>
+</ul>
+
+<hr>
+
+<!-- ============================================ -->
+<!-- ARCHITECTURE -->
+<!-- ============================================ -->
+
+<h2>Platform Architecture</h2>
+
+<p class="lead">
+  The system is built on four planes: orchestration, data, processing, and presentation &mdash; with CustomerNode and the Altium 365 SDK as the two primary integration points.
+</p>
+
+<div class="figure">
+  <img src="images/02-system-architecture.png" alt="System Architecture">
+  <p class="figure-caption">Figure 5: Four-plane platform architecture</p>
+</div>
+
+<h3>Orchestration Plane</h3>
+<p>
+  The brain of the system. CustomerNode manages the customer journey and buyer-seller alignment. The Agent Orchestrator dispatches AI agents from three pools based on journey stage:
+</p>
+<ul>
+  <li><strong>Pre-Sales Pool</strong> &mdash; Account Researcher, Qualification Analyst, Solution Architect, Value Engineer, Deal Strategist, Proposal Writer, Competitive Intel</li>
+  <li><strong>Migration Pool</strong> &mdash; Library Translator, Design Converter, Validation Orchestrator</li>
+  <li><strong>Post-Deployment Pool</strong> &mdash; Deployment Manager, Training Agent, Health Monitor, Support Agent, Expansion Scout</li>
+</ul>
+
+<h3>Data Plane</h3>
+<p>
+  The memory of the system. A unified customer knowledge graph resolves entity fragmentation (one "Bosch," not hundreds of Salesforce fragments). The Migration Knowledge Base stores anonymized component mappings, conversion patterns, and historical effort data.
+</p>
+
+<h3>Processing Plane</h3>
+<p>
+  The muscle. Conversion and validation workers powered by the Altium 365 SDK process design files at scale. With direct API access, the platform bypasses GUI limitations and operates at machine speed.
+</p>
+
+<h3>Presentation Plane</h3>
+<p>
+  The face. A customer-facing migration portal (integrated with CustomerNode's shared journey view) provides real-time progress visibility. An internal dashboard gives the team operational insight.
+</p>
+
+<hr>
+
+<!-- ============================================ -->
+<!-- CustomerNode Integration -->
+<!-- ============================================ -->
+
+<h2>CustomerNode: The Journey Orchestrator</h2>
+
+<p class="lead">
+  CustomerNode solves two critical problems that no CRM addresses: the misalignment between buyer and seller processes, and the fragmentation of enterprise customer identity.
+</p>
+
+<h3>Solving the "Bosch Problem"</h3>
+<p>
+  Altium historically sold individual seats transactionally. The result: a company like Bosch appears hundreds of times across Salesforce &mdash; different names, departments, subsidiaries, divisions. No single source of truth for the enterprise.
+</p>
+<p>
+  CustomerNode's entity resolution creates a <strong>unified customer identity</strong> that consolidates all touchpoints, history, and context into a single navigable graph. When a Migration Agent needs to know "what EDA tools does Bosch use across all divisions?", the answer exists in one place.
+</p>
+
+<h3>Shared Buyer-Seller Journey</h3>
+<p>
+  Traditional enterprise sales: the seller has a pipeline in Salesforce, the buyer has an evaluation spreadsheet, and neither can see the other's process. CustomerNode creates a single shared journey where both parties navigate together &mdash; with 50+ contextual AI agents providing guidance, generating documents, and keeping momentum.
+</p>
+<p>
+  For enterprise Altium migrations, this means:
+</p>
+<ul>
+  <li>The customer sees their migration progress in real time</li>
+  <li>AI agents on both sides stay synchronized</li>
+  <li>Stakeholder alignment is maintained across 60-150 touchpoints</li>
+  <li>Documents (SOWs, migration plans, validation reports) are auto-generated and shared</li>
+</ul>
+
+<h3>First-Party AI: Complementary Agent Ecosystems</h3>
+<p>
+  CustomerNode's 50+ agents handle journey orchestration. Our domain agents handle Altium-specific execution. The two ecosystems are complementary:
+</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>CustomerNode Agents</th>
+      <th>Altium Domain Agents</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>"What should happen at this journey stage?"</td>
+      <td>"How do we do the Altium-specific work?"</td>
+    </tr>
+    <tr>
+      <td>Discovery guides, SOW generators, predictive insights</td>
+      <td>Library translators, design converters, validation engines</td>
+    </tr>
+    <tr>
+      <td>Buyer-seller alignment, stakeholder management</td>
+      <td>Migration execution, technical integration</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr>
+
+<!-- ============================================ -->
+<!-- MARKET OPPORTUNITY -->
+<!-- ============================================ -->
+
+<h2>Market Opportunity</h2>
+
+<p class="lead">
+  The EDA market is projected to reach $30.7 billion by 2031 at 8.1% CAGR. Enterprise migration is a critical friction point with zero AI-powered solutions addressing it today.
+</p>
+
+<div class="figure">
+  <img src="images/06-market-opportunity.png" alt="Market Opportunity">
+  <p class="figure-caption">Figure 6: The AI migration gap in the EDA competitive landscape</p>
+</div>
+
+<h3>Competitive Landscape</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Company</th>
+      <th>Focus</th>
+      <th>Funding</th>
+      <th>Migration?</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Quilter</strong></td>
+      <td>AI autonomous PCB layout</td>
+      <td>$25M Series B</td>
+      <td>No</td>
+    </tr>
+    <tr>
+      <td><strong>CELUS</strong></td>
+      <td>AI schematic generation</td>
+      <td>$25M</td>
+      <td>No</td>
+    </tr>
+    <tr>
+      <td><strong>DeepPCB</strong></td>
+      <td>AI cloud routing</td>
+      <td>Undisclosed</td>
+      <td>No</td>
+    </tr>
+    <tr>
+      <td><strong>AutoCuro</strong></td>
+      <td>AI-assisted routing co-pilot</td>
+      <td>Undisclosed</td>
+      <td>No</td>
+    </tr>
+    <tr style="background: #f0fff4;">
+      <td><strong>AI Migration Engine</strong></td>
+      <td>AI-powered EDA migration + lifecycle</td>
+      <td>&mdash;</td>
+      <td><strong style="color: var(--green);">YES &mdash; First Mover</strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout">
+  <p><strong>No direct competitor exists.</strong> Altium's Import Wizard is rule-based with known fidelity gaps. Partner consulting runs $150-300/hour and doesn't scale. Every AI PCB startup has chosen to focus on new design &mdash; nobody is solving migration. This is a wide-open market.</p>
+</div>
+
+<h3>Target Customers</h3>
+<p>
+  The highest-value migration paths by source platform:
+</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Priority</th>
+      <th>Source Platform</th>
+      <th>Rationale</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>Cadence OrCAD</td>
+      <td>Largest migration volume; well-documented but still painful</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Cadence Allegro</td>
+      <td>High enterprise value; complex designs</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Siemens Xpedition</td>
+      <td>Highest complexity = highest willingness to pay</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>Siemens PADS</td>
+      <td>Large installed base; cost-driven migrations</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>Zuken CR-8000</td>
+      <td>No native Altium importer exists &mdash; total gap</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3>Economics</h3>
+
+<div class="two-col">
+  <div class="col">
+    <h4>Today (Manual)</h4>
+    <ul>
+      <li>6-18 months per enterprise</li>
+      <li>$150-300/hr consulting fees</li>
+      <li>$200K+ per enterprise migration</li>
+      <li>Fragmented partner delivery</li>
+      <li>No institutional learning</li>
+    </ul>
+  </div>
+  <div class="col">
+    <h4>With AI Migration Engine</h4>
+    <ul>
+      <li>2-4 weeks per enterprise</li>
+      <li>Compute + tokens at 10-30% of PS cost</li>
+      <li>$20-60K per enterprise migration</li>
+      <li>Consistent, scalable delivery</li>
+      <li>Compounds with every migration</li>
+    </ul>
+  </div>
+</div>
+
+<hr>
+
+<!-- ============================================ -->
+<!-- ROADMAP -->
+<!-- ============================================ -->
+
+<h2>Implementation Roadmap</h2>
+
+<p class="lead">
+  The platform builds incrementally from today's existing 16-agent Altium Solutions team to a fully autonomous lifecycle management system over 24-36 months.
+</p>
+
+<div class="figure">
+  <img src="images/07-roadmap.png" alt="Implementation Roadmap">
+  <p class="figure-caption">Figure 7: Five-phase implementation roadmap with decreasing human effort and increasing AI automation</p>
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th>Phase</th>
+      <th>Timeline</th>
+      <th>Milestone</th>
+      <th>Key Deliverables</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>0</strong></td>
+      <td>Today</td>
+      <td>Foundation</td>
+      <td>16 AI agents operational; Altium Solutions team active; CustomerNode integration stub ready</td>
+    </tr>
+    <tr>
+      <td><strong>1</strong></td>
+      <td>3-6 months</td>
+      <td>Integration</td>
+      <td>Salesforce + CustomerNode connected; persistent Knowledge Store; enterprise entity resolution</td>
+    </tr>
+    <tr>
+      <td><strong>2</strong></td>
+      <td>6-12 months</td>
+      <td>Library MVP</td>
+      <td>Automated library conversion engine; learning system; first enterprise pilot (OrCAD &rarr; Altium)</td>
+    </tr>
+    <tr>
+      <td><strong>3</strong></td>
+      <td>12-18 months</td>
+      <td>Full Migration</td>
+      <td>Complete design migration pipeline; end-to-end validation; multi-platform support</td>
+    </tr>
+    <tr>
+      <td><strong>4</strong></td>
+      <td>18-24 months</td>
+      <td>Intelligence</td>
+      <td>Self-improving platform; predictive assessment; effort forecasting from historical data</td>
+    </tr>
+    <tr>
+      <td><strong>5</strong></td>
+      <td>24-36 months</td>
+      <td>Autonomous</td>
+      <td>Full lifecycle automation; partner ecosystem; "give us your designs" at scale</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3>MVP: Library Conversion Proof of Concept</h3>
+
+<div class="callout-gold callout">
+  <p><strong>Recommended first milestone:</strong> Take a real enterprise customer's OrCAD component library (500+ components) and deliver a fully validated Altium library in 24 hours. This is the smallest demonstration that proves the vision &mdash; library conversion is the #1 pain point, the most contained scope, and the most impressive demo.</p>
+</div>
+
+<hr>
+
+<!-- ============================================ -->
+<!-- TEAM & ADVANTAGES -->
+<!-- ============================================ -->
+
+<h2>Why This Team, Why Now</h2>
+
+<h3>Structural Advantages</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Advantage</th>
+      <th>Detail</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Full A365 SDK/API access</strong></td>
+      <td>Direct access to Altium's conversion, validation, and provisioning APIs. Engineering builds what we need &mdash; no reverse engineering, no workarounds.</td>
+    </tr>
+    <tr>
+      <td><strong>CustomerNode on the team</strong></td>
+      <td>Michael Cantow (CustomerNode founder) is a team member. Full platform access, roadmap influence, and ability to build custom Altium journey templates.</td>
+    </tr>
+    <tr>
+      <td><strong>Existing agent infrastructure</strong></td>
+      <td>16 specialized AI agents already operational in the Agent Architect framework. The foundation is built &mdash; we're extending, not starting from scratch.</td>
+    </tr>
+    <tr>
+      <td><strong>Renesas 365 timing</strong></td>
+      <td>Renesas 365 launches early 2026, creating a natural market moment for enterprise migration at scale.</td>
+    </tr>
+    <tr>
+      <td><strong>No competition</strong></td>
+      <td>Zero AI-powered EDA migration tools exist. First-mover advantage in a market with massive enterprise demand.</td>
+    </tr>
+    <tr>
+      <td><strong>Compound learning moat</strong></td>
+      <td>Every migration enriches the Knowledge Base. By migration #50, the system has institutional knowledge no competitor can replicate without doing the migrations themselves.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3>Complementary Expertise</h3>
+
+<div class="two-col">
+  <div class="col">
+    <h4>Nick DeMarco</h4>
+    <p>Back-end systems architecture, enterprise deployment, AI agent framework design. Built the 16-agent Altium Solutions team and Agent Architect infrastructure. Expertise in making complex systems work in practice.</p>
+  </div>
+  <div class="col">
+    <h4>Michael Cantow</h4>
+    <p>MIT MEng (EECS). CustomerNode founder. Front-end journey orchestration, First-Party AI architecture, buyer-seller alignment. Developed 50+ contextual AI agents for complex B2B deal execution.</p>
+  </div>
+</div>
+
+<hr>
+
+<!-- ============================================ -->
+<!-- CALL TO ACTION -->
+<!-- ============================================ -->
+
+<h2>The Ask</h2>
+
+<p class="lead">
+  We are requesting support to build the AI Migration Engine as an internal platform capability. Specifically:
+</p>
+
+<h3>Immediate Needs (Phase 1-2)</h3>
+
+<ol>
+  <li><strong>A365 SDK access and Engineering partnership</strong> &mdash; Dedicated engineering support to expose import/conversion, library management, and validation APIs for programmatic use</li>
+  <li><strong>Pilot enterprise customer</strong> &mdash; One real enterprise migration (OrCAD or Allegro source) to prove the library conversion MVP</li>
+  <li><strong>Compute budget</strong> &mdash; Cloud infrastructure for conversion workers and AI agent runtime</li>
+  <li><strong>Salesforce data access</strong> &mdash; Enterprise account data to seed CustomerNode's entity resolution and knowledge graph</li>
+</ol>
+
+<h3>What Success Looks Like</h3>
+
+<div class="stats">
+  <div class="stat">
+    <div class="stat-value">&lt;24h</div>
+    <div class="stat-label">Library Conversion (500 components)</div>
+  </div>
+  <div class="stat">
+    <div class="stat-value">95%+</div>
+    <div class="stat-label">First-Pass Conversion Accuracy</div>
+  </div>
+  <div class="stat">
+    <div class="stat-value">80%</div>
+    <div class="stat-label">Cost Reduction vs. Consulting</div>
+  </div>
+  <div class="stat">
+    <div class="stat-value">10x</div>
+    <div class="stat-label">Speed Improvement</div>
+  </div>
+</div>
+
+<blockquote>
+  "The question isn't whether AI will transform enterprise EDA migration. The question is whether we build it first &mdash; or watch someone else do it."
+</blockquote>
+
+<div class="footer">
+  <p><strong>The AI Migration Engine</strong> &mdash; Confidential White Paper &mdash; February 2026</p>
+  <p>For discussion purposes only. All market data sourced from public industry reports.</p>
+</div>
+
+</div><!-- /content -->
+
+</body>
+</html>
