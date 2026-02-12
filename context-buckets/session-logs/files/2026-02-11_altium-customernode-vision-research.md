@@ -70,7 +70,9 @@ Nick laid out a comprehensive vision for an AI-powered, end-to-end enterprise mi
 - `outputs/altium-enterprise-migration-landscape-report.md` — Original migration report (also cached)
 
 ### White Paper
-- `outputs/whitepaper/ai-migration-engine-whitepaper.html` — Executive white paper "The AI Migration Engine" (1,090 lines, fully styled HTML)
+- `outputs/whitepaper/ai-migration-engine-whitepaper.html` — Executive white paper "The AI Migration Engine" (1,270+ lines, fully styled HTML, updated with dominance thesis and per-design cost data)
+- `outputs/whitepaper/ai-migration-engine-whitepaper.md` — Markdown version of the white paper (full content parity with HTML)
+- `outputs/whitepaper/youtube-briefing.md` — Comprehensive briefing for YouTube Creator agent (narrative arc, stats, visual assets, tone guidance)
 - `outputs/whitepaper/images/00-cover.png` — Cover hero image (circuit board transformation)
 - `outputs/whitepaper/images/01-migration-crisis.png` — Migration crisis infographic
 - `outputs/whitepaper/images/02-system-architecture.png` — 4-plane architecture diagram
@@ -91,4 +93,4 @@ Nick laid out a comprehensive vision for an AI-powered, end-to-end enterprise mi
 
 ## Context for Next Session
 
-Three comprehensive research documents are complete and cached. The vision is documented, the architecture is designed (with 5-phase roadmap and ADRs), and the team/access situation is resolved — Michael Cantow (CustomerNode) is on the team, and full Altium A365 SDK/API access is available. A polished executive white paper with 8 generated images is ready for review and presentation to leadership. The next practical steps are: (1) review white paper and refine if needed, (2) present to leadership for buy-in, (3) get the A365 SDK docs, (4) sit down with Michael on CustomerNode internals, (5) define the MVP (likely OrCAD library conversion), and (6) start building the Library Translator agent. The existing 16-agent Altium Solutions team already has a `customernode_integration` stub in team.json ready to enable.
+Three comprehensive research documents are complete and cached. The vision is documented, the architecture is designed (with 5-phase roadmap and ADRs), and the team/access situation is resolved — Michael Cantow (CustomerNode) is on the team, and full Altium A365 SDK/API access is available. The white paper underwent significant revisions: (1) reframed around PCB platform dominance thesis (not just migration efficiency), (2) per-design cost data added ($1K-$20K per design, $1.5M-$12M+ per enterprise based on Sintecs case study), and (3) revenue multiplier analysis updated. Both HTML and Markdown versions exist, plus a YouTube Creator briefing document. The next practical steps are: (1) create the YouTube video using the briefing at `outputs/whitepaper/youtube-briefing.md`, (2) present white paper to leadership for buy-in, (3) get the A365 SDK docs, (4) sit down with Michael on CustomerNode internals, (5) define the MVP (likely OrCAD library conversion), and (6) start building the Library Translator agent. The existing 16-agent Altium Solutions team already has a `customernode_integration` stub in team.json ready to enable.
