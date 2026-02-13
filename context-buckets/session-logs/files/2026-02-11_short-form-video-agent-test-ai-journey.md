@@ -51,6 +51,12 @@ Tested the Short-Form Video Strategy agent end-to-end by running it against the 
 - [ ] Review clips visually before uploading (user may want to QA the vertical crops and text overlays)
 - [ ] Update shorts-tracker.json with YouTube URLs after uploads
 
+## Updates
+
+### 2026-02-13 — Upload Retry (Failed)
+
+Attempted Chrome Browser agent upload again after system reboot. Chrome Browser agent was rejected again at launch. YouTube Shorts upload remains pending — may need to try a different upload approach (e.g., YouTube Data API via Python script, or manual upload with metadata copy-paste).
+
 ## Context for Next Session
 
-All 8 AI Journey shorts are fully produced and sitting in `~/Desktop/youtube-projects/shorts/ai-journey/`. Each has a metadata JSON with platform-specific titles, descriptions, and hashtags ready to go. The `shorts-tracker.json` has a full posting schedule. The Chrome Browser upload was declined — Nick may want to review the clips first or upload manually. The Short-Form Video agent (agent ID: a7d7494) can be resumed if needed for upload coordination.
+All 8 AI Journey shorts are fully produced and sitting in `~/Desktop/youtube-projects/shorts/ai-journey/`. Each has a metadata JSON with platform-specific titles, descriptions, and hashtags ready to go. The `shorts-tracker.json` has a full posting schedule. Chrome Browser upload has been rejected multiple times across sessions — consider alternative upload methods: YouTube Data API script (used successfully for the AI Migration Engine video), or manual upload with metadata provided as copy-paste blocks.
