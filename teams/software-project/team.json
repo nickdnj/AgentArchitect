@@ -125,9 +125,31 @@
     "google-cloud"
   ],
 
+  "orchestration": {
+    "mode": "thin-orchestrator",
+    "execution": { "model": "opus", "max_turns": 50 },
+    "routing": {
+      "requirements": ["product-requirements"],
+      "architecture": ["software-architecture"],
+      "ux-design": ["ux-design"],
+      "dev-planning": ["dev-planning"],
+      "qa": ["qa-strategy"],
+      "marketing": ["marketing"],
+      "sales": ["sales"],
+      "legal": ["legal"],
+      "implementation": ["software-developer"],
+      "general": ["product-requirements"]
+    },
+    "delegation_strategy": "Follow workflow stages. For new projects, start with Discovery (product-requirements). Respect stage dependencies and run parallel stages simultaneously. Always delegate deep work to specialists.",
+    "session_summary": {
+      "enabled": true,
+      "output_path": "context-buckets/session-logs/files/"
+    }
+  },
+
   "collaboration_rules": {
-    "coordination_mode": "human-reviewed",
-    "handoff_protocol": "explicit-request",
+    "coordination_mode": "orchestrated",
+    "handoff_protocol": "stage-based",
     "output_sharing": "summarized",
     "notification_email": "nickd@demarconet.com"
   }

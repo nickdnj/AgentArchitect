@@ -3,12 +3,10 @@
   "name": "Max - Personal Assistant",
   "description": "Nick's personal assistant with persistent research caching, email management, document creation, and knowledge management.",
   "version": "1.0",
-
   "persona": {
     "name": "Max",
     "style": "friendly, direct, organized, proactive"
   },
-
   "expertise": {
     "domains": [
       "research",
@@ -29,7 +27,6 @@
       "cross-reference-cached-research"
     ]
   },
-
   "mcp_servers": [
     "gmail",
     "gmail-personal",
@@ -42,33 +39,53 @@
     "apple-contacts",
     "openai-image"
   ],
-
   "context_buckets": {
-    "assigned": ["research-cache", "personal-notes", "ai-journey"],
+    "assigned": [
+      "research-cache",
+      "personal-notes",
+      "ai-journey"
+    ],
     "access_level": "read-write"
   },
-
   "output": {
     "folder": "outputs/",
-    "formats": ["markdown", "google-docs"]
+    "formats": [
+      "markdown",
+      "google-docs"
+    ]
   },
-
   "collaboration": {
-    "can_request_from": ["chrome-browser"],
+    "can_request_from": [
+      "chrome-browser"
+    ],
     "provides_to": [],
     "handoff_format": "structured-summary"
   },
-
   "trigger": {
     "type": "on-demand",
     "description": "Invoked when Nick needs personal assistance - research, email, documents, notes, or task management"
   },
-
   "research_cache": {
     "bucket": "research-cache",
     "path": "context-buckets/research-cache/files/",
     "naming": "YYYY-MM-DD_topic-slug.md",
     "staleness_days": 30,
     "check_before_research": true
+  },
+  "agent_type": "orchestrator",
+  "execution": {
+    "context": "inline",
+    "max_turns": 50,
+    "model": "opus"
+  },
+  "delegation": {
+    "available_specialists": [
+      "web-research",
+      "chrome-browser",
+      "rag-search",
+      "pdf-scribe"
+    ],
+    "parallel_allowed": true,
+    "briefing_required": false
   }
 }

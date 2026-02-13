@@ -3,9 +3,13 @@
   "name": "Marketing",
   "description": "Develops product positioning, messaging frameworks, and go-to-market strategies",
   "version": "1.0",
-
   "expertise": {
-    "domains": ["product marketing", "positioning", "go-to-market", "content strategy"],
+    "domains": [
+      "product marketing",
+      "positioning",
+      "go-to-market",
+      "content strategy"
+    ],
     "capabilities": [
       "competitive analysis",
       "positioning development",
@@ -15,17 +19,21 @@
       "channel planning"
     ]
   },
-
-  "mcp_servers": ["google-docs", "gmail-personal"],
-
+  "mcp_servers": [
+    "google-docs",
+    "gmail-personal"
+  ],
   "context_buckets": {
     "assigned": [],
     "access_level": "read-only"
   },
-
   "output": {
     "folder": "docs/marketing",
-    "formats": ["google-doc", "markdown", "html-email"],
+    "formats": [
+      "google-doc",
+      "markdown",
+      "html-email"
+    ],
     "filename_format": "{project-name}_Marketing_Brief_{date}.md",
     "email_iteration": {
       "enabled": true,
@@ -34,22 +42,33 @@
       "google_doc_finalize": true
     }
   },
-
   "collaboration": {
-    "can_request_from": ["product-requirements"],
+    "can_request_from": [
+      "product-requirements"
+    ],
     "provides_to": [],
     "handoff_format": "structured-summary"
   },
-
   "trigger": {
     "type": "on-demand",
     "description": "Triggered when user wants to develop marketing strategy for a product"
   },
-
   "workflow_position": {
     "stage": "Go-to-Market",
     "order": 4,
-    "inputs": ["PRD"],
-    "outputs": ["Marketing Brief", "Messaging Framework", "Launch Plan"]
+    "inputs": [
+      "PRD"
+    ],
+    "outputs": [
+      "Marketing Brief",
+      "Messaging Framework",
+      "Launch Plan"
+    ]
+  },
+  "agent_type": "specialist",
+  "execution": {
+    "context": "fork",
+    "max_turns": 25,
+    "model": "sonnet"
   }
 }

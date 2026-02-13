@@ -210,8 +210,37 @@
     "powerpoint"
   ],
 
+  "orchestration": {
+    "mode": "thin-orchestrator",
+    "execution": { "model": "opus", "max_turns": 50 },
+    "routing": {
+      "account-research": ["account-researcher"],
+      "qualification": ["qualification-analyst"],
+      "solution-design": ["solution-architect"],
+      "roi-business-case": ["value-engineer"],
+      "competitive": ["competitive-intel"],
+      "proposal": ["proposal-writer"],
+      "deal-strategy": ["deal-strategist"],
+      "deployment": ["deployment-manager"],
+      "ecad": ["ecad-specialist"],
+      "migration": ["migration-specialist"],
+      "mcad": ["mcad-specialist"],
+      "plm": ["plm-specialist"],
+      "erp-supply": ["erp-supplychain-specialist"],
+      "infrastructure": ["infrastructure-specialist"],
+      "support": ["customer-support"],
+      "presentation": ["presentation"],
+      "general": ["account-researcher", "qualification-analyst"]
+    },
+    "delegation_strategy": "Follow customer lifecycle stages. Start with Discovery (account-researcher), then Qualification, then parallel Technical & Business Sales, etc. Always delegate deep work to specialists.",
+    "session_summary": {
+      "enabled": true,
+      "output_path": "context-buckets/session-logs/files/"
+    }
+  },
+
   "collaboration_rules": {
-    "coordination_mode": "human-reviewed",
+    "coordination_mode": "orchestrated",
     "handoff_protocol": "stage-based",
     "output_sharing": "structured-summary",
     "notification_email": "nickd@demarconet.com"

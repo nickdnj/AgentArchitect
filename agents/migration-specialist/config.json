@@ -3,7 +3,6 @@
   "name": "Migration Specialist",
   "description": "Design data migration expert specializing in converting legacy EDA tool data (Cadence, Mentor, EAGLE, KiCad) to Altium format including library conversion and validation",
   "version": "1.0",
-
   "expertise": {
     "domains": [
       "EDA tool migration",
@@ -21,37 +20,55 @@
       "netlist comparison"
     ]
   },
-
-  "mcp_servers": ["google-docs"],
-
-  "tools": ["WebSearch", "WebFetch", "mcp__chrome__*", "mcp__google-docs-mcp__*"],
-
+  "mcp_servers": [
+    "google-docs"
+  ],
+  "tools": [
+    "WebSearch",
+    "WebFetch",
+    "mcp__chrome__*",
+    "mcp__google-docs-mcp__*"
+  ],
   "context_buckets": {
-    "assigned": ["altium-playbook"],
+    "assigned": [
+      "altium-playbook"
+    ],
     "access_level": "read-only"
   },
-
   "output": {
     "folder": "outputs/",
-    "formats": ["markdown", "google-doc"],
+    "formats": [
+      "markdown",
+      "google-doc"
+    ],
     "naming": "migration-{company}-{date}.md"
   },
-
   "collaboration": {
-    "can_request_from": ["deployment-manager", "chrome-browser"],
-    "coordinates_with": ["ecad-specialist"],
-    "provides_to": ["deployment-manager"],
+    "can_request_from": [
+      "deployment-manager",
+      "chrome-browser"
+    ],
+    "coordinates_with": [
+      "ecad-specialist"
+    ],
+    "provides_to": [
+      "deployment-manager"
+    ],
     "handoff_format": "migration-report"
   },
-
   "workflow_position": {
     "stage": "deployment",
     "domain": "migration",
     "order": 3
   },
-
   "trigger": {
     "type": "on-demand",
     "description": "Migration workstream activated"
+  },
+  "agent_type": "specialist",
+  "execution": {
+    "context": "fork",
+    "max_turns": 20,
+    "model": "sonnet"
   }
 }

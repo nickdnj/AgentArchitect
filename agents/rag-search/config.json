@@ -3,36 +3,47 @@
   "name": "RAG Search",
   "description": "Semantic search service agent that queries vector databases for other agents. Handles keyword mapping and multi-query strategies.",
   "version": "1.0",
-
   "expertise": {
-    "domains": ["semantic search", "vector database", "information retrieval", "RAG"],
-    "capabilities": ["semantic document search", "keyword mapping", "multi-query search", "result ranking"]
+    "domains": [
+      "semantic search",
+      "vector database",
+      "information retrieval",
+      "RAG"
+    ],
+    "capabilities": [
+      "semantic document search",
+      "keyword mapping",
+      "multi-query search",
+      "result ranking"
+    ]
   },
-
   "mcp_servers": [],
-
   "context_buckets": {
-    "assigned": ["wharfside-docs"],
+    "assigned": [
+      "wharfside-docs"
+    ],
     "access_level": "read-only"
   },
-
   "output": {
     "folder": "outputs/",
-    "formats": ["structured-results"],
+    "formats": [
+      "structured-results"
+    ],
     "briefing_folder": null
   },
-
   "collaboration": {
     "can_request_from": [],
-    "provides_to": ["archivist", "pdf-scribe", "email-research"],
+    "provides_to": [
+      "archivist",
+      "pdf-scribe",
+      "email-research"
+    ],
     "handoff_format": "structured-results"
   },
-
   "trigger": {
     "type": "on-demand",
     "description": "Called by other agents when semantic search is needed"
   },
-
   "rag_config": {
     "cli_path": "/Users/nickd/Workspaces/pdfscribe_cli",
     "database": {
@@ -44,5 +55,11 @@
     "default_bucket": "wharfside-docs",
     "default_limit": 10,
     "default_threshold": 0.35
+  },
+  "agent_type": "utility",
+  "execution": {
+    "context": "fork",
+    "max_turns": 10,
+    "model": "haiku"
   }
 }

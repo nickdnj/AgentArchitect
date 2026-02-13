@@ -43,9 +43,28 @@
     "outputs_folder": "teams/wharfside-board-assistant/outputs"
   },
 
+  "orchestration": {
+    "mode": "thin-orchestrator",
+    "execution": { "model": "opus", "max_turns": 50 },
+    "routing": {
+      "document-search": ["archivist"],
+      "email-research": ["email-research"],
+      "newsletter": ["monthly-bulletin"],
+      "vendor-proposal": ["proposal-review"],
+      "presentation": ["presentation"],
+      "pdf-processing": ["pdf-scribe"],
+      "general": ["archivist", "email-research"]
+    },
+    "delegation_strategy": "Always delegate to specialist subagents. Never do deep analysis inline. Route based on request type, run specialists in parallel when possible, collect and synthesize results.",
+    "session_summary": {
+      "enabled": true,
+      "output_path": "context-buckets/session-logs/files/"
+    }
+  },
+
   "collaboration_rules": {
-    "coordination_mode": "human-reviewed",
-    "handoff_protocol": "explicit-request",
+    "coordination_mode": "orchestrated",
+    "handoff_protocol": "task-delegation",
     "output_sharing": "summarized",
     "notification_email": "nickd@wharfsidemb.com"
   },

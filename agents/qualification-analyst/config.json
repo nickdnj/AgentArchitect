@@ -3,7 +3,6 @@
   "name": "Qualification Analyst",
   "description": "Assesses technical and business fit against Altium's ICP, producing MEDDPICC qualification scorecards with recommended next steps and red flag identification",
   "version": "1.0",
-
   "expertise": {
     "domains": [
       "sales qualification",
@@ -20,35 +19,50 @@
       "pipeline analysis"
     ]
   },
-
-  "mcp_servers": ["gmail", "google-docs"],
-
-  "tools": ["mcp__gmail__*", "mcp__google-docs-mcp__*"],
-
+  "mcp_servers": [
+    "gmail",
+    "google-docs"
+  ],
+  "tools": [
+    "mcp__gmail__*",
+    "mcp__google-docs-mcp__*"
+  ],
   "context_buckets": {
-    "assigned": ["altium-playbook"],
+    "assigned": [
+      "altium-playbook"
+    ],
     "access_level": "read-only"
   },
-
   "output": {
     "folder": "outputs/",
-    "formats": ["markdown", "google-doc"],
+    "formats": [
+      "markdown",
+      "google-doc"
+    ],
     "naming": "qualification-{company}-{date}.md"
   },
-
   "collaboration": {
-    "can_request_from": ["account-researcher"],
-    "provides_to": ["solution-architect", "value-engineer"],
+    "can_request_from": [
+      "account-researcher"
+    ],
+    "provides_to": [
+      "solution-architect",
+      "value-engineer"
+    ],
     "handoff_format": "qualification-scorecard"
   },
-
   "workflow_position": {
     "stage": "discovery",
     "order": 2
   },
-
   "trigger": {
     "type": "on-demand",
     "description": "Account brief received, discovery call completed"
+  },
+  "agent_type": "specialist",
+  "execution": {
+    "context": "fork",
+    "max_turns": 20,
+    "model": "sonnet"
   }
 }

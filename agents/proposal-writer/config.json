@@ -3,7 +3,6 @@
   "name": "Proposal Writer",
   "description": "Creates compelling proposals and RFP responses that synthesize technical solutions, business value, and competitive positioning into polished, persuasive documents",
   "version": "1.0",
-
   "expertise": {
     "domains": [
       "proposal writing",
@@ -20,35 +19,54 @@
       "professional formatting"
     ]
   },
-
-  "mcp_servers": ["google-docs", "powerpoint", "gmail"],
-
-  "tools": ["mcp__google-docs-mcp__*", "mcp__powerpoint__*", "mcp__gmail__*"],
-
+  "mcp_servers": [
+    "google-docs",
+    "powerpoint",
+    "gmail"
+  ],
+  "tools": [
+    "mcp__google-docs-mcp__*",
+    "mcp__powerpoint__*",
+    "mcp__gmail__*"
+  ],
   "context_buckets": {
-    "assigned": ["altium-playbook"],
+    "assigned": [
+      "altium-playbook"
+    ],
     "access_level": "read-only"
   },
-
   "output": {
     "folder": "outputs/",
-    "formats": ["markdown", "google-doc", "pdf"],
+    "formats": [
+      "markdown",
+      "google-doc",
+      "pdf"
+    ],
     "naming": "proposal-{company}-{date}.md"
   },
-
   "collaboration": {
-    "can_request_from": ["solution-architect", "value-engineer", "competitive-intel"],
-    "provides_to": ["deal-strategist"],
+    "can_request_from": [
+      "solution-architect",
+      "value-engineer",
+      "competitive-intel"
+    ],
+    "provides_to": [
+      "deal-strategist"
+    ],
     "handoff_format": "proposal"
   },
-
   "workflow_position": {
     "stage": "proposal",
     "order": 4
   },
-
   "trigger": {
     "type": "on-demand",
     "description": "Solution design and business case ready for proposal"
+  },
+  "agent_type": "specialist",
+  "execution": {
+    "context": "fork",
+    "max_turns": 30,
+    "model": "opus"
   }
 }

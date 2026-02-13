@@ -18,9 +18,26 @@
     "outputs_folder": "teams/personal-assistant/outputs"
   },
 
+  "orchestration": {
+    "mode": "thin-orchestrator",
+    "execution": { "model": "opus", "max_turns": 50 },
+    "routing": {
+      "web-research": ["web-research"],
+      "browser-tasks": ["chrome-browser"],
+      "document-search": ["rag-search"],
+      "pdf-work": ["pdf-scribe"],
+      "general": ["web-research"]
+    },
+    "delegation_strategy": "Max handles simple tasks directly (email, notes, calendar). For deep research, PDF processing, or browser automation, delegate to specialist subagents. Keep context lean by offloading heavy analysis.",
+    "session_summary": {
+      "enabled": true,
+      "output_path": "context-buckets/session-logs/files/"
+    }
+  },
+
   "collaboration_rules": {
-    "coordination_mode": "direct",
-    "handoff_protocol": "none",
+    "coordination_mode": "orchestrated",
+    "handoff_protocol": "task-delegation",
     "output_sharing": "full",
     "notification_email": "nickd@demarconet.com"
   }

@@ -3,7 +3,6 @@
   "name": "ERP & Supply Chain Specialist",
   "description": "ERP and supply chain integration expert for SAP, Oracle, Octopart, and SiliconExpert, enabling BOM synchronization, component intelligence, and procurement workflows",
   "version": "1.0",
-
   "expertise": {
     "domains": [
       "ERP integration",
@@ -21,37 +20,55 @@
       "compliance integration"
     ]
   },
-
-  "mcp_servers": ["google-docs"],
-
-  "tools": ["WebSearch", "WebFetch", "mcp__chrome__*", "mcp__google-docs-mcp__*"],
-
+  "mcp_servers": [
+    "google-docs"
+  ],
+  "tools": [
+    "WebSearch",
+    "WebFetch",
+    "mcp__chrome__*",
+    "mcp__google-docs-mcp__*"
+  ],
   "context_buckets": {
-    "assigned": ["altium-playbook"],
+    "assigned": [
+      "altium-playbook"
+    ],
     "access_level": "read-only"
   },
-
   "output": {
     "folder": "outputs/",
-    "formats": ["markdown", "google-doc"],
+    "formats": [
+      "markdown",
+      "google-doc"
+    ],
     "naming": "erp-supplychain-{company}-{date}.md"
   },
-
   "collaboration": {
-    "can_request_from": ["deployment-manager", "chrome-browser"],
-    "coordinates_with": ["ecad-specialist"],
-    "provides_to": ["deployment-manager"],
+    "can_request_from": [
+      "deployment-manager",
+      "chrome-browser"
+    ],
+    "coordinates_with": [
+      "ecad-specialist"
+    ],
+    "provides_to": [
+      "deployment-manager"
+    ],
     "handoff_format": "erp-config"
   },
-
   "workflow_position": {
     "stage": "deployment",
     "domain": "erp-supplychain",
     "order": 6
   },
-
   "trigger": {
     "type": "on-demand",
     "description": "ERP/Supply chain integration workstream activated"
+  },
+  "agent_type": "specialist",
+  "execution": {
+    "context": "fork",
+    "max_turns": 20,
+    "model": "sonnet"
   }
 }

@@ -23,9 +23,24 @@
     "outputs_folder": "teams/youtube-content/outputs"
   },
 
+  "orchestration": {
+    "mode": "thin-orchestrator",
+    "execution": { "model": "opus", "max_turns": 50 },
+    "routing": {
+      "full-video": ["youtube-creator"],
+      "shorts-reels": ["short-form-video"],
+      "general": ["youtube-creator"]
+    },
+    "delegation_strategy": "Route video production to youtube-creator. After full video is complete, route to short-form-video for clip extraction. Sequential workflow.",
+    "session_summary": {
+      "enabled": true,
+      "output_path": "context-buckets/session-logs/files/"
+    }
+  },
+
   "collaboration_rules": {
-    "coordination_mode": "sequential",
-    "handoff_protocol": "youtube-creator produces full video -> short-form-video extracts clips",
+    "coordination_mode": "orchestrated",
+    "handoff_protocol": "sequential-delegation",
     "output_sharing": "full",
     "notification_email": "nickd@demarconet.com"
   }

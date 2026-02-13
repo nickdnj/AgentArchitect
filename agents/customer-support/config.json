@@ -3,7 +3,6 @@
   "name": "Customer Support",
   "description": "Ongoing customer support specialist for training enablement, health monitoring, support coordination, and expansion opportunity identification",
   "version": "1.0",
-
   "expertise": {
     "domains": [
       "customer success",
@@ -20,36 +19,55 @@
       "renewal management"
     ]
   },
-
-  "mcp_servers": ["gmail", "google-docs"],
-
-  "tools": ["WebSearch", "WebFetch", "mcp__chrome__*", "mcp__gmail__*", "mcp__google-docs-mcp__*"],
-
+  "mcp_servers": [
+    "gmail",
+    "google-docs"
+  ],
+  "tools": [
+    "WebSearch",
+    "WebFetch",
+    "mcp__chrome__*",
+    "mcp__gmail__*",
+    "mcp__google-docs-mcp__*"
+  ],
   "context_buckets": {
-    "assigned": ["altium-playbook"],
+    "assigned": [
+      "altium-playbook"
+    ],
     "access_level": "read-only"
   },
-
   "output": {
     "folder": "outputs/",
-    "formats": ["markdown", "google-doc", "html-email"],
+    "formats": [
+      "markdown",
+      "google-doc",
+      "html-email"
+    ],
     "naming": "customer-support-{company}-{date}.md"
   },
-
   "collaboration": {
-    "can_request_from": ["deployment-manager", "chrome-browser"],
-    "provides_to": ["account-researcher"],
+    "can_request_from": [
+      "deployment-manager",
+      "chrome-browser"
+    ],
+    "provides_to": [
+      "account-researcher"
+    ],
     "handoff_format": "expansion-opportunity"
   },
-
   "workflow_position": {
     "stage": "support",
     "order": 8,
     "loops_to": "account-researcher"
   },
-
   "trigger": {
     "type": "on-demand",
     "description": "Deployment complete, ongoing support begins"
+  },
+  "agent_type": "specialist",
+  "execution": {
+    "context": "fork",
+    "max_turns": 25,
+    "model": "sonnet"
   }
 }

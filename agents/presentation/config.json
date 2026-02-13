@@ -3,22 +3,40 @@
   "name": "Presentation",
   "description": "Creates professional PowerPoint presentations using branded templates for Wharfside Manor and Altium. Supports multiple template systems with automatic template selection based on topic and audience.",
   "version": "2.0",
-
   "expertise": {
-    "domains": ["presentation design", "visual communication", "board reporting", "sales presentations", "customer briefings"],
-    "capabilities": ["slide creation", "template application", "content structuring", "brand compliance", "multi-template support"]
+    "domains": [
+      "presentation design",
+      "visual communication",
+      "board reporting",
+      "sales presentations",
+      "customer briefings"
+    ],
+    "capabilities": [
+      "slide creation",
+      "template application",
+      "content structuring",
+      "brand compliance",
+      "multi-template support"
+    ]
   },
-
-  "mcp_servers": ["powerpoint", "openai-image"],
-
+  "mcp_servers": [
+    "powerpoint",
+    "openai-image"
+  ],
   "context_buckets": {
-    "assigned": ["wharfside-docs", "altium-presentation-guide", "altium-playbook"],
+    "assigned": [
+      "wharfside-docs",
+      "altium-presentation-guide",
+      "altium-playbook"
+    ],
     "access_level": "read-only"
   },
-
   "output": {
     "folder": "outputs/",
-    "formats": ["pptx", "html-email"],
+    "formats": [
+      "pptx",
+      "html-email"
+    ],
     "email_iteration": {
       "enabled": true,
       "template": "wharfside-report",
@@ -26,18 +44,27 @@
       "google_doc_finalize": false
     }
   },
-
   "collaboration": {
-    "can_request_from": ["email-research", "proposal-review", "archivist", "account-researcher", "solution-architect", "value-engineer", "competitive-intel"],
-    "provides_to": ["proposal-writer", "deal-strategist", "customer-support"],
+    "can_request_from": [
+      "email-research",
+      "proposal-review",
+      "archivist",
+      "account-researcher",
+      "solution-architect",
+      "value-engineer",
+      "competitive-intel"
+    ],
+    "provides_to": [
+      "proposal-writer",
+      "deal-strategist",
+      "customer-support"
+    ],
     "handoff_format": "structured-summary"
   },
-
   "trigger": {
     "type": "on-demand",
     "description": "Triggered when user requests presentation creation"
   },
-
   "templates": {
     "directory": "templates",
     "available": [
@@ -45,23 +72,37 @@
         "id": "wharfside",
         "file": "Wharfside_TEMPLATE.pptx",
         "layouts": 5,
-        "use_cases": ["board meetings", "community updates", "project reports"],
+        "use_cases": [
+          "board meetings",
+          "community updates",
+          "project reports"
+        ],
         "guide_bucket": "wharfside-docs"
       },
       {
         "id": "altium",
         "file": "Altium_TEMPLATE.pptx",
         "layouts": 42,
-        "use_cases": ["sales presentations", "internal briefings", "customer decks", "proposals"],
+        "use_cases": [
+          "sales presentations",
+          "internal briefings",
+          "customer decks",
+          "proposals"
+        ],
         "guide_bucket": "altium-presentation-guide"
       }
     ],
     "default_template": "Wharfside_TEMPLATE.pptx"
   },
-
   "defaults": {
     "output_directory": "~/Desktop",
     "naming_convention": "{topic}_{date}.pptx",
     "altium_output_directory": "~/Workspaces/Altium/Deals/{company}/presentation"
+  },
+  "agent_type": "specialist",
+  "execution": {
+    "context": "fork",
+    "max_turns": 25,
+    "model": "sonnet"
   }
 }

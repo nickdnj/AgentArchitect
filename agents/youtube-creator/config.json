@@ -3,7 +3,6 @@
   "name": "YouTube Creator",
   "description": "General-purpose YouTube video production agent that handles the full pipeline from content planning through script writing, asset generation, video assembly, and metadata creation.",
   "version": "1.0",
-
   "expertise": {
     "domains": [
       "video-production",
@@ -29,7 +28,6 @@
       "book-page-rendering"
     ]
   },
-
   "mcp_servers": [
     "openai-image",
     "video-editor",
@@ -38,28 +36,36 @@
     "google-docs",
     "gmail-personal"
   ],
-
   "context_buckets": {
-    "assigned": ["ai-journey"],
+    "assigned": [
+      "ai-journey"
+    ],
     "access_level": "read-only"
   },
-
   "output": {
     "folder": "~/Desktop/youtube-projects/",
-    "formats": ["mp4", "png", "json", "markdown"]
+    "formats": [
+      "mp4",
+      "png",
+      "json",
+      "markdown"
+    ]
   },
-
   "collaboration": {
-    "can_request_from": ["web-research", "pdf-scribe", "chrome-browser"],
-    "provides_to": ["short-form-video"],
+    "can_request_from": [
+      "web-research",
+      "pdf-scribe",
+      "chrome-browser"
+    ],
+    "provides_to": [
+      "short-form-video"
+    ],
     "handoff_format": "structured-summary"
   },
-
   "trigger": {
     "type": "on-demand",
     "description": "Invoked when user wants to create a YouTube video on any topic"
   },
-
   "video_types": [
     {
       "id": "documentary",
@@ -92,7 +98,6 @@
       "description": "Personal story or journey with atmospheric visuals and music"
     }
   ],
-
   "defaults": {
     "output_directory": "~/Desktop/youtube-projects",
     "resolution": "1920x1080",
@@ -103,5 +108,11 @@
     "video_bitrate": "8M",
     "thumbnail_resolution": "1280x720",
     "narration_speed_wpm": 150
+  },
+  "agent_type": "specialist",
+  "execution": {
+    "context": "fork",
+    "max_turns": 50,
+    "model": "opus"
   }
 }

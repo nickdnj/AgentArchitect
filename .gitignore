@@ -17,9 +17,11 @@ npm-debug.log*
 .env.local
 .env.*.local
 
-# Generated Claude Code agents (regenerate with /sync-agents)
+# Generated Claude Code agents and skills (regenerate with /sync-agents)
 .claude/agents/*.md
 !.claude/agents/.gitkeep
+.claude/skills/*/SKILL.md
+!.claude/skills/.gitkeep
 
 # Local settings (keep template, ignore local overrides)
 .claude/settings.local.json

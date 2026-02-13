@@ -3,7 +3,6 @@
   "name": "Short-Form Video Strategy",
   "description": "Extracts viral moments from long-form videos and creates YouTube Shorts, Instagram Reels, and TikToks with vertical formatting, CTAs, and strategic posting cadence.",
   "version": "1.0",
-
   "expertise": {
     "domains": [
       "youtube-shorts",
@@ -24,7 +23,6 @@
       "performance-tracking"
     ]
   },
-
   "mcp_servers": [
     "video-editor",
     "voicemode",
@@ -32,28 +30,32 @@
     "google-docs",
     "gmail-personal"
   ],
-
   "context_buckets": {
-    "assigned": ["ai-journey"],
+    "assigned": [
+      "ai-journey"
+    ],
     "access_level": "read-only"
   },
-
   "output": {
     "folder": "~/Desktop/youtube-projects/shorts/",
-    "formats": ["mp4", "json", "markdown"]
+    "formats": [
+      "mp4",
+      "json",
+      "markdown"
+    ]
   },
-
   "collaboration": {
-    "can_request_from": ["youtube-creator", "chrome-browser"],
+    "can_request_from": [
+      "youtube-creator",
+      "chrome-browser"
+    ],
     "provides_to": [],
     "handoff_format": "structured-summary"
   },
-
   "trigger": {
     "type": "on-demand",
     "description": "Invoked to create short-form vertical videos from existing long-form content"
   },
-
   "shorts_config": {
     "aspect_ratio": "9:16",
     "resolution": "1080x1920",
@@ -63,10 +65,22 @@
     "audio_bitrate": "192k",
     "video_bitrate": "8M"
   },
-
   "platform_limits": {
-    "youtube_shorts": { "max_seconds": 60 },
-    "instagram_reels": { "max_seconds": 90 },
-    "tiktok": { "max_seconds": 60, "note": "Up to 10 min for established accounts" }
+    "youtube_shorts": {
+      "max_seconds": 60
+    },
+    "instagram_reels": {
+      "max_seconds": 90
+    },
+    "tiktok": {
+      "max_seconds": 60,
+      "note": "Up to 10 min for established accounts"
+    }
+  },
+  "agent_type": "specialist",
+  "execution": {
+    "context": "fork",
+    "max_turns": 30,
+    "model": "sonnet"
   }
 }

@@ -3,7 +3,6 @@
   "name": "Competitive Intelligence",
   "description": "Monitors competitors and provides positioning guidance through battle cards, objection handling, and win/loss analysis for Cadence, Mentor/Siemens, KiCad, and other EDA competitors",
   "version": "1.0",
-
   "expertise": {
     "domains": [
       "competitive analysis",
@@ -20,36 +19,52 @@
       "pattern analysis"
     ]
   },
-
-  "mcp_servers": ["google-docs"],
-
-  "tools": ["WebSearch", "WebFetch", "mcp__chrome__*", "mcp__google-docs-mcp__*"],
-
+  "mcp_servers": [
+    "google-docs"
+  ],
+  "tools": [
+    "WebSearch",
+    "WebFetch",
+    "mcp__chrome__*",
+    "mcp__google-docs-mcp__*"
+  ],
   "context_buckets": {
-    "assigned": ["altium-playbook"],
+    "assigned": [
+      "altium-playbook"
+    ],
     "access_level": "read-write"
   },
-
   "output": {
     "folder": "outputs/",
-    "formats": ["markdown", "google-doc"],
+    "formats": [
+      "markdown",
+      "google-doc"
+    ],
     "naming": "battle-card-{competitor}-{date}.md"
   },
-
   "collaboration": {
-    "can_request_from": ["chrome-browser"],
-    "provides_to": ["solution-architect", "proposal-writer"],
+    "can_request_from": [
+      "chrome-browser"
+    ],
+    "provides_to": [
+      "solution-architect",
+      "proposal-writer"
+    ],
     "handoff_format": "battle-card"
   },
-
   "workflow_position": {
     "stage": "support",
     "parallel_with_any": true,
     "order": 0
   },
-
   "trigger": {
     "type": "on-demand",
     "description": "Competitive situation in deal, RFP support, or periodic monitoring"
+  },
+  "agent_type": "specialist",
+  "execution": {
+    "context": "fork",
+    "max_turns": 20,
+    "model": "sonnet"
   }
 }

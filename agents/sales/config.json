@@ -3,9 +3,13 @@
   "name": "Sales",
   "description": "Develops sales strategies, playbooks, pricing, and enablement materials",
   "version": "1.0",
-
   "expertise": {
-    "domains": ["sales strategy", "pricing", "sales enablement", "competitive selling"],
+    "domains": [
+      "sales strategy",
+      "pricing",
+      "sales enablement",
+      "competitive selling"
+    ],
     "capabilities": [
       "sales playbook creation",
       "pricing strategy",
@@ -16,17 +20,21 @@
       "email templates"
     ]
   },
-
-  "mcp_servers": ["google-docs", "gmail-personal"],
-
+  "mcp_servers": [
+    "google-docs",
+    "gmail-personal"
+  ],
   "context_buckets": {
     "assigned": [],
     "access_level": "read-only"
   },
-
   "output": {
     "folder": "docs/sales",
-    "formats": ["google-doc", "markdown", "html-email"],
+    "formats": [
+      "google-doc",
+      "markdown",
+      "html-email"
+    ],
     "filename_format": "{project-name}_Sales_Playbook_{date}.md",
     "email_iteration": {
       "enabled": true,
@@ -35,23 +43,38 @@
       "google_doc_finalize": true
     }
   },
-
   "collaboration": {
-    "can_request_from": ["product-requirements", "marketing"],
+    "can_request_from": [
+      "product-requirements",
+      "marketing"
+    ],
     "provides_to": [],
     "handoff_format": "structured-summary"
   },
-
   "trigger": {
     "type": "on-demand",
     "description": "Triggered when user wants to develop sales strategy and materials"
   },
-
   "workflow_position": {
     "stage": "Go-to-Market",
     "order": 4,
-    "parallel_with": ["marketing"],
-    "inputs": ["PRD", "Marketing Brief"],
-    "outputs": ["Sales Playbook", "Battle Cards", "Pricing Guide"]
+    "parallel_with": [
+      "marketing"
+    ],
+    "inputs": [
+      "PRD",
+      "Marketing Brief"
+    ],
+    "outputs": [
+      "Sales Playbook",
+      "Battle Cards",
+      "Pricing Guide"
+    ]
+  },
+  "agent_type": "specialist",
+  "execution": {
+    "context": "fork",
+    "max_turns": 25,
+    "model": "sonnet"
   }
 }

@@ -3,9 +3,13 @@
   "name": "Dev Planning",
   "description": "Converts requirements and designs into actionable development tasks and GitHub issues",
   "version": "1.0",
-
   "expertise": {
-    "domains": ["project management", "agile planning", "task decomposition", "sprint planning"],
+    "domains": [
+      "project management",
+      "agile planning",
+      "task decomposition",
+      "sprint planning"
+    ],
     "capabilities": [
       "epic breakdown",
       "user story writing",
@@ -16,17 +20,22 @@
       "GitHub issue creation"
     ]
   },
-
-  "mcp_servers": ["google-docs", "gmail-personal", "github"],
-
+  "mcp_servers": [
+    "google-docs",
+    "gmail-personal",
+    "github"
+  ],
   "context_buckets": {
     "assigned": [],
     "access_level": "read-only"
   },
-
   "output": {
     "folder": "docs/planning",
-    "formats": ["github-issues", "markdown", "html-email"],
+    "formats": [
+      "github-issues",
+      "markdown",
+      "html-email"
+    ],
     "filename_format": "{project-name}_Sprint_Plan_{date}.md",
     "email_iteration": {
       "enabled": true,
@@ -35,36 +44,69 @@
       "google_doc_finalize": true
     }
   },
-
   "collaboration": {
-    "can_request_from": ["product-requirements", "software-architecture", "ux-design"],
-    "provides_to": ["qa-strategy"],
+    "can_request_from": [
+      "product-requirements",
+      "software-architecture",
+      "ux-design"
+    ],
+    "provides_to": [
+      "qa-strategy"
+    ],
     "handoff_format": "structured-summary"
   },
-
   "trigger": {
     "type": "on-demand",
     "description": "Triggered when user wants to plan development tasks from requirements"
   },
-
   "workflow_position": {
     "stage": "Planning",
     "order": 3,
-    "parallel_with": ["qa-strategy"],
-    "inputs": ["PRD", "Architecture Doc", "UX Spec"],
-    "outputs": ["GitHub Issues", "Sprint Plan", "Task Breakdown"]
+    "parallel_with": [
+      "qa-strategy"
+    ],
+    "inputs": [
+      "PRD",
+      "Architecture Doc",
+      "UX Spec"
+    ],
+    "outputs": [
+      "GitHub Issues",
+      "Sprint Plan",
+      "Task Breakdown"
+    ]
   },
-
   "github_integration": {
     "create_issues": true,
     "create_milestones": true,
     "create_project_board": true,
-    "labels": ["epic", "story", "task", "spike", "bug", "P0", "P1", "P2"]
+    "labels": [
+      "epic",
+      "story",
+      "task",
+      "spike",
+      "bug",
+      "P0",
+      "P1",
+      "P2"
+    ]
   },
-
   "estimation": {
     "method": "story-points",
-    "scale": [1, 2, 3, 5, 8, 13],
+    "scale": [
+      1,
+      2,
+      3,
+      5,
+      8,
+      13
+    ],
     "includes_testing": true
+  },
+  "agent_type": "specialist",
+  "execution": {
+    "context": "fork",
+    "max_turns": 25,
+    "model": "sonnet"
   }
 }

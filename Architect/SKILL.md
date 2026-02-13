@@ -255,6 +255,14 @@ When creating a new agent's config.json, use this schema:
   "description": "[One sentence description]",
   "version": "1.0",
 
+  "agent_type": "[specialist|orchestrator|utility]",
+
+  "execution": {
+    "context": "[fork|inline]",
+    "max_turns": 20,
+    "model": "[opus|sonnet|haiku]"
+  },
+
   "expertise": {
     "domains": ["[domain1]", "[domain2]"],
     "capabilities": ["[capability1]", "[capability2]"]
@@ -278,12 +286,40 @@ When creating a new agent's config.json, use this schema:
     "handoff_format": "structured-summary"
   },
 
+  "delegation": {
+    "available_specialists": [],
+    "parallel_allowed": true,
+    "briefing_required": true
+  },
+
   "trigger": {
     "type": "on-demand",
     "description": "[When/how this agent is invoked]"
   }
 }
 ```
+
+### Agent Type Guidelines
+
+| Type | Context | Model | Purpose |
+|------|---------|-------|---------|
+| **specialist** | `fork` | sonnet (default), opus (complex tasks) | Does focused work in isolated context |
+| **orchestrator** | `inline` | opus | Routes requests, delegates to specialists |
+| **utility** | `fork` | haiku (simple), sonnet (complex) | Service agent called by others |
+
+### Execution Settings
+
+- **context: fork** — Runs in isolated subagent context (own context window). Used for specialists and utilities.
+- **context: inline** — Runs in the parent's context. Used for orchestrators that need to maintain conversation state.
+- **max_turns** — Maximum API round-trips. Simple tasks: 10-15, moderate: 20-25, complex: 30-50.
+- **model** — Cost optimization. Use `haiku` for simple lookups, `sonnet` for most work, `opus` for complex reasoning.
+
+### Delegation (Orchestrators Only)
+
+The `delegation` block is only required for orchestrator agents:
+- **available_specialists** — Agent IDs this orchestrator can delegate to
+- **parallel_allowed** — Whether multiple specialists can run simultaneously
+- **briefing_required** — Whether specialists must produce a briefing summary
 
 ---
 
@@ -312,14 +348,36 @@ When creating a team's team.json, use this schema:
     "outputs_folder": "teams/[team-id]/outputs"
   },
 
+  "orchestration": {
+    "mode": "thin-orchestrator",
+    "execution": { "model": "opus", "max_turns": 50 },
+    "routing": {
+      "[task-type]": ["[agent-id]"],
+      "general": ["[default-agent-id]"]
+    },
+    "delegation_strategy": "[How the orchestrator should route and delegate work]",
+    "session_summary": {
+      "enabled": true,
+      "output_path": "context-buckets/session-logs/files/"
+    }
+  },
+
   "collaboration_rules": {
-    "coordination_mode": "human-reviewed",
-    "handoff_protocol": "explicit-request",
+    "coordination_mode": "orchestrated",
+    "handoff_protocol": "task-delegation",
     "output_sharing": "summarized",
     "notification_email": "[email if applicable]"
   }
 }
 ```
+
+### Orchestration Settings
+
+Every team now uses the **thin-orchestrator** pattern:
+- **routing** — Maps task types to specialist agent IDs. Include a `general` fallback.
+- **delegation_strategy** — Natural language description of how the orchestrator should work.
+- **session_summary** — Auto-generates session logs after complex interactions.
+- **coordination_mode: orchestrated** — The team skill delegates via `Task()` calls to forked subagents.
 
 ---
 

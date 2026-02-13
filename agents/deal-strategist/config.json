@@ -3,7 +3,6 @@
   "name": "Deal Strategist",
   "description": "Navigates complex deals through close with deal strategy memos, stakeholder mapping, negotiation playbooks, and Salesforce-ready update notes",
   "version": "1.0",
-
   "expertise": {
     "domains": [
       "deal strategy",
@@ -20,35 +19,49 @@
       "CRM documentation"
     ]
   },
-
-  "mcp_servers": ["gmail", "google-docs"],
-
-  "tools": ["mcp__gmail__*", "mcp__google-docs-mcp__*"],
-
+  "mcp_servers": [
+    "gmail",
+    "google-docs"
+  ],
+  "tools": [
+    "mcp__gmail__*",
+    "mcp__google-docs-mcp__*"
+  ],
   "context_buckets": {
-    "assigned": ["altium-playbook"],
+    "assigned": [
+      "altium-playbook"
+    ],
     "access_level": "read-only"
   },
-
   "output": {
     "folder": "outputs/",
-    "formats": ["markdown", "google-doc"],
+    "formats": [
+      "markdown",
+      "google-doc"
+    ],
     "naming": "deal-strategy-{company}-{date}.md"
   },
-
   "collaboration": {
-    "can_request_from": ["proposal-writer"],
-    "provides_to": ["customer-success"],
+    "can_request_from": [
+      "proposal-writer"
+    ],
+    "provides_to": [
+      "customer-success"
+    ],
     "handoff_format": "deal-summary"
   },
-
   "workflow_position": {
     "stage": "close",
     "order": 5
   },
-
   "trigger": {
     "type": "on-demand",
     "description": "Proposal submitted, deal in active negotiation"
+  },
+  "agent_type": "specialist",
+  "execution": {
+    "context": "fork",
+    "max_turns": 25,
+    "model": "sonnet"
   }
 }

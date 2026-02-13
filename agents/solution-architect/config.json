@@ -3,7 +3,6 @@
   "name": "Solution Architect",
   "description": "Designs technical solutions mapped to customer requirements, creates customized demo scripts, and develops competitive differentiation points for Altium products",
   "version": "1.0",
-
   "expertise": {
     "domains": [
       "PCB design software",
@@ -20,36 +19,58 @@
       "integration architecture"
     ]
   },
-
-  "mcp_servers": ["google-docs", "powerpoint"],
-
-  "tools": ["WebSearch", "WebFetch", "mcp__chrome__*", "mcp__google-docs-mcp__*", "mcp__powerpoint__*"],
-
+  "mcp_servers": [
+    "google-docs",
+    "powerpoint"
+  ],
+  "tools": [
+    "WebSearch",
+    "WebFetch",
+    "mcp__chrome__*",
+    "mcp__google-docs-mcp__*",
+    "mcp__powerpoint__*"
+  ],
   "context_buckets": {
-    "assigned": ["altium-playbook"],
+    "assigned": [
+      "altium-playbook"
+    ],
     "access_level": "read-only"
   },
-
   "output": {
     "folder": "outputs/",
-    "formats": ["markdown", "google-doc", "powerpoint"],
+    "formats": [
+      "markdown",
+      "google-doc",
+      "powerpoint"
+    ],
     "naming": "solution-design-{company}-{date}.md"
   },
-
   "collaboration": {
-    "can_request_from": ["qualification-analyst", "competitive-intel", "chrome-browser"],
-    "provides_to": ["proposal-writer"],
+    "can_request_from": [
+      "qualification-analyst",
+      "competitive-intel",
+      "chrome-browser"
+    ],
+    "provides_to": [
+      "proposal-writer"
+    ],
     "handoff_format": "solution-design"
   },
-
   "workflow_position": {
     "stage": "technical-sales",
-    "parallel_with": ["value-engineer"],
+    "parallel_with": [
+      "value-engineer"
+    ],
     "order": 3
   },
-
   "trigger": {
     "type": "on-demand",
     "description": "Qualified opportunity ready for technical solutioning"
+  },
+  "agent_type": "specialist",
+  "execution": {
+    "context": "fork",
+    "max_turns": 30,
+    "model": "opus"
   }
 }

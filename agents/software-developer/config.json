@@ -3,9 +3,12 @@
   "name": "Software Developer",
   "description": "Full-stack developer that implements features based on requirements, architecture, and UX specifications",
   "version": "1.0",
-
   "expertise": {
-    "domains": ["software-development", "full-stack", "implementation"],
+    "domains": [
+      "software-development",
+      "full-stack",
+      "implementation"
+    ],
     "capabilities": [
       "frontend-development",
       "backend-development",
@@ -16,17 +19,20 @@
       "git-workflow"
     ]
   },
-
-  "mcp_servers": ["github"],
-
+  "mcp_servers": [
+    "github"
+  ],
   "context_buckets": {
     "assigned": [],
     "access_level": "read-only"
   },
-
   "output": {
     "folder": "outputs/",
-    "formats": ["code", "markdown", "html-email"],
+    "formats": [
+      "code",
+      "markdown",
+      "html-email"
+    ],
     "email_iteration": {
       "enabled": true,
       "template": "standard-report",
@@ -34,7 +40,6 @@
       "google_doc_finalize": false
     }
   },
-
   "collaboration": {
     "can_request_from": [
       "product-requirements",
@@ -43,18 +48,24 @@
       "dev-planning",
       "qa-strategy"
     ],
-    "provides_to": ["qa-strategy"],
+    "provides_to": [
+      "qa-strategy"
+    ],
     "handoff_format": "structured-summary"
   },
-
   "workflow_position": {
     "stage": "Implementation",
     "order": 4,
     "parallel_with": []
   },
-
   "trigger": {
     "type": "on-demand",
     "description": "Invoked when GitHub issues are ready for implementation"
+  },
+  "agent_type": "specialist",
+  "execution": {
+    "context": "fork",
+    "max_turns": 50,
+    "model": "opus"
   }
 }

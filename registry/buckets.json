@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "last_updated": "2026-02-04",
+  "last_updated": "2026-02-13",
   "buckets": [
     {
       "id": "wharfside-docs",
@@ -43,7 +43,7 @@
       "name": "Session Logs",
       "folder": "context-buckets/session-logs",
       "content_type": "documents",
-      "assigned_to": [],
+      "assigned_to": ["wharfside-board-assistant", "software-project", "altium-solutions", "youtube-content", "personal-assistant"],
       "created": "2026-02-04",
       "status": "active"
     },

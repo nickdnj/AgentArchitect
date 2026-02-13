@@ -3,7 +3,6 @@
   "name": "Web Research",
   "description": "Researches products and local services to find best-value options with reviews from authoritative sources",
   "version": "1.0",
-
   "expertise": {
     "domains": [
       "consumer product research",
@@ -20,19 +19,25 @@
       "email report delivery"
     ]
   },
-
-  "mcp_servers": ["gmail-personal"],
-
-  "tools": ["WebSearch", "WebFetch", "mcp__chrome__*", "mcp__gmail-personal__*"],
-
+  "mcp_servers": [
+    "gmail-personal"
+  ],
+  "tools": [
+    "WebSearch",
+    "WebFetch",
+    "mcp__chrome__*",
+    "mcp__gmail-personal__*"
+  ],
   "context_buckets": {
     "assigned": [],
     "access_level": "none"
   },
-
   "output": {
     "folder": "outputs/",
-    "formats": ["markdown", "html-email"],
+    "formats": [
+      "markdown",
+      "html-email"
+    ],
     "email_iteration": {
       "enabled": true,
       "template": "standard-report",
@@ -40,15 +45,21 @@
       "google_doc_finalize": true
     }
   },
-
   "collaboration": {
-    "can_request_from": ["chrome-browser"],
+    "can_request_from": [
+      "chrome-browser"
+    ],
     "provides_to": [],
     "handoff_format": "none"
   },
-
   "trigger": {
     "type": "on-demand",
     "description": "User asks for product or service recommendations"
+  },
+  "agent_type": "specialist",
+  "execution": {
+    "context": "fork",
+    "max_turns": 15,
+    "model": "sonnet"
   }
 }

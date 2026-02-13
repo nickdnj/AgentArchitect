@@ -3,7 +3,6 @@
   "name": "ECAD Specialist",
   "description": "Altium Designer and Enterprise Server deployment expert handling installation, configuration, workspace management, user administration, and design standards",
   "version": "1.0",
-
   "expertise": {
     "domains": [
       "Altium Designer",
@@ -20,37 +19,56 @@
       "licensing configuration"
     ]
   },
-
-  "mcp_servers": ["google-docs"],
-
-  "tools": ["WebSearch", "WebFetch", "mcp__chrome__*", "mcp__google-docs-mcp__*"],
-
+  "mcp_servers": [
+    "google-docs"
+  ],
+  "tools": [
+    "WebSearch",
+    "WebFetch",
+    "mcp__chrome__*",
+    "mcp__google-docs-mcp__*"
+  ],
   "context_buckets": {
-    "assigned": ["altium-playbook"],
+    "assigned": [
+      "altium-playbook"
+    ],
     "access_level": "read-only"
   },
-
   "output": {
     "folder": "outputs/",
-    "formats": ["markdown", "google-doc"],
+    "formats": [
+      "markdown",
+      "google-doc"
+    ],
     "naming": "ecad-deployment-{company}-{date}.md"
   },
-
   "collaboration": {
-    "can_request_from": ["deployment-manager", "chrome-browser"],
-    "coordinates_with": ["infrastructure-specialist", "migration-specialist"],
-    "provides_to": ["deployment-manager"],
+    "can_request_from": [
+      "deployment-manager",
+      "chrome-browser"
+    ],
+    "coordinates_with": [
+      "infrastructure-specialist",
+      "migration-specialist"
+    ],
+    "provides_to": [
+      "deployment-manager"
+    ],
     "handoff_format": "ecad-config"
   },
-
   "workflow_position": {
     "stage": "deployment",
     "domain": "ecad-core",
     "order": 2
   },
-
   "trigger": {
     "type": "on-demand",
     "description": "ECAD deployment workstream activated"
+  },
+  "agent_type": "specialist",
+  "execution": {
+    "context": "fork",
+    "max_turns": 20,
+    "model": "sonnet"
   }
 }

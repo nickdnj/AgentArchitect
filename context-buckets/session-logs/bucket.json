@@ -1,7 +1,7 @@
 {
   "id": "session-logs",
   "name": "Session Logs",
-  "description": "Persistent session memory files created by the /save command. Captures key findings, decisions, research, and open items from each session to enable continuity across conversations. Used as a catch-all for general or unaffiliated session data.",
+  "description": "Persistent session memory files created by orchestrators and the /save command. Captures key findings, decisions, research, and open items from each session to enable continuity across conversations.",
   "version": "1.0",
   "created": "2026-02-04",
 
@@ -19,7 +19,7 @@
 
   "access_control": {
     "default_level": "read-write",
-    "allowed_agents": [],
-    "allowed_teams": []
+    "allowed_agents": ["personal-assistant"],
+    "allowed_teams": ["wharfside-board-assistant", "software-project", "altium-solutions", "youtube-content", "personal-assistant"]
   }
 }

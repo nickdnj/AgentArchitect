@@ -3,7 +3,6 @@
   "name": "Account Researcher",
   "description": "Researches prospects and accounts before engagement, producing comprehensive account briefs with company overview, tech stack, industry context, recent news, and key stakeholders",
   "version": "1.0",
-
   "expertise": {
     "domains": [
       "account research",
@@ -20,36 +19,53 @@
       "stakeholder identification"
     ]
   },
-
-  "mcp_servers": ["gmail", "google-drive"],
-
-  "tools": ["WebSearch", "WebFetch", "mcp__chrome__*", "mcp__gmail__*", "mcp__google-drive__*"],
-
+  "mcp_servers": [
+    "gmail",
+    "google-drive"
+  ],
+  "tools": [
+    "WebSearch",
+    "WebFetch",
+    "mcp__chrome__*",
+    "mcp__gmail__*",
+    "mcp__google-drive__*"
+  ],
   "context_buckets": {
-    "assigned": ["altium-playbook"],
+    "assigned": [
+      "altium-playbook"
+    ],
     "access_level": "read-only"
   },
-
   "output": {
     "folder": "outputs/",
-    "formats": ["markdown", "html-email"],
+    "formats": [
+      "markdown",
+      "html-email"
+    ],
     "naming": "account-brief-{company}-{date}.md"
   },
-
   "collaboration": {
-    "can_request_from": ["chrome-browser"],
-    "provides_to": ["qualification-analyst"],
+    "can_request_from": [
+      "chrome-browser"
+    ],
+    "provides_to": [
+      "qualification-analyst"
+    ],
     "handoff_format": "account-brief"
   },
-
   "workflow_position": {
     "stage": "discovery",
     "entry_point": true,
     "order": 1
   },
-
   "trigger": {
     "type": "on-demand",
     "description": "New lead received or expansion research requested"
+  },
+  "agent_type": "specialist",
+  "execution": {
+    "context": "fork",
+    "max_turns": 20,
+    "model": "sonnet"
   }
 }

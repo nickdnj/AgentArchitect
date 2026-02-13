@@ -3,7 +3,6 @@
   "name": "MCAD Specialist",
   "description": "MCAD integration expert specializing in CoDesigner deployments for SolidWorks, Creo, Inventor, Fusion 360, and NX to enable ECAD-MCAD collaboration",
   "version": "1.0",
-
   "expertise": {
     "domains": [
       "ECAD-MCAD collaboration",
@@ -21,37 +20,55 @@
       "mechanical team training"
     ]
   },
-
-  "mcp_servers": ["google-docs"],
-
-  "tools": ["WebSearch", "WebFetch", "mcp__chrome__*", "mcp__google-docs-mcp__*"],
-
+  "mcp_servers": [
+    "google-docs"
+  ],
+  "tools": [
+    "WebSearch",
+    "WebFetch",
+    "mcp__chrome__*",
+    "mcp__google-docs-mcp__*"
+  ],
   "context_buckets": {
-    "assigned": ["altium-playbook"],
+    "assigned": [
+      "altium-playbook"
+    ],
     "access_level": "read-only"
   },
-
   "output": {
     "folder": "outputs/",
-    "formats": ["markdown", "google-doc"],
+    "formats": [
+      "markdown",
+      "google-doc"
+    ],
     "naming": "mcad-integration-{company}-{date}.md"
   },
-
   "collaboration": {
-    "can_request_from": ["deployment-manager", "chrome-browser"],
-    "coordinates_with": ["ecad-specialist"],
-    "provides_to": ["deployment-manager"],
+    "can_request_from": [
+      "deployment-manager",
+      "chrome-browser"
+    ],
+    "coordinates_with": [
+      "ecad-specialist"
+    ],
+    "provides_to": [
+      "deployment-manager"
+    ],
     "handoff_format": "mcad-config"
   },
-
   "workflow_position": {
     "stage": "deployment",
     "domain": "mcad-integration",
     "order": 4
   },
-
   "trigger": {
     "type": "on-demand",
     "description": "MCAD integration workstream activated"
+  },
+  "agent_type": "specialist",
+  "execution": {
+    "context": "fork",
+    "max_turns": 20,
+    "model": "sonnet"
   }
 }
