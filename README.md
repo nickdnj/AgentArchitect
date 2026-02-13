@@ -70,16 +70,25 @@ How do agents collaborate without sharing everything?
 
 Other agents read the briefing - the conclusions, recommendations, and action items - without inheriting the full context. Information flows. Context doesn't bleed.
 
-### Human-Reviewed Coordination
+### Thin Orchestrator Pattern (v2.0)
 
-By default, Agent Architect uses **human-reviewed coordination**:
+Teams use a **thin orchestrator** that routes requests to specialist subagents:
 
-1. Agent completes a task
-2. Output goes to team workspace
-3. **You review** before triggering the next step
-4. Explicit handoff to the next agent
+1. **You invoke a team** (e.g., `/wharfside`, `/altium`, `/max`)
+2. The **orchestrator parses** your request and selects specialist(s)
+3. Specialists run in **forked contexts** (isolated context windows)
+4. Only **concise results** return to the orchestrator
+5. The orchestrator **synthesizes** and responds
 
-You're the orchestrator. The agents are your team.
+This prevents context blowout by keeping heavy work isolated in subagents. The orchestrator stays lean — it routes, delegates, and synthesizes, but never does deep analysis itself.
+
+### Agent Types
+
+| Type | Context | Purpose |
+|------|---------|---------|
+| **Specialist** | Forked (isolated) | Deep, focused work in own context window |
+| **Orchestrator** | Inline (shared) | Routes requests, delegates to specialists |
+| **Utility** | Forked (isolated) | Service agents called by others (Chrome, RAG) |
 
 ---
 
@@ -158,25 +167,30 @@ This team follows a structured workflow with defined handoffs between stages.
 
 ---
 
-## Claude Code Native Integration
+## Claude Code Native Integration (v2.0)
 
-Agent Architect now integrates with Claude Code's native `/agents` feature, giving you **two ways to use your agents**:
+Agent Architect integrates deeply with Claude Code's native agent and skill systems, generating **three types of outputs**:
 
-### Hybrid Architecture
+### Architecture
 
 ```
 agents/<agent-id>/              (SOURCE OF TRUTH - edit these)
 ├── SKILL.md                    → Behavioral instructions
-└── config.json                 → Rich metadata (collaboration, workflow, context)
+└── config.json                 → Rich metadata (agent_type, execution, delegation)
+
+teams/<team-id>/
+└── team.json                   → Members, orchestration config, routing tables
 
         ↓ generate (via /sync-agents)
 
-.claude/agents/<agent-id>.md    (GENERATED - Claude Code native format)
+.claude/agents/<agent-id>.md         (Native agent definitions)
+.claude/skills/<agent-id>/SKILL.md   (Forked skills for specialists)
+.claude/skills/<team-id>/SKILL.md    (Orchestrator skills for teams)
 ```
 
 ### Using `/sync-agents`
 
-After creating or modifying agents, run the sync command to generate Claude Code native agents:
+After creating or modifying agents, run the sync command:
 
 ```bash
 # In Claude Code
@@ -186,33 +200,44 @@ After creating or modifying agents, run the sync command to generate Claude Code
 node scripts/generate-agents.js
 ```
 
-This generates `.claude/agents/<agent-id>.md` files that Claude Code can use for native delegation.
+This generates:
+- **Agent files** (`.claude/agents/`) - Full agent definitions with SKILL.md content
+- **Specialist skills** (`.claude/skills/<agent-id>/`) - Forked execution wrappers for specialists
+- **Team orchestrators** (`.claude/skills/<team-id>/`) - Routing and delegation logic for teams
 
-### Two Ways to Use Agents
+### How It Works
 
-| Method | Best For | How |
-|--------|----------|-----|
-| **Native Delegation** | Quick single-agent tasks | Claude Code automatically delegates based on agent descriptions |
-| **Team Orchestration** | Multi-agent workflows | Use `/architect` to coordinate agents with briefings |
+| Component | What It Does | Context |
+|-----------|-------------|---------|
+| **Team command** (`/wharfside`) | Entry point - routes to orchestrator | Shared with user |
+| **Orchestrator skill** | Routes request, selects specialists | Shared with user |
+| **Specialist skill** | Wraps agent for forked execution | **Own context window** |
+| **Agent definition** | Full SKILL.md + operational config | Loaded by specialist |
 
-### What Gets Preserved
+### Config.json Schema (v2.0)
 
-The generation process maps Agent Architect metadata to Claude Code format:
-
-| Agent Architect | Claude Code |
-|-----------------|-------------|
-| `config.name` | frontmatter `name` |
-| `config.description` | frontmatter `description` |
-| `config.mcp_servers` | frontmatter `tools` |
-| `SKILL.md` content | markdown body |
-| `collaboration`, `workflow_position` | HTML comments (preserved for reference) |
+```json
+{
+  "agent_type": "specialist",
+  "execution": {
+    "context": "fork",
+    "max_turns": 20,
+    "model": "sonnet"
+  },
+  "delegation": {
+    "available_specialists": ["agent-1", "agent-2"],
+    "parallel_allowed": true
+  }
+}
+```
 
 ### Key Points
 
-- **Never edit `.claude/agents/*.md` directly** - they're regenerated
-- **Source of truth is `agents/` directory** - edit SKILL.md and config.json there
+- **Never edit `.claude/agents/*.md` or `.claude/skills/` directly** - they're regenerated
+- **Source of truth is `agents/` and `teams/` directories**
 - **Generated files are git-ignored** - each user regenerates locally after clone
-- **Team orchestration unchanged** - Architect still coordinates multi-agent workflows
+- **Specialists run in forked contexts** - prevents context blowout
+- **Orchestrators delegate everything** - they route, don't do deep work
 
 ---
 
@@ -262,9 +287,9 @@ Archie will guide you through:
 ```
 Agent Architect - Main Menu
 
-Teams: 2 registered
-Agents: 13 registered
-Context Buckets: 1 registered
+Teams: 5 registered
+Agents: 36 registered
+Context Buckets: 6 registered
 
 What would you like to do?
 1. Create a new team
@@ -280,7 +305,13 @@ What would you like to do?
 | Command | Purpose |
 |---------|---------|
 | `/architect` | Load Archie for team/agent management |
-| `/sync-agents` | Generate Claude Code native agents from definitions |
+| `/sync-agents` | Generate Claude Code native agents, skills, and orchestrators |
+| `/wharfside` | Wharfside Board Assistant (thin orchestrator) |
+| `/altium` | Altium Solutions Team (thin orchestrator) |
+| `/software-project` | Software Project Team (thin orchestrator) |
+| `/max` | Max - Personal Assistant (orchestrator) |
+| `/save` | Manual session memory snapshot |
+| `/recall` | Retrieve past session context |
 
 ---
 
@@ -332,7 +363,7 @@ AgentArchitect/
 │       └── files/
 │
 ├── scripts/                     # Utility scripts
-│   └── generate-agents.js       # Generates Claude Code native agents
+│   └── generate-agents.js       # Generates agents, skills, and orchestrators (v2.0)
 │
 ├── mcp-servers/                 # MCP integrations
 │   ├── registry/servers.json    # Available servers
@@ -347,9 +378,16 @@ AgentArchitect/
     ├── settings.local.json
     ├── agents/                  # Generated native agents (git-ignored)
     │   └── *.md                 # Run /sync-agents to regenerate
+    ├── skills/                  # Generated skills (git-ignored)
+    │   ├── <agent-id>/SKILL.md  # Forked specialist skills
+    │   └── <team-id>/SKILL.md   # Team orchestrator skills
     └── commands/
         ├── architect.md         # /architect - Team/agent management
-        └── sync-agents.md       # /sync-agents - Generate native agents
+        ├── wharfside.md         # /wharfside - Board assistant orchestrator
+        ├── altium.md            # /altium - Sales team orchestrator
+        ├── software-project.md  # /software-project - Dev team orchestrator
+        ├── max.md               # /max - Personal assistant orchestrator
+        └── sync-agents.md       # /sync-agents - Generate all outputs
 ```
 
 ---
@@ -427,19 +465,21 @@ Detailed instructions that define:
 {
   "name": "Archivist",
   "description": "Knowledge keeper and document retrieval specialist",
-  "mcp_servers": ["google-drive", "google-docs", "chrome"],
-  "context_buckets": ["wharfside-docs"],
-  "collaboration": {
-    "receives_from": ["email-research"],
-    "sends_to": ["monthly-bulletin", "proposal-review"],
-    "briefing_format": "summary"
+  "agent_type": "specialist",
+  "execution": {
+    "context": "fork",
+    "max_turns": 20,
+    "model": "sonnet"
   },
-  "portal_sync": {
-    "appfolio": {
-      "url": "https://example.appfolio.com/connect/shared_documents",
-      "download_folder": "/path/to/sync/folder",
-      "mode": "on-demand"
-    }
+  "mcp_servers": ["google-docs", "pdfscribe"],
+  "context_buckets": {
+    "assigned": ["wharfside-docs"],
+    "access_level": "read-write"
+  },
+  "collaboration": {
+    "can_request_from": ["chrome-browser"],
+    "provides_to": ["monthly-bulletin", "proposal-review"],
+    "handoff_format": "structured-summary"
   }
 }
 ```
@@ -511,8 +551,13 @@ Agent Architect is built on these principles:
 - [x] **PDFScribe MCP Server** - Custom PDF transcription with Claude vision
 - [x] Google Drive integration for PDFScribe (download + upload)
 - [x] Intelligent caching with checksum validation
+- [x] **Architecture v2.0** - Thin orchestrator pattern with forked subagents
+- [x] **Forked skill generation** - Specialists run in isolated context windows
+- [x] **Team orchestrator skills** - Auto-generated routing and delegation
+- [x] **Smart routing** - Auto-dispatch bare conversations to correct team
+- [x] **Session summaries** - Auto-generated session logs from orchestrators
+- [x] **Agent type classification** - Specialist, orchestrator, utility with model preferences
 - [ ] Automated portal sync scheduling
-- [ ] Multi-agent orchestration workflows (`/team-run` command)
 - [ ] Context bucket versioning
 - [ ] Team performance analytics
 - [ ] Additional custom MCP server integrations
