@@ -2,7 +2,7 @@
 
 **Date:** 2026-02-12
 **Session type:** execution
-**Agents involved:** Max (Personal Assistant), YouTube Creator (subagent)
+**Agents involved:** Max (Personal Assistant), YouTube Creator (subagent), Chrome Browser (YouTube upload)
 
 ## Summary
 
@@ -58,12 +58,21 @@ Rebuilt the AI Migration Engine pitch video from scratch as a shorter 3-5 minute
 | v1-fix1 | Audio dropouts | Rebuilt continuous audio track with adelay positioning, stripped audio from faded segments |
 | v2 (final) | Over-zoom + quiet narration | Rebuilt all 10 segments with 2-3% zoom; normalized narration to -16 LUFS; re-normalized after amix; final mean -14.2 dB |
 
+## YouTube Upload
+
+- **Video URL:** https://youtu.be/uWhmBCJkRsY
+- **Studio URL:** https://studio.youtube.com/video/uWhmBCJkRsY/edit
+- **Visibility:** Unlisted
+- **Upload method:** Chrome Browser agent via YouTube Data API v3 (OAuth + Python script)
+- **Metadata applied:** Title, full description with chapter timestamps, 14 tags, custom thumbnail, Science & Technology category
+
 ## Open Items
 
-- [ ] Video ready for review — Nick approved informally ("you rock")
-- [ ] Not yet uploaded to YouTube (set as Unlisted in metadata)
+- [x] ~~Video ready for review~~ — Nick approved
+- [x] ~~Upload to YouTube~~ — Uploaded as unlisted: https://youtu.be/uWhmBCJkRsY
 - [ ] Video files are gitignored (52MB MP4) — stored locally only
+- [ ] Share unlisted link with intended Altium leadership audience
 
 ## Context for Next Session
 
-The AI Migration Engine pitch video v2 is complete at `outputs/video/ai-migration-engine/output/ai-migration-engine.mp4`. It's a 4:52 punchy executive highlight targeting Altium leadership. All previous issues (audio dropouts, over-zoom, quiet narration) have been fixed. The full project workspace with all intermediate assets is at `outputs/video/ai-migration-engine/`. Video files are gitignored so they exist only on the local machine. This is a separate, shorter video from the earlier 8:49 v6 version that was built in a previous session at `~/Desktop/youtube-projects/ai-migration-engine/`.
+The AI Migration Engine pitch video v2 is complete and uploaded to YouTube (unlisted) at https://youtu.be/uWhmBCJkRsY. It's a 4:52 punchy executive highlight targeting Altium leadership with fixed zoom (2-3%), normalized audio (-14.2 dB), and continuous narration. The full project workspace with all intermediate assets is at `outputs/video/ai-migration-engine/`. Video files are gitignored so they exist only on the local machine. This is a separate, shorter video from the earlier 8:49 v6 version built in a previous session at `~/Desktop/youtube-projects/ai-migration-engine/`.
