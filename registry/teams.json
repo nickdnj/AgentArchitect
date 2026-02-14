@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "last_updated": "2026-02-13",
+  "last_updated": "2026-02-14",
   "teams": [
     {
       "id": "wharfside-board-assistant",
@@ -38,7 +38,7 @@
       "id": "youtube-content",
       "name": "YouTube Content Team",
       "folder": "teams/youtube-content",
-      "member_count": 2,
+      "member_count": 5,
       "created": "2026-02-11",
       "status": "active"
     }

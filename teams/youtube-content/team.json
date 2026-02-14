@@ -2,13 +2,28 @@
   "id": "youtube-content",
   "name": "YouTube Content Team",
   "description": "Video production and multi-platform short-form content strategy.",
-  "version": "1.0",
+  "version": "2.0",
   "created": "2026-02-11",
 
   "members": [
     {
-      "agent_id": "youtube-creator",
-      "role": "Full-length video production - script, assets, assembly, upload",
+      "agent_id": "video-script-writer",
+      "role": "Research, outline, narration script, and storyboard creation",
+      "context_override": null
+    },
+    {
+      "agent_id": "video-asset-generator",
+      "role": "AI image generation, TTS narration, background music production",
+      "context_override": null
+    },
+    {
+      "agent_id": "video-assembler",
+      "role": "FFmpeg video assembly with multiple visual styles (Ken Burns, gentle zoom, static, pillarbox), transitions, encoding",
+      "context_override": null
+    },
+    {
+      "agent_id": "video-publisher",
+      "role": "Metadata/SEO, thumbnails, YouTube upload, final delivery",
       "context_override": null
     },
     {
@@ -27,15 +42,68 @@
     "mode": "thin-orchestrator",
     "execution": { "model": "opus", "max_turns": 50 },
     "routing": {
-      "full-video": ["youtube-creator"],
+      "script-outline": ["video-script-writer"],
+      "asset-generation": ["video-asset-generator"],
+      "video-assembly": ["video-assembler"],
+      "metadata-upload": ["video-publisher"],
       "shorts-reels": ["short-form-video"],
-      "general": ["youtube-creator"]
+      "full-video": ["video-script-writer", "video-asset-generator", "video-assembler", "video-publisher"],
+      "general": ["video-script-writer"]
     },
-    "delegation_strategy": "Route video production to youtube-creator. After full video is complete, route to short-form-video for clip extraction. Sequential workflow.",
+    "delegation_strategy": "ALWAYS start with a Creative Brief conversation before delegating to any specialist. Ask about audience, tone, visual style, source material, target length, and whether to publish or stop at review. Once the brief is complete, run the sequential pipeline: Script Writer -> Asset Generator -> Assembler -> Publisher (if publishing). Each specialist runs in its own forked context. Pass the creative brief, project folder path, and previous phase briefing to each successive specialist. After full video is published, optionally route to Short-Form Video for clip extraction.",
+    "orchestrator_instructions": "## Phase 0: Creative Brief (MANDATORY for full-video requests)\n\nBefore delegating ANY work for a new video, have an interactive conversation with the user to establish:\n\n1. **Topic & Story** — What's the video about? What's the narrative arc or key message?\n2. **Audience** — Who is this for? (general YouTube, internal team, specific community, family)\n3. **Tone & Style** — Personal narrative, professional pitch, documentary, tutorial, showcase?\n4. **Visual Style** — Cinematic Ken Burns (photo stories), gentle motion (infographics/diagrams), static/clean (text-heavy), or mixed?\n5. **Source Material** — What photos, documents, or assets does the user have? Are they portrait or landscape? Do we need AI-generated images?\n6. **Target Length** — Short (3-5 min), medium (8-12 min), or long (15-20 min)?\n7. **Narration Voice** — Preferred TTS voice (echo, nova, onyx, etc.) and emotional tone?\n8. **Publish Preference** — Go all the way to YouTube upload, or stop at finished video for review/editing first?\n\n**How to run the brief:**\n- Ask 2-3 questions at a time, not all at once\n- Offer sensible defaults based on what you can infer from the request\n- If the user provides photos, note their orientation (portrait vs landscape) and suggest appropriate styles\n- Summarize the complete brief before proceeding to delegation\n- Save the brief as part of the project.json settings\n\n**Skip the brief when:** The user is asking for a specific pipeline step (e.g., \"just assemble the video\" or \"upload this to YouTube\") — go directly to the relevant specialist.",
     "session_summary": {
       "enabled": true,
       "output_path": "context-buckets/session-logs/files/"
     }
+  },
+
+  "workflow": {
+    "stages": [
+      {
+        "name": "0. Creative Brief",
+        "agents": [],
+        "parallel": false,
+        "inputs": ["user request", "photos/source material"],
+        "outputs": ["creative-brief (audience, tone, visual style, length, publish preference)"],
+        "notes": "Orchestrator handles this directly — interactive conversation with user before any delegation"
+      },
+      {
+        "name": "1. Planning & Scripting",
+        "agents": ["video-script-writer"],
+        "parallel": false,
+        "inputs": ["topic brief", "source material"],
+        "outputs": ["outline.md", "script.md", "storyboard.md", "project.json"]
+      },
+      {
+        "name": "2. Asset Generation",
+        "agents": ["video-asset-generator"],
+        "parallel": false,
+        "inputs": ["storyboard.md", "script.md", "project folder"],
+        "outputs": ["images/", "audio/narration/", "audio/music/", "thumbnails/"]
+      },
+      {
+        "name": "3. Video Assembly",
+        "agents": ["video-assembler"],
+        "parallel": false,
+        "inputs": ["storyboard.md", "asset manifest", "narration durations"],
+        "outputs": ["final video MP4"]
+      },
+      {
+        "name": "4. Publish & Deliver",
+        "agents": ["video-publisher"],
+        "parallel": false,
+        "inputs": ["final video", "script.md", "project metadata"],
+        "outputs": ["metadata.json", "thumbnail", "YouTube URL"]
+      },
+      {
+        "name": "5. Short-Form Extraction (optional)",
+        "agents": ["short-form-video"],
+        "parallel": false,
+        "inputs": ["final video", "script.md"],
+        "outputs": ["shorts clips", "platform metadata"]
+      }
+    ]
   },
 
   "collaboration_rules": {

@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "last_updated": "2026-02-13",
+  "last_updated": "2026-02-14",
   "agents": [
     {
       "id": "monthly-bulletin",
@@ -272,7 +272,8 @@
       "folder": "agents/youtube-creator",
       "teams": ["youtube-content"],
       "created": "2026-02-07",
-      "status": "active"
+      "status": "archived",
+      "archived_reason": "Replaced by 4 focused specialists: video-script-writer, video-asset-generator, video-assembler, video-publisher"
     },
     {
       "id": "chrome-browser",
@@ -288,6 +289,38 @@
       "folder": "agents/short-form-video",
       "teams": ["youtube-content"],
       "created": "2026-02-11",
+      "status": "active"
+    },
+    {
+      "id": "video-script-writer",
+      "name": "Video Script Writer",
+      "folder": "agents/video-script-writer",
+      "teams": ["youtube-content"],
+      "created": "2026-02-13",
+      "status": "active"
+    },
+    {
+      "id": "video-asset-generator",
+      "name": "Video Asset Generator",
+      "folder": "agents/video-asset-generator",
+      "teams": ["youtube-content"],
+      "created": "2026-02-13",
+      "status": "active"
+    },
+    {
+      "id": "video-assembler",
+      "name": "Video Assembler",
+      "folder": "agents/video-assembler",
+      "teams": ["youtube-content"],
+      "created": "2026-02-13",
+      "status": "active"
+    },
+    {
+      "id": "video-publisher",
+      "name": "Video Publisher",
+      "folder": "agents/video-publisher",
+      "teams": ["youtube-content"],
+      "created": "2026-02-13",
       "status": "active"
     }
   ]

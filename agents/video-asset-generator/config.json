@@ -1,0 +1,62 @@
+{
+  "id": "video-asset-generator",
+  "name": "Video Asset Generator",
+  "description": "Generates visual assets (AI images), narration audio (TTS), and background music for YouTube video production.",
+  "version": "1.0",
+  "expertise": {
+    "domains": [
+      "ai-image-generation",
+      "text-to-speech",
+      "audio-production",
+      "visual-asset-creation"
+    ],
+    "capabilities": [
+      "dalle3-image-generation",
+      "gpt-image-generation",
+      "tts-narration-generation",
+      "kokoro-tts-fallback",
+      "ambient-music-generation",
+      "image-processing",
+      "audio-normalization",
+      "user-photo-processing"
+    ]
+  },
+  "mcp_servers": [
+    "openai-image",
+    "voicemode",
+    "video-editor"
+  ],
+  "context_buckets": {
+    "assigned": [
+      "ai-journey"
+    ],
+    "access_level": "read-only"
+  },
+  "output": {
+    "folder": "~/Desktop/youtube-projects/",
+    "formats": [
+      "png",
+      "wav",
+      "json"
+    ]
+  },
+  "collaboration": {
+    "can_request_from": [
+      "video-script-writer"
+    ],
+    "provides_to": [
+      "video-assembler"
+    ],
+    "handoff_format": "structured-summary"
+  },
+  "trigger": {
+    "type": "on-demand",
+    "description": "Invoked by YouTube Content team orchestrator after script/storyboard is complete"
+  },
+  "agent_type": "specialist",
+  "execution": {
+    "context": "fork",
+    "max_turns": 40,
+    "model": "sonnet"
+  }
+}

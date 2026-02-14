@@ -1,0 +1,63 @@
+{
+  "id": "video-assembler",
+  "name": "Video Assembler",
+  "description": "Assembles video segments from images and audio using FFmpeg with multiple visual styles (Ken Burns, gentle zoom, static, pillarbox), transitions, text overlays, and final encoding.",
+  "version": "1.0",
+  "expertise": {
+    "domains": [
+      "video-editing",
+      "ffmpeg",
+      "motion-graphics",
+      "video-encoding"
+    ],
+    "capabilities": [
+      "ken-burns-effects",
+      "gentle-zoom-effects",
+      "static-display",
+      "portrait-pillarboxing",
+      "image-orientation-detection",
+      "video-segment-creation",
+      "text-overlay-rendering",
+      "crossfade-transitions",
+      "audio-video-mixing",
+      "video-concatenation",
+      "youtube-optimized-encoding",
+      "book-page-rendering",
+      "sub-shot-morphing"
+    ]
+  },
+  "mcp_servers": [
+    "video-editor"
+  ],
+  "context_buckets": {
+    "assigned": [
+      "ai-journey"
+    ],
+    "access_level": "read-only"
+  },
+  "output": {
+    "folder": "~/Desktop/youtube-projects/",
+    "formats": [
+      "mp4"
+    ]
+  },
+  "collaboration": {
+    "can_request_from": [
+      "video-asset-generator"
+    ],
+    "provides_to": [
+      "video-publisher"
+    ],
+    "handoff_format": "structured-summary"
+  },
+  "trigger": {
+    "type": "on-demand",
+    "description": "Invoked by YouTube Content team orchestrator after all assets are generated"
+  },
+  "agent_type": "specialist",
+  "execution": {
+    "context": "fork",
+    "max_turns": 40,
+    "model": "sonnet"
+  }
+}

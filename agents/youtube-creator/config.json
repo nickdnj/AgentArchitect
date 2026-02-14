@@ -114,5 +114,7 @@
     "context": "fork",
     "max_turns": 50,
     "model": "opus"
-  }
+  },
+  "status": "archived",
+  "archived_reason": "Replaced by 4 focused specialists: video-script-writer, video-asset-generator, video-assembler, video-publisher"
 }

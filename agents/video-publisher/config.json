@@ -1,0 +1,62 @@
+{
+  "id": "video-publisher",
+  "name": "Video Publisher",
+  "description": "Generates YouTube metadata, thumbnails, uploads videos via browser automation, and delivers final packages.",
+  "version": "1.0",
+  "expertise": {
+    "domains": [
+      "youtube-seo",
+      "metadata-optimization",
+      "thumbnail-design",
+      "youtube-upload",
+      "video-delivery"
+    ],
+    "capabilities": [
+      "youtube-metadata-generation",
+      "keyword-research",
+      "thumbnail-creation",
+      "youtube-studio-upload",
+      "video-quality-verification",
+      "description-optimization",
+      "tag-strategy"
+    ]
+  },
+  "mcp_servers": [
+    "openai-image",
+    "gmail-personal"
+  ],
+  "context_buckets": {
+    "assigned": [
+      "ai-journey"
+    ],
+    "access_level": "read-only"
+  },
+  "output": {
+    "folder": "~/Desktop/youtube-projects/",
+    "formats": [
+      "json",
+      "png",
+      "markdown"
+    ]
+  },
+  "collaboration": {
+    "can_request_from": [
+      "video-assembler",
+      "chrome-browser"
+    ],
+    "provides_to": [
+      "short-form-video"
+    ],
+    "handoff_format": "structured-summary"
+  },
+  "trigger": {
+    "type": "on-demand",
+    "description": "Invoked by YouTube Content team orchestrator after video assembly is complete"
+  },
+  "agent_type": "specialist",
+  "execution": {
+    "context": "fork",
+    "max_turns": 25,
+    "model": "sonnet"
+  }
+}

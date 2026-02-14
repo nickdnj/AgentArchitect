@@ -1,0 +1,62 @@
+{
+  "id": "video-script-writer",
+  "name": "Video Script Writer",
+  "description": "Researches topics, creates video outlines, writes narration scripts, and designs storyboards for YouTube video production.",
+  "version": "1.0",
+  "expertise": {
+    "domains": [
+      "content-research",
+      "script-writing",
+      "storyboard-design",
+      "video-planning",
+      "youtube-content-strategy"
+    ],
+    "capabilities": [
+      "topic-research",
+      "video-outline-creation",
+      "narration-script-writing",
+      "storyboard-design",
+      "timing-estimation",
+      "scene-planning",
+      "source-material-analysis",
+      "pdf-content-extraction"
+    ]
+  },
+  "mcp_servers": [
+    "pdfscribe",
+    "google-docs"
+  ],
+  "context_buckets": {
+    "assigned": [
+      "ai-journey"
+    ],
+    "access_level": "read-only"
+  },
+  "output": {
+    "folder": "~/Desktop/youtube-projects/",
+    "formats": [
+      "markdown",
+      "json"
+    ]
+  },
+  "collaboration": {
+    "can_request_from": [
+      "web-research",
+      "pdf-scribe"
+    ],
+    "provides_to": [
+      "video-asset-generator"
+    ],
+    "handoff_format": "structured-summary"
+  },
+  "trigger": {
+    "type": "on-demand",
+    "description": "Invoked by YouTube Content team orchestrator for script and planning phase"
+  },
+  "agent_type": "specialist",
+  "execution": {
+    "context": "fork",
+    "max_turns": 30,
+    "model": "opus"
+  }
+}

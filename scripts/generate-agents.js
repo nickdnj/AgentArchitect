@@ -558,18 +558,42 @@ function generateTeamOrchestratorSkill(teamConfig, allAgents) {
     '',
     orch.delegation_strategy || 'Delegate work to specialist subagents. Keep this context lean.',
     '',
-    '## CRITICAL: Delegation Rules',
-    '',
-    '1. **NEVER do deep analysis yourself** - always delegate to a specialist subagent',
-    '2. **Parse the request** - understand what type of work is needed',
-    '3. **Select specialist(s)** - choose the right agent(s) from the roster below',
-    '4. **Craft a focused prompt** - give the specialist exactly what they need',
-    '5. **Run in parallel** when multiple specialists are needed simultaneously',
-    '6. **Synthesize results** - combine specialist outputs into a coherent response',
-    '',
-    '## Available Specialists',
-    '',
   ];
+
+  // Inject custom orchestrator instructions if present in team.json
+  if (orch.orchestrator_instructions) {
+    lines.push(orch.orchestrator_instructions);
+    lines.push('');
+  }
+
+  // Build delegation rules with dynamic numbering
+  const hasCustomInstructions = !!orch.orchestrator_instructions;
+  lines.push('## CRITICAL: Delegation Rules');
+  lines.push('');
+
+  let ruleNum = 1;
+  if (hasCustomInstructions) {
+    lines.push(`${ruleNum}. **Run any pre-delegation phases first** (see above) — do NOT jump straight to specialists`);
+    ruleNum++;
+  }
+  lines.push(`${ruleNum}. **NEVER do deep analysis yourself** — always delegate to a specialist subagent`);
+  ruleNum++;
+  lines.push(`${ruleNum}. **Parse the request** — understand what type of work is needed`);
+  ruleNum++;
+  lines.push(`${ruleNum}. **Select specialist(s)** — choose the right agent(s) from the roster below`);
+  ruleNum++;
+  lines.push(`${ruleNum}. **Craft a focused prompt** — give the specialist exactly what they need`);
+  ruleNum++;
+  lines.push(`${ruleNum}. **Run in parallel** when multiple specialists are needed simultaneously`);
+  ruleNum++;
+  lines.push(`${ruleNum}. **Synthesize results** — combine specialist outputs into a coherent response`);
+  ruleNum++;
+  if (orch.session_summary?.enabled) {
+    lines.push(`${ruleNum}. **Write session log** — ALWAYS log the interaction (see Session Summary below)`);
+  }
+  lines.push('');
+  lines.push('## Available Specialists');
+  lines.push('');
 
   // Add each member agent with Task() invocation syntax
   for (const member of members) {
@@ -621,12 +645,35 @@ function generateTeamOrchestratorSkill(teamConfig, allAgents) {
 
   // Add session summary instructions
   if (orch.session_summary?.enabled) {
-    lines.push('## Session Summary');
+    const logPath = orch.session_summary.output_path || 'context-buckets/session-logs/files/';
+    lines.push('## Session Summary (MANDATORY)');
     lines.push('');
-    lines.push('After completing a complex interaction, write a brief session summary:');
-    lines.push(`- **Path:** \`${orch.session_summary.output_path || 'context-buckets/session-logs/files/'}\``);
-    lines.push('- **Format:** `YYYY-MM-DD_team-id_topic.md`');
-    lines.push('- **Include:** What was requested, what was done, key decisions, artifacts produced');
+    lines.push('**ALWAYS write a session log after EVERY interaction**, not just complex ones.');
+    lines.push('Do this as your FINAL step before responding to the user.');
+    lines.push('');
+    lines.push(`**Path:** \`${logPath}\``);
+    lines.push(`**Filename:** \`YYYY-MM-DD_${teamConfig.id}_topic-slug.md\``);
+    lines.push('');
+    lines.push('**Template:**');
+    lines.push('````markdown');
+    lines.push(`# Session: [Brief Title]`);
+    lines.push('');
+    lines.push(`**Date:** YYYY-MM-DD`);
+    lines.push(`**Team:** ${teamConfig.id}`);
+    lines.push('**Specialists Invoked:** [list]');
+    lines.push('');
+    lines.push('## Request');
+    lines.push('[What the user asked]');
+    lines.push('');
+    lines.push('## Actions');
+    lines.push('- [Specialist] — [what it did, key findings]');
+    lines.push('');
+    lines.push('## Artifacts');
+    lines.push('- [paths to any files created, or "None"]');
+    lines.push('');
+    lines.push('## Key Findings');
+    lines.push('[Summary of results delivered to user]');
+    lines.push('````');
     lines.push('');
   }
 
@@ -667,6 +714,11 @@ function processAgent(agentId, allAgents = {}) {
   const config = readAgentConfig(agentDir);
   if (!config) {
     return { error: `config.json not found for agent: ${agentId}` };
+  }
+
+  // Skip archived agents
+  if (config.status === 'archived') {
+    return { skipped: true, reason: `archived: ${config.archived_reason || 'no reason given'}` };
   }
 
   // Read SKILL.md
