@@ -12,24 +12,25 @@ When sending emails or reports:
 - Use `nickd@demarconet.com` for personal matters and general research reports
 - Use `nickd@wharfsidemb.com` for Wharfside Manor board-related communications
 
-## Smart Routing
+## Smart Routing (MANDATORY)
 
-When the user starts a conversation without invoking a specific agent or team, automatically route to the appropriate orchestrator based on the topic:
+When the user starts a conversation without invoking a specific agent or team, you MUST route to the appropriate orchestrator by **invoking the skill using the Skill tool**. Do NOT bypass the orchestrator by calling specialist agents (e.g., Archivist, Email Research) directly via the Task tool. The orchestrator handles routing and delegation.
 
-| Topic Signals | Route To | Skill |
-|---|---|---|
-| Wharfside, board, condo, HOA, marina, bulletin, governing docs, amendment, assessment | Wharfside Board Assistant | `/wharfside` |
-| Email, calendar, tasks, research, personal, reminders, notes | Max - Personal Assistant | `/max` |
-| Altium, PCB, EDA, sales, deployment, customer, Cadence, Mentor, KiCad | Altium Solutions Team | `/altium` |
-| Software, code, app, feature, architecture, requirements, development, testing | Software Project Team | `/software-project` |
-| YouTube, video, shorts, content, channel, upload | YouTube Content Team | (invoke youtube-content skill) |
-| Build agent, create team, manage agents, modify agent, bucket | Agent Architect | `/architect` |
+| Topic Signals | Invoke Skill |
+|---|---|
+| Wharfside, board, condo, HOA, marina, bulletin, governing docs, amendment, assessment | `Skill(skill: "wharfside")` |
+| Email, calendar, tasks, research, personal, reminders, notes | `Skill(skill: "max")` |
+| Altium, PCB, EDA, sales, deployment, customer, Cadence, Mentor, KiCad | `Skill(skill: "altium")` |
+| Software, code, app, feature, architecture, requirements, development, testing | `Skill(skill: "software-project")` |
+| YouTube, video, shorts, content, channel, upload | `Skill(skill: "youtube-content")` |
+| Build agent, create team, manage agents, modify agent, bucket | `Skill(skill: "architect")` |
 
 **Routing Rules:**
 1. Match on keywords in the user's request
 2. If ambiguous, ask which team they want
 3. If clearly about agent/team management, use the Architect
-4. The routed team orchestrator will handle delegation to specialist subagents
+4. **ALWAYS invoke the team skill** — never call specialist subagents directly. The orchestrator will delegate to the right specialist(s) in their own forked context
+5. The only exception is when the user explicitly invokes a specialist skill by name (e.g., `/archivist`)
 
 ## Getting Started (Agent Management)
 
