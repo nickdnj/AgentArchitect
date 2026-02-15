@@ -1,8 +1,8 @@
 {
   "id": "wharfside-board-assistant",
   "name": "Wharfside Board Assistant Team",
-  "description": "Assists Wharfside Manor Condominium Association board members with bulletins, proposals, presentations, research, and document management",
-  "version": "1.0",
+  "description": "Assists Wharfside Manor Condominium Association board members with bulletins, proposals, presentations, research, document management, and official community communications",
+  "version": "1.1",
   "created": "2026-01-19",
 
   "members": [
@@ -35,6 +35,16 @@
       "agent_id": "pdf-scribe",
       "role": "PDF specialist - extracts and transcribes PDF content into searchable Markdown",
       "context_override": null
+    },
+    {
+      "agent_id": "rag-search",
+      "role": "Semantic search service - queries vector databases for governing document retrieval",
+      "context_override": null
+    },
+    {
+      "agent_id": "board-comms",
+      "role": "Communications drafter - writes official board notices, policy explainers, crisis updates, and owner letters",
+      "context_override": null
     }
   ],
 
@@ -53,9 +63,16 @@
       "vendor-proposal": ["proposal-review"],
       "presentation": ["presentation"],
       "pdf-processing": ["pdf-scribe"],
+      "semantic-search": ["rag-search"],
+      "community-communication": ["board-comms"],
+      "owner-notice": ["board-comms"],
+      "crisis-communication": ["board-comms"],
+      "insurance": ["board-comms", "archivist"],
+      "policy-explainer": ["board-comms", "archivist"],
+      "draft-review": ["board-comms"],
       "general": ["archivist", "email-research"]
     },
-    "delegation_strategy": "Always delegate to specialist subagents. Never do deep analysis inline. Route based on request type, run specialists in parallel when possible, collect and synthesize results.",
+    "delegation_strategy": "Always delegate to specialist subagents. Never do deep analysis inline. Route based on request type, run specialists in parallel when possible, collect and synthesize results. For community communications: first dispatch Archivist and/or Email Research for source material, then delegate to Board Communications to draft. Board Communications should receive research briefings, not raw context.",
     "session_summary": {
       "enabled": true,
       "output_path": "context-buckets/session-logs/files/"

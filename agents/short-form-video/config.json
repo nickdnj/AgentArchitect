@@ -20,7 +20,10 @@
       "ffmpeg-editing",
       "multi-platform-upload",
       "posting-schedule-management",
-      "performance-tracking"
+      "performance-tracking",
+      "whisper-transcription",
+      "dynamic-pop-subtitles",
+      "ass-subtitle-generation"
     ]
   },
   "mcp_servers": [

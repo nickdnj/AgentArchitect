@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "last_updated": "2026-02-14",
+  "last_updated": "2026-02-15",
   "agents": [
     {
       "id": "monthly-bulletin",
@@ -321,6 +321,14 @@
       "folder": "agents/video-publisher",
       "teams": ["youtube-content"],
       "created": "2026-02-13",
+      "status": "active"
+    },
+    {
+      "id": "board-comms",
+      "name": "Board Communications",
+      "folder": "agents/board-comms",
+      "teams": ["wharfside-board-assistant"],
+      "created": "2026-02-15",
       "status": "active"
     }
   ]

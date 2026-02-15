@@ -96,6 +96,71 @@ drawtext=text='Full movie on my channel':fontfile=/System/Library/Fonts/Suppleme
   -c:a copy short-N-slug.mp4
 ```
 
+#### Step 5.5: Add Pop-Style Narration Subtitles (MANDATORY)
+
+Every short MUST have dynamic pop-style subtitles that follow along with the narration. This is critical for engagement — 70% of mobile users watch with sound off.
+
+**5.5a: Extract audio and transcribe with Whisper**
+```bash
+# Extract audio from the short
+ffmpeg -i short-N-slug.mp4 -vn -acodec pcm_s16le -ar 16000 short-N-audio.wav
+```
+
+```python
+# Transcribe with word-level timestamps via Whisper (localhost:8880)
+import requests
+with open("short-N-audio.wav", "rb") as f:
+    response = requests.post(
+        "http://localhost:8880/v1/audio/transcriptions",
+        files={"file": f},
+        data={
+            "model": "whisper-1",
+            "response_format": "verbose_json",
+            "timestamp_granularities[]": "word"
+        }
+    )
+words = response.json().get("words", [])
+```
+
+If word-level timestamps are unavailable, fall back to segment-level and split into phrases.
+
+**5.5b: Generate ASS subtitle file**
+
+Create an ASS (Advanced SubStation Alpha) subtitle file with pop-style formatting:
+
+```ass
+[Script Info]
+Title: Short Subtitles
+ScriptType: v4.00+
+PlayResX: 1080
+PlayResY: 1920
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Pop,Arial Black,90,&H00FFFFFF,&H000000FF,&H00000000,&H80000000,-1,0,0,0,100,100,0,0,1,4,0,2,40,40,400,1
+Style: PopHighlight,Arial Black,90,&H0000FFFF,&H000000FF,&H00000000,&H80000000,-1,0,0,0,100,100,0,0,1,4,0,2,40,40,400,1
+```
+
+**Subtitle style rules:**
+- **Font:** Arial Black, 80-100pt (large, mobile-readable)
+- **Color:** White with 4px black outline for normal text
+- **Highlight color:** Yellow (`{\c&H00FFFF&}`) for key dramatic words (numbers, prices, dramatic verbs, emphasized nouns)
+- **Position:** Center of screen, slightly below middle (Alignment 2, MarginV ~400)
+- **Phrasing:** Show 2-5 words at a time (phrase-by-phrase, never full sentences)
+- **Timing:** Each phrase appears for ~1-2 seconds, max 2.5 seconds
+- **Flow:** Minimal gaps between phrases — keep the text flowing continuously
+- **No overlap:** Subtitles must not overlap with hook text overlays or CTA text
+
+Group words into natural spoken phrases (2-5 words each). Use punctuation and speech rhythm as phrase boundaries.
+
+**5.5c: Burn subtitles into video**
+```bash
+ffmpeg -i short-N-slug.mp4 -vf "ass=short-N.ass" \
+  -c:v libx264 -preset slow -crf 18 -c:a copy short-N-slug-final.mp4
+```
+
+Save ASS files alongside the videos in a `subs/` subdirectory for reference.
+
 #### Step 6: Generate thumbnail (first compelling frame)
 ```bash
 ffmpeg -i short-N-slug.mp4 -vf "select=eq(n\,30)" -vframes 1 thumbnail-N.jpg
@@ -288,6 +353,7 @@ Maintain `shorts-tracker.json` in the project output folder:
 - Each clip under 60 seconds
 - Vertical 9:16 format (1080x1920) with clean cropping
 - Clear text overlays and CTAs on every clip
+- **Pop-style narration subtitles burned in** — word-synced, bold, phrase-by-phrase, key words highlighted in yellow
 - Metadata optimized per platform (YouTube, Instagram, TikTok)
 - Uploads successful via Chrome Browser agent
 - Posting schedule tracked in shorts-tracker.json

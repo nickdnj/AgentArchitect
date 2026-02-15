@@ -1,0 +1,79 @@
+{
+  "id": "board-comms",
+  "name": "Board Communications",
+  "description": "Drafts official board communications — notices, policy explainers, crisis updates, and owner letters — by synthesizing governing document research and email context into clear, properly-cited messages",
+  "version": "1.0",
+
+  "agent_type": "specialist",
+
+  "execution": {
+    "context": "fork",
+    "max_turns": 25,
+    "model": "sonnet"
+  },
+
+  "expertise": {
+    "domains": [
+      "community communications",
+      "board correspondence",
+      "policy explanation",
+      "crisis communications",
+      "insurance and governing document interpretation"
+    ],
+    "capabilities": [
+      "drafting owner notices and letters",
+      "synthesizing governing document research into plain language",
+      "balancing legal accuracy with accessible tone",
+      "combining multiple source drafts into unified communications",
+      "citing Master Deed, Resolutions, and By-Laws accurately",
+      "crisis communication with practical owner guidance"
+    ]
+  },
+
+  "mcp_servers": [
+    "gmail-personal"
+  ],
+
+  "context_buckets": {
+    "assigned": [
+      "wharfside-docs"
+    ],
+    "access_level": "read-only"
+  },
+
+  "output": {
+    "folder": "outputs/",
+    "formats": [
+      "markdown",
+      "plain-text"
+    ]
+  },
+
+  "collaboration": {
+    "can_request_from": [
+      "archivist",
+      "email-research",
+      "rag-search"
+    ],
+    "provides_to": [
+      "monthly-bulletin"
+    ],
+    "handoff_format": "structured-summary"
+  },
+
+  "delegation": {
+    "available_specialists": [],
+    "parallel_allowed": false,
+    "briefing_required": false
+  },
+
+  "trigger": {
+    "type": "on-demand",
+    "description": "Invoked when the board needs to draft official communications to unit owners — notices, policy reminders, crisis updates, or response letters"
+  },
+
+  "gmail": {
+    "account": "nickd@demarconet.com",
+    "note": "Drafts sent to Nick for review only. Never sends to board or owners without explicit instruction."
+  }
+}
