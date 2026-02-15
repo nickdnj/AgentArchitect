@@ -8,7 +8,7 @@
 
 ## Meet Archie
 
-<img src="docs/archie.png" alt="Archie the Agent Architect" width="200" align="right" />
+<img src="Architect/archie-avatar.png" alt="Archie the Agent Architect" width="200" align="right" />
 
 **Archie** is the persona behind Agent Architect. A thoughtful, methodical builder who asks the right questions before laying the first brick. Archie believes that:
 
@@ -17,6 +17,50 @@
 - **Simplicity scales** - Complex problems need simple, composable solutions
 
 When you work with Archie, you're not just configuring JSON files. You're having a conversation about what you need, who will use it, and how the pieces fit together.
+
+---
+
+## Meet the Team Leads
+
+Each team has an orchestrator that routes requests to the right specialists. Here's who's running the show:
+
+<table>
+  <tr>
+    <td align="center" width="180">
+      <img src="teams/personal-assistant/max-avatar.png" width="120" /><br />
+      <strong>Max</strong><br />
+      <em>Personal Assistant</em>
+    </td>
+    <td align="center" width="180">
+      <img src="teams/wharfside-board-assistant/wharfside-avatar.png" width="120" /><br />
+      <strong>Wharfside Lead</strong><br />
+      <em>Board Assistant</em>
+    </td>
+    <td align="center" width="180">
+      <img src="teams/software-project/software-avatar.png" width="120" /><br />
+      <strong>Software Lead</strong><br />
+      <em>Project Team</em>
+    </td>
+    <td align="center" width="180">
+      <img src="teams/altium-solutions/altium-avatar.png" width="120" /><br />
+      <strong>Altium Lead</strong><br />
+      <em>Solutions Team</em>
+    </td>
+    <td align="center" width="180">
+      <img src="teams/youtube-content/youtube-avatar.png" width="120" /><br />
+      <strong>YouTube Lead</strong><br />
+      <em>Content Team</em>
+    </td>
+  </tr>
+</table>
+
+| Team | Lead | Members | Invocation |
+|------|------|---------|------------|
+| **Personal Assistant** | Max | 1 + shared utilities | `/max` |
+| **Wharfside Board Assistant** | Wharfside Lead | 6 specialists | `/wharfside` |
+| **Software Project** | Software Lead | 9 specialists | `/software-project` |
+| **Altium Solutions** | Altium Lead | 15 specialists | `/altium` |
+| **YouTube Content** | YouTube Lead | 5 specialists | `/youtube-content` |
 
 ---
 
