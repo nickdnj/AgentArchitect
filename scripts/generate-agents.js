@@ -539,9 +539,12 @@ function generateTeamOrchestratorSkill(teamConfig, allAgents) {
     }
   }
 
+  // Use skill_alias for the skill name if defined
+  const skillName = teamConfig.skill_alias || teamConfig.id;
+
   const lines = [
     '---',
-    `name: ${teamConfig.id}`,
+    `name: ${skillName}`,
     `description: ${teamConfig.description}`,
     `model: ${orch.execution?.model || 'opus'}`,
     `allowed-tools: ${Array.from(allTools).join(', ')}`,
@@ -773,9 +776,19 @@ function processTeam(teamId, allAgents = {}) {
   }
 
   // Generate orchestrator skill file
-  const skillDir = path.join(OUTPUT_SKILLS_DIR, teamId);
+  // Use skill_alias if defined, otherwise fall back to team ID
+  const skillName = teamConfig.skill_alias || teamId;
+  const skillDir = path.join(OUTPUT_SKILLS_DIR, skillName);
   if (!fs.existsSync(skillDir)) {
     fs.mkdirSync(skillDir, { recursive: true });
+  }
+
+  // Clean up old skill directory if alias changed the name
+  if (teamConfig.skill_alias && teamConfig.skill_alias !== teamId) {
+    const oldSkillDir = path.join(OUTPUT_SKILLS_DIR, teamId);
+    if (fs.existsSync(oldSkillDir)) {
+      fs.rmSync(oldSkillDir, { recursive: true });
+    }
   }
 
   const skillContent = generateTeamOrchestratorSkill(teamConfig, allAgents);
@@ -785,6 +798,7 @@ function processTeam(teamId, allAgents = {}) {
   return {
     success: true,
     teamId,
+    skillName,
     name: teamConfig.name,
     memberCount: teamConfig.members?.length || 0,
     skillOutputPath,
@@ -909,7 +923,8 @@ function main() {
 
       if (result.success) {
         teamResults.success.push(result);
-        console.log(`  [OK] ${result.name} (orchestrator, ${result.memberCount} members)`);
+        const aliasLabel = result.skillName !== result.teamId ? ` as /${result.skillName}` : '';
+        console.log(`  [OK] ${result.name} (orchestrator, ${result.memberCount} members${aliasLabel})`);
       } else {
         teamResults.errors.push({ teamId, ...result });
         console.log(`  [ERROR] ${teamId}: ${result.error}`);

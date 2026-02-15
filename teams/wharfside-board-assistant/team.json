@@ -1,5 +1,6 @@
 {
   "id": "wharfside-board-assistant",
+  "skill_alias": "wharfside",
   "name": "Wharfside Board Assistant Team",
   "description": "Assists Wharfside Manor Condominium Association board members with bulletins, proposals, presentations, research, document management, and official community communications",
   "version": "1.1",
