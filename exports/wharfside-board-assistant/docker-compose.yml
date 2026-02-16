@@ -1,0 +1,28 @@
+# Docker Compose for Agent Architect services
+# pgvector database for local RAG (semantic search)
+
+version: '3.8'
+
+services:
+  pgvector:
+    image: pgvector/pgvector:pg16
+    container_name: agentarchitect-pgvector
+    environment:
+      POSTGRES_USER: rag
+      POSTGRES_PASSWORD: localdev
+      POSTGRES_DB: rag
+    ports:
+      - "5433:5432"  # Use 5433 to avoid conflicts with local Postgres
+    volumes:
+      - pgvector_data:/var/lib/postgresql/data
+      - ./scripts/init-pgvector.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U rag -d rag"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+volumes:
+  pgvector_data:
+    driver: local

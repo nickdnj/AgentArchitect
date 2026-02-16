@@ -1,0 +1,128 @@
+{
+  "id": "pdf-scribe",
+  "name": "PDFScribe",
+  "description": "Extracts and transcribes PDF content into detailed Markdown with optional RAG ingestion for semantic search",
+  "version": "2.1",
+  "expertise": {
+    "domains": [
+      "document-processing",
+      "ocr",
+      "content-extraction",
+      "transcription",
+      "rag",
+      "semantic-search"
+    ],
+    "capabilities": [
+      "PDF text extraction",
+      "Image-based PDF transcription (Claude Sonnet 4 or GPT-4o vision)",
+      "Visual content description",
+      "Table to HTML conversion",
+      "Multi-source PDF retrieval",
+      "Intelligent caching with checksum validation",
+      "Local file system access (including Google Drive synced folders)",
+      "RAG ingestion (chunk + embed + store in pgvector)",
+      "Semantic search across indexed documents",
+      "Multi-provider AI support (Anthropic/OpenAI)"
+    ]
+  },
+  "mcp_servers": [
+    "pdfscribe",
+    "gmail",
+    "gmail-personal"
+  ],
+  "context_buckets": {
+    "assigned": [],
+    "access_level": "read-only"
+  },
+  "output": {
+    "folder": "outputs/",
+    "formats": [
+      "markdown",
+      "html-email"
+    ],
+    "naming": "{original-filename}-transcribed.md",
+    "email_iteration": {
+      "enabled": true,
+      "template": "standard-report",
+      "subject_format": "PDF Transcription: {document} - v{version}",
+      "google_doc_finalize": false
+    }
+  },
+  "collaboration": {
+    "can_request_from": [
+      "chrome-browser"
+    ],
+    "provides_to": [
+      "all"
+    ],
+    "handoff_format": "structured-summary",
+    "primary_collaborators": [
+      "archivist",
+      "email-research",
+      "proposal-review"
+    ]
+  },
+  "trigger": {
+    "type": "on-demand",
+    "description": "Called by other agents or users when PDF content extraction is needed"
+  },
+  "parameters": {
+    "detail_levels": [
+      "summary",
+      "standard",
+      "detailed"
+    ],
+    "default_detail_level": "standard",
+    "supported_sources": [
+      "email",
+      "local",
+      "url"
+    ]
+  },
+  "cli_tool": {
+    "path": "${PDFSCRIBE_CLI_PATH}",
+    "transcribe_command": "python pdfscribe_cli.py",
+    "website_command": "python pdf2website.py",
+    "split_command": "python src/split_pdf.py",
+    "rag_command": "python src/rag.py",
+    "requires_one_of": [
+      "ANTHROPIC_API_KEY",
+      "OPENAI_API_KEY"
+    ],
+    "rag_requires": [
+      "OPENAI_API_KEY",
+      "RAG_DB_HOST or localhost:5433"
+    ]
+  },
+  "rag_integration": {
+    "database": {
+      "type": "postgres+pgvector",
+      "host": "localhost",
+      "port": 5433,
+      "name": "rag",
+      "docker_compose": "./docker-compose.yml"
+    },
+    "embeddings": {
+      "provider": "openai",
+      "model": "text-embedding-3-small",
+      "dimensions": 1536
+    },
+    "chunking": {
+      "size": 800,
+      "overlap": 120,
+      "method": "paragraph-aware"
+    },
+    "tools": {
+      "ingest": "python src/rag.py ingest <file> --bucket <bucket_id>",
+      "search": "python src/rag.py search '<query>' --bucket <bucket_id>",
+      "list": "python src/rag.py list --bucket <bucket_id>",
+      "stats": "python src/rag.py stats"
+    }
+  },
+  "agent_type": "specialist",
+  "execution": {
+    "context": "fork",
+    "max_turns": 15,
+    "model": "haiku"
+  }
+}

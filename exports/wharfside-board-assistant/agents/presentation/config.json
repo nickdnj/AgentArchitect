@@ -1,0 +1,85 @@
+{
+  "id": "presentation",
+  "name": "Presentation",
+  "description": "Creates professional PowerPoint presentations using branded templates for Wharfside Manor and Altium. Supports multiple template systems with automatic template selection based on topic and audience.",
+  "version": "2.0",
+  "expertise": {
+    "domains": [
+      "presentation design",
+      "visual communication",
+      "board reporting",
+      "sales presentations",
+      "customer briefings"
+    ],
+    "capabilities": [
+      "slide creation",
+      "template application",
+      "content structuring",
+      "brand compliance",
+      "multi-template support"
+    ]
+  },
+  "mcp_servers": [
+    "powerpoint",
+    "openai-image"
+  ],
+  "context_buckets": {
+    "assigned": [
+      "wharfside-docs"
+    ],
+    "access_level": "read-only"
+  },
+  "output": {
+    "folder": "outputs/",
+    "formats": [
+      "pptx",
+      "html-email"
+    ],
+    "email_iteration": {
+      "enabled": true,
+      "template": "wharfside-report",
+      "subject_format": "Presentation Summary: {topic} - v{version}",
+      "google_doc_finalize": false
+    }
+  },
+  "collaboration": {
+    "can_request_from": [
+      "email-research",
+      "proposal-review",
+      "archivist"
+    ],
+    "provides_to": [],
+    "handoff_format": "structured-summary"
+  },
+  "trigger": {
+    "type": "on-demand",
+    "description": "Triggered when user requests presentation creation"
+  },
+  "templates": {
+    "directory": "templates",
+    "available": [
+      {
+        "id": "wharfside",
+        "file": "Wharfside_TEMPLATE.pptx",
+        "layouts": 5,
+        "use_cases": [
+          "board meetings",
+          "community updates",
+          "project reports"
+        ],
+        "guide_bucket": "wharfside-docs"
+      }
+    ],
+    "default_template": "Wharfside_TEMPLATE.pptx"
+  },
+  "defaults": {
+    "output_directory": "~/Desktop",
+    "naming_convention": "{topic}_{date}.pptx"
+  },
+  "agent_type": "specialist",
+  "execution": {
+    "context": "fork",
+    "max_turns": 25,
+    "model": "sonnet"
+  }
+}

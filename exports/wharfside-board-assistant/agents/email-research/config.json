@@ -1,0 +1,90 @@
+{
+  "id": "email-research",
+  "name": "Email Research",
+  "description": "Mines Gmail for topic-specific information and generates structured research reports",
+  "version": "1.0",
+  "expertise": {
+    "domains": [
+      "email analysis",
+      "research synthesis",
+      "information retrieval"
+    ],
+    "capabilities": [
+      "multi-account search",
+      "thread analysis",
+      "timeline construction",
+      "stakeholder identification"
+    ]
+  },
+  "mcp_servers": [
+    "gmail",
+    "gmail-personal",
+    "voicemode",
+    "pdfscribe"
+  ],
+  "context_buckets": {
+    "assigned": [
+      "wharfside-docs"
+    ],
+    "access_level": "read-only"
+  },
+  "output": {
+    "folder": "reports/",
+    "formats": [
+      "markdown",
+      "html-email"
+    ],
+    "email_iteration": {
+      "enabled": true,
+      "template": "wharfside-report",
+      "subject_format": "Email Research: {topic} - v{version}",
+      "google_doc_finalize": true
+    }
+  },
+  "collaboration": {
+    "can_request_from": [
+      "archivist",
+      "pdf-scribe"
+    ],
+    "provides_to": [
+      "presentation",
+      "monthly-bulletin"
+    ],
+    "handoff_format": "structured-summary"
+  },
+  "trigger": {
+    "type": "on-demand",
+    "description": "Triggered when user requests email research"
+  },
+  "gmail_accounts": {
+    "board": {
+      "address": "YOUR_BOARD_EMAIL",
+      "mcp_server": "gmail",
+      "default": true
+    },
+    "personal": {
+      "address": "YOUR_PERSONAL_EMAIL",
+      "mcp_server": "gmail-personal",
+      "default": false
+    }
+  },
+  "defaults": {
+    "lookback_days": 90,
+    "draft_only": true,
+    "pdf_processing": "opt-in",
+    "discovery_first": true,
+    "max_emails_before_prompt": 50,
+    "working_file_path": "reports/"
+  },
+  "context_management": {
+    "use_working_files": true,
+    "summary_only_in_conversation": true,
+    "iteration_via_files": true
+  },
+  "agent_type": "specialist",
+  "execution": {
+    "context": "fork",
+    "max_turns": 20,
+    "model": "sonnet"
+  }
+}

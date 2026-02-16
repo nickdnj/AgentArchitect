@@ -174,6 +174,42 @@ Create:
 - `context-buckets/<bucket-id>/files/` directory
 - Update `registry/buckets.json`
 
+### `team export <id>`
+
+Export a team as a standalone, portable package that can be shared without the full Agent Architect repository.
+
+**Usage:**
+```bash
+node scripts/export-team.js <team-id> [options]
+  --output <path>    Output directory (default: exports/<team-id>/)
+  --no-docs          Skip context bucket file contents
+  --dry-run          Show what would be exported without writing
+```
+
+**What it produces:**
+
+A self-contained directory with:
+- All member agent definitions (SKILL.md + config.json) — sanitized of personal data
+- Team configuration (team.json)
+- Context bucket snapshots (bucket.json + files/)
+- Filtered registries (only exported entities)
+- Pre-generated Claude Code native files (.claude/agents/ + .claude/skills/)
+- RAG database dump (data/rag-dump.sql) for semantic search
+- Setup documentation (README.md, CLAUDE.md, .env.example, setup.sh)
+- MCP server installation guide (mcp-servers/SETUP.md)
+- Docker Compose for pgvector database
+
+**Interactive flow:**
+1. Present summary: team name, members, MCP servers, context buckets, infrastructure deps
+2. Ask user to confirm before exporting
+3. Show progress through all 9 export phases
+4. Display final summary with file count and export path
+
+**Sanitization:**
+- Personal emails → `YOUR_BOARD_EMAIL` / `YOUR_PERSONAL_EMAIL` placeholders
+- Absolute paths → `${VARIABLE}` placeholders or relative paths
+- Cross-team agent references are pruned (e.g., Altium-only buckets removed from shared agents)
+
 ### `team list` / `agent list` / `bucket list`
 
 Display registered entities with:

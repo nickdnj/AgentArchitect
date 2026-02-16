@@ -699,9 +699,18 @@ function generateTeamOrchestratorSkill(teamConfig, allAgents) {
 
 /**
  * Process a single agent - generate both agent file and skill file
+ * @param {string} agentId - The agent ID
+ * @param {Object} allAgents - Map of all agent configs for collaboration resolution
+ * @param {Object} dirs - Optional custom directories for export
+ * @param {string} dirs.agentsDir - Source agents directory
+ * @param {string} dirs.outputAgentsDir - Output directory for agent .md files
+ * @param {string} dirs.outputSkillsDir - Output directory for skill files
  */
-function processAgent(agentId, allAgents = {}) {
-  const agentDir = path.join(AGENTS_DIR, agentId);
+function processAgent(agentId, allAgents = {}, dirs = {}) {
+  const agentsDir = dirs.agentsDir || AGENTS_DIR;
+  const outputAgentsDir = dirs.outputAgentsDir || OUTPUT_AGENTS_DIR;
+  const outputSkillsDir = dirs.outputSkillsDir || OUTPUT_SKILLS_DIR;
+  const agentDir = path.join(agentsDir, agentId);
 
   // Skip template directories
   if (agentId.startsWith('_')) {
@@ -732,13 +741,13 @@ function processAgent(agentId, allAgents = {}) {
 
   // Generate agent file (.claude/agents/)
   const agentContent = generateAgentFile(config, skillContent, allAgents);
-  const agentOutputPath = path.join(OUTPUT_AGENTS_DIR, `${agentId}.md`);
+  const agentOutputPath = path.join(outputAgentsDir, `${agentId}.md`);
   fs.writeFileSync(agentOutputPath, agentContent, 'utf-8');
 
   // Generate skill file (.claude/skills/) for specialist and utility agents
   let skillGenerated = false;
   if (config.agent_type === 'specialist' || config.agent_type === 'utility') {
-    const skillDir = path.join(OUTPUT_SKILLS_DIR, agentId);
+    const skillDir = path.join(outputSkillsDir, agentId);
     if (!fs.existsSync(skillDir)) {
       fs.mkdirSync(skillDir, { recursive: true });
     }
@@ -762,9 +771,16 @@ function processAgent(agentId, allAgents = {}) {
 
 /**
  * Process a team - generate orchestrator skill file
+ * @param {string} teamId - The team ID
+ * @param {Object} allAgents - Map of all agent configs for collaboration resolution
+ * @param {Object} dirs - Optional custom directories for export
+ * @param {string} dirs.teamsDir - Source teams directory
+ * @param {string} dirs.outputSkillsDir - Output directory for skill files
  */
-function processTeam(teamId, allAgents = {}) {
-  const teamDir = path.join(TEAMS_DIR, teamId);
+function processTeam(teamId, allAgents = {}, dirs = {}) {
+  const teamsDir = dirs.teamsDir || TEAMS_DIR;
+  const outputSkillsDir = dirs.outputSkillsDir || OUTPUT_SKILLS_DIR;
+  const teamDir = path.join(teamsDir, teamId);
 
   if (!fs.existsSync(teamDir) || !fs.statSync(teamDir).isDirectory()) {
     return { error: `Team directory not found: ${teamDir}` };
@@ -778,14 +794,14 @@ function processTeam(teamId, allAgents = {}) {
   // Generate orchestrator skill file
   // Use skill_alias if defined, otherwise fall back to team ID
   const skillName = teamConfig.skill_alias || teamId;
-  const skillDir = path.join(OUTPUT_SKILLS_DIR, skillName);
+  const skillDir = path.join(outputSkillsDir, skillName);
   if (!fs.existsSync(skillDir)) {
     fs.mkdirSync(skillDir, { recursive: true });
   }
 
   // Clean up old skill directory if alias changed the name
   if (teamConfig.skill_alias && teamConfig.skill_alias !== teamId) {
-    const oldSkillDir = path.join(OUTPUT_SKILLS_DIR, teamId);
+    const oldSkillDir = path.join(outputSkillsDir, teamId);
     if (fs.existsSync(oldSkillDir)) {
       fs.rmSync(oldSkillDir, { recursive: true });
     }
@@ -953,6 +969,86 @@ function main() {
   }
 }
 
+/**
+ * Generate Claude Code native files for an export directory.
+ * Reuses all generation logic with custom paths and filters.
+ *
+ * @param {Object} options
+ * @param {string} options.agentsDir - Source agents directory (with SKILL.md + config.json)
+ * @param {string} options.teamsDir - Source teams directory (with team.json)
+ * @param {string} options.outputAgentsDir - Destination for .claude/agents/ agent files
+ * @param {string} options.outputSkillsDir - Destination for .claude/skills/ skill files
+ * @param {string[]} [options.agentFilter] - Only process these agent IDs (null = all)
+ * @param {string[]} [options.teamFilter] - Only process these team IDs (null = all)
+ */
+function generateForExport(options) {
+  const {
+    agentsDir,
+    teamsDir,
+    outputAgentsDir,
+    outputSkillsDir,
+    agentFilter,
+    teamFilter,
+  } = options;
+
+  // Ensure output directories exist
+  for (const dir of [outputAgentsDir, outputSkillsDir]) {
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+  }
+
+  // Load agent configs from the export's agents directory
+  const allAgents = {};
+  if (fs.existsSync(agentsDir)) {
+    const ids = fs.readdirSync(agentsDir)
+      .filter(name => {
+        const fullPath = path.join(agentsDir, name);
+        return fs.statSync(fullPath).isDirectory() && !name.startsWith('_');
+      });
+    for (const agentId of ids) {
+      const config = readAgentConfig(path.join(agentsDir, agentId));
+      if (config) allAgents[agentId] = config;
+    }
+  }
+
+  const dirs = { agentsDir, outputAgentsDir, outputSkillsDir, teamsDir };
+
+  // Process agents
+  const agentIds = agentFilter || Object.keys(allAgents);
+  const agentResults = { success: [], errors: [] };
+
+  for (const agentId of agentIds) {
+    const result = processAgent(agentId, allAgents, dirs);
+    if (result.success) {
+      agentResults.success.push(result);
+    } else if (!result.skipped) {
+      agentResults.errors.push({ agentId, ...result });
+    }
+  }
+
+  // Process teams
+  const teamResults = { success: [], errors: [] };
+  if (fs.existsSync(teamsDir)) {
+    const teamIds = teamFilter || fs.readdirSync(teamsDir)
+      .filter(name => {
+        const fullPath = path.join(teamsDir, name);
+        return fs.statSync(fullPath).isDirectory() && !name.startsWith('_');
+      });
+
+    for (const teamId of teamIds) {
+      const result = processTeam(teamId, allAgents, dirs);
+      if (result.success) {
+        teamResults.success.push(result);
+      } else {
+        teamResults.errors.push({ teamId, ...result });
+      }
+    }
+  }
+
+  return { agentResults, teamResults };
+}
+
 // Run if called directly
 if (require.main === module) {
   main();
@@ -970,4 +1066,5 @@ module.exports = {
   generateTeamOrchestratorSkill,
   generateOperationalAppendix,
   loadAllAgentConfigs,
+  generateForExport,
 };

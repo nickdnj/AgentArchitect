@@ -1,0 +1,86 @@
+{
+  "version": "1.0",
+  "last_updated": "2026-02-16",
+  "agents": [
+    {
+      "id": "monthly-bulletin",
+      "name": "Monthly Bulletin",
+      "folder": "agents/monthly-bulletin",
+      "teams": [
+        "wharfside-board-assistant"
+      ],
+      "created": "2026-01-19",
+      "status": "active"
+    },
+    {
+      "id": "proposal-review",
+      "name": "Proposal Review",
+      "folder": "agents/proposal-review",
+      "teams": [
+        "wharfside-board-assistant"
+      ],
+      "created": "2026-01-19",
+      "status": "active"
+    },
+    {
+      "id": "presentation",
+      "name": "Presentation",
+      "folder": "agents/presentation",
+      "teams": [
+        "wharfside-board-assistant"
+      ],
+      "created": "2026-01-19",
+      "status": "active"
+    },
+    {
+      "id": "email-research",
+      "name": "Email Research",
+      "folder": "agents/email-research",
+      "teams": [
+        "wharfside-board-assistant"
+      ],
+      "created": "2026-01-19",
+      "status": "active"
+    },
+    {
+      "id": "archivist",
+      "name": "Archivist",
+      "folder": "agents/archivist",
+      "teams": [
+        "wharfside-board-assistant"
+      ],
+      "created": "2026-01-19",
+      "status": "active"
+    },
+    {
+      "id": "pdf-scribe",
+      "name": "PDFScribe",
+      "folder": "agents/pdf-scribe",
+      "teams": [
+        "wharfside-board-assistant"
+      ],
+      "created": "2026-01-20",
+      "status": "active"
+    },
+    {
+      "id": "rag-search",
+      "name": "RAG Search",
+      "folder": "agents/rag-search",
+      "teams": [
+        "wharfside-board-assistant"
+      ],
+      "created": "2026-01-28",
+      "status": "active"
+    },
+    {
+      "id": "board-comms",
+      "name": "Board Communications",
+      "folder": "agents/board-comms",
+      "teams": [
+        "wharfside-board-assistant"
+      ],
+      "created": "2026-02-15",
+      "status": "active"
+    }
+  ]
+}

@@ -1,0 +1,133 @@
+{
+  "id": "wharfside-board-assistant",
+  "skill_alias": "wharfside",
+  "name": "Wharfside Board Assistant Team",
+  "description": "Assists Wharfside Manor Condominium Association board members with bulletins, proposals, presentations, research, document management, and official community communications",
+  "version": "1.1",
+  "created": "2026-01-19",
+  "members": [
+    {
+      "agent_id": "monthly-bulletin",
+      "role": "Newsletter creator - mines board email and generates monthly community bulletin",
+      "context_override": null
+    },
+    {
+      "agent_id": "proposal-review",
+      "role": "Vendor analyst - reviews and compares proposals from vendors",
+      "context_override": null
+    },
+    {
+      "agent_id": "presentation",
+      "role": "Presentation creator - builds PowerPoint decks for board meetings",
+      "context_override": null
+    },
+    {
+      "agent_id": "email-research",
+      "role": "Research specialist - searches email archives for topic information",
+      "context_override": null
+    },
+    {
+      "agent_id": "archivist",
+      "role": "Document keeper - maintains and retrieves governing documents",
+      "context_override": null
+    },
+    {
+      "agent_id": "pdf-scribe",
+      "role": "PDF specialist - extracts and transcribes PDF content into searchable Markdown",
+      "context_override": null
+    },
+    {
+      "agent_id": "rag-search",
+      "role": "Semantic search service - queries vector databases for governing document retrieval",
+      "context_override": null
+    },
+    {
+      "agent_id": "board-comms",
+      "role": "Communications drafter - writes official board notices, policy explainers, crisis updates, and owner letters",
+      "context_override": null
+    }
+  ],
+  "shared_context": {
+    "buckets": [
+      "wharfside-docs"
+    ],
+    "outputs_folder": "teams/wharfside-board-assistant/outputs"
+  },
+  "orchestration": {
+    "mode": "thin-orchestrator",
+    "execution": {
+      "model": "opus",
+      "max_turns": 50
+    },
+    "routing": {
+      "document-search": [
+        "archivist"
+      ],
+      "email-research": [
+        "email-research"
+      ],
+      "newsletter": [
+        "monthly-bulletin"
+      ],
+      "vendor-proposal": [
+        "proposal-review"
+      ],
+      "presentation": [
+        "presentation"
+      ],
+      "pdf-processing": [
+        "pdf-scribe"
+      ],
+      "semantic-search": [
+        "rag-search"
+      ],
+      "community-communication": [
+        "board-comms"
+      ],
+      "owner-notice": [
+        "board-comms"
+      ],
+      "crisis-communication": [
+        "board-comms"
+      ],
+      "insurance": [
+        "board-comms",
+        "archivist"
+      ],
+      "policy-explainer": [
+        "board-comms",
+        "archivist"
+      ],
+      "draft-review": [
+        "board-comms"
+      ],
+      "general": [
+        "archivist",
+        "email-research"
+      ]
+    },
+    "delegation_strategy": "Always delegate to specialist subagents. Never do deep analysis inline. Route based on request type, run specialists in parallel when possible, collect and synthesize results. For community communications: first dispatch Archivist and/or Email Research for source material, then delegate to Board Communications to draft. Board Communications should receive research briefings, not raw context.",
+    "session_summary": {
+      "enabled": true,
+      "output_path": "context-buckets/session-logs/files/"
+    }
+  },
+  "collaboration_rules": {
+    "coordination_mode": "orchestrated",
+    "handoff_protocol": "task-delegation",
+    "output_sharing": "summarized",
+    "notification_email": "YOUR_BOARD_EMAIL"
+  },
+  "gmail_accounts": {
+    "board": "YOUR_BOARD_EMAIL",
+    "personal": "YOUR_PERSONAL_EMAIL"
+  },
+  "branding": {
+    "logo_url": "https://raw.githubusercontent.com/nickdnj/wharfside-assets/master/Wharfside_Logo_Cropped.png",
+    "colors": {
+      "navy": "#1a3a5c",
+      "gold": "#c9a227"
+    },
+    "location": "Wharfside Manor, Monmouth Beach, NJ"
+  }
+}

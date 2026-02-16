@@ -1,0 +1,142 @@
+{
+  "id": "archivist",
+  "name": "Archivist",
+  "description": "Maintains and retrieves governing documents, meeting minutes, and historical records for Wharfside Manor with RAG-powered semantic search",
+  "version": "2.0",
+  "expertise": {
+    "domains": [
+      "document management",
+      "information retrieval",
+      "policy research",
+      "web portal integration",
+      "PDF transcription",
+      "semantic search",
+      "RAG"
+    ],
+    "capabilities": [
+      "semantic document search",
+      "context provision",
+      "policy lookup",
+      "historical research",
+      "portal document sync",
+      "scanned PDF transcription",
+      "batch PDF processing",
+      "RAG query",
+      "vector database search"
+    ]
+  },
+  "mcp_servers": [
+    "google-docs",
+    "pdfscribe"
+  ],
+  "context_buckets": {
+    "assigned": [
+      "wharfside-docs"
+    ],
+    "access_level": "read-write"
+  },
+  "output": {
+    "folder": "outputs/",
+    "formats": [
+      "markdown",
+      "summary",
+      "html-email",
+      "pdf-transcription"
+    ],
+    "email_iteration": {
+      "enabled": true,
+      "template": "wharfside-report",
+      "subject_format": "Archive Research: {topic} - v{version}",
+      "google_doc_finalize": true
+    }
+  },
+  "collaboration": {
+    "can_request_from": [
+      "chrome-browser"
+    ],
+    "provides_to": [
+      "monthly-bulletin",
+      "proposal-review",
+      "email-research",
+      "presentation"
+    ],
+    "handoff_format": "structured-summary"
+  },
+  "trigger": {
+    "type": "on-demand",
+    "description": "Triggered when information is requested by other agents or user"
+  },
+  "local_storage": {
+    "base_path": "${GOOGLE_DRIVE_PATH}",
+    "shared_drives": "Shared drives",
+    "document_categories": {
+      "governing-documents": "Shared drives/Governing Documents",
+      "meeting-minutes": "Shared drives/Board Open Meetings",
+      "financial": "Shared drives/Financials",
+      "contracts": "Shared drives/Contracts",
+      "insurance": "Shared drives/Insurance",
+      "infrastructure": "Shared drives/Infrastructure",
+      "legal": "Shared drives/Legal",
+      "marina": "Shared drives/Marina Operations",
+      "maintenance": "Shared drives/Maintenance",
+      "operations": "Shared drives/Operations",
+      "community": "Shared drives/Community Documents",
+      "committees": "Shared drives/Committees",
+      "it": "Shared drives/Wharfside IT"
+    }
+  },
+  "search_behavior": {
+    "primary_method": "rag_semantic",
+    "fallback_methods": [
+      "glob",
+      "grep"
+    ],
+    "include_file_contents": true,
+    "search_subdirectories": true,
+    "max_results": 20
+  },
+  "rag_integration": {
+    "enabled": true,
+    "database": {
+      "type": "postgres+pgvector",
+      "host": "localhost",
+      "port": 5433,
+      "name": "rag"
+    },
+    "default_bucket": "wharfside-docs",
+    "cli_path": "${PDFSCRIBE_CLI_PATH}",
+    "search_command": "python -c \"from src.rag import search_documents; results = search_documents('{query}', bucket_id='{bucket}', limit={limit}); [print(f'{r.source_file}: {r.chunk_text[:300]}...') for r in results]\""
+  },
+  "portal_sync": {
+    "appfolio": {
+      "url": "https://eastcoastmgmt.appfolio.com/connect/shared_documents",
+      "download_folder": "${APPFOLIO_SYNC_PATH}",
+      "mode": "on-demand",
+      "folder_structure": {
+        "board_member": [
+          "2025-Contracts",
+          "2025-Financials",
+          "Audits-Tax",
+          "Crawl-Space-Inspections"
+        ],
+        "homeowner": [
+          "Budgets",
+          "Bulletins",
+          "Governing-Documents",
+          "Parking"
+        ]
+      },
+      "notes": [
+        "Do not use iCloud-synced folders for downloads",
+        "Folders must be expanded (clicked) before contents are visible",
+        "Recent sections contain duplicates - skip during sync"
+      ]
+    }
+  },
+  "agent_type": "specialist",
+  "execution": {
+    "context": "fork",
+    "max_turns": 20,
+    "model": "sonnet"
+  }
+}
