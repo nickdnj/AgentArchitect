@@ -986,11 +986,26 @@ function generateSetupSh(deps, skillAlias) {
     '# ---- Step 4: Check CLI tools ----',
     'echo ""',
     'echo "Step 4: Checking CLI tools..."',
+    'export PATH="$PWD/tools:$PATH"',
     'if command -v gog &> /dev/null; then',
     '  echo "  [OK] gog CLI (Gmail, Docs, Drive)"',
     '  gog auth list &>/dev/null && echo "  [OK] Google accounts configured" || echo "  [WARN] No Google accounts - run: gog auth add EMAIL --services gmail,docs,drive"',
     'else',
-    '  echo "  [WARN] gog CLI not found - install from https://github.com/nicholasgasior/gog/releases"',
+    '  echo "  [MISSING] gog CLI - installing..."',
+    '  if command -v brew &> /dev/null; then',
+    '    brew install steipete/tap/gogcli && echo "  [OK] gog installed via Homebrew"',
+    '  else',
+    '    # Download binary from GitHub releases',
+    '    OS=$(uname -s | tr "[:upper:]" "[:lower:]")',
+    '    ARCH=$(uname -m); [ "$ARCH" = "x86_64" ] && ARCH="amd64"; [ "$ARCH" = "aarch64" ] && ARCH="arm64"',
+    '    TAG=$(curl -sL https://api.github.com/repos/steipete/gogcli/releases/latest | grep tag_name | head -1 | tr -d \\" | awk "{print \\$2}" | tr -d ",")',
+    '    VERSION=${TAG#v}',
+    '    URL="https://github.com/steipete/gogcli/releases/download/${TAG}/gogcli_${VERSION}_${OS}_${ARCH}.tar.gz"',
+    '    echo "  Downloading gog ${TAG} for ${OS}/${ARCH}..."',
+    '    mkdir -p tools',
+    '    curl -sL "$URL" | tar xz -C tools',
+    '    command -v gog &>/dev/null && echo "  [OK] gog installed to tools/" || echo "  [WARN] Download failed - install manually from https://github.com/steipete/gogcli/releases"',
+    '  fi',
     'fi',
     'python3 -c "import pptx" &>/dev/null && echo "  [OK] python-pptx" || echo "  [WARN] python-pptx not installed - run: pip install python-pptx"',
     '',
@@ -1169,16 +1184,43 @@ Write-Host "  gog provides Gmail, Google Docs, and Google Drive access." -Foregr
 Write-Host "  See docs\\GOOGLE-OAUTH-SETUP.md for step-by-step instructions." -ForegroundColor Gray
 Write-Host ""
 
-# Check if gog is installed
+# Check if gog is installed (project tools dir or system PATH)
+$env:Path = "$PWD\\tools;" + $env:Path
 $gogOk = Get-Command gog -ErrorAction SilentlyContinue
 if (-not $gogOk) {
-    Write-Host "  [MISSING] gog CLI" -ForegroundColor Red
-    Write-Host "  Download from: https://github.com/nicholasgasior/gog/releases" -ForegroundColor Gray
-    Write-Host "  Place the gog binary in this project's tools\\ directory or on your PATH." -ForegroundColor Gray
-    $answer = Read-Host "  Open download page? (y/n)"
-    if ($answer -eq 'y') { Start-Process "https://github.com/nicholasgasior/gog/releases" }
-    Read-Host "  Press Enter after installing gog..."
-    $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User") + ";$PWD\\tools"
+    Write-Host "  [MISSING] gog CLI - downloading..." -ForegroundColor Gray
+    # Auto-detect architecture
+    $arch = if ([System.Environment]::Is64BitOperatingSystem) {
+        if ($env:PROCESSOR_ARCHITECTURE -eq "ARM64") { "arm64" } else { "amd64" }
+    } else { "amd64" }
+    # Fetch latest release tag from GitHub API
+    try {
+        $releaseInfo = Invoke-RestMethod -Uri "https://api.github.com/repos/steipete/gogcli/releases/latest" -UseBasicParsing
+        $tag = $releaseInfo.tag_name
+        $version = $tag -replace '^v',''
+        $zipName = "gogcli_$($version)_windows_$($arch).zip"
+        $downloadUrl = "https://github.com/steipete/gogcli/releases/download/$($tag)/$($zipName)"
+        Write-Host "  Downloading gog $($tag) for windows/$($arch)..." -ForegroundColor Gray
+        if (-not (Test-Path "tools")) { New-Item -ItemType Directory -Path "tools" | Out-Null }
+        $zipPath = "tools\\$($zipName)"
+        Invoke-WebRequest -Uri $downloadUrl -OutFile $zipPath -UseBasicParsing
+        Expand-Archive -Path $zipPath -DestinationPath "tools" -Force
+        Remove-Item $zipPath -ErrorAction SilentlyContinue
+        # Refresh PATH to include tools dir
+        $env:Path = "$PWD\\tools;" + $env:Path
+        $gogOk = Get-Command gog -ErrorAction SilentlyContinue
+        if ($gogOk) {
+            Write-Host "  [OK] gog CLI installed to tools\\" -ForegroundColor Green
+        } else {
+            Write-Host "  [WARN] Download succeeded but gog not found in tools\\" -ForegroundColor DarkYellow
+        }
+    } catch {
+        Write-Host "  [WARN] Auto-download failed: $($_.Exception.Message)" -ForegroundColor DarkYellow
+        Write-Host "  Download manually from: https://github.com/steipete/gogcli/releases" -ForegroundColor Gray
+        Write-Host "  Place the gog binary in this project's tools\\ directory." -ForegroundColor Gray
+        Read-Host "  Press Enter after installing gog..."
+        $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User") + ";$PWD\\tools"
+    }
 }
 
 # Verify gog is now available
@@ -1715,7 +1757,7 @@ function Invoke-GoogleAuthBoard {
 
     $gogOk = Get-Command gog -ErrorAction SilentlyContinue
     if (-not $gogOk) {
-        Write-Host "  [ERROR] gog CLI not found. Install from https://github.com/nicholasgasior/gog/releases" -ForegroundColor Red
+        Write-Host "  [ERROR] gog CLI not found. Install from https://github.com/steipete/gogcli/releases" -ForegroundColor Red
         return $false
     }
 
@@ -1742,7 +1784,7 @@ function Invoke-GoogleAuthPersonal {
 
     $gogOk = Get-Command gog -ErrorAction SilentlyContinue
     if (-not $gogOk) {
-        Write-Host "  [ERROR] gog CLI not found. Install from https://github.com/nicholasgasior/gog/releases" -ForegroundColor Red
+        Write-Host "  [ERROR] gog CLI not found. Install from https://github.com/steipete/gogcli/releases" -ForegroundColor Red
         return $false
     }
 
@@ -1835,7 +1877,7 @@ function Invoke-GoogleAuthCredentials {
 
     $gogOk = Get-Command gog -ErrorAction SilentlyContinue
     if (-not $gogOk) {
-        Write-Host "  [ERROR] gog CLI not found. Install from https://github.com/nicholasgasior/gog/releases" -ForegroundColor Red
+        Write-Host "  [ERROR] gog CLI not found. Install from https://github.com/steipete/gogcli/releases" -ForegroundColor Red
         return $false
     }
 
@@ -1992,7 +2034,7 @@ Enable these APIs for your project:
 
 ## Step 5: Install gog CLI
 
-1. Download the latest \`gog\` binary from [GitHub Releases](https://github.com/nicholasgasior/gog/releases)
+1. Download the latest \`gog\` binary from [GitHub Releases](https://github.com/steipete/gogcli/releases)
 2. Place it in this project's \`tools/\` directory or on your system PATH
 
 ## Step 6: Configure gog with Your Credentials
