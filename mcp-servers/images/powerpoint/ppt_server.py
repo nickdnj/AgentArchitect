@@ -27,9 +27,16 @@ except ImportError:
     print("ERROR: python-pptx package not installed", file=sys.stderr)
     sys.exit(1)
 
-# Configuration from environment
-TEMPLATE_PATH = Path(os.environ.get("PPT_TEMPLATE_PATH", "/mcp/templates"))
-WORKSPACE_PATH = Path(os.environ.get("PPT_WORKSPACE_PATH", "/mcp/workspace"))
+# Configuration - check multiple env vars for compatibility
+# New env vars take precedence, fall back to old Docker env vars, then default to relative paths
+TEMPLATE_PATH = Path(os.environ.get("POWERPOINT_TEMPLATES_PATH",
+                     os.environ.get("PPT_TEMPLATE_PATH", "./templates")))
+WORKSPACE_PATH = Path(os.environ.get("POWERPOINT_WORKSPACE_PATH",
+                      os.environ.get("PPT_WORKSPACE_PATH", "./workspace")))
+
+# Ensure directories exist
+TEMPLATE_PATH.mkdir(parents=True, exist_ok=True)
+WORKSPACE_PATH.mkdir(parents=True, exist_ok=True)
 
 # Create MCP server
 server = Server("powerpoint-mcp")
@@ -228,4 +235,28 @@ async def main():
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    import argparse
+
+    parser = argparse.ArgumentParser(description="PowerPoint MCP Server")
+    parser.add_argument("--transport", choices=["stdio", "http"], default="stdio")
+    parser.add_argument("--port", type=int, default=8001)
+    parser.add_argument("--templates", help="Templates directory path")
+    parser.add_argument("--workspace", help="Workspace directory path")
+    args = parser.parse_args()
+
+    if args.templates:
+        TEMPLATE_PATH = Path(args.templates)
+    if args.workspace:
+        WORKSPACE_PATH = Path(args.workspace)
+
+    # Ensure directories exist (re-check in case CLI args overrode defaults)
+    TEMPLATE_PATH.mkdir(parents=True, exist_ok=True)
+    WORKSPACE_PATH.mkdir(parents=True, exist_ok=True)
+
+    if args.transport == "stdio":
+        asyncio.run(main())
+    else:
+        # HTTP transport (for Docker backwards compatibility)
+        from mcp.server.streamable_http import StreamableHTTPServer
+        http_server = StreamableHTTPServer(server, port=args.port)
+        asyncio.run(http_server.run())

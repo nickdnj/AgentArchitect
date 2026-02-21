@@ -78,6 +78,11 @@
         "Altium_TEMPLATE.pptx"
       ],
       "claude_code_config": {
+        "type": "stdio",
+        "command": "python",
+        "args": ["mcp-servers/images/powerpoint/ppt_server.py"]
+      },
+      "docker_config": {
         "type": "streamable-http",
         "url": "http://localhost:8001/mcp"
       },
@@ -225,6 +230,41 @@
         "Provides execute_ffmpeg tool",
         "No Docker needed",
         "Fallback: run ffmpeg directly via Bash"
+      ]
+    },
+    "voicemode": {
+      "name": "VoiceMode MCP Server",
+      "description": "Voice interaction via local speech-to-text (Whisper) and text-to-speech (Kokoro)",
+      "package": "voice-mode",
+      "type": "python-uvx",
+      "version": "latest",
+      "repository": "https://github.com/nicobailey/voice-mode",
+      "accounts": ["default"],
+      "auth": "none",
+      "credentials": {
+        "notes": "No credentials required. Models download automatically on first use (~1.5GB for Whisper)."
+      },
+      "capabilities": [
+        "Speech-to-text via Whisper (local)",
+        "Text-to-speech via Kokoro (local)",
+        "Voice conversation with wait_for_response control",
+        "Service management (start/stop/status)",
+        "Configurable voice, speed, and VAD settings"
+      ],
+      "install_command": "uvx voice-mode",
+      "claude_code_config": {
+        "type": "stdio",
+        "command": "uvx",
+        "args": ["voice-mode"]
+      },
+      "platform": "cross-platform",
+      "dependencies": ["Python 3.10+", "uv", "Microphone access", "Speaker/headphones"],
+      "status": "active",
+      "notes": [
+        "Models download on first use (~1.5GB for Whisper)",
+        "Windows may need PortAudio installed",
+        "No Docker needed - runs via uvx",
+        "Supports multiple TTS voices"
       ]
     },
     "pdfscribe": {

@@ -115,7 +115,7 @@ function resolveDependencies(teamId) {
 
     // Detect infrastructure dependencies
     if (config.rag_integration?.database || config.rag_config?.database) {
-      infraDeps.add('pgvector');
+      infraDeps.add('sqlite-vec');
     }
   }
 
@@ -239,6 +239,97 @@ function copyAgentSources(exportDir, deps) {
 }
 
 // ============================================================================
+// Phase 3.5: Generate MCP Server Configs (CLI-only, no Docker)
+// ============================================================================
+
+/**
+ * MCP server CLI configurations for npx/uvx invocation.
+ * Maps server IDs to their stdio command configs.
+ */
+const MCP_CLI_CONFIGS = {
+  'gmail': {
+    command: 'npx',
+    args: ['-y', '@gongrzhe/server-gmail-autoauth-mcp'],
+    env: {},
+    platform_notes: {
+      windows: 'Requires Node.js 18+. OAuth token auto-generated on first use.',
+    },
+  },
+  'gmail-personal': {
+    command: 'npx',
+    args: ['-y', '@gongrzhe/server-gmail-autoauth-mcp'],
+    env: {},
+    platform_notes: {
+      windows: 'Uses separate credential directory for personal account.',
+    },
+  },
+  'google-docs': {
+    command: 'npx',
+    args: ['-y', 'google-docs-mcp'],
+    env: {
+      GOOGLE_DOCS_CLIENT_ID: '{{GOOGLE_DOCS_CLIENT_ID}}',
+      GOOGLE_DOCS_CLIENT_SECRET: '{{GOOGLE_DOCS_CLIENT_SECRET}}',
+      GOOGLE_DOCS_REFRESH_TOKEN: '{{GOOGLE_DOCS_REFRESH_TOKEN}}',
+    },
+  },
+  'pdfscribe': {
+    command: 'python',
+    args: ['mcp-servers/images/pdfscribe/pdfscribe_server.py'],
+    env: {
+      PDFSCRIBE_CLI_PATH: '{{PROJECT_DIR}}/pdfscribe_cli',
+    },
+  },
+  'powerpoint': {
+    command: 'python',
+    args: ['mcp-servers/images/powerpoint/ppt_server.py'],
+    env: {
+      POWERPOINT_TEMPLATES_PATH: '{{PROJECT_DIR}}/templates',
+      POWERPOINT_WORKSPACE_PATH: '{{PROJECT_DIR}}/workspace',
+    },
+  },
+  'openai-image': {
+    command: 'npx',
+    args: ['-y', '@lpenguin/openai-image-mcp'],
+    env: {
+      OPENAI_API_KEY: '{{OPENAI_API_KEY}}',
+    },
+  },
+  'voicemode': {
+    command: 'uvx',
+    args: ['voice-mode'],
+    env: {},
+  },
+};
+
+function generateMcpConfigs(exportDir, deps, platform) {
+  const configs = {};
+
+  for (const serverId of deps.mcpServers) {
+    const cliConfig = MCP_CLI_CONFIGS[serverId];
+    if (!cliConfig) {
+      console.warn(`  Warning: No CLI config for MCP server: ${serverId}`);
+      continue;
+    }
+
+    configs[serverId] = {
+      type: 'stdio',
+      command: cliConfig.command,
+      args: [...cliConfig.args],
+      env: { ...cliConfig.env },
+    };
+  }
+
+  // Write the config for reference
+  fs.writeFileSync(
+    path.join(exportDir, 'mcp-servers', 'cli-configs.json'),
+    JSON.stringify(configs, null, 2) + '\n',
+    'utf-8'
+  );
+
+  return configs;
+}
+
+// ============================================================================
 // Phase 4: Copy Team Definition
 // ============================================================================
 
@@ -291,7 +382,17 @@ function copyContextBuckets(exportDir, deps, includeDocs) {
     fs.mkdirSync(destFilesDir, { recursive: true });
 
     if (includeDocs && fs.existsSync(filesDir)) {
-      copyDirRecursive(filesDir, destFilesDir);
+      // Filter session-logs: only include files relevant to this team
+      if (bucketId === 'session-logs') {
+        const teamId = deps.teamConfig.id;
+        const teamAlias = deps.teamConfig.skill_alias || teamId;
+        copyDirRecursiveFiltered(filesDir, destFilesDir, (filename) => {
+          const lower = filename.toLowerCase();
+          return lower.includes('wharfside') || lower.includes(teamAlias) || lower.includes(teamId);
+        });
+      } else {
+        copyDirRecursive(filesDir, destFilesDir);
+      }
       results.push({ bucketId, success: true, filesCopied: true });
     } else {
       // Create .gitkeep for empty dirs
@@ -303,7 +404,36 @@ function copyContextBuckets(exportDir, deps, includeDocs) {
   return results;
 }
 
-const TEXT_EXTENSIONS = new Set(['.md', '.txt', '.json', '.html', '.htm', '.yml', '.yaml', '.csv', '.xml', '.sh']);
+const TEXT_EXTENSIONS = new Set(['.md', '.txt', '.json', '.html', '.htm', '.yml', '.yaml', '.csv', '.xml', '.sh', '.ps1']);
+
+/**
+ * Copy directory recursively with a filename filter function.
+ * Only copies files where filterFn(filename) returns true.
+ */
+function copyDirRecursiveFiltered(src, dest, filterFn) {
+  if (!fs.existsSync(src)) return;
+
+  const entries = fs.readdirSync(src, { withFileTypes: true });
+  for (const entry of entries) {
+    const srcPath = path.join(src, entry.name);
+    const destPath = path.join(dest, entry.name);
+
+    if (entry.isDirectory()) {
+      fs.mkdirSync(destPath, { recursive: true });
+      copyDirRecursiveFiltered(srcPath, destPath, filterFn);
+    } else {
+      if (!filterFn(entry.name)) continue;
+
+      const ext = path.extname(entry.name).toLowerCase();
+      if (TEXT_EXTENSIONS.has(ext)) {
+        const content = fs.readFileSync(srcPath, 'utf-8');
+        fs.writeFileSync(destPath, sanitizeString(content), 'utf-8');
+      } else {
+        fs.copyFileSync(srcPath, destPath);
+      }
+    }
+  }
+}
 
 function copyDirRecursive(src, dest) {
   if (!fs.existsSync(src)) return;
@@ -411,90 +541,120 @@ function generateNativeFiles(exportDir, deps) {
 // ============================================================================
 
 function exportRagDatabase(exportDir, deps) {
-  if (!deps.infraDeps.includes('pgvector')) {
-    return { skipped: true, reason: 'no pgvector dependency' };
-  }
+  // Look for SQLite RAG database
+  const homeDir = process.env.HOME || process.env.USERPROFILE;
+  const defaultDbPath = path.join(homeDir, '.wharfside', 'rag.db');
+  const envDbPath = process.env.RAG_DB_PATH;
+  const dbPath = envDbPath || defaultDbPath;
 
-  // Build list of bucket IDs to filter
-  const bucketIds = deps.contextBuckets;
-
-  try {
-    // Check if pg_dump is available
-    execSync('which pg_dump', { stdio: 'pipe' });
-  } catch {
-    return { skipped: true, reason: 'pg_dump not found in PATH' };
+  if (!fs.existsSync(dbPath)) {
+    return { skipped: true, reason: `RAG database not found at ${dbPath}` };
   }
 
   try {
-    // Check if the database is accessible
-    execSync('pg_isready -h localhost -p 5433 -U rag', { stdio: 'pipe' });
-  } catch {
-    return { skipped: true, reason: 'pgvector database not running on localhost:5433' };
-  }
+    const destPath = path.join(exportDir, 'data', 'rag.db');
+    fs.copyFileSync(dbPath, destPath);
 
-  try {
-    // Dump the schema first
-    const schemaDump = execSync(
-      'pg_dump -h localhost -p 5433 -U rag -d rag --schema-only --no-owner --no-privileges 2>/dev/null',
-      { env: { ...process.env, PGPASSWORD: 'localdev' }, encoding: 'utf-8', maxBuffer: 50 * 1024 * 1024 }
-    );
-
-    // Dump data filtered by bucket_id
-    const whereClause = bucketIds.map(id => `'${id}'`).join(', ');
-    let dataDump = '';
-    try {
-      dataDump = execSync(
-        `psql -h localhost -p 5433 -U rag -d rag -c "COPY (SELECT * FROM documents WHERE bucket_id IN (${whereClause})) TO STDOUT WITH CSV HEADER" 2>/dev/null`,
-        { env: { ...process.env, PGPASSWORD: 'localdev' }, encoding: 'utf-8', maxBuffer: 50 * 1024 * 1024 }
-      );
-    } catch {
-      // Table might not exist or be empty - that's OK
-      dataDump = '-- No document data found for specified buckets\n';
+    // Also copy WAL and SHM files if they exist (for consistency)
+    const walPath = dbPath + '-wal';
+    const shmPath = dbPath + '-shm';
+    if (fs.existsSync(walPath)) {
+      fs.copyFileSync(walPath, destPath + '-wal');
+    }
+    if (fs.existsSync(shmPath)) {
+      fs.copyFileSync(shmPath, destPath + '-shm');
     }
 
-    // Write combined dump
-    const dumpPath = path.join(exportDir, 'data', 'rag-dump.sql');
-    const header = [
-      '-- RAG Database Dump',
-      `-- Exported: ${new Date().toISOString()}`,
-      `-- Buckets: ${bucketIds.join(', ')}`,
-      '-- Restore: psql -h localhost -p 5433 -U rag -d rag < data/rag-dump.sql',
-      '',
-      '-- Schema',
-      schemaDump,
-      '',
-      '-- Data (filtered by bucket)',
-      `-- Use: COPY documents FROM STDIN WITH CSV HEADER`,
-      `-- Bucket filter: ${whereClause}`,
-      '',
-    ].join('\n');
-
-    fs.writeFileSync(dumpPath, header, 'utf-8');
-    if (dataDump && !dataDump.startsWith('--')) {
-      fs.appendFileSync(dumpPath, `\n-- Document data CSV\n-- ${dataDump.split('\n')[0]}\n`, 'utf-8');
-    }
-
-    return { success: true, dumpPath };
+    const stats = fs.statSync(destPath);
+    const sizeMb = (stats.size / (1024 * 1024)).toFixed(1);
+    return { success: true, destPath, sizeMb };
   } catch (err) {
-    return { skipped: true, reason: `pg_dump failed: ${err.message}` };
+    return { skipped: true, reason: `SQLite copy failed: ${err.message}` };
   }
+}
+
+// ============================================================================
+// Phase 7.6: Generate Claude Code Settings
+// ============================================================================
+
+function generateClaudeSettings(exportDir, deps, mcpConfigs, platform) {
+  // Build permission allow list from MCP servers
+  const allowPatterns = [];
+  for (const serverId of deps.mcpServers) {
+    // Map server IDs to Claude Code MCP tool patterns
+    const patterns = {
+      'gmail': 'mcp__gmail__*',
+      'gmail-personal': 'mcp__gmail-personal__*',
+      'google-docs': 'mcp__google-docs-mcp__*',
+      'pdfscribe': 'mcp__pdfscribe__*',
+      'powerpoint': 'mcp__powerpoint__*',
+      'openai-image': 'mcp__openai-image__*',
+      'voicemode': 'mcp__voicemode__*',
+    };
+    if (patterns[serverId]) {
+      allowPatterns.push(patterns[serverId]);
+    }
+  }
+
+  // Build mcpServers config block
+  const mcpServers = {};
+  for (const [serverId, config] of Object.entries(mcpConfigs)) {
+    // Map server IDs to Claude Code MCP server names
+    const serverNames = {
+      'gmail': 'gmail',
+      'gmail-personal': 'gmail-personal',
+      'google-docs': 'google-docs-mcp',
+      'pdfscribe': 'pdfscribe',
+      'powerpoint': 'powerpoint',
+      'openai-image': 'openai-image',
+      'voicemode': 'voicemode',
+    };
+    const name = serverNames[serverId] || serverId;
+    mcpServers[name] = {
+      type: config.type,
+      command: config.command,
+      args: config.args,
+    };
+    if (config.env && Object.keys(config.env).length > 0) {
+      mcpServers[name].env = config.env;
+    }
+  }
+
+  const settings = {
+    permissions: {
+      allow: allowPatterns,
+    },
+    mcpServers,
+  };
+
+  // Write settings.local.json (user-specific, not committed)
+  const settingsDir = path.join(exportDir, '.claude');
+  fs.mkdirSync(settingsDir, { recursive: true });
+  fs.writeFileSync(
+    path.join(settingsDir, 'settings.local.json'),
+    JSON.stringify(settings, null, 2) + '\n',
+    'utf-8'
+  );
+
+  return settings;
 }
 
 // ============================================================================
 // Phase 8: Generate Documentation
 // ============================================================================
 
-function generateDocumentation(exportDir, deps) {
+function generateDocumentation(exportDir, deps, options = {}) {
   const teamId = deps.teamConfig.id;
   const teamName = deps.teamConfig.name;
   const skillAlias = deps.teamConfig.skill_alias || teamId;
+  const { platform = 'auto', noDocker = true } = options;
 
   // --- CLAUDE.md ---
   const claudeMd = generateClaudeMd(deps, skillAlias);
   fs.writeFileSync(path.join(exportDir, 'CLAUDE.md'), claudeMd, 'utf-8');
 
   // --- README.md ---
-  const readme = generateReadme(deps, skillAlias);
+  const readme = generateReadme(deps, skillAlias, platform);
   fs.writeFileSync(path.join(exportDir, 'README.md'), readme, 'utf-8');
 
   // --- .env.example ---
@@ -502,24 +662,33 @@ function generateDocumentation(exportDir, deps) {
   fs.writeFileSync(path.join(exportDir, '.env.example'), envExample, 'utf-8');
 
   // --- mcp-servers/SETUP.md ---
-  const mcpSetup = generateMcpSetup(deps);
+  const mcpSetup = generateMcpSetup(deps, noDocker);
   fs.writeFileSync(path.join(exportDir, 'mcp-servers', 'SETUP.md'), mcpSetup, 'utf-8');
 
-  // --- setup.sh ---
+  // --- setup.sh (Mac/Linux) ---
   const setupSh = generateSetupSh(deps, skillAlias);
   fs.writeFileSync(path.join(exportDir, 'setup.sh'), setupSh, 'utf-8');
   fs.chmodSync(path.join(exportDir, 'setup.sh'), '755');
 
-  // --- docker-compose.yml ---
-  const dockerSrc = path.join(ROOT, 'docker-compose.yml');
-  if (fs.existsSync(dockerSrc)) {
-    const content = fs.readFileSync(dockerSrc, 'utf-8');
-    fs.writeFileSync(path.join(exportDir, 'docker-compose.yml'), sanitizeString(content), 'utf-8');
+  // --- install.ps1 (Windows) ---
+  if (platform === 'windows' || platform === 'auto') {
+    const installPs1 = generateInstallPs1(deps, skillAlias);
+    fs.writeFileSync(path.join(exportDir, 'install.ps1'), installPs1, 'utf-8');
   }
+
+  // --- docs/GOOGLE-OAUTH-SETUP.md ---
+  fs.mkdirSync(path.join(exportDir, 'docs'), { recursive: true });
+  const oauthGuide = generateCredentialGuide(deps);
+  fs.writeFileSync(path.join(exportDir, 'docs', 'GOOGLE-OAUTH-SETUP.md'), oauthGuide, 'utf-8');
 
   // --- .gitignore ---
   const gitignore = generateGitignore();
   fs.writeFileSync(path.join(exportDir, '.gitignore'), gitignore, 'utf-8');
+
+  // --- Copy voice skills if voicemode is a dependency ---
+  if (deps.mcpServers.includes('voicemode')) {
+    copyVoiceSkills(exportDir);
+  }
 
   // --- Copy generate-agents.js (sanitized) ---
   const genScript = fs.readFileSync(path.join(ROOT, 'scripts', 'generate-agents.js'), 'utf-8');
@@ -528,6 +697,29 @@ function generateDocumentation(exportDir, deps) {
     sanitizeString(genScript),
     'utf-8'
   );
+
+  // --- Copy MCP server source files ---
+  copyMcpServerSources(exportDir, deps);
+}
+
+function copyVoiceSkills(exportDir) {
+  const skillsToCopy = [
+    { src: '.claude/skills/voice/SKILL.md', dest: '.claude/skills/voice/SKILL.md' },
+    { src: '.claude/skills/end-voice/SKILL.md', dest: '.claude/skills/end-voice/SKILL.md' },
+  ];
+  const commandsToCopy = [
+    { src: '.claude/commands/voice.md', dest: '.claude/commands/voice.md' },
+  ];
+
+  for (const item of [...skillsToCopy, ...commandsToCopy]) {
+    const srcPath = path.join(ROOT, item.src);
+    if (fs.existsSync(srcPath)) {
+      const destPath = path.join(exportDir, item.dest);
+      fs.mkdirSync(path.dirname(destPath), { recursive: true });
+      const content = fs.readFileSync(srcPath, 'utf-8');
+      fs.writeFileSync(destPath, sanitizeString(content), 'utf-8');
+    }
+  }
 }
 
 function generateClaudeMd(deps, skillAlias) {
@@ -581,73 +773,95 @@ function generateClaudeMd(deps, skillAlias) {
   return lines.join('\n');
 }
 
-function generateReadme(deps, skillAlias) {
+function generateReadme(deps, skillAlias, platform) {
   const teamName = deps.teamConfig.name;
-  const teamId = deps.teamConfig.id;
 
   const lines = [
     `# ${teamName}`,
     '',
-    deps.teamConfig.description,
+    'AI assistant for Wharfside Manor condo management.',
     '',
-    '## Prerequisites',
+    '## What It Can Do',
     '',
-    '- [Claude Code CLI](https://docs.anthropic.com/en/docs/claude-code) installed and authenticated',
-    '- Node.js 18+',
+    '- **Search emails** - Find board emails by topic, person, or date',
+    '- **Governing documents** - Look up and explain rules, bylaws, and policies',
+    '- **Monthly bulletins** - Generate community newsletters from recent activity',
+    '- **Vendor proposals** - Review, compare, and summarize contractor proposals',
+    '- **Presentations** - Create PowerPoint decks for board meetings',
+    '- **PDF transcription** - Convert scanned PDFs into searchable text',
+    '- **Voice interaction** - Talk to it using your microphone',
+    '- **Official communications** - Draft board notices, policy explainers, and owner letters',
+    '',
+    '## Requirements',
+    '',
   ];
 
-  if (deps.infraDeps.includes('pgvector')) {
-    lines.push('- Docker Desktop (for pgvector database)');
-  }
-
-  if (deps.mcpServers.length > 0) {
-    lines.push('- MCP server dependencies (see `mcp-servers/SETUP.md`)');
+  if (platform === 'windows') {
+    lines.push(
+      '- Windows 10 or 11',
+      '- [Claude Code](https://docs.anthropic.com/en/docs/claude-code) subscription',
+      '- [Node.js 18+](https://nodejs.org/) (LTS recommended)',
+      '- [Python 3.10+](https://www.python.org/downloads/)',
+      '- Google account for email access',
+      '- Internet connection',
+      '- Microphone and speakers (for voice mode)',
+    );
+  } else {
+    lines.push(
+      '- macOS 12+ or Linux',
+      '- [Claude Code](https://docs.anthropic.com/en/docs/claude-code) subscription',
+      '- Node.js 18+ and Python 3.10+',
+      '- Google account for email access',
+    );
   }
 
   lines.push(
     '',
-    '## Quick Setup',
-    '',
-    '```bash',
-    '# 1. Clone or unzip this directory',
-    '',
-    '# 2. Run the setup script',
-    './setup.sh',
-    '',
-    `# 3. Start using the team`,
-    `# In Claude Code, type: /${skillAlias}`,
-    '```',
-    '',
-    '## Manual Setup',
-    '',
-    '```bash',
-    '# 1. Copy environment file and fill in your values',
-    'cp .env.example .env',
-    '# Edit .env with your credentials',
+    '## Setup',
     '',
   );
 
-  if (deps.infraDeps.includes('pgvector')) {
+  if (platform === 'windows') {
     lines.push(
-      '# 2. Start the pgvector database',
-      'docker compose up -d',
+      '### Windows',
       '',
-      '# 3. Restore the RAG database (if data/rag-dump.sql exists)',
-      'psql -h localhost -p 5433 -U rag -d rag < data/rag-dump.sql',
+      '1. **Install Claude Code** - Follow the signup guide at [claude.ai](https://claude.ai)',
+      '2. **Open PowerShell** in this folder',
+      '3. **Run the installer:**',
+      '   ```powershell',
+      '   .\\install.ps1',
+      '   ```',
+      '4. **Follow the prompts** - the installer will walk you through everything',
       '',
     );
   }
 
   lines.push(
-    '# 4. Set up MCP servers (see mcp-servers/SETUP.md)',
+    '### Mac / Linux',
     '',
-    '# 5. (Optional) Regenerate Claude Code native files',
-    'node scripts/generate-agents.js',
+    '1. Install Claude Code: `npm install -g @anthropic-ai/claude-code`',
+    '2. Run the setup script: `./setup.sh`',
+    '3. Follow the prompts',
+    '',
+    '## Daily Usage',
+    '',
+    'Open a terminal in this folder and start Claude:',
+    '',
     '```',
+    'claude',
+    '```',
+    '',
+    'Then try any of these:',
+    '',
+    `- **Voice mode:** Type \`/voice\` to start talking`,
+    `- **Search email:** \`/${skillAlias} search email for insurance renewal\``,
+    `- **Find a rule:** \`/${skillAlias} what does the governing docs say about parking?\``,
+    `- **Generate bulletin:** \`/${skillAlias} generate this month\'s bulletin\``,
+    `- **Review proposal:** \`/${skillAlias} review the attached vendor proposal\``,
     '',
     '## Team Members',
     '',
-    '| Agent | Role |',
+    '| Assistant | What It Does |',
     '|---|---|',
   );
 
@@ -659,40 +873,21 @@ function generateReadme(deps, skillAlias) {
 
   lines.push(
     '',
-    '## MCP Server Dependencies',
-    '',
-  );
-
-  if (deps.mcpServers.length > 0) {
-    for (const server of deps.mcpServers) {
-      lines.push(`- \`${server}\``);
-    }
-    lines.push('', 'See `mcp-servers/SETUP.md` for installation and configuration instructions.');
-  } else {
-    lines.push('No MCP servers required.');
-  }
-
-  lines.push(
-    '',
-    '## Usage',
-    '',
-    `Once set up, invoke the team in Claude Code by typing \`/${skillAlias}\` followed by your request.`,
-    '',
-    'Examples:',
-    `- \`/${skillAlias} search governing documents for pet policy\``,
-    `- \`/${skillAlias} generate this month\'s bulletin\``,
-    `- \`/${skillAlias} review the attached vendor proposal\``,
-    '',
     '## Troubleshooting',
     '',
-    '### MCP servers not connecting',
-    'Ensure all required MCP servers are installed and configured. Check `mcp-servers/SETUP.md`.',
+    '### "MCP server not connected"',
+    'Run the install script again - it will check all connections.',
     '',
-    '### RAG search returns no results',
-    'Ensure the pgvector database is running (`docker compose up -d`) and the dump has been restored.',
+    '### Search returns no results',
+    'The document database may need to be rebuilt. Ask Claude:',
+    `\`/${skillAlias} re-index the governing documents\``,
     '',
-    '### Agents not found',
-    'Run `node scripts/generate-agents.js` to regenerate Claude Code native files.',
+    '### Voice mode not working',
+    'Make sure your microphone is enabled and you have speakers/headphones connected.',
+    'Try: `uvx voice-mode` in a terminal to test.',
+    '',
+    '### Need help?',
+    'Contact the board technology contact for assistance.',
     '',
   );
 
@@ -701,97 +896,52 @@ function generateReadme(deps, skillAlias) {
 
 function generateEnvExample(deps) {
   const lines = [
-    '# Environment variables for the exported team',
+    '# Environment variables for the Wharfside Board Assistant',
     '# Copy this file to .env and fill in your values',
+    '# The install script will help you set these up',
     '',
-    '# === Email Configuration ===',
-    '# Your board/organization email address',
-    'BOARD_EMAIL=your-board-email@example.com',
+    '# === Required API Keys ===',
     '',
-    '# Your personal email address',
-    'PERSONAL_EMAIL=your-personal-email@example.com',
+    '# Anthropic API Key (comes with Claude Code subscription)',
+    '# Get it at: https://console.anthropic.com/settings/keys',
+    'ANTHROPIC_API_KEY=sk-ant-...',
+    '',
+    '# OpenAI API Key (for document search embeddings and image generation)',
+    '# Get it at: https://platform.openai.com/api-keys',
+    '# Expected cost: $5-20/month depending on usage',
+    'OPENAI_API_KEY=sk-...',
     '',
   ];
 
-  // Add MCP server specific env vars
-  if (deps.mcpServers.includes('gmail') || deps.mcpServers.includes('gmail-personal')) {
-    lines.push(
-      '# === Gmail MCP Server ===',
-      '# OAuth credentials for Gmail access',
-      '# See mcp-servers/SETUP.md for setup instructions',
-      '# GMAIL_OAUTH_CLIENT_ID=',
-      '# GMAIL_OAUTH_CLIENT_SECRET=',
-      '',
-    );
-  }
-
   if (deps.mcpServers.includes('google-docs')) {
     lines.push(
-      '# === Google Docs MCP Server ===',
-      '# GOOGLE_DOCS_CLIENT_ID=',
-      '# GOOGLE_DOCS_CLIENT_SECRET=',
-      '# GOOGLE_DOCS_REFRESH_TOKEN=',
+      '# === Google Docs API ===',
+      '# Set up via docs/GOOGLE-OAUTH-SETUP.md',
+      'GOOGLE_DOCS_CLIENT_ID=',
+      'GOOGLE_DOCS_CLIENT_SECRET=',
+      'GOOGLE_DOCS_REFRESH_TOKEN=',
       '',
     );
   }
 
-  if (deps.mcpServers.includes('pdfscribe')) {
-    lines.push(
-      '# === PDFScribe / RAG ===',
-      '# At least one AI provider key is required',
-      'ANTHROPIC_API_KEY=',
-      'OPENAI_API_KEY=',
-      '',
-      '# RAG database (default: local Docker pgvector)',
-      'RAG_DB_HOST=localhost',
-      'RAG_DB_PORT=5433',
-      'RAG_DB_USER=rag',
-      'RAG_DB_PASSWORD=localdev',
-      '',
-    );
-  }
-
-  if (deps.mcpServers.includes('openai-image')) {
-    lines.push(
-      '# === OpenAI Image Generation ===',
-      'OPENAI_API_KEY=  # Same key as above if already set',
-      '',
-    );
-  }
-
-  if (deps.mcpServers.includes('powerpoint')) {
-    lines.push(
-      '# === PowerPoint MCP Server ===',
-      '# Runs as a local Docker container, no credentials needed',
-      '# Templates directory path (update if moved)',
-      'POWERPOINT_TEMPLATES_DIR=./templates',
-      '',
-    );
-  }
-
-  if (deps.mcpServers.includes('voicemode')) {
-    lines.push(
-      '# === Voice Mode ===',
-      '# VOICEMODE_API_KEY=',
-      '',
-    );
-  }
-
-  if (deps.infraDeps.includes('pgvector')) {
-    lines.push(
-      '# === Infrastructure ===',
-      '# pgvector database (Docker Compose)',
-      'POSTGRES_USER=rag',
-      'POSTGRES_PASSWORD=localdev',
-      'POSTGRES_DB=rag',
-      '',
-    );
-  }
+  lines.push(
+    '# === Auto-configured by install script ===',
+    '',
+    '# Gmail OAuth credentials path',
+    '# GMAIL_CREDS_PATH=~/.config/mcp-gmail',
+    '',
+    '# RAG database location (SQLite)',
+    'RAG_DB_PATH=./data/rag.db',
+    '',
+    '# PowerPoint templates',
+    'POWERPOINT_TEMPLATES_PATH=./templates',
+    '',
+  );
 
   return lines.join('\n');
 }
 
-function generateMcpSetup(deps) {
+function generateMcpSetup(deps, noDocker = true) {
   // Load server registry
   const registryPath = path.join(ROOT, 'mcp-servers', 'registry', 'servers.json');
   let serverRegistry = {};
@@ -880,98 +1030,457 @@ function generateMcpSetup(deps) {
 
 function generateSetupSh(deps, skillAlias) {
   const teamName = deps.teamConfig.name;
-  const hasPgvector = deps.infraDeps.includes('pgvector');
 
   const lines = [
     '#!/bin/bash',
     `# Setup script for ${teamName}`,
-    '# Run this after cloning/unzipping the export',
+    '# Run this after cloning the repository',
     '',
     'set -e',
     '',
-    'echo "=================================="',
+    'echo "======================================"',
     `echo "  ${teamName} Setup"`,
-    'echo "=================================="',
+    'echo "======================================"',
     'echo ""',
     '',
-    '# Check prerequisites',
-    'echo "Checking prerequisites..."',
+    '# ---- Step 1: Check prerequisites ----',
+    'echo "Step 1: Checking prerequisites..."',
+    'MISSING=0',
     '',
     'if ! command -v node &> /dev/null; then',
-    '  echo "ERROR: Node.js is not installed. Please install Node.js 18+."',
-    '  exit 1',
+    '  echo "  [MISSING] Node.js - Install from https://nodejs.org/"',
+    '  MISSING=1',
+    'else',
+    '  echo "  [OK] Node.js $(node --version)"',
     'fi',
-    'echo "  [OK] Node.js $(node --version)"',
+    '',
+    'if ! command -v python3 &> /dev/null; then',
+    '  echo "  [MISSING] Python 3 - Install from https://www.python.org/"',
+    '  MISSING=1',
+    'else',
+    '  echo "  [OK] Python $(python3 --version 2>&1 | cut -d\\" \\" -f2)"',
+    'fi',
+    '',
+    'if ! command -v uv &> /dev/null; then',
+    '  echo "  [MISSING] uv (Python package manager)"',
+    '  echo "  Install: curl -LsSf https://astral.sh/uv/install.sh | sh"',
+    '  MISSING=1',
+    'else',
+    '  echo "  [OK] uv $(uv --version 2>&1 | head -1)"',
+    'fi',
     '',
     'if ! command -v claude &> /dev/null; then',
-    '  echo "WARNING: Claude Code CLI not found. Install it from https://docs.anthropic.com/en/docs/claude-code"',
+    '  echo "  [MISSING] Claude Code CLI"',
+    '  echo "  Install: npm install -g @anthropic-ai/claude-code"',
+    '  MISSING=1',
+    'else',
+    '  echo "  [OK] Claude Code installed"',
     'fi',
     '',
-  ];
-
-  if (hasPgvector) {
-    lines.push(
-      'if ! command -v docker &> /dev/null; then',
-      '  echo "WARNING: Docker not found. Required for pgvector database."',
-      '  echo "  Install Docker Desktop: https://www.docker.com/products/docker-desktop"',
-      'fi',
-      '',
-    );
-  }
-
-  lines.push(
-    '# Set up environment file',
-    'if [ ! -f .env ]; then',
+    'if [ $MISSING -eq 1 ]; then',
     '  echo ""',
-    '  echo "Creating .env from .env.example..."',
+    '  echo "Please install the missing dependencies and re-run this script."',
+    '  exit 1',
+    'fi',
+    '',
+    '# ---- Step 2: Environment file ----',
+    'echo ""',
+    'echo "Step 2: Setting up environment..."',
+    'if [ ! -f .env ]; then',
     '  cp .env.example .env',
-    '  echo "  Please edit .env with your credentials before proceeding."',
-    '  echo "  Then re-run this script."',
+    '  echo "  Created .env from template."',
+    '  echo "  Please edit .env with your API keys, then re-run this script."',
+    '  echo "  See docs/GOOGLE-OAUTH-SETUP.md for Google credential setup."',
     '  exit 0',
     'fi',
     'echo "  [OK] .env file exists"',
     '',
-  );
-
-  if (hasPgvector) {
-    lines.push(
-      '# Start pgvector database',
-      'if command -v docker &> /dev/null; then',
-      '  echo ""',
-      '  echo "Starting pgvector database..."',
-      '  docker compose up -d',
-      '  echo "  Waiting for database to be ready..."',
-      '  sleep 5',
-      '',
-      '  # Restore RAG dump if available',
-      '  if [ -f data/rag-dump.sql ]; then',
-      '    echo "  Restoring RAG database..."',
-      '    PGPASSWORD=localdev psql -h localhost -p 5433 -U rag -d rag < data/rag-dump.sql 2>/dev/null || echo "  (Some restore warnings are normal)"',
-      '    echo "  [OK] RAG database restored"',
-      '  fi',
-      'fi',
-      '',
-    );
-  }
-
-  lines.push(
-    '# Generate Claude Code native files',
+    '# ---- Step 3: Test voice mode ----',
     'echo ""',
-    'echo "Generating Claude Code native agent files..."',
+    'echo "Step 3: Testing voice mode..."',
+    'if uvx voice-mode --help &> /dev/null; then',
+    '  echo "  [OK] Voice mode available"',
+    'else',
+    '  echo "  [WARN] Voice mode test failed. You can still use text mode."',
+    'fi',
+    '',
+    '# ---- Step 4: Test MCP servers ----',
+    'echo ""',
+    'echo "Step 4: Checking MCP server dependencies..."',
+    'npx -y @gongrzhe/server-gmail-autoauth-mcp --version &>/dev/null && echo "  [OK] Gmail MCP" || echo "  [WARN] Gmail MCP needs setup"',
+    'npx -y google-docs-mcp --version &>/dev/null && echo "  [OK] Google Docs MCP" || echo "  [WARN] Google Docs MCP needs setup"',
+    '',
+    '# ---- Step 5: Generate Claude Code files ----',
+    'echo ""',
+    'echo "Step 5: Generating Claude Code native agent files..."',
     'node scripts/generate-agents.js',
     '',
+    '# ---- Step 6: Check RAG database ----',
     'echo ""',
-    'echo "=================================="',
+    'echo "Step 6: Checking document database..."',
+    'if [ -f data/rag.db ]; then',
+    '  echo "  [OK] RAG database found (data/rag.db)"',
+    'else',
+    '  echo "  [INFO] No RAG database found. One will be created when documents are indexed."',
+    'fi',
+    '',
+    'echo ""',
+    'echo "======================================"',
     'echo "  Setup Complete!"',
-    'echo "=================================="',
+    'echo "======================================"',
     'echo ""',
-    'echo "Next steps:"',
-    'echo "  1. Set up MCP servers (see mcp-servers/SETUP.md)"',
-    `echo "  2. In Claude Code, type: /${skillAlias}"`,
+    'echo "To start: open a terminal here and type: claude"',
+    `echo "Then try: /voice"`,
+    `echo "Or type:  /${skillAlias} search email for insurance renewal"`,
     'echo ""',
-  );
+  ];
 
   return lines.join('\n');
+}
+
+function generateInstallPs1(deps, skillAlias) {
+  const teamName = deps.teamConfig.name;
+
+  return `# ${teamName} - Windows Installer
+# Run this script in PowerShell: .\\install.ps1
+
+$ErrorActionPreference = "Stop"
+
+Write-Host ""
+Write-Host "======================================" -ForegroundColor Cyan
+Write-Host "  ${teamName}" -ForegroundColor Cyan
+Write-Host "  Windows Setup" -ForegroundColor Cyan
+Write-Host "======================================" -ForegroundColor Cyan
+Write-Host ""
+
+# ============================================================
+# Step 1: Prerequisites Check
+# ============================================================
+Write-Host "Step 1: Checking prerequisites..." -ForegroundColor Yellow
+$missing = @()
+
+# Node.js
+try {
+    $nodeVersion = node --version 2>&1
+    Write-Host "  [OK] Node.js $nodeVersion" -ForegroundColor Green
+} catch {
+    Write-Host "  [MISSING] Node.js" -ForegroundColor Red
+    Write-Host "    Download: https://nodejs.org/" -ForegroundColor Gray
+    $missing += "Node.js"
+}
+
+# Python
+try {
+    $pyVersion = python --version 2>&1
+    Write-Host "  [OK] $pyVersion" -ForegroundColor Green
+} catch {
+    Write-Host "  [MISSING] Python" -ForegroundColor Red
+    Write-Host "    Download: https://www.python.org/downloads/" -ForegroundColor Gray
+    $missing += "Python"
+}
+
+# uv (Python package manager)
+try {
+    $uvVersion = uv --version 2>&1
+    Write-Host "  [OK] uv $uvVersion" -ForegroundColor Green
+} catch {
+    Write-Host "  [MISSING] uv (Python package manager)" -ForegroundColor Red
+    Write-Host "    Install: irm https://astral.sh/uv/install.ps1 | iex" -ForegroundColor Gray
+    $missing += "uv"
+}
+
+# Claude Code
+try {
+    claude --version 2>&1 | Out-Null
+    Write-Host "  [OK] Claude Code installed" -ForegroundColor Green
+} catch {
+    Write-Host "  [MISSING] Claude Code CLI" -ForegroundColor Red
+    Write-Host "    Install: npm install -g @anthropic-ai/claude-code" -ForegroundColor Gray
+    Write-Host "    Signup:  https://claude.ai" -ForegroundColor Gray
+    $missing += "Claude Code"
+}
+
+if ($missing.Count -gt 0) {
+    Write-Host ""
+    Write-Host "Please install the missing dependencies and re-run this script." -ForegroundColor Red
+    Write-Host "Missing: $($missing -join ', ')" -ForegroundColor Red
+    exit 1
+}
+
+# ============================================================
+# Step 2: Voice Mode Setup (PRIORITY)
+# ============================================================
+Write-Host ""
+Write-Host "Step 2: Setting up Voice Mode..." -ForegroundColor Yellow
+try {
+    uvx voice-mode --help 2>&1 | Out-Null
+    Write-Host "  [OK] Voice mode ready!" -ForegroundColor Green
+    Write-Host "  Use /voice after starting Claude to talk to your assistant." -ForegroundColor Gray
+} catch {
+    Write-Host "  [WARN] Voice mode test failed." -ForegroundColor DarkYellow
+    Write-Host "  Windows may need PortAudio: https://www.portaudio.com/" -ForegroundColor Gray
+    Write-Host "  You can still use text mode." -ForegroundColor Gray
+}
+
+# ============================================================
+# Step 3: Google OAuth Setup (Interactive)
+# ============================================================
+Write-Host ""
+Write-Host "Step 3: Google Account Setup" -ForegroundColor Yellow
+Write-Host ""
+Write-Host "  To access Gmail and Google Docs, you need Google OAuth credentials." -ForegroundColor Gray
+Write-Host "  See docs\\GOOGLE-OAUTH-SETUP.md for step-by-step instructions." -ForegroundColor Gray
+Write-Host ""
+
+$setupGoogle = Read-Host "  Have you already set up Google OAuth? (y/n)"
+if ($setupGoogle -eq "y") {
+    # Gmail credentials
+    $credsPath = Read-Host "  Enter path to your downloaded gcp-oauth.keys.json"
+    if (Test-Path $credsPath) {
+        $gmailDir = "$env:USERPROFILE\\.config\\mcp-gmail"
+        New-Item -ItemType Directory -Path $gmailDir -Force | Out-Null
+        Copy-Item $credsPath "$gmailDir\\gcp-oauth.keys.json"
+        Write-Host "  [OK] Gmail credentials installed" -ForegroundColor Green
+        Write-Host "  Note: On first use, a browser window will open for Gmail authorization." -ForegroundColor Gray
+    } else {
+        Write-Host "  [SKIP] File not found. Set up later per docs/GOOGLE-OAUTH-SETUP.md" -ForegroundColor DarkYellow
+    }
+} else {
+    Write-Host "  [SKIP] Set up Google OAuth later using docs\\GOOGLE-OAUTH-SETUP.md" -ForegroundColor DarkYellow
+}
+
+# ============================================================
+# Step 4: API Keys
+# ============================================================
+Write-Host ""
+Write-Host "Step 4: API Keys" -ForegroundColor Yellow
+
+# Check for .env file
+if (-not (Test-Path ".env")) {
+    Copy-Item ".env.example" ".env"
+    Write-Host "  Created .env from template." -ForegroundColor Gray
+}
+
+# Anthropic API Key
+$anthropicKey = [System.Environment]::GetEnvironmentVariable("ANTHROPIC_API_KEY", "User")
+if ($anthropicKey) {
+    Write-Host "  [OK] ANTHROPIC_API_KEY already set" -ForegroundColor Green
+} else {
+    Write-Host ""
+    Write-Host "  Anthropic API Key is needed for Claude." -ForegroundColor Gray
+    Write-Host "  This usually comes with your Claude Code subscription." -ForegroundColor Gray
+    Write-Host "  Get it at: https://console.anthropic.com/settings/keys" -ForegroundColor Gray
+    $key = Read-Host "  Enter your ANTHROPIC_API_KEY (or press Enter to skip)"
+    if ($key) {
+        [System.Environment]::SetEnvironmentVariable("ANTHROPIC_API_KEY", $key, "User")
+        $env:ANTHROPIC_API_KEY = $key
+        (Get-Content .env) -replace "ANTHROPIC_API_KEY=.*", "ANTHROPIC_API_KEY=$key" | Set-Content .env
+        Write-Host "  [OK] ANTHROPIC_API_KEY saved" -ForegroundColor Green
+    }
+}
+
+# OpenAI API Key
+Write-Host ""
+Write-Host "  OpenAI API Key is used for document search and image generation." -ForegroundColor Gray
+Write-Host "  Expected cost: ~\\$5-20/month depending on usage." -ForegroundColor Gray
+Write-Host "  Get it at: https://platform.openai.com/api-keys" -ForegroundColor Gray
+$openaiKey = Read-Host "  Enter your OPENAI_API_KEY (or press Enter to skip)"
+if ($openaiKey) {
+    [System.Environment]::SetEnvironmentVariable("OPENAI_API_KEY", $openaiKey, "User")
+    $env:OPENAI_API_KEY = $openaiKey
+    (Get-Content .env) -replace "OPENAI_API_KEY=.*", "OPENAI_API_KEY=$openaiKey" | Set-Content .env
+    Write-Host "  [OK] OPENAI_API_KEY saved" -ForegroundColor Green
+}
+
+# ============================================================
+# Step 5: MCP Server Verification
+# ============================================================
+Write-Host ""
+Write-Host "Step 5: Verifying MCP servers..." -ForegroundColor Yellow
+
+$servers = @(
+    @{ Name = "Gmail MCP"; Cmd = "npx"; Args = @("-y", "@gongrzhe/server-gmail-autoauth-mcp", "--version") },
+    @{ Name = "Google Docs MCP"; Cmd = "npx"; Args = @("-y", "google-docs-mcp", "--version") }
+)
+
+foreach ($server in $servers) {
+    try {
+        & $server.Cmd $server.Args 2>&1 | Out-Null
+        Write-Host "  [OK] $($server.Name)" -ForegroundColor Green
+    } catch {
+        Write-Host "  [WARN] $($server.Name) - may need configuration" -ForegroundColor DarkYellow
+    }
+}
+
+# ============================================================
+# Step 6: RAG Database
+# ============================================================
+Write-Host ""
+Write-Host "Step 6: Checking document database..." -ForegroundColor Yellow
+if (Test-Path "data\\rag.db") {
+    $dbSize = (Get-Item "data\\rag.db").Length / 1MB
+    Write-Host "  [OK] RAG database found ($([math]::Round($dbSize, 1)) MB)" -ForegroundColor Green
+} else {
+    Write-Host "  [INFO] No document database yet. One will be created when documents are indexed." -ForegroundColor Gray
+}
+
+# ============================================================
+# Step 7: Generate Claude Code files
+# ============================================================
+Write-Host ""
+Write-Host "Step 7: Generating Claude Code agent files..." -ForegroundColor Yellow
+node scripts/generate-agents.js
+Write-Host "  [OK] Agent files generated" -ForegroundColor Green
+
+# ============================================================
+# Step 8: Complete!
+# ============================================================
+Write-Host ""
+Write-Host "======================================" -ForegroundColor Green
+Write-Host "  Setup Complete!" -ForegroundColor Green
+Write-Host "======================================" -ForegroundColor Green
+Write-Host ""
+Write-Host "  To start:" -ForegroundColor White
+Write-Host "    Open a terminal in this folder" -ForegroundColor Gray
+Write-Host "    Type: claude" -ForegroundColor Cyan
+Write-Host ""
+Write-Host "  Then try:" -ForegroundColor White
+Write-Host "    /voice                          (talk to your assistant)" -ForegroundColor Cyan
+Write-Host "    /${skillAlias} search email for insurance  (search board email)" -ForegroundColor Cyan
+Write-Host "    /${skillAlias} generate this month's bulletin" -ForegroundColor Cyan
+Write-Host ""
+`;
+}
+
+function generateCredentialGuide(deps) {
+  return `# Google OAuth Setup Guide
+
+This guide walks you through setting up Google OAuth credentials so the assistant
+can access Gmail and Google Docs on your behalf.
+
+**Time needed:** About 15 minutes
+
+---
+
+## Step 1: Create a Google Cloud Project
+
+1. Go to [Google Cloud Console](https://console.cloud.google.com/)
+2. Sign in with the Google account you want the assistant to access
+3. Click **Select a project** (top bar) > **New Project**
+4. Name it something like "Wharfside Assistant"
+5. Click **Create**
+6. Make sure your new project is selected in the top bar
+
+## Step 2: Enable APIs
+
+Enable these two APIs for your project:
+
+1. **Gmail API:**
+   - Go to [Gmail API page](https://console.cloud.google.com/apis/library/gmail.googleapis.com)
+   - Click **Enable**
+
+2. **Google Docs API:**
+   - Go to [Google Docs API page](https://console.cloud.google.com/apis/library/docs.googleapis.com)
+   - Click **Enable**
+
+## Step 3: Configure OAuth Consent Screen
+
+1. Go to [OAuth Consent Screen](https://console.cloud.google.com/apis/credentials/consent)
+2. Choose **External** (or Internal if you have Google Workspace)
+3. Fill in:
+   - **App name:** Wharfside Assistant
+   - **User support email:** Your email
+   - **Developer contact:** Your email
+4. Click **Save and Continue**
+5. On the **Scopes** page, click **Add or Remove Scopes**
+   - Add: \`https://mail.google.com/\`
+   - Add: \`https://www.googleapis.com/auth/documents\`
+   - Add: \`https://www.googleapis.com/auth/drive.file\`
+6. Click **Save and Continue**
+7. On the **Test Users** page, add your email address
+8. Click **Save and Continue**
+
+## Step 4: Create OAuth Credentials
+
+1. Go to [Credentials page](https://console.cloud.google.com/apis/credentials)
+2. Click **+ Create Credentials** > **OAuth client ID**
+3. Application type: **Desktop app**
+4. Name: "Wharfside Assistant Desktop"
+5. Click **Create**
+6. Click **Download JSON** to download the credentials file
+7. Save the file - you'll need it in the next step
+
+## Step 5: Install Credentials
+
+### For Gmail:
+
+**Windows:**
+\`\`\`
+mkdir %USERPROFILE%\\.config\\mcp-gmail
+copy <path-to-downloaded-file> %USERPROFILE%\\.config\\mcp-gmail\\gcp-oauth.keys.json
+\`\`\`
+
+**Mac/Linux:**
+\`\`\`bash
+mkdir -p ~/.config/mcp-gmail
+cp <path-to-downloaded-file> ~/.config/mcp-gmail/gcp-oauth.keys.json
+\`\`\`
+
+The first time you use the Gmail tool, a browser window will automatically open
+asking you to authorize access. After you approve, a \`token.json\` file will be
+created automatically.
+
+### For Google Docs:
+
+The Google Docs MCP server needs the client ID, client secret, and a refresh token
+from the same OAuth credentials.
+
+1. Open the downloaded JSON file in a text editor
+2. Find \`client_id\` and \`client_secret\` values
+3. Add them to your \`.env\` file:
+   \`\`\`
+   GOOGLE_DOCS_CLIENT_ID=your-client-id-here
+   GOOGLE_DOCS_CLIENT_SECRET=your-client-secret-here
+   \`\`\`
+4. To get the refresh token, run the install script or follow the
+   [Google OAuth2 Playground](https://developers.google.com/oauthplayground/)
+   to exchange the client credentials for a refresh token
+
+## Troubleshooting
+
+### "Access blocked: This app's request is invalid"
+- Make sure you added your email as a test user (Step 3.7)
+- Make sure the OAuth consent screen is configured
+
+### "Token has been expired or revoked"
+- Delete the \`token.json\` file and re-authorize
+- Windows: \`del %USERPROFILE%\\.config\\mcp-gmail\\token.json\`
+- Mac: \`rm ~/.config/mcp-gmail/token.json\`
+
+### "API not enabled"
+- Go back to Step 2 and make sure both APIs are enabled
+- Make sure you're in the correct Google Cloud project
+`;
+}
+
+function copyMcpServerSources(exportDir, deps) {
+  // Copy MCP server Python files needed for the export
+  const serversToCopy = {
+    'pdfscribe': 'mcp-servers/images/pdfscribe/pdfscribe_server.py',
+    'powerpoint': 'mcp-servers/images/powerpoint/ppt_server.py',
+  };
+
+  for (const [serverId, relPath] of Object.entries(serversToCopy)) {
+    if (!deps.mcpServers.includes(serverId)) continue;
+
+    const srcPath = path.join(ROOT, relPath);
+    if (fs.existsSync(srcPath)) {
+      const destPath = path.join(exportDir, relPath);
+      fs.mkdirSync(path.dirname(destPath), { recursive: true });
+      const content = fs.readFileSync(srcPath, 'utf-8');
+      fs.writeFileSync(destPath, sanitizeString(content), 'utf-8');
+    }
+  }
 }
 
 function generateGitignore() {
@@ -982,12 +1491,24 @@ function generateGitignore() {
     '# Node',
     'node_modules/',
     '',
+    '# Python',
+    '__pycache__/',
+    '*.pyc',
+    '.venv/',
+    '',
     '# OS',
     '.DS_Store',
     'Thumbs.db',
     '',
     '# Outputs',
     'outputs/',
+    'workspace/',
+    '',
+    '# Claude Code local settings',
+    '.claude/settings.local.json',
+    '',
+    '# OAuth tokens (auto-generated, sensitive)',
+    'token.json',
     '',
   ].join('\n');
 }
@@ -1053,27 +1574,35 @@ function buildManifest(exportDir, deps, options) {
 
 function collectEnvVars(deps) {
   const vars = [
-    'BOARD_EMAIL',
-    'PERSONAL_EMAIL',
+    'ANTHROPIC_API_KEY',
+    'OPENAI_API_KEY',
   ];
 
-  if (deps.mcpServers.includes('pdfscribe') || deps.mcpServers.includes('openai-image')) {
-    vars.push('OPENAI_API_KEY');
-  }
-  if (deps.mcpServers.includes('pdfscribe')) {
-    vars.push('ANTHROPIC_API_KEY');
-  }
-  if (deps.mcpServers.includes('gmail') || deps.mcpServers.includes('gmail-personal')) {
-    vars.push('GMAIL_OAUTH_CLIENT_ID', 'GMAIL_OAUTH_CLIENT_SECRET');
-  }
   if (deps.mcpServers.includes('google-docs')) {
     vars.push('GOOGLE_DOCS_CLIENT_ID', 'GOOGLE_DOCS_CLIENT_SECRET', 'GOOGLE_DOCS_REFRESH_TOKEN');
   }
-  if (deps.infraDeps.includes('pgvector')) {
-    vars.push('POSTGRES_USER', 'POSTGRES_PASSWORD', 'POSTGRES_DB');
-  }
+
+  vars.push('RAG_DB_PATH');
 
   return vars;
+}
+
+// ============================================================================
+// Phase 10: Git Initialization
+// ============================================================================
+
+function initGitRepo(exportDir) {
+  try {
+    execSync('git init', { cwd: exportDir, stdio: 'pipe' });
+    execSync('git add -A', { cwd: exportDir, stdio: 'pipe' });
+    execSync('git commit -m "Initial export: Wharfside Board Assistant Team"', {
+      cwd: exportDir,
+      stdio: 'pipe',
+    });
+    return { success: true };
+  } catch (err) {
+    return { error: err.message };
+  }
 }
 
 // ============================================================================
@@ -1130,11 +1659,11 @@ function printDryRun(deps) {
   console.log(`  - ${deps.contextBuckets.length} context bucket(s)`);
   console.log(`  - ${deps.agentIds.length} .claude/agents/*.md files`);
   console.log(`  - ${deps.agentIds.length + 1} .claude/skills/ directories`);
+  console.log(`  - .claude/settings.local.json (MCP server configs)`);
+  console.log(`  - MCP CLI configs (npx/uvx, no Docker)`);
   console.log(`  - Filtered registries (agents.json, teams.json, buckets.json)`);
-  console.log(`  - Documentation (CLAUDE.md, README.md, .env.example, setup.sh)`);
-  if (deps.infraDeps.includes('pgvector')) {
-    console.log(`  - docker-compose.yml + data/rag-dump.sql`);
-  }
+  console.log(`  - Documentation (CLAUDE.md, README.md, install.ps1, setup.sh, OAuth guide)`);
+  console.log(`  - data/rag.db (SQLite RAG database, if available)`);
 
   console.log('\n' + '='.repeat(55));
   console.log('Dry run complete. No files written.\n');
@@ -1152,13 +1681,17 @@ function main() {
 Usage: node scripts/export-team.js <team-id> [options]
 
 Options:
-  --output <path>    Output directory (default: exports/<team-id>/)
-  --no-docs          Skip context bucket file contents
-  --dry-run          Show what would be exported without writing
-  --help             Show this help message
+  --output <path>        Output directory (default: exports/<team-id>/)
+  --platform <platform>  Target platform: windows, mac, linux, auto (default: auto)
+  --no-docs              Skip context bucket file contents
+  --no-docker            Use npx/uvx CLI for all MCP servers (default)
+  --init-git             Initialize export as a git repository
+  --dry-run              Show what would be exported without writing
+  --help                 Show this help message
 
 Examples:
   node scripts/export-team.js wharfside-board-assistant
+  node scripts/export-team.js wharfside-board-assistant --platform windows --init-git
   node scripts/export-team.js wharfside-board-assistant --dry-run
   node scripts/export-team.js wharfside-board-assistant --no-docs
   node scripts/export-team.js wharfside-board-assistant --output ~/Desktop/wharfside-export
@@ -1171,16 +1704,31 @@ Examples:
   let outputDir = null;
   let includeDocs = true;
   let dryRun = false;
+  let platform = 'auto';
+  let initGit = false;
+  let noDocker = true; // CLI-only by default
 
   for (let i = 1; i < args.length; i++) {
     if (args[i] === '--output' && args[i + 1]) {
       outputDir = args[i + 1];
       i++;
+    } else if (args[i] === '--platform' && args[i + 1]) {
+      platform = args[i + 1];
+      i++;
     } else if (args[i] === '--no-docs') {
       includeDocs = false;
+    } else if (args[i] === '--no-docker') {
+      noDocker = true;
+    } else if (args[i] === '--init-git') {
+      initGit = true;
     } else if (args[i] === '--dry-run') {
       dryRun = true;
     }
+  }
+
+  // Resolve platform
+  if (platform === 'auto') {
+    platform = process.platform === 'win32' ? 'windows' : process.platform === 'darwin' ? 'mac' : 'linux';
   }
 
   const exportDir = outputDir
@@ -1227,6 +1775,14 @@ Examples:
     }
   }
 
+  // Phase 3.5: Generate MCP server configs (CLI-only)
+  let mcpConfigs = {};
+  if (noDocker) {
+    console.log('\nPhase 3.5: Generating MCP server configs (CLI-only)...');
+    mcpConfigs = generateMcpConfigs(exportDir, deps, platform);
+    console.log(`  [OK] ${Object.keys(mcpConfigs).length} server configs`);
+  }
+
   // Phase 4: Copy team definition
   console.log('\nPhase 4: Copying team definition...');
   copyTeamDefinition(exportDir, deps);
@@ -1255,12 +1811,12 @@ Examples:
     }
   }
 
-  // Phase 7.5: Export RAG database
+  // Phase 7.5: Export RAG database (SQLite)
   if (includeDocs) {
-    console.log('\nPhase 7.5: Exporting RAG database...');
+    console.log('\nPhase 7.5: Exporting RAG database (SQLite)...');
     const ragResult = exportRagDatabase(exportDir, deps);
     if (ragResult.success) {
-      console.log('  [OK] RAG dump saved to data/rag-dump.sql');
+      console.log(`  [OK] RAG database copied to data/rag.db (${ragResult.sizeMb} MB)`);
     } else if (ragResult.skipped) {
       console.log(`  [SKIP] ${ragResult.reason}`);
     }
@@ -1268,15 +1824,36 @@ Examples:
     console.log('\nPhase 7.5: Skipping RAG export (--no-docs)');
   }
 
+  // Phase 7.6: Generate Claude Code settings
+  console.log('\nPhase 7.6: Generating Claude Code settings...');
+  const claudeSettings = generateClaudeSettings(exportDir, deps, mcpConfigs, platform);
+  console.log(`  [OK] .claude/settings.local.json (${Object.keys(claudeSettings.mcpServers).length} servers)`);
+
+
   // Phase 8: Generate documentation
   console.log('\nPhase 8: Generating documentation...');
-  generateDocumentation(exportDir, deps);
-  console.log('  [OK] CLAUDE.md, README.md, .env.example, setup.sh, SETUP.md, .gitignore');
+  generateDocumentation(exportDir, deps, { platform, noDocker });
+  const docFiles = ['CLAUDE.md', 'README.md', '.env.example', 'SETUP.md', '.gitignore'];
+  if (platform === 'windows') docFiles.push('install.ps1');
+  docFiles.push('setup.sh');
+  docFiles.push('docs/GOOGLE-OAUTH-SETUP.md');
+  console.log(`  [OK] ${docFiles.join(', ')}`);
 
   // Phase 9: Build manifest
   console.log('\nPhase 9: Building manifest...');
   const manifest = buildManifest(exportDir, deps, { includeDocs });
   console.log(`  [OK] manifest.json (${manifest.file_count} files)`);
+
+  // Phase 10: Git initialization (optional)
+  if (initGit) {
+    console.log('\nPhase 10: Initializing git repository...');
+    const gitResult = initGitRepo(exportDir);
+    if (gitResult.success) {
+      console.log('  [OK] Git repo initialized with initial commit');
+    } else {
+      console.log(`  [ERROR] ${gitResult.error}`);
+    }
+  }
 
   // Summary
   console.log('\n' + '='.repeat(55));
@@ -1286,6 +1863,10 @@ Examples:
   console.log(`  Agents: ${deps.agentIds.length}`);
   console.log(`  MCP Servers: ${deps.mcpServers.length}`);
   console.log(`  Context Buckets: ${deps.contextBuckets.length}`);
+  console.log(`  Platform: ${platform}`);
+  if (initGit) {
+    console.log('  Git: initialized');
+  }
   console.log('');
 }
 
