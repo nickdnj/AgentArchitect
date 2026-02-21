@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This agent creates professional PowerPoint presentations using branded templates and the PowerPoint MCP server. It supports multiple template systems:
+This agent creates professional PowerPoint presentations using branded templates and python-pptx. It supports multiple template systems:
 
 - **Wharfside Manor** - Board meetings, community updates, project reports (Wharfside_TEMPLATE.pptx)
 - **Altium** - Sales presentations, internal briefings, customer-facing decks (Altium_TEMPLATE.pptx)
@@ -15,59 +15,25 @@ The agent automatically selects the correct template based on the topic and audi
 2. **Select Template** - Choose appropriate template based on topic/brand (see Template Selection Logic)
 3. **Load Template Guide** - Reference the corresponding context bucket for layout knowledge
 4. **Structure Content** - Organize information into logical slide flow
-5. **Build Presentation** - Use PowerPoint MCP tools with correct layouts and placeholders
+5. **Build Presentation** - Use python-pptx scripts with correct layouts and placeholders
 6. **Apply Styling** - Ensure brand consistency with the selected template's design system
 7. **Deliver Output** - Save to specified location (Desktop, Google Drive, or deal folder)
 
-## MCP Server Setup
+## PowerPoint Setup (python-pptx)
 
-### PowerPoint MCP Server
-
-The presentation agent uses the Office-PowerPoint-MCP-Server (`ppt-mcp-server v1.21.1`) running as a Docker container with Streamable HTTP transport.
-
-**Docker Container:**
-```
-Container: powerpoint-mcp-server
-Image:     powerpoint-mcp-server:latest
-Port:      8001 -> 8000 (Streamable HTTP MCP)
-Health:    Healthy
-```
-
-**Volume Mounts:**
-```
-Host Path                                                          → Container Path   Mode
-/Users/nickd/Workspaces/mcp_servers/Office-PowerPoint-MCP-Server/templates/  → /app/templates/   read-only
-/Users/nickd/Workspaces/mcp_servers/Office-PowerPoint-MCP-Server/workspace/  → /app/workspace/   read-write
-```
-
-**Claude Code MCP Configuration:**
-
-The PowerPoint MCP server uses Streamable HTTP transport. To add it to Claude Code:
-```json
-{
-  "powerpoint": {
-    "type": "streamable-http",
-    "url": "http://localhost:8001/mcp"
-  }
-}
-```
-
-**Note:** If the `mcp__powerpoint__*` tools are not available in the current session, the server can still be accessed via HTTP using `curl` or Python's `urllib` against `http://localhost:8001/mcp`. The server uses SSE (Server-Sent Events) for responses and requires session management via the `Mcp-Session-Id` header.
+The presentation agent uses `python-pptx` to create and modify PowerPoint files directly via Python scripts executed through Bash.
 
 ### File Path Architecture
 
-All file operations use **container paths** (not host paths):
-
-| What | Container Path | Host Path |
-|------|---------------|-----------|
-| Templates | `/app/templates/` | `.../Office-PowerPoint-MCP-Server/templates/` |
-| Workspace (output) | `/app/workspace/` | `.../Office-PowerPoint-MCP-Server/workspace/` |
+| What | Path |
+|------|------|
+| Templates | `templates/Wharfside_TEMPLATE.pptx`, `templates/Altium_TEMPLATE.pptx` |
+| Workspace (output) | `outputs/` or user-specified path |
 
 **Critical rules:**
-- **Template paths**: Always use `/app/templates/Altium_TEMPLATE.pptx` or `/app/templates/Wharfside_TEMPLATE.pptx`
-- **Save paths**: Always save to `/app/workspace/{filename}.pptx`
-- **Never use**: `/tmp/` (lost on restart), direct host paths like `/Users/...` (container can't access)
-- **After saving**: Copy from host workspace path to final destination using bash `cp`
+- **Template paths**: Always use `templates/Wharfside_TEMPLATE.pptx` or `templates/Altium_TEMPLATE.pptx`
+- **Save paths**: Save to `outputs/{filename}.pptx` or a user-specified destination
+- **After saving**: Copy to final destination if needed using bash `cp`
 
 **Copy to final destination example:**
 ```bash
@@ -405,17 +371,15 @@ Trigger phrases for feedback check:
 - Verify health: container should show `(healthy)` status
 - Port 8001 should be accessible: `curl -s http://localhost:8001/mcp`
 
-### MCP Tools Not Available in Session
-- The `mcp__powerpoint__*` tools require the PowerPoint MCP server to be configured in Claude Code
-- If not configured, fall back to HTTP API calls via `curl` or Python `urllib` against `http://localhost:8001/mcp`
-- Session must be initialized first (send `initialize` JSON-RPC, capture `Mcp-Session-Id` header)
-- All subsequent calls must include the `Mcp-Session-Id` header
+### python-pptx Not Installed
+- Install with: `pip install python-pptx`
+- Verify: `python -c "import pptx; print(pptx.__version__)"`
 
 ### Template Not Found
-- Verify templates exist: `ls /Users/nickd/Workspaces/mcp_servers/Office-PowerPoint-MCP-Server/templates/`
+- Verify templates exist: `ls templates/`
 - Both `Altium_TEMPLATE.pptx` and `Wharfside_TEMPLATE.pptx` should be present
 - Agent Architect also keeps copies at `agents/presentation/templates/`
-- If missing, copy from Agent Architect: `cp agents/presentation/templates/*.pptx .../Office-PowerPoint-MCP-Server/templates/`
+- If missing, copy from Agent Architect: `cp agents/presentation/templates/*.pptx templates/`
 
 ### Save Fails ("No presentation loaded")
 - The MCP server tracks presentations by ID

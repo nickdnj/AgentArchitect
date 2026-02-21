@@ -10,7 +10,7 @@ The Archivist is the knowledge keeper for Wharfside Manor Condominium Associatio
 |--------|------|---------|
 | **RAG Vector DB** | `wharfside-docs` bucket | Primary search - semantic queries |
 | **Local Files** | `~/AppFolio-Sync/` | Direct file access when needed |
-| **AppFolio Portal** | Via Chrome MCP | Sync new documents from management portal |
+| **AppFolio Portal** | Via Chrome Browser agent | Sync new documents from management portal |
 
 **IMPORTANT:** Do NOT search the web for answers. All information must come from the RAG database or local files. If information cannot be found, say so - do not guess or search externally.
 
@@ -464,21 +464,18 @@ Use these tools for direct file access when RAG identifies specific files:
 - **Read**: Read document contents
 - **Bash ls**: List folder contents when needed
 
-### PDF Scribe MCP (For scanned PDFs)
-Use PDF Scribe to transcribe scanned/image-based PDFs into searchable Markdown:
+### PDF Transcription (CLI)
+Use the pdfscribe CLI to transcribe scanned/image-based PDFs into searchable Markdown:
 
-- **mcp__pdfscribe__transcribe_pdf**: Transcribe a PDF to Markdown using Claude vision
-- **mcp__pdfscribe__split_pdf**: Split large PDFs into smaller chunks before transcription
-- **mcp__pdfscribe__list_transcriptions**: List previously transcribed documents
-
-#### Alternative: pdfscribe CLI
-If the MCP server has path access issues, use the CLI directly:
 ```bash
-source ~/.zshrc  # Loads ANTHROPIC_API_KEY
-cd /Users/nickd/Workspaces/pdfscribe_cli
-python pdfscribe_cli.py "/path/to/file.pdf" -o "/path/to/output.md" -b "backstory"
+python pdfscribe_cli/pdfscribe_cli.py "/path/to/file.pdf" -o "/path/to/output.md" -b "Wharfside Manor Condominium Association document"
 ```
-**Note:** The Anthropic API key is stored in `~/.zshrc` as `ANTHROPIC_API_KEY`.
+
+For large PDFs (50+ pages), split first:
+```bash
+python pdfscribe_cli/src/split_pdf.py "/path/to/large-document.pdf" --output-dir "/path/to/chunks/" --pages-per-chunk 50
+```
+Then transcribe each chunk and optionally combine the results.
 
 #### PDF Transcription Workflow
 
@@ -489,20 +486,12 @@ When encountering a scanned PDF that cannot be searched with Grep:
    - The tool also creates a `-transcribed.md` cache file - this is normal
 2. **Check PDF size** - Use `Bash` to check page count: `pdfinfo "/path/to/file.pdf" | grep Pages`
 3. **For PDFs under 50 pages**, transcribe directly:
-   ```
-   mcp__pdfscribe__transcribe_pdf(
-     pdf_path="/path/to/document.pdf",
-     output_path="/path/to/document.md",
-     backstory="Wharfside Manor Condominium Association document"
-   )
+   ```bash
+   python pdfscribe_cli/pdfscribe_cli.py "/path/to/document.pdf" -o "/path/to/document.md" -b "Wharfside Manor Condominium Association document"
    ```
 4. **For PDFs 50+ pages**, MUST split first to avoid "Prompt is too long" errors:
-   ```
-   mcp__pdfscribe__split_pdf(
-     pdf_path="/path/to/large-document.pdf",
-     output_dir="/path/to/chunks/",
-     pages_per_chunk=50
-   )
+   ```bash
+   python pdfscribe_cli/src/split_pdf.py "/path/to/large-document.pdf" --output-dir "/path/to/chunks/" --pages-per-chunk 50
    ```
    Then transcribe each chunk and optionally combine the results.
 5. **Output location** - Always save the `.md` file in the same directory as the original PDF with the same base filename
@@ -537,7 +526,8 @@ PDF Scribe creates two files per transcription:
 - `document.md` - Clean markdown output (use this one)
 - `document-transcribed.md` - Internal cache file (can be ignored)
 
-### Chrome MCP (For portal sync)
+### Chrome Browser (For portal sync)
+Use the Chrome Browser agent via Task delegation for portal automation:
 - Navigate to AppFolio portal
 - Authenticate with user credentials
 - Download shared documents
@@ -580,17 +570,17 @@ The AppFolio portal organizes documents into two main sections:
 ### Sync Workflow
 
 1. **Navigate to Portal**
-   - Open the AppFolio shared documents page using Chrome MCP
+   - Open the AppFolio shared documents page using Chrome Browser agent
    - If not logged in, prompt user to authenticate (the Archivist does not store credentials)
 
 2. **Take Snapshot and Expand Folders**
-   - Capture the document list using `mcp__chrome__take_snapshot`
+   - Capture the document list using the Chrome Browser agent's snapshot capability
    - **Important:** Folders appear collapsed by default - click each folder button to expand and reveal contents
    - Look for `button "  [Folder Name]" expandable` elements - click to expand
 
 3. **Download Documents**
    - For each document, click the "Download" link (look for `link " Download" url="..."`)
-   - **Note:** Chrome MCP cannot change the browser's download location - files always go to the browser's default Downloads folder
+   - **Note:** Chrome Browser cannot change the browser's download location - files always go to the browser's default Downloads folder
    - After downloading, move files to the correct subfolder in `/Users/nickd/AppFolio-Sync`
 
 4. **Organize Downloaded Files**

@@ -239,95 +239,16 @@ function copyAgentSources(exportDir, deps) {
 }
 
 // ============================================================================
-// Phase 3.5: Generate MCP Server Configs (CLI-only, no Docker)
+// Phase 3.5: CLI Tool Dependencies (no MCP servers)
 // ============================================================================
 
-/**
- * MCP server CLI configurations for npx/uvx invocation.
- * Maps server IDs to their stdio command configs.
- */
-const MCP_CLI_CONFIGS = {
-  'gmail': {
-    command: 'npx',
-    args: ['-y', '@gongrzhe/server-gmail-autoauth-mcp'],
-    env: {},
-    platform_notes: {
-      windows: 'Requires Node.js 18+. OAuth token auto-generated on first use.',
-    },
-  },
-  'gmail-personal': {
-    command: 'npx',
-    args: ['-y', '@gongrzhe/server-gmail-autoauth-mcp'],
-    env: {},
-    platform_notes: {
-      windows: 'Uses separate credential directory for personal account.',
-    },
-  },
-  'google-docs': {
-    command: 'npx',
-    args: ['-y', 'google-docs-mcp'],
-    env: {
-      GOOGLE_DOCS_CLIENT_ID: '{{GOOGLE_DOCS_CLIENT_ID}}',
-      GOOGLE_DOCS_CLIENT_SECRET: '{{GOOGLE_DOCS_CLIENT_SECRET}}',
-      GOOGLE_DOCS_REFRESH_TOKEN: '{{GOOGLE_DOCS_REFRESH_TOKEN}}',
-    },
-  },
-  'pdfscribe': {
-    command: 'python',
-    args: ['mcp-servers/images/pdfscribe/pdfscribe_server.py'],
-    env: {
-      PDFSCRIBE_CLI_PATH: '{{PROJECT_DIR}}/pdfscribe_cli',
-    },
-  },
-  'powerpoint': {
-    command: 'python',
-    args: ['mcp-servers/images/powerpoint/ppt_server.py'],
-    env: {
-      POWERPOINT_TEMPLATES_PATH: '{{PROJECT_DIR}}/templates',
-      POWERPOINT_WORKSPACE_PATH: '{{PROJECT_DIR}}/workspace',
-    },
-  },
-  'openai-image': {
-    command: 'npx',
-    args: ['-y', '@lpenguin/openai-image-mcp'],
-    env: {
-      OPENAI_API_KEY: '{{OPENAI_API_KEY}}',
-    },
-  },
-  'voicemode': {
-    command: 'uvx',
-    args: ['voice-mode'],
-    env: {},
-  },
-};
+// No MCP server configs needed — all external services accessed via CLI:
+//   Gmail/Docs/Drive → gog CLI
+//   PDF transcription → python pdfscribe_cli
+//   PowerPoint → python-pptx
+//   Image generation → curl/python OpenAI API
+//   Voice mode → uvx voice-mode (invoked directly)
 
-function generateMcpConfigs(exportDir, deps, platform) {
-  const configs = {};
-
-  for (const serverId of deps.mcpServers) {
-    const cliConfig = MCP_CLI_CONFIGS[serverId];
-    if (!cliConfig) {
-      console.warn(`  Warning: No CLI config for MCP server: ${serverId}`);
-      continue;
-    }
-
-    configs[serverId] = {
-      type: 'stdio',
-      command: cliConfig.command,
-      args: [...cliConfig.args],
-      env: { ...cliConfig.env },
-    };
-  }
-
-  // Write the config for reference
-  fs.writeFileSync(
-    path.join(exportDir, 'mcp-servers', 'cli-configs.json'),
-    JSON.stringify(configs, null, 2) + '\n',
-    'utf-8'
-  );
-
-  return configs;
-}
 
 // ============================================================================
 // Phase 4: Copy Team Definition
@@ -578,53 +499,12 @@ function exportRagDatabase(exportDir, deps) {
 // ============================================================================
 
 function generateClaudeSettings(exportDir, deps, mcpConfigs, platform) {
-  // Build permission allow list from MCP servers
-  const allowPatterns = [];
-  for (const serverId of deps.mcpServers) {
-    // Map server IDs to Claude Code MCP tool patterns
-    const patterns = {
-      'gmail': 'mcp__gmail__*',
-      'gmail-personal': 'mcp__gmail-personal__*',
-      'google-docs': 'mcp__google-docs-mcp__*',
-      'pdfscribe': 'mcp__pdfscribe__*',
-      'powerpoint': 'mcp__powerpoint__*',
-      'openai-image': 'mcp__openai-image__*',
-      'voicemode': 'mcp__voicemode__*',
-    };
-    if (patterns[serverId]) {
-      allowPatterns.push(patterns[serverId]);
-    }
-  }
-
-  // Build mcpServers config block
-  const mcpServers = {};
-  for (const [serverId, config] of Object.entries(mcpConfigs)) {
-    // Map server IDs to Claude Code MCP server names
-    const serverNames = {
-      'gmail': 'gmail',
-      'gmail-personal': 'gmail-personal',
-      'google-docs': 'google-docs-mcp',
-      'pdfscribe': 'pdfscribe',
-      'powerpoint': 'powerpoint',
-      'openai-image': 'openai-image',
-      'voicemode': 'voicemode',
-    };
-    const name = serverNames[serverId] || serverId;
-    mcpServers[name] = {
-      type: config.type,
-      command: config.command,
-      args: config.args,
-    };
-    if (config.env && Object.keys(config.env).length > 0) {
-      mcpServers[name].env = config.env;
-    }
-  }
-
+  // No MCP servers — all services accessed via CLI (gog, python, curl).
+  // Settings file is minimal with no mcpServers block.
   const settings = {
     permissions: {
-      allow: allowPatterns,
+      allow: [],
     },
-    mcpServers,
   };
 
   // Write settings.local.json (user-specific, not committed)
@@ -661,7 +541,7 @@ function generateDocumentation(exportDir, deps, options = {}) {
   const envExample = generateEnvExample(deps);
   fs.writeFileSync(path.join(exportDir, '.env.example'), envExample, 'utf-8');
 
-  // --- mcp-servers/SETUP.md ---
+  // --- mcp-servers/SETUP.md (legacy - now documents CLI tools) ---
   const mcpSetup = generateMcpSetup(deps, noDocker);
   fs.writeFileSync(path.join(exportDir, 'mcp-servers', 'SETUP.md'), mcpSetup, 'utf-8');
 
@@ -923,22 +803,11 @@ function generateEnvExample(deps) {
     '',
   ];
 
-  if (deps.mcpServers.includes('google-docs')) {
-    lines.push(
-      '# === Google Docs API ===',
-      '# Set up via docs/GOOGLE-OAUTH-SETUP.md',
-      'GOOGLE_DOCS_CLIENT_ID=',
-      'GOOGLE_DOCS_CLIENT_SECRET=',
-      'GOOGLE_DOCS_REFRESH_TOKEN=',
-      '',
-    );
-  }
-
   lines.push(
     '# === Auto-configured by install script ===',
     '',
-    '# Gmail OAuth credentials path',
-    '# GMAIL_CREDS_PATH=~/.config/mcp-gmail',
+    '# Google Workspace CLI (gog) - manages Gmail, Docs, Drive auth',
+    '# Run: gog auth add YOUR_EMAIL --services gmail,docs,drive',
     '',
     '# RAG database location (SQLite)',
     'RAG_DB_PATH=./data/rag.db',
@@ -1114,11 +983,16 @@ function generateSetupSh(deps, skillAlias) {
     '  echo "  [WARN] Voice mode test failed. You can still use text mode."',
     'fi',
     '',
-    '# ---- Step 4: Test MCP servers ----',
+    '# ---- Step 4: Check CLI tools ----',
     'echo ""',
-    'echo "Step 4: Checking MCP server dependencies..."',
-    'npx -y @gongrzhe/server-gmail-autoauth-mcp --version &>/dev/null && echo "  [OK] Gmail MCP" || echo "  [WARN] Gmail MCP needs setup"',
-    'npx -y google-docs-mcp --version &>/dev/null && echo "  [OK] Google Docs MCP" || echo "  [WARN] Google Docs MCP needs setup"',
+    'echo "Step 4: Checking CLI tools..."',
+    'if command -v gog &> /dev/null; then',
+    '  echo "  [OK] gog CLI (Gmail, Docs, Drive)"',
+    '  gog auth list &>/dev/null && echo "  [OK] Google accounts configured" || echo "  [WARN] No Google accounts - run: gog auth add EMAIL --services gmail,docs,drive"',
+    'else',
+    '  echo "  [WARN] gog CLI not found - install from https://github.com/nicholasgasior/gog/releases"',
+    'fi',
+    'python3 -c "import pptx" &>/dev/null && echo "  [OK] python-pptx" || echo "  [WARN] python-pptx not installed - run: pip install python-pptx"',
     '',
     '# ---- Step 5: Generate Claude Code files ----',
     'echo ""',
@@ -1285,31 +1159,67 @@ Set-Content $progressFile "2"
 }
 
 # ============================================================
-# Step 3: Google OAuth Setup (Interactive)
+# Step 3: Google Workspace CLI (gog) Setup
 # ============================================================
 if ($lastStep -lt 3) {
 Write-Host ""
-Write-Host "Step 3: Google Account Setup" -ForegroundColor Yellow
+Write-Host "Step 3: Google Workspace CLI (gog) Setup" -ForegroundColor Yellow
 Write-Host ""
-Write-Host "  To access Gmail and Google Docs, you need Google OAuth credentials." -ForegroundColor Gray
+Write-Host "  gog provides Gmail, Google Docs, and Google Drive access." -ForegroundColor Gray
 Write-Host "  See docs\\GOOGLE-OAUTH-SETUP.md for step-by-step instructions." -ForegroundColor Gray
 Write-Host ""
 
-$setupGoogle = Read-Host "  Have you already set up Google OAuth? (y/n)"
-if ($setupGoogle -eq "y") {
-    # Gmail credentials
-    $credsPath = Read-Host "  Enter path to your downloaded gcp-oauth.keys.json"
-    if (Test-Path $credsPath) {
-        $gmailDir = "$env:USERPROFILE\\.config\\mcp-gmail"
-        New-Item -ItemType Directory -Path $gmailDir -Force | Out-Null
-        Copy-Item $credsPath "$gmailDir\\gcp-oauth.keys.json"
-        Write-Host "  [OK] Gmail credentials installed" -ForegroundColor Green
-        Write-Host "  Note: On first use, a browser window will open for Gmail authorization." -ForegroundColor Gray
+# Check if gog is installed
+$gogOk = Get-Command gog -ErrorAction SilentlyContinue
+if (-not $gogOk) {
+    Write-Host "  [MISSING] gog CLI" -ForegroundColor Red
+    Write-Host "  Download from: https://github.com/nicholasgasior/gog/releases" -ForegroundColor Gray
+    Write-Host "  Place the gog binary in this project's tools\\ directory or on your PATH." -ForegroundColor Gray
+    $answer = Read-Host "  Open download page? (y/n)"
+    if ($answer -eq 'y') { Start-Process "https://github.com/nicholasgasior/gog/releases" }
+    Read-Host "  Press Enter after installing gog..."
+    $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User") + ";$PWD\\tools"
+}
+
+# Verify gog is now available
+$gogOk = Get-Command gog -ErrorAction SilentlyContinue
+if ($gogOk) {
+    Write-Host "  [OK] gog CLI found" -ForegroundColor Green
+
+    # Set up OAuth credentials
+    $setupGoogle = Read-Host "  Have you downloaded your Google OAuth client-secret.json? (y/n)"
+    if ($setupGoogle -eq "y") {
+        $credsPath = Read-Host "  Enter path to your client-secret.json"
+        if (Test-Path $credsPath) {
+            Write-Host "  Importing credentials..." -ForegroundColor Gray
+            & gog auth credentials $credsPath 2>&1
+            Write-Host "  [OK] Google OAuth credentials imported" -ForegroundColor Green
+
+            # Add board account
+            Write-Host ""
+            $boardEmail = Read-Host "  Enter your board email address"
+            if ($boardEmail) {
+                Write-Host "  Authenticating board account (browser will open)..." -ForegroundColor Gray
+                & gog auth add $boardEmail --services gmail,docs,drive 2>&1
+                Write-Host "  [OK] Board account authenticated" -ForegroundColor Green
+            }
+
+            # Add personal account
+            Write-Host ""
+            $personalEmail = Read-Host "  Enter your personal email address (or press Enter to skip)"
+            if ($personalEmail) {
+                Write-Host "  Authenticating personal account (browser will open)..." -ForegroundColor Gray
+                & gog auth add $personalEmail --services gmail 2>&1
+                Write-Host "  [OK] Personal account authenticated" -ForegroundColor Green
+            }
+        } else {
+            Write-Host "  [SKIP] File not found. Set up later per docs/GOOGLE-OAUTH-SETUP.md" -ForegroundColor DarkYellow
+        }
     } else {
-        Write-Host "  [SKIP] File not found. Set up later per docs/GOOGLE-OAUTH-SETUP.md" -ForegroundColor DarkYellow
+        Write-Host "  [SKIP] Set up Google auth later using docs\\GOOGLE-OAUTH-SETUP.md" -ForegroundColor DarkYellow
     }
 } else {
-    Write-Host "  [SKIP] Set up Google OAuth later using docs\\GOOGLE-OAUTH-SETUP.md" -ForegroundColor DarkYellow
+    Write-Host "  [WARN] gog not found - Gmail, Docs, Drive will not be available" -ForegroundColor DarkYellow
 }
 
 Set-Content $progressFile "3"
@@ -1363,36 +1273,41 @@ Set-Content $progressFile "4"
 }
 
 # ============================================================
-# Step 5: Checking Tools
+# Step 5: Checking CLI Tools
 # ============================================================
 if ($lastStep -lt 5) {
 Write-Host ""
-Write-Host "Step 5: Checking tools..." -ForegroundColor Yellow
+Write-Host "Step 5: Checking CLI tools..." -ForegroundColor Yellow
 
-$npxOk = Get-Command npx -ErrorAction SilentlyContinue
-$uvxOk = Get-Command uvx -ErrorAction SilentlyContinue
-
-if ($npxOk) {
-    Write-Host "  [OK] npx available" -ForegroundColor Green
-    Write-Host "  Pre-downloading tools (one time)..." -ForegroundColor Gray
-    $npmPkgs = @(
-        "@gongrzhe/server-gmail-autoauth-mcp",
-        "google-docs-mcp",
-        "@lpenguin/openai-image-mcp"
-    )
-    foreach ($pkg in $npmPkgs) {
-        Write-Host "    Caching $pkg..." -ForegroundColor Gray
-        npm cache add $pkg 2>&1 | Out-Null
+# gog CLI
+$gogOk = Get-Command gog -ErrorAction SilentlyContinue
+if ($gogOk) {
+    Write-Host "  [OK] gog CLI (Gmail, Docs, Drive)" -ForegroundColor Green
+    # Verify accounts
+    try {
+        $authList = & gog auth list --json 2>&1
+        Write-Host "  [OK] Google accounts configured" -ForegroundColor Green
+    } catch {
+        Write-Host "  [WARN] gog installed but no accounts configured" -ForegroundColor DarkYellow
     }
-    Write-Host "  [OK] Gmail, Google Docs, Image Generation ready" -ForegroundColor Green
 } else {
-    Write-Host "  [WARN] npx not found - Gmail, Google Docs, Image Generation need Node.js" -ForegroundColor DarkYellow
+    Write-Host "  [WARN] gog not found - Gmail, Docs, Drive not available" -ForegroundColor DarkYellow
 }
 
+# python-pptx
+try {
+    python -c "import pptx; print(pptx.__version__)" 2>&1 | Out-Null
+    Write-Host "  [OK] python-pptx (PowerPoint)" -ForegroundColor Green
+} catch {
+    Write-Host "  [WARN] python-pptx not installed - run: pip install python-pptx" -ForegroundColor DarkYellow
+}
+
+# uvx / voice mode
+$uvxOk = Get-Command uvx -ErrorAction SilentlyContinue
 if ($uvxOk) {
-    Write-Host "  [OK] Voice, PDF Transcription, PowerPoint (via uvx)" -ForegroundColor Green
+    Write-Host "  [OK] uvx (Voice Mode)" -ForegroundColor Green
 } else {
-    Write-Host "  [WARN] uvx not found - Voice, PDF, PowerPoint need uv" -ForegroundColor DarkYellow
+    Write-Host "  [WARN] uvx not found - Voice mode needs uv" -ForegroundColor DarkYellow
 }
 
 Set-Content $progressFile "5"
@@ -1421,33 +1336,6 @@ if ($lastStep -lt 7) {
 Write-Host ""
 Write-Host "Step 7: Generating Claude Code agent files..." -ForegroundColor Yellow
 
-# Resolve placeholders in settings
-$settingsPath = ".claude\\settings.local.json"
-if (Test-Path $settingsPath) {
-    $settings = Get-Content $settingsPath -Raw
-
-    # Project directory (forward slashes for JSON)
-    $projectDir = (Get-Location).Path -replace '\\\\', '/'
-    $settings = $settings -replace '\\{\\{PROJECT_DIR\\}\\}', $projectDir
-
-    # API keys from environment (set in Step 4)
-    if ($env:OPENAI_API_KEY) {
-        $settings = $settings -replace '\\{\\{OPENAI_API_KEY\\}\\}', $env:OPENAI_API_KEY
-    }
-    if ($env:GOOGLE_DOCS_CLIENT_ID) {
-        $settings = $settings -replace '\\{\\{GOOGLE_DOCS_CLIENT_ID\\}\\}', $env:GOOGLE_DOCS_CLIENT_ID
-    }
-    if ($env:GOOGLE_DOCS_CLIENT_SECRET) {
-        $settings = $settings -replace '\\{\\{GOOGLE_DOCS_CLIENT_SECRET\\}\\}', $env:GOOGLE_DOCS_CLIENT_SECRET
-    }
-    if ($env:GOOGLE_DOCS_REFRESH_TOKEN) {
-        $settings = $settings -replace '\\{\\{GOOGLE_DOCS_REFRESH_TOKEN\\}\\}', $env:GOOGLE_DOCS_REFRESH_TOKEN
-    }
-
-    Set-Content $settingsPath $settings -NoNewline
-    Write-Host "  [OK] Settings configured" -ForegroundColor Green
-}
-
 node scripts/generate-agents.js
 Write-Host "  [OK] Agent files generated" -ForegroundColor Green
 
@@ -1459,14 +1347,21 @@ Set-Content $progressFile "7"
 # ============================================================
 Write-Host ""
 Write-Host "Tool Status:" -ForegroundColor Yellow
-$gmailCreds = Test-Path "$env:USERPROFILE\\.config\\mcp-gmail\\gcp-oauth.keys.json"
-if ($gmailCreds) {
-    Write-Host "  [OK] Gmail - credentials found" -ForegroundColor Green
+
+# gog CLI
+$gogOk = Get-Command gog -ErrorAction SilentlyContinue
+if ($gogOk) {
+    try {
+        $authList = & gog auth list --json 2>&1
+        Write-Host "  [OK] Google (Gmail, Docs, Drive) - gog authenticated" -ForegroundColor Green
+    } catch {
+        Write-Host "  [--] Google - gog installed but no accounts (run: gog auth add)" -ForegroundColor DarkYellow
+    }
 } else {
-    Write-Host "  [--] Gmail - needs Google OAuth setup (see docs\\GOOGLE-OAUTH-SETUP.md)" -ForegroundColor DarkYellow
+    Write-Host "  [--] Google - gog CLI not found (see docs\\GOOGLE-OAUTH-SETUP.md)" -ForegroundColor DarkYellow
 }
 
-if ($env:OPENAI_API_KEY -and $env:OPENAI_API_KEY -ne '{{OPENAI_API_KEY}}') {
+if ($env:OPENAI_API_KEY -and $env:OPENAI_API_KEY -ne 'sk-...') {
     Write-Host "  [OK] Image Generation - API key set" -ForegroundColor Green
 } else {
     Write-Host "  [--] Image Generation - needs OpenAI API key" -ForegroundColor DarkYellow
@@ -1508,25 +1403,7 @@ function generateReconfigurePs1(deps, skillAlias) {
     `teams\\${deps.teamConfig.id}\\team.json`,
   ];
 
-  // Build npm packages list from MCP server dependencies
-  const npmPkgs = [];
-  const npmPkgMap = {
-    'gmail': '@gongrzhe/server-gmail-autoauth-mcp',
-    'gmail-personal': '@gongrzhe/server-gmail-autoauth-mcp',
-    'google-docs': 'google-docs-mcp',
-    'openai-image': '@lpenguin/openai-image-mcp',
-  };
-  const seen = new Set();
-  for (const serverId of deps.mcpServers) {
-    const pkg = npmPkgMap[serverId];
-    if (pkg && !seen.has(pkg)) {
-      seen.add(pkg);
-      npmPkgs.push(pkg);
-    }
-  }
-
   const configFilesPs1 = configFiles.map(f => `        "${f}"`).join(',\n');
-  const npmPkgsPs1 = npmPkgs.map(p => `        "${p}"`).join(',\n');
 
   return `# ${teamName} - Reconfigure
 # Change email addresses, update API keys, reinstall credentials, or regenerate agent files.
@@ -1581,18 +1458,17 @@ function Show-StatusSummary {
         Write-Host "  Personal email: $personalEmail" -ForegroundColor Green
     }
 
-    # Gmail credentials
-    $gmailBoardOk = Test-Path "$env:USERPROFILE\\.config\\mcp-gmail\\gcp-oauth.keys.json"
-    $gmailPersonalOk = Test-Path "$env:USERPROFILE\\.config\\mcp-gmail-personal\\gcp-oauth.keys.json"
-    if ($gmailBoardOk) {
-        Write-Host "  Board Gmail:    [OK] credentials installed" -ForegroundColor Green
+    # Google accounts (gog)
+    $gogOk = Get-Command gog -ErrorAction SilentlyContinue
+    if ($gogOk) {
+        try {
+            $authOut = & gog auth list 2>&1 | Out-String
+            Write-Host "  Google auth:    [OK] gog authenticated" -ForegroundColor Green
+        } catch {
+            Write-Host "  Google auth:    [--] gog installed, no accounts" -ForegroundColor DarkYellow
+        }
     } else {
-        Write-Host "  Board Gmail:    [--] not configured" -ForegroundColor DarkYellow
-    }
-    if ($gmailPersonalOk) {
-        Write-Host "  Personal Gmail: [OK] credentials installed" -ForegroundColor Green
-    } else {
-        Write-Host "  Personal Gmail: [--] not configured" -ForegroundColor DarkYellow
+        Write-Host "  Google auth:    [--] gog CLI not installed" -ForegroundColor DarkYellow
     }
 
     # API keys
@@ -1631,23 +1507,6 @@ function Show-StatusSummary {
         Write-Host "  OpenAI key:     [--] not set" -ForegroundColor DarkYellow
     }
 
-    # Google Docs
-    $gdocsId = [System.Environment]::GetEnvironmentVariable("GOOGLE_DOCS_CLIENT_ID", "User")
-    if (-not $gdocsId) {
-        if (Test-Path ".env") {
-            $envContent = Get-Content ".env" -Raw
-            if ($envContent -match "GOOGLE_DOCS_CLIENT_ID=(.+)") {
-                $val = $Matches[1].Trim()
-                if ($val) { $gdocsId = $val }
-            }
-        }
-    }
-    if ($gdocsId -and $gdocsId -ne "{{GOOGLE_DOCS_CLIENT_ID}}") {
-        Write-Host "  Google Docs:    [OK] configured" -ForegroundColor Green
-    } else {
-        Write-Host "  Google Docs:    [--] not configured" -ForegroundColor DarkYellow
-    }
-
     Write-Host ""
 }
 
@@ -1673,65 +1532,11 @@ ${configFilesPs1}
     }
 }
 
-function Resolve-SettingsPlaceholders {
-    $settingsPath = ".claude\\settings.local.json"
-    if (-not (Test-Path $settingsPath)) {
-        Write-Host "  [SKIP] settings.local.json not found" -ForegroundColor DarkYellow
-        return
-    }
-
-    $settings = Get-Content $settingsPath -Raw
-
-    $projectDir = (Get-Location).Path -replace '\\\\', '/'
-    $settings = $settings -replace '\\{\\{PROJECT_DIR\\}\\}', $projectDir
-
-    $openaiKey = [System.Environment]::GetEnvironmentVariable("OPENAI_API_KEY", "User")
-    if (-not $openaiKey) { $openaiKey = $env:OPENAI_API_KEY }
-    if ($openaiKey -and $openaiKey -ne "sk-..." -and $openaiKey -ne "sk-proj-...") {
-        $settings = $settings -replace '\\{\\{OPENAI_API_KEY\\}\\}', $openaiKey
-    }
-
-    $gdocsId = [System.Environment]::GetEnvironmentVariable("GOOGLE_DOCS_CLIENT_ID", "User")
-    if (-not $gdocsId) { $gdocsId = $env:GOOGLE_DOCS_CLIENT_ID }
-    if ($gdocsId) {
-        $settings = $settings -replace '\\{\\{GOOGLE_DOCS_CLIENT_ID\\}\\}', $gdocsId
-    }
-
-    $gdocsSecret = [System.Environment]::GetEnvironmentVariable("GOOGLE_DOCS_CLIENT_SECRET", "User")
-    if (-not $gdocsSecret) { $gdocsSecret = $env:GOOGLE_DOCS_CLIENT_SECRET }
-    if ($gdocsSecret) {
-        $settings = $settings -replace '\\{\\{GOOGLE_DOCS_CLIENT_SECRET\\}\\}', $gdocsSecret
-    }
-
-    $gdocsToken = [System.Environment]::GetEnvironmentVariable("GOOGLE_DOCS_REFRESH_TOKEN", "User")
-    if (-not $gdocsToken) { $gdocsToken = $env:GOOGLE_DOCS_REFRESH_TOKEN }
-    if ($gdocsToken) {
-        $settings = $settings -replace '\\{\\{GOOGLE_DOCS_REFRESH_TOKEN\\}\\}', $gdocsToken
-    }
-
-    Set-Content $settingsPath $settings -NoNewline
-    Write-Host "  [OK] Settings placeholders resolved" -ForegroundColor Green
-}
-
 function Invoke-GenerateAgents {
-    Write-Host "  Resolving settings placeholders..." -ForegroundColor Gray
-    Resolve-SettingsPlaceholders
-
+    # No MCP settings placeholders to resolve — all services use CLI tools
     Write-Host "  Generating agent files..." -ForegroundColor Gray
     node scripts/generate-agents.js
     Write-Host "  [OK] Agent files generated" -ForegroundColor Green
-
-    $npxOk = Get-Command npx -ErrorAction SilentlyContinue
-    if ($npxOk) {
-        Write-Host "  Pre-caching npm packages..." -ForegroundColor Gray
-        $npmPkgs = @(
-${npmPkgsPs1}
-        )
-        foreach ($pkg in $npmPkgs) {
-            npm cache add $pkg 2>&1 | Out-Null
-        }
-        Write-Host "  [OK] npm packages cached" -ForegroundColor Green
-    }
 }
 
 function Invoke-FullStatusCheck {
@@ -1741,7 +1546,7 @@ function Invoke-FullStatusCheck {
 
     $passed = 0
     $warned = 0
-    $total = 7
+    $total = 6
 
     # Check 1: Agent files
     $agentFiles = @(Get-ChildItem ".claude\\agents\\*.md" -ErrorAction SilentlyContinue)
@@ -1775,21 +1580,19 @@ ${configFilesPs1}
         $warned++
     }
 
-    # Check 3: Gmail credentials - board
-    if (Test-Path "$env:USERPROFILE\\.config\\mcp-gmail\\gcp-oauth.keys.json") {
-        Write-Host "  [PASS] Gmail credentials: board account installed" -ForegroundColor Green
-        $passed++
+    # Check 3: Google accounts (gog)
+    $gogOk = Get-Command gog -ErrorAction SilentlyContinue
+    if ($gogOk) {
+        try {
+            $authOut = & gog auth list 2>&1 | Out-String
+            Write-Host "  [PASS] Google accounts: gog authenticated" -ForegroundColor Green
+            $passed++
+        } catch {
+            Write-Host "  [WARN] Google accounts: gog installed but no accounts configured" -ForegroundColor DarkYellow
+            $warned++
+        }
     } else {
-        Write-Host "  [WARN] Gmail credentials: board account not found" -ForegroundColor DarkYellow
-        $warned++
-    }
-
-    # Check 4: Gmail credentials - personal
-    if (Test-Path "$env:USERPROFILE\\.config\\mcp-gmail-personal\\gcp-oauth.keys.json") {
-        Write-Host "  [PASS] Gmail credentials: personal account installed" -ForegroundColor Green
-        $passed++
-    } else {
-        Write-Host "  [WARN] Gmail credentials: personal account not found" -ForegroundColor DarkYellow
+        Write-Host "  [WARN] Google accounts: gog CLI not installed" -ForegroundColor DarkYellow
         $warned++
     }
 
@@ -1905,123 +1708,57 @@ function Invoke-ChangeEmails {
     return $true
 }
 
-function Invoke-GmailCredsBoard {
+function Invoke-GoogleAuthBoard {
     Write-Host ""
-    Write-Host "Gmail Credentials - Board Account" -ForegroundColor Yellow
+    Write-Host "Google Account - Board" -ForegroundColor Yellow
     Write-Host ""
 
-    $gmailDir = "$env:USERPROFILE\\.config\\mcp-gmail"
-    $keysFile = "$gmailDir\\gcp-oauth.keys.json"
-    $tokenFile = "$gmailDir\\token.json"
-
-    if (Test-Path $keysFile) {
-        Write-Host "  [OK] Credentials installed at: $keysFile" -ForegroundColor Green
-        if (Test-Path $tokenFile) {
-            Write-Host "  [OK] Auth token exists at: $tokenFile" -ForegroundColor Green
-        }
-        $replace = Read-Host "  Replace existing credentials? (y/n)"
-        if ($replace -ne 'y') {
-            if (Test-Path $tokenFile) {
-                $resetAuth = Read-Host "  Delete token.json to force re-authorization? (y/n)"
-                if ($resetAuth -eq 'y') {
-                    Remove-Item $tokenFile
-                    Write-Host "  [OK] Token deleted. Next Gmail use will prompt re-authorization." -ForegroundColor Green
-                }
-            }
-            return $false
-        }
-    }
-
-    $credsPath = Read-Host "  Enter path to gcp-oauth.keys.json"
-    if (-not (Test-Path $credsPath)) {
-        Write-Host "  [ERROR] File not found: $credsPath" -ForegroundColor Red
+    $gogOk = Get-Command gog -ErrorAction SilentlyContinue
+    if (-not $gogOk) {
+        Write-Host "  [ERROR] gog CLI not found. Install from https://github.com/nicholasgasior/gog/releases" -ForegroundColor Red
         return $false
     }
 
-    New-Item -ItemType Directory -Path $gmailDir -Force | Out-Null
-    Copy-Item $credsPath $keysFile
-    Write-Host "  [OK] Board Gmail credentials installed" -ForegroundColor Green
+    Write-Host "  This will (re)authenticate the board Google account with gog." -ForegroundColor Gray
+    Write-Host "  A browser window will open for authorization." -ForegroundColor Gray
+    Write-Host ""
 
-    if (Test-Path $tokenFile) {
-        $resetAuth = Read-Host "  Delete existing token.json to force re-authorization? (y/n)"
-        if ($resetAuth -eq 'y') {
-            Remove-Item $tokenFile
-            Write-Host "  [OK] Token deleted. Next Gmail use will prompt re-authorization." -ForegroundColor Green
-        }
-    } else {
-        Write-Host "  Note: A browser window will open on first use to authorize your board account." -ForegroundColor Gray
+    $boardEmail = Read-Host "  Board email address"
+    if (-not $boardEmail) {
+        Write-Host "  No changes made." -ForegroundColor Gray
+        return $false
     }
 
+    Write-Host "  Authenticating..." -ForegroundColor Gray
+    & gog auth add $boardEmail --services gmail,docs,drive 2>&1
+    Write-Host "  [OK] Board account authenticated" -ForegroundColor Green
     return $false
 }
 
-function Invoke-GmailCredsPersonal {
+function Invoke-GoogleAuthPersonal {
     Write-Host ""
-    Write-Host "Gmail Credentials - Personal Account" -ForegroundColor Yellow
+    Write-Host "Google Account - Personal" -ForegroundColor Yellow
     Write-Host ""
 
-    $gmailDir = "$env:USERPROFILE\\.config\\mcp-gmail-personal"
-    $keysFile = "$gmailDir\\gcp-oauth.keys.json"
-    $tokenFile = "$gmailDir\\token.json"
-
-    if (Test-Path $keysFile) {
-        Write-Host "  [OK] Credentials installed at: $keysFile" -ForegroundColor Green
-        if (Test-Path $tokenFile) {
-            Write-Host "  [OK] Auth token exists at: $tokenFile" -ForegroundColor Green
-        }
-        $replace = Read-Host "  Replace existing credentials? (y/n)"
-        if ($replace -ne 'y') {
-            if (Test-Path $tokenFile) {
-                $resetAuth = Read-Host "  Delete token.json to force re-authorization? (y/n)"
-                if ($resetAuth -eq 'y') {
-                    Remove-Item $tokenFile
-                    Write-Host "  [OK] Token deleted. Next Gmail use will prompt re-authorization." -ForegroundColor Green
-                }
-            }
-            return $false
-        }
-    }
-
-    $boardKeysFile = "$env:USERPROFILE\\.config\\mcp-gmail\\gcp-oauth.keys.json"
-    if (Test-Path $boardKeysFile) {
-        $reuseKeys = Read-Host "  Reuse the same OAuth keys file from board account? (y/n)"
-        if ($reuseKeys -eq 'y') {
-            New-Item -ItemType Directory -Path $gmailDir -Force | Out-Null
-            Copy-Item $boardKeysFile $keysFile
-            Write-Host "  [OK] Personal Gmail credentials installed (copied from board)" -ForegroundColor Green
-            if (Test-Path $tokenFile) {
-                $resetAuth = Read-Host "  Delete existing token.json to force re-authorization? (y/n)"
-                if ($resetAuth -eq 'y') {
-                    Remove-Item $tokenFile
-                    Write-Host "  [OK] Token deleted." -ForegroundColor Green
-                }
-            } else {
-                Write-Host "  Note: A browser window will open on first use to authorize your personal account." -ForegroundColor Gray
-            }
-            return $false
-        }
-    }
-
-    $credsPath = Read-Host "  Enter path to gcp-oauth.keys.json"
-    if (-not (Test-Path $credsPath)) {
-        Write-Host "  [ERROR] File not found: $credsPath" -ForegroundColor Red
+    $gogOk = Get-Command gog -ErrorAction SilentlyContinue
+    if (-not $gogOk) {
+        Write-Host "  [ERROR] gog CLI not found. Install from https://github.com/nicholasgasior/gog/releases" -ForegroundColor Red
         return $false
     }
 
-    New-Item -ItemType Directory -Path $gmailDir -Force | Out-Null
-    Copy-Item $credsPath $keysFile
-    Write-Host "  [OK] Personal Gmail credentials installed" -ForegroundColor Green
+    Write-Host "  This will (re)authenticate the personal Google account with gog." -ForegroundColor Gray
+    Write-Host "  A browser window will open for authorization." -ForegroundColor Gray
+    Write-Host ""
 
-    if (Test-Path $tokenFile) {
-        $resetAuth = Read-Host "  Delete existing token.json to force re-authorization? (y/n)"
-        if ($resetAuth -eq 'y') {
-            Remove-Item $tokenFile
-            Write-Host "  [OK] Token deleted." -ForegroundColor Green
-        }
-    } else {
-        Write-Host "  Note: A browser window will open on first use to authorize your personal account." -ForegroundColor Gray
+    $personalEmail = Read-Host "  Personal email address"
+    if (-not $personalEmail) {
+        Write-Host "  No changes made." -ForegroundColor Gray
+        return $false
     }
 
+    Write-Host "  Authenticating..." -ForegroundColor Gray
+    & gog auth add $personalEmail --services gmail 2>&1
+    Write-Host "  [OK] Personal account authenticated" -ForegroundColor Green
     return $false
 }
 
@@ -2091,80 +1828,31 @@ POWERPOINT_TEMPLATES_PATH=./templates
     return $changed
 }
 
-function Invoke-GoogleDocsCreds {
+function Invoke-GoogleAuthCredentials {
     Write-Host ""
-    Write-Host "Google Docs Credentials" -ForegroundColor Yellow
+    Write-Host "Google OAuth Credentials" -ForegroundColor Yellow
     Write-Host ""
-    Write-Host "  Google Docs MCP needs a client ID, client secret, and refresh token." -ForegroundColor Gray
+
+    $gogOk = Get-Command gog -ErrorAction SilentlyContinue
+    if (-not $gogOk) {
+        Write-Host "  [ERROR] gog CLI not found. Install from https://github.com/nicholasgasior/gog/releases" -ForegroundColor Red
+        return $false
+    }
+
+    Write-Host "  This updates the OAuth client-secret.json used by gog." -ForegroundColor Gray
     Write-Host "  See docs\\GOOGLE-OAUTH-SETUP.md for instructions." -ForegroundColor Gray
     Write-Host ""
 
-    if (-not (Test-Path ".env")) {
-        if (Test-Path ".env.example") { Copy-Item ".env.example" ".env" }
-    }
-
-    $currentId = [System.Environment]::GetEnvironmentVariable("GOOGLE_DOCS_CLIENT_ID", "User")
-    if ($currentId -and $currentId -ne "{{GOOGLE_DOCS_CLIENT_ID}}") {
-        Write-Host "  Current client ID: $($currentId.Substring(0, [Math]::Min(20, $currentId.Length)))..." -ForegroundColor Gray
-    } else {
-        Write-Host "  Current client ID: [not set]" -ForegroundColor DarkYellow
-    }
-    Write-Host ""
-
-    $clientId = Read-Host "  Google Docs Client ID (Enter to keep current)"
-    $clientSecret = Read-Host "  Google Docs Client Secret (Enter to keep current)"
-    $refreshToken = Read-Host "  Google Docs Refresh Token (Enter to keep current)"
-
-    $changed = $false
-
-    if ($clientId) {
-        [System.Environment]::SetEnvironmentVariable("GOOGLE_DOCS_CLIENT_ID", $clientId, "User")
-        $env:GOOGLE_DOCS_CLIENT_ID = $clientId
-        $changed = $true
-    }
-    if ($clientSecret) {
-        [System.Environment]::SetEnvironmentVariable("GOOGLE_DOCS_CLIENT_SECRET", $clientSecret, "User")
-        $env:GOOGLE_DOCS_CLIENT_SECRET = $clientSecret
-        $changed = $true
-    }
-    if ($refreshToken) {
-        [System.Environment]::SetEnvironmentVariable("GOOGLE_DOCS_REFRESH_TOKEN", $refreshToken, "User")
-        $env:GOOGLE_DOCS_REFRESH_TOKEN = $refreshToken
-        $changed = $true
-    }
-
-    if ($changed) {
-        if (Test-Path ".env") {
-            $envContent = Get-Content .env -Raw
-            if ($clientId) {
-                if ($envContent -match "GOOGLE_DOCS_CLIENT_ID=") {
-                    $envContent = $envContent -replace "GOOGLE_DOCS_CLIENT_ID=.*", "GOOGLE_DOCS_CLIENT_ID=$clientId"
-                } else {
-                    $envContent += "\`nGOOGLE_DOCS_CLIENT_ID=$clientId"
-                }
-            }
-            if ($clientSecret) {
-                if ($envContent -match "GOOGLE_DOCS_CLIENT_SECRET=") {
-                    $envContent = $envContent -replace "GOOGLE_DOCS_CLIENT_SECRET=.*", "GOOGLE_DOCS_CLIENT_SECRET=$clientSecret"
-                } else {
-                    $envContent += "\`nGOOGLE_DOCS_CLIENT_SECRET=$clientSecret"
-                }
-            }
-            if ($refreshToken) {
-                if ($envContent -match "GOOGLE_DOCS_REFRESH_TOKEN=") {
-                    $envContent = $envContent -replace "GOOGLE_DOCS_REFRESH_TOKEN=.*", "GOOGLE_DOCS_REFRESH_TOKEN=$refreshToken"
-                } else {
-                    $envContent += "\`nGOOGLE_DOCS_REFRESH_TOKEN=$refreshToken"
-                }
-            }
-            Set-Content .env $envContent -NoNewline
-        }
-        Write-Host "  [OK] Google Docs credentials saved" -ForegroundColor Green
+    $credsPath = Read-Host "  Path to client-secret.json (Enter to skip)"
+    if ($credsPath -and (Test-Path $credsPath)) {
+        & gog auth credentials $credsPath 2>&1
+        Write-Host "  [OK] Credentials updated" -ForegroundColor Green
+    } elseif ($credsPath) {
+        Write-Host "  [ERROR] File not found: $credsPath" -ForegroundColor Red
     } else {
         Write-Host "  No changes made." -ForegroundColor Gray
     }
-
-    return $changed
+    return $false
 }
 
 # ============================================================
@@ -2182,12 +1870,11 @@ while ($true) {
 
     Write-Host "What would you like to change?" -ForegroundColor White
     Write-Host "  1. Email addresses"
-    Write-Host "  2. Gmail credentials (board account)"
-    Write-Host "  3. Gmail credentials (personal account)"
+    Write-Host "  2. Google account (board) - gog auth"
+    Write-Host "  3. Google account (personal) - gog auth"
     Write-Host "  4. API keys (Anthropic / OpenAI)"
-    Write-Host "  5. Google Docs credentials"
-    Write-Host "  6. Regenerate agent files"
-    Write-Host "  7. Run full status check"
+    Write-Host "  5. Regenerate agent files"
+    Write-Host "  6. Run full status check"
     Write-Host "  0. Exit"
     Write-Host ""
 
@@ -2200,23 +1887,20 @@ while ($true) {
             $needsRegen = Invoke-ChangeEmails
         }
         "2" {
-            Invoke-GmailCredsBoard | Out-Null
+            Invoke-GoogleAuthBoard | Out-Null
         }
         "3" {
-            Invoke-GmailCredsPersonal | Out-Null
+            Invoke-GoogleAuthPersonal | Out-Null
         }
         "4" {
             $needsRegen = Invoke-UpdateApiKeys
         }
         "5" {
-            $needsRegen = Invoke-GoogleDocsCreds
-        }
-        "6" {
             Write-Host ""
             Write-Host "Regenerating Agent Files" -ForegroundColor Yellow
             Invoke-GenerateAgents
         }
-        "7" {
+        "6" {
             Invoke-FullStatusCheck
         }
         "0" {
@@ -2248,7 +1932,7 @@ function generateCredentialGuide(deps) {
   return `# Google OAuth Setup Guide
 
 This guide walks you through setting up Google OAuth credentials so the assistant
-can access Gmail and Google Docs on your behalf.
+can access Gmail, Google Docs, and Google Drive using the \`gog\` CLI.
 
 **Time needed:** About 15 minutes
 
@@ -2265,7 +1949,7 @@ can access Gmail and Google Docs on your behalf.
 
 ## Step 2: Enable APIs
 
-Enable these two APIs for your project:
+Enable these APIs for your project:
 
 1. **Gmail API:**
    - Go to [Gmail API page](https://console.cloud.google.com/apis/library/gmail.googleapis.com)
@@ -2273,6 +1957,10 @@ Enable these two APIs for your project:
 
 2. **Google Docs API:**
    - Go to [Google Docs API page](https://console.cloud.google.com/apis/library/docs.googleapis.com)
+   - Click **Enable**
+
+3. **Google Drive API:**
+   - Go to [Google Drive API page](https://console.cloud.google.com/apis/library/drive.googleapis.com)
    - Click **Enable**
 
 ## Step 3: Configure OAuth Consent Screen
@@ -2302,41 +1990,32 @@ Enable these two APIs for your project:
 6. Click **Download JSON** to download the credentials file
 7. Save the file - you'll need it in the next step
 
-## Step 5: Install Credentials
+## Step 5: Install gog CLI
 
-### For Gmail:
+1. Download the latest \`gog\` binary from [GitHub Releases](https://github.com/nicholasgasior/gog/releases)
+2. Place it in this project's \`tools/\` directory or on your system PATH
 
-**Windows:**
-\`\`\`
-mkdir %USERPROFILE%\\.config\\mcp-gmail
-copy <path-to-downloaded-file> %USERPROFILE%\\.config\\mcp-gmail\\gcp-oauth.keys.json
-\`\`\`
+## Step 6: Configure gog with Your Credentials
 
-**Mac/Linux:**
+**Import your OAuth credentials:**
 \`\`\`bash
-mkdir -p ~/.config/mcp-gmail
-cp <path-to-downloaded-file> ~/.config/mcp-gmail/gcp-oauth.keys.json
+gog auth credentials <path-to-downloaded-client-secret.json>
 \`\`\`
 
-The first time you use the Gmail tool, a browser window will automatically open
-asking you to authorize access. After you approve, a \`token.json\` file will be
-created automatically.
+**Add your board account (a browser window will open):**
+\`\`\`bash
+gog auth add YOUR_BOARD_EMAIL --services gmail,docs,drive
+\`\`\`
 
-### For Google Docs:
+**Add your personal account (optional):**
+\`\`\`bash
+gog auth add YOUR_PERSONAL_EMAIL --services gmail
+\`\`\`
 
-The Google Docs MCP server needs the client ID, client secret, and a refresh token
-from the same OAuth credentials.
-
-1. Open the downloaded JSON file in a text editor
-2. Find \`client_id\` and \`client_secret\` values
-3. Add them to your \`.env\` file:
-   \`\`\`
-   GOOGLE_DOCS_CLIENT_ID=your-client-id-here
-   GOOGLE_DOCS_CLIENT_SECRET=your-client-secret-here
-   \`\`\`
-4. To get the refresh token, run the install script or follow the
-   [Google OAuth2 Playground](https://developers.google.com/oauthplayground/)
-   to exchange the client credentials for a refresh token
+**Verify accounts are configured:**
+\`\`\`bash
+gog auth list
+\`\`\`
 
 ## Troubleshooting
 
@@ -2345,34 +2024,16 @@ from the same OAuth credentials.
 - Make sure the OAuth consent screen is configured
 
 ### "Token has been expired or revoked"
-- Delete the \`token.json\` file and re-authorize
-- Windows: \`del %USERPROFILE%\\.config\\mcp-gmail\\token.json\`
-- Mac: \`rm ~/.config/mcp-gmail/token.json\`
+- Re-authenticate: \`gog auth add YOUR_EMAIL --services gmail,docs,drive\`
 
 ### "API not enabled"
-- Go back to Step 2 and make sure both APIs are enabled
+- Go back to Step 2 and make sure all APIs are enabled
 - Make sure you're in the correct Google Cloud project
 `;
 }
 
 function copyMcpServerSources(exportDir, deps) {
-  // Copy MCP server Python files needed for the export
-  const serversToCopy = {
-    'pdfscribe': 'mcp-servers/images/pdfscribe/pdfscribe_server.py',
-    'powerpoint': 'mcp-servers/images/powerpoint/ppt_server.py',
-  };
-
-  for (const [serverId, relPath] of Object.entries(serversToCopy)) {
-    if (!deps.mcpServers.includes(serverId)) continue;
-
-    const srcPath = path.join(ROOT, relPath);
-    if (fs.existsSync(srcPath)) {
-      const destPath = path.join(exportDir, relPath);
-      fs.mkdirSync(path.dirname(destPath), { recursive: true });
-      const content = fs.readFileSync(srcPath, 'utf-8');
-      fs.writeFileSync(destPath, sanitizeString(content), 'utf-8');
-    }
-  }
+  // No MCP server source files to copy — all services accessed via CLI tools
 }
 
 function generateGitignore() {
@@ -2468,13 +2129,8 @@ function collectEnvVars(deps) {
   const vars = [
     'ANTHROPIC_API_KEY',
     'OPENAI_API_KEY',
+    'RAG_DB_PATH',
   ];
-
-  if (deps.mcpServers.includes('google-docs')) {
-    vars.push('GOOGLE_DOCS_CLIENT_ID', 'GOOGLE_DOCS_CLIENT_SECRET', 'GOOGLE_DOCS_REFRESH_TOKEN');
-  }
-
-  vars.push('RAG_DB_PATH');
 
   return vars;
 }
@@ -2551,8 +2207,7 @@ function printDryRun(deps) {
   console.log(`  - ${deps.contextBuckets.length} context bucket(s)`);
   console.log(`  - ${deps.agentIds.length} .claude/agents/*.md files`);
   console.log(`  - ${deps.agentIds.length + 1} .claude/skills/ directories`);
-  console.log(`  - .claude/settings.local.json (MCP server configs)`);
-  console.log(`  - MCP CLI configs (npx/uvx, no Docker)`);
+  console.log(`  - .claude/settings.local.json (permissions only, no MCP)`);
   console.log(`  - Filtered registries (agents.json, teams.json, buckets.json)`);
   console.log(`  - Documentation (CLAUDE.md, README.md, install.ps1, reconfigure.ps1, setup.sh, OAuth guide)`);
   console.log(`  - data/rag.db (SQLite RAG database, if available)`);
@@ -2667,13 +2322,10 @@ Examples:
     }
   }
 
-  // Phase 3.5: Generate MCP server configs (CLI-only)
-  let mcpConfigs = {};
-  if (noDocker) {
-    console.log('\nPhase 3.5: Generating MCP server configs (CLI-only)...');
-    mcpConfigs = generateMcpConfigs(exportDir, deps, platform);
-    console.log(`  [OK] ${Object.keys(mcpConfigs).length} server configs`);
-  }
+  // Phase 3.5: No MCP server configs needed (all CLI-based now)
+  const mcpConfigs = {};
+  console.log('\nPhase 3.5: CLI tools (no MCP servers)...');
+  console.log('  [OK] All services via CLI (gog, python-pptx, curl)');
 
   // Phase 4: Copy team definition
   console.log('\nPhase 4: Copying team definition...');
@@ -2719,7 +2371,7 @@ Examples:
   // Phase 7.6: Generate Claude Code settings
   console.log('\nPhase 7.6: Generating Claude Code settings...');
   const claudeSettings = generateClaudeSettings(exportDir, deps, mcpConfigs, platform);
-  console.log(`  [OK] .claude/settings.local.json (${Object.keys(claudeSettings.mcpServers).length} servers)`);
+  console.log(`  [OK] .claude/settings.local.json (no MCP servers)`);
 
 
   // Phase 8: Generate documentation

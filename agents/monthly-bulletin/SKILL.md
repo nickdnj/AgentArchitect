@@ -604,13 +604,13 @@ Use Chrome's headless mode to generate a clean PDF without browser headers/foote
 
 Send the PDF to Nick for forwarding to ECI:
 
-```
-mcp__gmail__send_email(
-  to: ["nickd@wharfsidemb.com"],
-  subject: "[Month Year] Monthly Bulletin - Final (PDF for Distribution)",
-  body: "Attached is the final [Month] bulletin PDF for ECI distribution.",
-  attachments: ["/path/to/bulletin-v0.X.pdf"]
-)
+```bash
+gog gmail send \
+  --to "nickd@wharfsidemb.com" \
+  --subject "[Month Year] Monthly Bulletin - Final (PDF for Distribution)" \
+  --body "Attached is the final [Month] bulletin PDF for ECI distribution." \
+  --attachment "/path/to/bulletin-v0.X.pdf" \
+  --account BOARD_EMAIL
 ```
 
 ### File Naming Convention

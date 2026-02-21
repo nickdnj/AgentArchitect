@@ -24,24 +24,72 @@ const OUTPUT_AGENTS_DIR = path.join(__dirname, '..', '.claude', 'agents');
 const OUTPUT_SKILLS_DIR = path.join(__dirname, '..', '.claude', 'skills');
 
 // MCP Server mapping: Agent Architect config -> Claude Code tools
+// All external services are accessed via Bash CLI commands (gog, python, curl).
+// No MCP tool patterns needed. The mcp_servers field in config.json still
+// documents which services an agent needs (for dependency tracking / CLI docs injection).
 const MCP_SERVER_MAPPING = {
-  'gdrive': 'mcp__google-drive__*',
-  'gdrive-personal': 'mcp__google-drive__*',
-  'gmail': 'mcp__gmail__*',
-  'gmail-personal': 'mcp__gmail-personal__*',
-  'google-docs': 'mcp__google-docs-mcp__*',
-  'chrome': 'mcp__chrome__*',
-  'github': 'Bash',  // GitHub CLI via bash
-  'firebase': 'Bash',  // Firebase CLI via bash
-  'google-cloud': 'Bash',  // gcloud CLI via bash
-  'powerpoint': 'mcp__powerpoint__*',
-  'voicemode': 'mcp__voicemode__*',
-  'pdfscribe': 'mcp__pdfscribe__*',
-  'gtasks': 'mcp__gtasks__*',
-  'apple-mcp': 'mcp__apple-mcp__*',
-  'apple-contacts': 'mcp__apple-contacts__*',
-  'video-editor': 'mcp__video-editor__*',
-  'openai-image': 'mcp__openai-image__*',
+  // All map to Bash (already in BASE_TOOLS) — no special tool patterns.
+};
+
+// CLI tool documentation injected into generated skills/agents based on mcp_servers list.
+// These tell agents HOW to use each service via CLI commands.
+const CLI_TOOL_DOCS = {
+  'gmail': `## Gmail CLI (gog)
+Use \`gog\` via Bash for all email operations. Always use \`--json\` for parseable output.
+- Search: \`gog gmail search 'query' --json --max 20 --account BOARD_EMAIL\`
+- Read thread: \`gog gmail threads get <threadId> --json --account BOARD_EMAIL\`
+- Send: \`gog gmail send --to addr --subject "..." --body "..." --account BOARD_EMAIL\`
+- Draft: \`gog gmail drafts create --to addr --subject "..." --body "..." --account BOARD_EMAIL\`
+- Labels: \`gog gmail labels list --json --account BOARD_EMAIL\`
+- Attachments: \`gog gmail attachments download <messageId> --account BOARD_EMAIL\`
+`,
+  'gmail-personal': `## Gmail CLI - Personal (gog)
+Same as Gmail CLI but use \`--account PERSONAL_EMAIL\` for the personal account.
+`,
+  'google-docs': `## Google Docs CLI (gog)
+- Create: \`gog docs create --title "Document" --json --account BOARD_EMAIL\`
+- Read: \`gog docs to-text <docId> --account BOARD_EMAIL\`
+- Export: \`gog docs export <docId> --format pdf --out ./output.pdf --account BOARD_EMAIL\`
+`,
+  'gdrive': `## Google Drive CLI (gog)
+- Search: \`gog drive search 'query' --json --account BOARD_EMAIL\`
+- Download: \`gog drive download <fileId> --out ./file --account BOARD_EMAIL\`
+- Upload: \`gog drive upload ./file --parent <folderId> --account BOARD_EMAIL\`
+`,
+  'pdfscribe': `## PDF Transcription (CLI)
+Use the pdfscribe Python CLI directly:
+- Transcribe: \`python pdfscribe_cli/pdfscribe_cli.py <pdf_file> -o <output.md>\`
+- Split large PDF: \`python pdfscribe_cli/src/split_pdf.py <pdf> --pages-per-chunk 50\`
+- RAG ingest: \`python pdfscribe_cli/src/rag.py ingest <file> --bucket <bucket_id>\`
+- RAG search: \`python pdfscribe_cli/src/rag.py search 'query' --bucket <bucket_id>\`
+`,
+  'openai-image': `## Image Generation (OpenAI API)
+Use curl or Python to generate images directly:
+\`\`\`bash
+curl -s https://api.openai.com/v1/images/generations \\
+  -H "Authorization: Bearer $OPENAI_API_KEY" \\
+  -H "Content-Type: application/json" \\
+  -d '{"model":"dall-e-3","prompt":"...","size":"1792x1024","quality":"hd","response_format":"url"}' \\
+  | jq -r '.data[0].url'
+\`\`\`
+`,
+  'powerpoint': `## PowerPoint (python-pptx)
+Write and execute Python scripts using python-pptx for presentation creation:
+\`\`\`python
+from pptx import Presentation
+from pptx.util import Inches, Pt
+prs = Presentation('templates/Wharfside_TEMPLATE.pptx')
+slide = prs.slides.add_slide(prs.slide_layouts[1])
+slide.placeholders[0].text = "Title"
+prs.save('output.pptx')
+\`\`\`
+`,
+  'voicemode': `## Voice Mode
+Voice mode is available via the /voice skill command. No additional tool setup needed.
+`,
+  'chrome': `## Chrome Browser
+Use the Chrome Browser agent via Task delegation for browser automation tasks.
+`,
 };
 
 // Base tools that all agents should have access to
@@ -93,23 +141,32 @@ function readTeamConfig(teamDir) {
 }
 
 /**
- * Map MCP servers from config to Claude Code tool patterns
+ * Map MCP servers from config to Claude Code tool patterns.
+ * All external services are accessed via Bash CLI — always returns BASE_TOOLS only.
  */
 function mapMcpServersToTools(mcpServers) {
-  const tools = new Set(BASE_TOOLS);
+  return [...BASE_TOOLS];
+}
 
-  if (!mcpServers || !Array.isArray(mcpServers)) {
-    return Array.from(tools);
+/**
+ * Generate CLI tool documentation appendix based on agent's mcp_servers list.
+ */
+function generateCliToolDocs(mcpServers) {
+  if (!mcpServers || !Array.isArray(mcpServers) || mcpServers.length === 0) {
+    return '';
   }
 
+  const sections = [];
   for (const server of mcpServers) {
-    const mappedTool = MCP_SERVER_MAPPING[server];
-    if (mappedTool) {
-      tools.add(mappedTool);
+    const doc = CLI_TOOL_DOCS[server];
+    if (doc) {
+      sections.push(doc);
     }
   }
 
-  return Array.from(tools);
+  if (sections.length === 0) return '';
+
+  return '\n\n---\n\n# CLI Tools Reference\n\n<!-- Generated from config.json mcp_servers -->\n\n' + sections.join('\n');
 }
 
 // ============================================================================
@@ -172,8 +229,7 @@ function extractGmailConfig(config) {
   for (const [key, account] of Object.entries(accounts)) {
     const label = key.charAt(0).toUpperCase() + key.slice(1);
     lines.push(`**${label} Email:** ${account.address}`);
-    lines.push(`- MCP Server: \`${account.mcp_server}\``);
-    lines.push(`- Tools: \`mcp__${account.mcp_server === 'gmail' ? 'gmail' : 'gmail-personal'}__*\``);
+    lines.push(`- CLI account flag: \`--account ${account.address}\``);
     if (account.default) {
       lines.push('- **Default account**');
     }
@@ -476,8 +532,9 @@ function generateAgentFile(config, skillContent, allAgents = {}) {
   const frontmatter = generateFrontmatter(config, tools);
   const metadata = generateMetadataComments(config);
   const appendix = generateOperationalAppendix(config, allAgents);
+  const cliDocs = generateCliToolDocs(config.mcp_servers);
 
-  return `${frontmatter}${metadata}${skillContent}${appendix}`;
+  return `${frontmatter}${metadata}${skillContent}${appendix}${cliDocs}`;
 }
 
 // ============================================================================
@@ -527,17 +584,8 @@ function generateTeamOrchestratorSkill(teamConfig, allAgents) {
   const routing = orch.routing || {};
   const members = teamConfig.members || [];
 
-  // Collect all MCP tools from all member agents
+  // All tools accessed via Bash CLI — just use BASE_TOOLS
   const allTools = new Set(BASE_TOOLS);
-  for (const member of members) {
-    const agentConfig = allAgents[member.agent_id];
-    if (agentConfig?.mcp_servers) {
-      for (const server of agentConfig.mcp_servers) {
-        const mapped = MCP_SERVER_MAPPING[server];
-        if (mapped) allTools.add(mapped);
-      }
-    }
-  }
 
   // Use skill_alias for the skill name if defined
   const skillName = teamConfig.skill_alias || teamConfig.id;
@@ -1065,6 +1113,7 @@ module.exports = {
   generateSpecialistSkill,
   generateTeamOrchestratorSkill,
   generateOperationalAppendix,
+  generateCliToolDocs,
   loadAllAgentConfigs,
   generateForExport,
 };

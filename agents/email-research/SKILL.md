@@ -240,8 +240,8 @@ User must explicitly request transcription:
 **IMPORTANT:** Delegate PDF transcription to the PDFScribe agent rather than calling the MCP directly. This keeps the full transcription content out of Email Research's context.
 
 1. **Download the attachment:**
-   ```
-   mcp__gmail__download_attachment(messageId, attachmentId, savePath="/tmp/pdfscribe")
+   ```bash
+   gog gmail attachments download <messageId> --out /tmp/pdfscribe/ --account BOARD_EMAIL
    ```
 
 2. **Delegate to PDFScribe agent:**
