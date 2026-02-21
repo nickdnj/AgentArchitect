@@ -865,26 +865,33 @@ function generateReadme(deps, skillAlias, platform) {
     '|---|---|',
   );
 
+  // Clean up role descriptions for non-technical audience
+  const friendlyRoles = {
+    'rag-search': 'Searches across all indexed governing documents by meaning, not just keywords',
+    'pdf-scribe': 'Converts scanned PDFs into searchable text',
+  };
+
   for (const member of deps.teamConfig.members) {
     const config = deps.agentConfigs[member.agent_id];
-    const name = config?.name || member.agent_id;
-    lines.push(`| ${name} | ${member.role} |`);
+    const name = member.agent_id === 'rag-search' ? 'Document Search' : (config?.name || member.agent_id);
+    const role = friendlyRoles[member.agent_id] || member.role;
+    lines.push(`| ${name} | ${role} |`);
   }
 
   lines.push(
     '',
     '## Troubleshooting',
     '',
-    '### "MCP server not connected"',
-    'Run the install script again - it will check all connections.',
+    '### "Server not connected" or tools not working',
+    'Run the install script again - it will check all connections and fix common issues.',
     '',
     '### Search returns no results',
-    'The document database may need to be rebuilt. Ask Claude:',
+    'The document index may need to be rebuilt. Ask Claude:',
     `\`/${skillAlias} re-index the governing documents\``,
     '',
     '### Voice mode not working',
-    'Make sure your microphone is enabled and you have speakers/headphones connected.',
-    'Try: `uvx voice-mode` in a terminal to test.',
+    'Make sure your microphone is enabled and you have speakers or headphones connected.',
+    'Try running `uvx voice-mode` in a terminal to test if the voice system is installed.',
     '',
     '### Need help?',
     'Contact the board technology contact for assistance.',
