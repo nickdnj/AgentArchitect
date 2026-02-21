@@ -1164,53 +1164,78 @@ Write-Host ""
 # Step 1: Prerequisites Check
 # ============================================================
 Write-Host "Step 1: Checking prerequisites..." -ForegroundColor Yellow
-$missing = @()
 
-# Node.js
-try {
-    $nodeVersion = node --version 2>&1
-    Write-Host "  [OK] Node.js $nodeVersion" -ForegroundColor Green
-} catch {
-    Write-Host "  [MISSING] Node.js" -ForegroundColor Red
-    Write-Host "    Download: https://nodejs.org/" -ForegroundColor Gray
-    $missing += "Node.js"
+function Install-Dependency {
+    param(
+        [string]$Name,
+        [string]$CheckCmd,
+        [string]$WingetId,
+        [string]$ManualUrl,
+        [string]$NpmInstall,
+        [string]$PsInstall
+    )
+
+    # Check if already installed
+    try {
+        $ver = Invoke-Expression $CheckCmd 2>&1 | Select-Object -First 1
+        Write-Host "  [OK] $Name - $ver" -ForegroundColor Green
+        return $true
+    } catch {}
+
+    Write-Host "  [MISSING] $Name" -ForegroundColor Red
+
+    # Attempt auto-install
+    if ($PsInstall) {
+        $answer = Read-Host "  Install $Name now? (y/n)"
+        if ($answer -eq 'y') {
+            Write-Host "  Installing $Name..." -ForegroundColor Gray
+            Invoke-Expression $PsInstall
+            $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
+        }
+    } elseif ($NpmInstall) {
+        $answer = Read-Host "  Install $Name now? (y/n)"
+        if ($answer -eq 'y') {
+            Write-Host "  Installing $Name..." -ForegroundColor Gray
+            Invoke-Expression $NpmInstall
+        }
+    } elseif ($WingetId) {
+        $hasWinget = Get-Command winget -ErrorAction SilentlyContinue
+        if ($hasWinget) {
+            $answer = Read-Host "  Install $Name using winget? (y/n)"
+            if ($answer -eq 'y') {
+                winget install --id $WingetId --accept-package-agreements --accept-source-agreements
+                $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
+            }
+        } else {
+            Write-Host "  Download from: $ManualUrl" -ForegroundColor Gray
+            $answer = Read-Host "  Open download page in browser? (y/n)"
+            if ($answer -eq 'y') { Start-Process $ManualUrl }
+            Read-Host "  Press Enter after installing $Name..."
+            $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
+        }
+    }
+
+    # Re-verify after install attempt
+    try {
+        $ver = Invoke-Expression $CheckCmd 2>&1 | Select-Object -First 1
+        Write-Host "  [OK] $Name - $ver" -ForegroundColor Green
+        return $true
+    } catch {
+        Write-Host "  [FAILED] $Name still not found after install attempt" -ForegroundColor Red
+        return $false
+    }
 }
 
-# Python
-try {
-    $pyVersion = python --version 2>&1
-    Write-Host "  [OK] $pyVersion" -ForegroundColor Green
-} catch {
-    Write-Host "  [MISSING] Python" -ForegroundColor Red
-    Write-Host "    Download: https://www.python.org/downloads/" -ForegroundColor Gray
-    $missing += "Python"
-}
+$ok = $true
+$ok = (Install-Dependency -Name "Node.js" -CheckCmd "node --version" -WingetId "OpenJS.NodeJS.LTS" -ManualUrl "https://nodejs.org/") -and $ok
+$ok = (Install-Dependency -Name "Python" -CheckCmd "python --version" -WingetId "Python.Python.3.13" -ManualUrl "https://www.python.org/downloads/") -and $ok
+$ok = (Install-Dependency -Name "uv" -CheckCmd "uv --version" -PsInstall "irm https://astral.sh/uv/install.ps1 | iex") -and $ok
+$ok = (Install-Dependency -Name "Claude Code" -CheckCmd "claude --version" -NpmInstall "npm install -g @anthropic-ai/claude-code") -and $ok
 
-# uv (Python package manager)
-try {
-    $uvVersion = uv --version 2>&1
-    Write-Host "  [OK] uv $uvVersion" -ForegroundColor Green
-} catch {
-    Write-Host "  [MISSING] uv (Python package manager)" -ForegroundColor Red
-    Write-Host "    Install: irm https://astral.sh/uv/install.ps1 | iex" -ForegroundColor Gray
-    $missing += "uv"
-}
-
-# Claude Code
-try {
-    claude --version 2>&1 | Out-Null
-    Write-Host "  [OK] Claude Code installed" -ForegroundColor Green
-} catch {
-    Write-Host "  [MISSING] Claude Code CLI" -ForegroundColor Red
-    Write-Host "    Install: npm install -g @anthropic-ai/claude-code" -ForegroundColor Gray
-    Write-Host "    Signup:  https://claude.ai" -ForegroundColor Gray
-    $missing += "Claude Code"
-}
-
-if ($missing.Count -gt 0) {
+if (-not $ok) {
     Write-Host ""
-    Write-Host "Please install the missing dependencies and re-run this script." -ForegroundColor Red
-    Write-Host "Missing: $($missing -join ', ')" -ForegroundColor Red
+    Write-Host "Some dependencies could not be installed." -ForegroundColor Red
+    Write-Host "Please install them manually and re-run this script." -ForegroundColor Red
     exit 1
 }
 
