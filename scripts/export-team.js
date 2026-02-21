@@ -1160,9 +1160,21 @@ Write-Host "  Windows Setup" -ForegroundColor Cyan
 Write-Host "======================================" -ForegroundColor Cyan
 Write-Host ""
 
+# Resume support - picks up where we left off if interrupted
+$progressFile = ".setup-progress"
+$lastStep = 0
+if (Test-Path $progressFile) {
+    $lastStep = [int](Get-Content $progressFile)
+    if ($lastStep -gt 0) {
+        Write-Host "Resuming from step $($lastStep + 1) (steps 1-$lastStep already done)" -ForegroundColor Gray
+        Write-Host ""
+    }
+}
+
 # ============================================================
 # Step 1: Prerequisites Check
 # ============================================================
+if ($lastStep -lt 1) {
 Write-Host "Step 1: Checking prerequisites..." -ForegroundColor Yellow
 
 function Install-Dependency {
@@ -1239,9 +1251,13 @@ if (-not $ok) {
     exit 1
 }
 
+Set-Content $progressFile "1"
+}
+
 # ============================================================
 # Step 2: Voice Mode Setup (PRIORITY)
 # ============================================================
+if ($lastStep -lt 2) {
 Write-Host ""
 Write-Host "Step 2: Setting up Voice Mode..." -ForegroundColor Yellow
 try {
@@ -1254,9 +1270,13 @@ try {
     Write-Host "  You can still use text mode." -ForegroundColor Gray
 }
 
+Set-Content $progressFile "2"
+}
+
 # ============================================================
 # Step 3: Google OAuth Setup (Interactive)
 # ============================================================
+if ($lastStep -lt 3) {
 Write-Host ""
 Write-Host "Step 3: Google Account Setup" -ForegroundColor Yellow
 Write-Host ""
@@ -1281,9 +1301,13 @@ if ($setupGoogle -eq "y") {
     Write-Host "  [SKIP] Set up Google OAuth later using docs\\GOOGLE-OAUTH-SETUP.md" -ForegroundColor DarkYellow
 }
 
+Set-Content $progressFile "3"
+}
+
 # ============================================================
 # Step 4: API Keys
 # ============================================================
+if ($lastStep -lt 4) {
 Write-Host ""
 Write-Host "Step 4: API Keys" -ForegroundColor Yellow
 
@@ -1324,49 +1348,68 @@ if ($openaiKey) {
     Write-Host "  [OK] OPENAI_API_KEY saved" -ForegroundColor Green
 }
 
-# ============================================================
-# Step 5: MCP Server Verification
-# ============================================================
-Write-Host ""
-Write-Host "Step 5: Verifying MCP servers..." -ForegroundColor Yellow
-
-$servers = @(
-    @{ Name = "Gmail MCP"; Cmd = "npx"; Args = @("-y", "@gongrzhe/server-gmail-autoauth-mcp", "--version") },
-    @{ Name = "Google Docs MCP"; Cmd = "npx"; Args = @("-y", "google-docs-mcp", "--version") }
-)
-
-foreach ($server in $servers) {
-    try {
-        & $server.Cmd $server.Args 2>&1 | Out-Null
-        Write-Host "  [OK] $($server.Name)" -ForegroundColor Green
-    } catch {
-        Write-Host "  [WARN] $($server.Name) - may need configuration" -ForegroundColor DarkYellow
-    }
+Set-Content $progressFile "4"
 }
 
 # ============================================================
-# Step 6: RAG Database
+# Step 5: Checking Tools
 # ============================================================
+if ($lastStep -lt 5) {
+Write-Host ""
+Write-Host "Step 5: Checking tools..." -ForegroundColor Yellow
+
+$npxOk = Get-Command npx -ErrorAction SilentlyContinue
+$uvxOk = Get-Command uvx -ErrorAction SilentlyContinue
+
+if ($npxOk) {
+    Write-Host "  [OK] Gmail, Google Docs, Image Generation (via npx)" -ForegroundColor Green
+} else {
+    Write-Host "  [WARN] npx not found - Gmail, Google Docs, Image Generation need Node.js" -ForegroundColor DarkYellow
+}
+
+if ($uvxOk) {
+    Write-Host "  [OK] Voice, PDF Transcription, PowerPoint (via uvx)" -ForegroundColor Green
+} else {
+    Write-Host "  [WARN] uvx not found - Voice, PDF, PowerPoint need uv" -ForegroundColor DarkYellow
+}
+
+Write-Host "  Tools are downloaded on first use. No extra install needed." -ForegroundColor Gray
+
+Set-Content $progressFile "5"
+}
+
+# ============================================================
+# Step 6: Document Database
+# ============================================================
+if ($lastStep -lt 6) {
 Write-Host ""
 Write-Host "Step 6: Checking document database..." -ForegroundColor Yellow
 if (Test-Path "data\\rag.db") {
     $dbSize = (Get-Item "data\\rag.db").Length / 1MB
-    Write-Host "  [OK] RAG database found ($([math]::Round($dbSize, 1)) MB)" -ForegroundColor Green
+    Write-Host "  [OK] Document database found ($([math]::Round($dbSize, 1)) MB)" -ForegroundColor Green
 } else {
     Write-Host "  [INFO] No document database yet. One will be created when documents are indexed." -ForegroundColor Gray
+}
+
+Set-Content $progressFile "6"
 }
 
 # ============================================================
 # Step 7: Generate Claude Code files
 # ============================================================
+if ($lastStep -lt 7) {
 Write-Host ""
 Write-Host "Step 7: Generating Claude Code agent files..." -ForegroundColor Yellow
 node scripts/generate-agents.js
 Write-Host "  [OK] Agent files generated" -ForegroundColor Green
 
+Set-Content $progressFile "7"
+}
+
 # ============================================================
 # Step 8: Complete!
 # ============================================================
+Remove-Item $progressFile -ErrorAction SilentlyContinue
 Write-Host ""
 Write-Host "======================================" -ForegroundColor Green
 Write-Host "  Setup Complete!" -ForegroundColor Green
