@@ -37,13 +37,13 @@ The presentation agent uses `python-pptx` to create and modify PowerPoint files 
 
 **Copy to final destination example:**
 ```bash
-cp /Users/nickd/Workspaces/mcp_servers/Office-PowerPoint-MCP-Server/workspace/Output.pptx ~/Desktop/Output.pptx
+cp outputs/Output.pptx ~/Desktop/Output.pptx
 ```
 
 ## Templates
 
 ### Template Directory
-Templates are stored in `./templates/` within the Presentation agent folder. They are also available at the MCP server path `/app/templates/`.
+Templates are stored in `./templates/` within the Presentation agent folder.
 
 ### Available Templates
 
@@ -92,8 +92,8 @@ When using the Altium template, consult the `altium-presentation-guide` context 
 - Impact-driven titles (not topic-only)
 - Strategic emphasis with CAPS and emojis
 - 3-5 bullets per slide, 1-2 lines each
-- Always use `populate_placeholder` and `add_bullet_points` (never `manage_text`)
-- Save to `/app/workspace/` then copy to final destination
+- Always use template placeholders (never free-floating text boxes)
+- Save to `outputs/` then copy to final destination
 
 ## Presentation Types
 
@@ -162,83 +162,51 @@ When using the Altium template, consult the `altium-presentation-guide` context 
 7. Quote Slide (Layout 36) - Customer testimonial
 8. Summary (Layout 38) - CTA and next steps
 
-## PowerPoint MCP Tools Reference (v1.21.1 - 37 tools)
+## python-pptx Reference
 
-### Presentation Management
-- `create_presentation` - Create new blank presentation
-- `create_presentation_from_template` - Create from template file (params: `template_path`, optional `id`; does NOT accept `output_path`)
-- `open_presentation` - Open existing .pptx file
-- `save_presentation` - Save presentation (use `file_path` parameter; requires active presentation via `switch_presentation` if multiple open)
-- `get_presentation_info` - Get metadata about current presentation
-- `set_core_properties` - Set document properties (title, author, etc.)
-- `list_presentations` - List all open presentations and their IDs
-- `switch_presentation` - Switch active presentation by `presentation_id`
+All presentation operations use `python-pptx` via Python scripts executed through Bash.
 
-### Slide Management
-- `add_slide` - Add new slide with `layout_index`
-- `get_slide_info` - Get slide details including placeholders
-- `extract_slide_text` - Extract all text from a slide
-- `extract_presentation_text` - Extract all text from entire presentation
+### Key Operations
 
-### Content Creation (Placeholder-First)
-- `populate_placeholder` - Set text in a placeholder by index (PREFERRED for all text)
-- `add_bullet_points` - Add bulleted list to a placeholder (PREFERRED for lists)
-- `manage_text` - Add/modify floating text boxes (AVOID - breaks template styling)
-- `manage_image` - Add/modify images
-- `add_table` - Create data table
-- `format_table_cell` - Format individual table cells
-- `add_shape` - Add auto shapes
-- `add_chart` - Create charts (column, bar, line, pie)
-- `update_chart_data` - Update existing chart data
-- `add_connector` - Add connector lines between shapes
-- `manage_hyperlinks` - Add/manage hyperlinks
+| Operation | python-pptx Code |
+|-----------|-----------------|
+| Open template | `prs = Presentation('templates/Wharfside_TEMPLATE.pptx')` |
+| Add slide | `slide = prs.slides.add_slide(prs.slide_layouts[4])` |
+| Set placeholder text | `slide.placeholders[0].text = "Title"` |
+| Add bullet points | Use `add_paragraph()` on placeholder text frame |
+| Add table | `table = slide.shapes.add_table(rows, cols, left, top, width, height).table` |
+| Add image | `slide.shapes.add_picture(img_path, left, top, width, height)` |
+| Save | `prs.save('outputs/Output.pptx')` |
 
-### Formatting & Design
-- `apply_professional_design` - Apply professional design schemes
-- `apply_picture_effects` - Apply effects to images
-- `manage_fonts` - Manage font settings
-- `optimize_slide_text` - Auto-optimize text sizing
-- `manage_slide_masters` - Manage slide master layouts
-- `manage_slide_transitions` - Add slide transitions
+### Key Workflow
 
-### Template Tools
-- `get_template_file_info` - Inspect template layouts and metadata
-- `list_slide_templates` - List available slide templates
-- `apply_slide_template` - Apply template to existing slide
-- `create_slide_from_template` - Create slide from template definition
-- `create_presentation_from_templates` - Create multi-template presentation
-- `get_template_info` - Get template metadata
-- `auto_generate_presentation` - Auto-generate presentation from content
+```python
+from pptx import Presentation
+from pptx.util import Inches, Pt
 
-### Server
-- `get_server_info` - Get MCP server version and capabilities
+# 1. Open template
+prs = Presentation('templates/Altium_TEMPLATE.pptx')
 
-### Key Tool Usage Patterns
+# 2. Add slide using layout index
+slide = prs.slides.add_slide(prs.slide_layouts[4])
 
-**CRITICAL: The correct workflow for creating a presentation:**
+# 3. Populate placeholders
+slide.placeholders[0].text = "Slide Title"
+tf = slide.placeholders[1].text_frame
+tf.text = "First bullet"
+p = tf.add_paragraph()
+p.text = "Second bullet"
 
-```
-1. create_presentation_from_template(template_path="/app/templates/Altium_TEMPLATE.pptx")
-   → Returns presentation_id (e.g., "presentation_1")
-   → Does NOT accept output_path — that param is silently ignored
-   → Does NOT set this as the active presentation
-
-2. switch_presentation(presentation_id="presentation_1")         ← MANDATORY
-   → Sets this as the active presentation for all subsequent operations
-   → Without this step, all content operations silently fail
-
-3. Content operations — NO file_path or presentation_id params needed:
-   populate_placeholder(slide_index=0, placeholder_idx=0, text="Title")
-   add_slide(layout_index=4)
-   add_bullet_points(slide_index=1, placeholder_idx=1, bullet_points=[...])
-
-4. save_presentation(file_path="/app/workspace/Output.pptx")
-   → Saves the active presentation to the specified path
+# 4. Save
+prs.save('outputs/Output.pptx')
 ```
 
-**Why `switch_presentation` is mandatory:** The MCP server stores presentations in memory by ID, but `create_presentation_from_template` does NOT call `set_current_presentation_id()` internally. Without `switch_presentation`, all content tools call `get_current_presentation_id()` which returns `None`, and operations silently do nothing.
+### Placeholder-First Approach
 
-**Common mistake:** Passing `file_path` to `populate_placeholder`, `add_slide`, or `add_bullet_points`. These tools do NOT accept `file_path` — they always operate on the current active presentation. Extra params are silently ignored.
+Always use template placeholders instead of adding free-floating text boxes:
+- Use `slide.placeholders[idx]` to access existing placeholders
+- Use `get_slide_info()` equivalent: `for ph in slide.placeholders: print(ph.placeholder_format.idx, ph.name)`
+- Dual Content layouts: check placeholder indices carefully as they may not be sequential
 
 ## Content Guidelines
 
@@ -365,12 +333,6 @@ Trigger phrases for feedback check:
 
 ## Error Handling
 
-### Docker Container Not Running
-- Check with `docker ps | grep powerpoint`
-- Start with `docker start powerpoint-mcp-server`
-- Verify health: container should show `(healthy)` status
-- Port 8001 should be accessible: `curl -s http://localhost:8001/mcp`
-
 ### python-pptx Not Installed
 - Install with: `pip install python-pptx`
 - Verify: `python -c "import pptx; print(pptx.__version__)"`
@@ -381,11 +343,10 @@ Trigger phrases for feedback check:
 - Agent Architect also keeps copies at `agents/presentation/templates/`
 - If missing, copy from Agent Architect: `cp agents/presentation/templates/*.pptx templates/`
 
-### Save Fails ("No presentation loaded")
-- The MCP server tracks presentations by ID
-- Use `switch_presentation(presentation_id="presentation_N")` before saving
-- Or use `list_presentations` to see all open presentations and their IDs
-- The `create_presentation_from_template` response includes the `presentation_id` - track it
+### Save Fails
+- Ensure the output directory exists before calling `prs.save()`
+- Verify the Presentation object was created successfully from the template
+- Check file permissions on the output path
 
 ### Content Too Long
 - Automatically split across multiple slides
@@ -406,7 +367,7 @@ The Presentation Agent is working correctly when:
 - Presentations use template placeholders (never floating text boxes via `manage_text`)
 - Content follows template-specific layout knowledge (42 Altium layouts, 5 Wharfside layouts)
 - Placeholder indices match the template guide documentation
-- Files are saved to `/app/workspace/` and copied to final destination
+- Files are saved to `outputs/` and copied to final destination
 - Altium presentations use audience-focused language (YOU/YOUR) and impact-driven titles
 - Wharfside presentations maintain navy blue / gold branding
 - Content is well-organized: 3-5 bullets per slide, 1-2 lines per bullet

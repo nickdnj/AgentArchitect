@@ -415,7 +415,7 @@ If attachment cannot be read:
 
 ## Voice Mode Interaction
 
-This agent supports voice-based interaction using the Voice Mode MCP server.
+This agent supports voice-based interaction using Voice Mode.
 
 ### Voice Patterns
 

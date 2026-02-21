@@ -39,7 +39,7 @@ When starting a new bulletin, optionally send this email to Nick for forwarding 
 ```
 
 **Usage:**
-- Save as draft to `nickd@wharfsidemb.com` using `draft_email` tool
+- Save as draft to `nickd@wharfsidemb.com` using `gog gmail drafts create`
 - Subject: "Request for {Month} Bulletin Input"
 - To: board@wharfsidemb.com
 - Set deadline ~5 days out from current date
@@ -374,8 +374,8 @@ Keep it concise—no introduction needed:
 ## Output Requirements
 
 **Email Format:**
-- Send as HTML email using Gmail MCP `send_email` tool (not drafts)
-- Use `mimeType: "text/html"` for rich formatting
+- Send as HTML email using `gog gmail send --html` (not drafts)
+- Use `--html` flag for rich formatting
 - Include version in subject line: "[Month Year] Monthly Bulletin - Draft v0.X"
 - Send directly to: nickd@wharfsidemb.com
 - Do NOT save as draft - always send the bulletin directly for review
@@ -626,7 +626,7 @@ Example: `february-2026-bulletin-v0.13.pdf`
 
 | Format | Use Case | How to Send |
 |--------|----------|-------------|
-| HTML Email | Draft review with Nick | `send_email` with `mimeType: "text/html"` |
+| HTML Email | Draft review with Nick | `gog gmail send --html` |
 | HTML File | ECI needs to embed in their system | Send as attachment |
 | PDF | ECI attaches to their email blast | Send as attachment (preferred for final) |
 

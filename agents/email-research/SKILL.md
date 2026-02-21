@@ -89,7 +89,7 @@ Two accounts are available for searching:
    - Identify key stakeholders
 
 4. **Handling Search Result Limits (CRITICAL)**
-   - Gmail MCP searches are limited to ~100 results per query
+   - Gmail searches via `gog` are limited to ~100 results per query
    - **When a search returns the maximum number of results, you MUST dig deeper**
    - Break the time period into smaller ranges and search again
    - Continue until all searches return fewer than the maximum results
@@ -237,7 +237,7 @@ User must explicitly request transcription:
 
 #### Transcription Workflow (When Requested)
 
-**IMPORTANT:** Delegate PDF transcription to the PDFScribe agent rather than calling the MCP directly. This keeps the full transcription content out of Email Research's context.
+**IMPORTANT:** Delegate PDF transcription to the PDFScribe agent rather than calling pdfscribe directly. This keeps the full transcription content out of Email Research's context.
 
 1. **Download the attachment:**
    ```bash
@@ -272,9 +272,9 @@ User must explicitly request transcription:
    Full transcriptions available at /tmp/pdfscribe/*.md
    ```
 
-**Why delegate instead of direct MCP call?**
+**Why delegate instead of direct CLI call?**
 - Full PDF transcriptions can be very long (10+ pages of text)
-- Direct MCP calls load the entire transcription into this agent's context
+- Direct calls load the entire transcription into this agent's context
 - Delegation keeps the transcription in PDFScribe's context; only the summary returns
 - Better context management for research sessions with many PDFs
 
@@ -367,7 +367,7 @@ List of email threads used in the report:
 
 ### CRITICAL: Draft-Only Policy
 **NEVER send emails directly.** Always create drafts and let the user send them.
-- Use `draft_email` instead of `send_email` for all email operations
+- Use `gog gmail drafts create` instead of `gog gmail send` for all email operations
 - This applies to research reports, replies, and any other email output
 - The user will review and send all emails manually
 

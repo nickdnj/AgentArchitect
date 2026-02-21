@@ -299,8 +299,8 @@ Documents are organized by bucket ID (e.g., `wharfside-docs`). Each bucket isola
 
 PDFScribe has access to:
 - Local file system for reading/writing (including Google Drive synced folders at `~/Library/CloudStorage/GoogleDrive-*/`)
-- Gmail attachments (via `gmail` and `gmail-personal` MCP servers)
-- Chrome browser for PDF rendering (via `chrome` MCP server)
+- Gmail attachments (via `gog` CLI)
+- Chrome browser for PDF rendering (via Chrome Browser agent)
 
 ## Collaboration
 
