@@ -1166,7 +1166,15 @@ $lastStep = 0
 if (Test-Path $progressFile) {
     $lastStep = [int](Get-Content $progressFile)
     if ($lastStep -gt 0) {
-        Write-Host "Resuming from step $($lastStep + 1) (steps 1-$lastStep already done)" -ForegroundColor Gray
+        Write-Host "Previous setup found (completed through step $lastStep)." -ForegroundColor Gray
+        $resume = Read-Host "  Resume from step $($lastStep + 1), or start fresh? (r/f)"
+        if ($resume -ne 'r') {
+            $lastStep = 0
+            Remove-Item $progressFile
+            Write-Host "  Starting fresh." -ForegroundColor Gray
+        } else {
+            Write-Host "  Resuming from step $($lastStep + 1)..." -ForegroundColor Gray
+        }
         Write-Host ""
     }
 }
@@ -1362,7 +1370,18 @@ $npxOk = Get-Command npx -ErrorAction SilentlyContinue
 $uvxOk = Get-Command uvx -ErrorAction SilentlyContinue
 
 if ($npxOk) {
-    Write-Host "  [OK] Gmail, Google Docs, Image Generation (via npx)" -ForegroundColor Green
+    Write-Host "  [OK] npx available" -ForegroundColor Green
+    Write-Host "  Pre-downloading tools (one time)..." -ForegroundColor Gray
+    $npmPkgs = @(
+        "@gongrzhe/server-gmail-autoauth-mcp",
+        "google-docs-mcp",
+        "@lpenguin/openai-image-mcp"
+    )
+    foreach ($pkg in $npmPkgs) {
+        Write-Host "    Caching $pkg..." -ForegroundColor Gray
+        npm cache add $pkg 2>&1 | Out-Null
+    }
+    Write-Host "  [OK] Gmail, Google Docs, Image Generation ready" -ForegroundColor Green
 } else {
     Write-Host "  [WARN] npx not found - Gmail, Google Docs, Image Generation need Node.js" -ForegroundColor DarkYellow
 }
@@ -1372,8 +1391,6 @@ if ($uvxOk) {
 } else {
     Write-Host "  [WARN] uvx not found - Voice, PDF, PowerPoint need uv" -ForegroundColor DarkYellow
 }
-
-Write-Host "  Tools are downloaded on first use. No extra install needed." -ForegroundColor Gray
 
 Set-Content $progressFile "5"
 }
@@ -1400,11 +1417,60 @@ Set-Content $progressFile "6"
 if ($lastStep -lt 7) {
 Write-Host ""
 Write-Host "Step 7: Generating Claude Code agent files..." -ForegroundColor Yellow
+
+# Resolve placeholders in settings
+$settingsPath = ".claude\\settings.local.json"
+if (Test-Path $settingsPath) {
+    $settings = Get-Content $settingsPath -Raw
+
+    # Project directory (forward slashes for JSON)
+    $projectDir = (Get-Location).Path -replace '\\\\', '/'
+    $settings = $settings -replace '\\{\\{PROJECT_DIR\\}\\}', $projectDir
+
+    # API keys from environment (set in Step 4)
+    if ($env:OPENAI_API_KEY) {
+        $settings = $settings -replace '\\{\\{OPENAI_API_KEY\\}\\}', $env:OPENAI_API_KEY
+    }
+    if ($env:GOOGLE_DOCS_CLIENT_ID) {
+        $settings = $settings -replace '\\{\\{GOOGLE_DOCS_CLIENT_ID\\}\\}', $env:GOOGLE_DOCS_CLIENT_ID
+    }
+    if ($env:GOOGLE_DOCS_CLIENT_SECRET) {
+        $settings = $settings -replace '\\{\\{GOOGLE_DOCS_CLIENT_SECRET\\}\\}', $env:GOOGLE_DOCS_CLIENT_SECRET
+    }
+    if ($env:GOOGLE_DOCS_REFRESH_TOKEN) {
+        $settings = $settings -replace '\\{\\{GOOGLE_DOCS_REFRESH_TOKEN\\}\\}', $env:GOOGLE_DOCS_REFRESH_TOKEN
+    }
+
+    Set-Content $settingsPath $settings -NoNewline
+    Write-Host "  [OK] Settings configured" -ForegroundColor Green
+}
+
 node scripts/generate-agents.js
 Write-Host "  [OK] Agent files generated" -ForegroundColor Green
 
 Set-Content $progressFile "7"
 }
+
+# ============================================================
+# Tool Readiness Summary
+# ============================================================
+Write-Host ""
+Write-Host "Tool Status:" -ForegroundColor Yellow
+$gmailCreds = Test-Path "$env:USERPROFILE\\.config\\mcp-gmail\\gcp-oauth.keys.json"
+if ($gmailCreds) {
+    Write-Host "  [OK] Gmail - credentials found" -ForegroundColor Green
+} else {
+    Write-Host "  [--] Gmail - needs Google OAuth setup (see docs\\GOOGLE-OAUTH-SETUP.md)" -ForegroundColor DarkYellow
+}
+
+if ($env:OPENAI_API_KEY -and $env:OPENAI_API_KEY -ne '{{OPENAI_API_KEY}}') {
+    Write-Host "  [OK] Image Generation - API key set" -ForegroundColor Green
+} else {
+    Write-Host "  [--] Image Generation - needs OpenAI API key" -ForegroundColor DarkYellow
+}
+
+Write-Host "  [OK] Voice Mode - no credentials needed" -ForegroundColor Green
+Write-Host "  [OK] PDF Transcription - no credentials needed" -ForegroundColor Green
 
 # ============================================================
 # Step 8: Complete!
