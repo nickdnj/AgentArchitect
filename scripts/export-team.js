@@ -674,6 +674,9 @@ function generateDocumentation(exportDir, deps, options = {}) {
   if (platform === 'windows' || platform === 'auto') {
     const installPs1 = generateInstallPs1(deps, skillAlias);
     fs.writeFileSync(path.join(exportDir, 'install.ps1'), installPs1, 'utf-8');
+
+    const reconfigurePs1 = generateReconfigurePs1(deps, skillAlias);
+    fs.writeFileSync(path.join(exportDir, 'reconfigure.ps1'), reconfigurePs1, 'utf-8');
   }
 
   // --- docs/GOOGLE-OAUTH-SETUP.md ---
@@ -1493,6 +1496,754 @@ Write-Host ""
 `;
 }
 
+function generateReconfigurePs1(deps, skillAlias) {
+  const teamName = deps.teamConfig.name;
+
+  // Build config files list from team members that have email config
+  const configFiles = [
+    'agents\\email-research\\config.json',
+    'agents\\board-comms\\config.json',
+    'agents\\monthly-bulletin\\config.json',
+    'agents\\proposal-review\\config.json',
+    `teams\\${deps.teamConfig.id}\\team.json`,
+  ];
+
+  // Build npm packages list from MCP server dependencies
+  const npmPkgs = [];
+  const npmPkgMap = {
+    'gmail': '@gongrzhe/server-gmail-autoauth-mcp',
+    'gmail-personal': '@gongrzhe/server-gmail-autoauth-mcp',
+    'google-docs': 'google-docs-mcp',
+    'openai-image': '@lpenguin/openai-image-mcp',
+  };
+  const seen = new Set();
+  for (const serverId of deps.mcpServers) {
+    const pkg = npmPkgMap[serverId];
+    if (pkg && !seen.has(pkg)) {
+      seen.add(pkg);
+      npmPkgs.push(pkg);
+    }
+  }
+
+  const configFilesPs1 = configFiles.map(f => `        "${f}"`).join(',\n');
+  const npmPkgsPs1 = npmPkgs.map(p => `        "${p}"`).join(',\n');
+
+  return `# ${teamName} - Reconfigure
+# Change email addresses, update API keys, reinstall credentials, or regenerate agent files.
+# Run this script in PowerShell: .\\reconfigure.ps1
+
+$ErrorActionPreference = "Stop"
+
+# ============================================================
+# Helper Functions
+# ============================================================
+
+function Get-CurrentEmail {
+    param([string]$Type)
+    $teamJson = "teams\\${deps.teamConfig.id}\\team.json"
+    if (-not (Test-Path $teamJson)) { return "[not found]" }
+    $content = Get-Content $teamJson -Raw | ConvertFrom-Json
+    if ($Type -eq "board") {
+        $val = $content.gmail_accounts.board
+    } else {
+        $val = $content.gmail_accounts.personal
+    }
+    if (-not $val -or $val -eq "YOUR_BOARD_EMAIL" -or $val -eq "YOUR_PERSONAL_EMAIL") {
+        return "[not set]"
+    }
+    return $val
+}
+
+function Get-MaskedKey {
+    param([string]$Key)
+    if (-not $Key -or $Key.Length -lt 8) { return $null }
+    if ($Key -eq "sk-ant-..." -or $Key -eq "sk-..." -or $Key -eq "sk-proj-...") { return $null }
+    $prefix = $Key.Substring(0, [Math]::Min(7, $Key.Length))
+    $suffix = $Key.Substring($Key.Length - 4)
+    return "\${prefix}...\${suffix}"
+}
+
+function Show-StatusSummary {
+    Write-Host ""
+    Write-Host "Current Status:" -ForegroundColor White
+
+    # Email addresses
+    $boardEmail = Get-CurrentEmail -Type "board"
+    $personalEmail = Get-CurrentEmail -Type "personal"
+    if ($boardEmail -eq "[not set]") {
+        Write-Host "  Board email:    $boardEmail" -ForegroundColor DarkYellow
+    } else {
+        Write-Host "  Board email:    $boardEmail" -ForegroundColor Green
+    }
+    if ($personalEmail -eq "[not set]") {
+        Write-Host "  Personal email: $personalEmail" -ForegroundColor DarkYellow
+    } else {
+        Write-Host "  Personal email: $personalEmail" -ForegroundColor Green
+    }
+
+    # Gmail credentials
+    $gmailBoardOk = Test-Path "$env:USERPROFILE\\.config\\mcp-gmail\\gcp-oauth.keys.json"
+    $gmailPersonalOk = Test-Path "$env:USERPROFILE\\.config\\mcp-gmail-personal\\gcp-oauth.keys.json"
+    if ($gmailBoardOk) {
+        Write-Host "  Board Gmail:    [OK] credentials installed" -ForegroundColor Green
+    } else {
+        Write-Host "  Board Gmail:    [--] not configured" -ForegroundColor DarkYellow
+    }
+    if ($gmailPersonalOk) {
+        Write-Host "  Personal Gmail: [OK] credentials installed" -ForegroundColor Green
+    } else {
+        Write-Host "  Personal Gmail: [--] not configured" -ForegroundColor DarkYellow
+    }
+
+    # API keys
+    $anthropicKey = [System.Environment]::GetEnvironmentVariable("ANTHROPIC_API_KEY", "User")
+    $openaiKey = [System.Environment]::GetEnvironmentVariable("OPENAI_API_KEY", "User")
+
+    if (-not $anthropicKey -or $anthropicKey -eq "sk-ant-...") {
+        if (Test-Path ".env") {
+            $envContent = Get-Content ".env" -Raw
+            if ($envContent -match "ANTHROPIC_API_KEY=(.+)") {
+                $val = $Matches[1].Trim()
+                if ($val -and $val -ne "sk-ant-...") { $anthropicKey = $val }
+            }
+        }
+    }
+    if (-not $openaiKey -or $openaiKey -eq "sk-..." -or $openaiKey -eq "sk-proj-...") {
+        if (Test-Path ".env") {
+            $envContent = Get-Content ".env" -Raw
+            if ($envContent -match "OPENAI_API_KEY=(.+)") {
+                $val = $Matches[1].Trim()
+                if ($val -and $val -ne "sk-..." -and $val -ne "sk-proj-...") { $openaiKey = $val }
+            }
+        }
+    }
+
+    $anthropicMasked = Get-MaskedKey -Key $anthropicKey
+    $openaiMasked = Get-MaskedKey -Key $openaiKey
+    if ($anthropicMasked) {
+        Write-Host "  Anthropic key:  [OK] $anthropicMasked" -ForegroundColor Green
+    } else {
+        Write-Host "  Anthropic key:  [--] not set" -ForegroundColor DarkYellow
+    }
+    if ($openaiMasked) {
+        Write-Host "  OpenAI key:     [OK] $openaiMasked" -ForegroundColor Green
+    } else {
+        Write-Host "  OpenAI key:     [--] not set" -ForegroundColor DarkYellow
+    }
+
+    # Google Docs
+    $gdocsId = [System.Environment]::GetEnvironmentVariable("GOOGLE_DOCS_CLIENT_ID", "User")
+    if (-not $gdocsId) {
+        if (Test-Path ".env") {
+            $envContent = Get-Content ".env" -Raw
+            if ($envContent -match "GOOGLE_DOCS_CLIENT_ID=(.+)") {
+                $val = $Matches[1].Trim()
+                if ($val) { $gdocsId = $val }
+            }
+        }
+    }
+    if ($gdocsId -and $gdocsId -ne "{{GOOGLE_DOCS_CLIENT_ID}}") {
+        Write-Host "  Google Docs:    [OK] configured" -ForegroundColor Green
+    } else {
+        Write-Host "  Google Docs:    [--] not configured" -ForegroundColor DarkYellow
+    }
+
+    Write-Host ""
+}
+
+function Update-EmailInConfigs {
+    param([string]$OldBoard, [string]$NewBoard, [string]$OldPersonal, [string]$NewPersonal)
+
+    $configFiles = @(
+${configFilesPs1}
+    )
+
+    foreach ($f in $configFiles) {
+        if (Test-Path $f) {
+            $content = Get-Content $f -Raw
+            if ($NewBoard -and $OldBoard) {
+                $content = $content -replace [regex]::Escape($OldBoard), $NewBoard
+            }
+            if ($NewPersonal -and $OldPersonal) {
+                $content = $content -replace [regex]::Escape($OldPersonal), $NewPersonal
+            }
+            Set-Content $f $content -NoNewline
+            Write-Host "  Updated: $f" -ForegroundColor Gray
+        }
+    }
+}
+
+function Resolve-SettingsPlaceholders {
+    $settingsPath = ".claude\\settings.local.json"
+    if (-not (Test-Path $settingsPath)) {
+        Write-Host "  [SKIP] settings.local.json not found" -ForegroundColor DarkYellow
+        return
+    }
+
+    $settings = Get-Content $settingsPath -Raw
+
+    $projectDir = (Get-Location).Path -replace '\\\\', '/'
+    $settings = $settings -replace '\\{\\{PROJECT_DIR\\}\\}', $projectDir
+
+    $openaiKey = [System.Environment]::GetEnvironmentVariable("OPENAI_API_KEY", "User")
+    if (-not $openaiKey) { $openaiKey = $env:OPENAI_API_KEY }
+    if ($openaiKey -and $openaiKey -ne "sk-..." -and $openaiKey -ne "sk-proj-...") {
+        $settings = $settings -replace '\\{\\{OPENAI_API_KEY\\}\\}', $openaiKey
+    }
+
+    $gdocsId = [System.Environment]::GetEnvironmentVariable("GOOGLE_DOCS_CLIENT_ID", "User")
+    if (-not $gdocsId) { $gdocsId = $env:GOOGLE_DOCS_CLIENT_ID }
+    if ($gdocsId) {
+        $settings = $settings -replace '\\{\\{GOOGLE_DOCS_CLIENT_ID\\}\\}', $gdocsId
+    }
+
+    $gdocsSecret = [System.Environment]::GetEnvironmentVariable("GOOGLE_DOCS_CLIENT_SECRET", "User")
+    if (-not $gdocsSecret) { $gdocsSecret = $env:GOOGLE_DOCS_CLIENT_SECRET }
+    if ($gdocsSecret) {
+        $settings = $settings -replace '\\{\\{GOOGLE_DOCS_CLIENT_SECRET\\}\\}', $gdocsSecret
+    }
+
+    $gdocsToken = [System.Environment]::GetEnvironmentVariable("GOOGLE_DOCS_REFRESH_TOKEN", "User")
+    if (-not $gdocsToken) { $gdocsToken = $env:GOOGLE_DOCS_REFRESH_TOKEN }
+    if ($gdocsToken) {
+        $settings = $settings -replace '\\{\\{GOOGLE_DOCS_REFRESH_TOKEN\\}\\}', $gdocsToken
+    }
+
+    Set-Content $settingsPath $settings -NoNewline
+    Write-Host "  [OK] Settings placeholders resolved" -ForegroundColor Green
+}
+
+function Invoke-GenerateAgents {
+    Write-Host "  Resolving settings placeholders..." -ForegroundColor Gray
+    Resolve-SettingsPlaceholders
+
+    Write-Host "  Generating agent files..." -ForegroundColor Gray
+    node scripts/generate-agents.js
+    Write-Host "  [OK] Agent files generated" -ForegroundColor Green
+
+    $npxOk = Get-Command npx -ErrorAction SilentlyContinue
+    if ($npxOk) {
+        Write-Host "  Pre-caching npm packages..." -ForegroundColor Gray
+        $npmPkgs = @(
+${npmPkgsPs1}
+        )
+        foreach ($pkg in $npmPkgs) {
+            npm cache add $pkg 2>&1 | Out-Null
+        }
+        Write-Host "  [OK] npm packages cached" -ForegroundColor Green
+    }
+}
+
+function Invoke-FullStatusCheck {
+    Write-Host ""
+    Write-Host "Full Status Check" -ForegroundColor Yellow
+    Write-Host ""
+
+    $passed = 0
+    $warned = 0
+    $total = 7
+
+    # Check 1: Agent files
+    $agentFiles = @(Get-ChildItem ".claude\\agents\\*.md" -ErrorAction SilentlyContinue)
+    if ($agentFiles.Count -ge 8) {
+        Write-Host "  [PASS] Agent files: $($agentFiles.Count) agents generated" -ForegroundColor Green
+        $passed++
+    } else {
+        Write-Host "  [WARN] Agent files: only $($agentFiles.Count) found (expected 8+)" -ForegroundColor DarkYellow
+        $warned++
+    }
+
+    # Check 2: Email addresses configured
+    $hasPlaceholder = $false
+    $configFilesToCheck = @(
+${configFilesPs1}
+    )
+    foreach ($f in $configFilesToCheck) {
+        if (Test-Path $f) {
+            $content = Get-Content $f -Raw
+            if ($content -match "YOUR_BOARD_EMAIL|YOUR_PERSONAL_EMAIL") {
+                $hasPlaceholder = $true
+                break
+            }
+        }
+    }
+    if (-not $hasPlaceholder) {
+        Write-Host "  [PASS] Email addresses: configured in all config files" -ForegroundColor Green
+        $passed++
+    } else {
+        Write-Host "  [WARN] Email addresses: placeholders still present in config files" -ForegroundColor DarkYellow
+        $warned++
+    }
+
+    # Check 3: Gmail credentials - board
+    if (Test-Path "$env:USERPROFILE\\.config\\mcp-gmail\\gcp-oauth.keys.json") {
+        Write-Host "  [PASS] Gmail credentials: board account installed" -ForegroundColor Green
+        $passed++
+    } else {
+        Write-Host "  [WARN] Gmail credentials: board account not found" -ForegroundColor DarkYellow
+        $warned++
+    }
+
+    # Check 4: Gmail credentials - personal
+    if (Test-Path "$env:USERPROFILE\\.config\\mcp-gmail-personal\\gcp-oauth.keys.json") {
+        Write-Host "  [PASS] Gmail credentials: personal account installed" -ForegroundColor Green
+        $passed++
+    } else {
+        Write-Host "  [WARN] Gmail credentials: personal account not found" -ForegroundColor DarkYellow
+        $warned++
+    }
+
+    # Check 5: API keys
+    $anthropicOk = $false
+    $openaiOk = $false
+
+    $anthropicEnv = [System.Environment]::GetEnvironmentVariable("ANTHROPIC_API_KEY", "User")
+    if ($anthropicEnv -and $anthropicEnv -notmatch "^sk-ant-\\.\\.\\.$") {
+        $anthropicOk = $true
+    } elseif (Test-Path ".env") {
+        $envContent = Get-Content ".env" -Raw
+        if ($envContent -match "ANTHROPIC_API_KEY=(.+)" -and $Matches[1].Trim() -notmatch "^sk-ant-\\.\\.\\.$") {
+            $anthropicOk = $true
+        }
+    }
+
+    $openaiEnv = [System.Environment]::GetEnvironmentVariable("OPENAI_API_KEY", "User")
+    if ($openaiEnv -and $openaiEnv -ne "sk-..." -and $openaiEnv -ne "sk-proj-...") {
+        $openaiOk = $true
+    } elseif (Test-Path ".env") {
+        $envContent = Get-Content ".env" -Raw
+        if ($envContent -match "OPENAI_API_KEY=(.+)") {
+            $val = $Matches[1].Trim()
+            if ($val -and $val -ne "sk-..." -and $val -ne "sk-proj-...") {
+                $openaiOk = $true
+            }
+        }
+    }
+
+    if ($anthropicOk -and $openaiOk) {
+        Write-Host "  [PASS] API keys: Anthropic + OpenAI both set" -ForegroundColor Green
+        $passed++
+    } elseif ($anthropicOk) {
+        Write-Host "  [WARN] API keys: Anthropic set, OpenAI missing" -ForegroundColor DarkYellow
+        $warned++
+    } elseif ($openaiOk) {
+        Write-Host "  [WARN] API keys: OpenAI set, Anthropic missing" -ForegroundColor DarkYellow
+        $warned++
+    } else {
+        Write-Host "  [WARN] API keys: neither Anthropic nor OpenAI set" -ForegroundColor DarkYellow
+        $warned++
+    }
+
+    # Check 6: Templates
+    if (Test-Path "templates\\Wharfside_TEMPLATE.pptx") {
+        Write-Host "  [PASS] Template: Wharfside_TEMPLATE.pptx found" -ForegroundColor Green
+        $passed++
+    } else {
+        Write-Host "  [WARN] Template: Wharfside_TEMPLATE.pptx not found in templates\\" -ForegroundColor DarkYellow
+        $warned++
+    }
+
+    # Check 7: RAG database
+    if (Test-Path "data\\rag.db") {
+        $dbSize = (Get-Item "data\\rag.db").Length / 1MB
+        Write-Host "  [PASS] Document database: $([math]::Round($dbSize, 1)) MB" -ForegroundColor Green
+        $passed++
+    } else {
+        Write-Host "  [WARN] Document database: not found (will be created when documents are indexed)" -ForegroundColor DarkYellow
+        $warned++
+    }
+
+    # Scorecard
+    Write-Host ""
+    if ($passed -eq $total) {
+        Write-Host "  $passed of $total checks passed - fully configured!" -ForegroundColor Green
+    } elseif ($passed -ge 4) {
+        Write-Host "  $passed of $total checks passed, $warned warnings" -ForegroundColor DarkYellow
+        Write-Host "  Core features will work. Fix warnings when ready." -ForegroundColor Gray
+    } else {
+        Write-Host "  $passed of $total checks passed, $warned warnings" -ForegroundColor Red
+        Write-Host "  Some features may not work. Run install.ps1 or fix individual items." -ForegroundColor Gray
+    }
+}
+
+# ============================================================
+# Menu Options
+# ============================================================
+
+function Invoke-ChangeEmails {
+    Write-Host ""
+    Write-Host "Change Email Addresses" -ForegroundColor Yellow
+    Write-Host ""
+
+    $currentBoard = Get-CurrentEmail -Type "board"
+    $currentPersonal = Get-CurrentEmail -Type "personal"
+
+    Write-Host "  Current board email:    $currentBoard" -ForegroundColor Gray
+    Write-Host "  Current personal email: $currentPersonal" -ForegroundColor Gray
+    Write-Host ""
+
+    $newBoard = Read-Host "  New board email (Enter to keep current)"
+    $newPersonal = Read-Host "  New personal email (Enter to keep current)"
+
+    if (-not $newBoard -and -not $newPersonal) {
+        Write-Host "  No changes made." -ForegroundColor Gray
+        return $false
+    }
+
+    $oldBoard = $currentBoard
+    $oldPersonal = $currentPersonal
+    if ($oldBoard -eq "[not set]") { $oldBoard = "YOUR_BOARD_EMAIL" }
+    if ($oldPersonal -eq "[not set]") { $oldPersonal = "YOUR_PERSONAL_EMAIL" }
+
+    if (-not $newBoard) { $newBoard = $oldBoard }
+    if (-not $newPersonal) { $newPersonal = $oldPersonal }
+
+    Write-Host ""
+    Write-Host "  Updating config files..." -ForegroundColor Gray
+    Update-EmailInConfigs -OldBoard $oldBoard -NewBoard $newBoard -OldPersonal $oldPersonal -NewPersonal $newPersonal
+    Write-Host "  [OK] Email addresses updated" -ForegroundColor Green
+    return $true
+}
+
+function Invoke-GmailCredsBoard {
+    Write-Host ""
+    Write-Host "Gmail Credentials - Board Account" -ForegroundColor Yellow
+    Write-Host ""
+
+    $gmailDir = "$env:USERPROFILE\\.config\\mcp-gmail"
+    $keysFile = "$gmailDir\\gcp-oauth.keys.json"
+    $tokenFile = "$gmailDir\\token.json"
+
+    if (Test-Path $keysFile) {
+        Write-Host "  [OK] Credentials installed at: $keysFile" -ForegroundColor Green
+        if (Test-Path $tokenFile) {
+            Write-Host "  [OK] Auth token exists at: $tokenFile" -ForegroundColor Green
+        }
+        $replace = Read-Host "  Replace existing credentials? (y/n)"
+        if ($replace -ne 'y') {
+            if (Test-Path $tokenFile) {
+                $resetAuth = Read-Host "  Delete token.json to force re-authorization? (y/n)"
+                if ($resetAuth -eq 'y') {
+                    Remove-Item $tokenFile
+                    Write-Host "  [OK] Token deleted. Next Gmail use will prompt re-authorization." -ForegroundColor Green
+                }
+            }
+            return $false
+        }
+    }
+
+    $credsPath = Read-Host "  Enter path to gcp-oauth.keys.json"
+    if (-not (Test-Path $credsPath)) {
+        Write-Host "  [ERROR] File not found: $credsPath" -ForegroundColor Red
+        return $false
+    }
+
+    New-Item -ItemType Directory -Path $gmailDir -Force | Out-Null
+    Copy-Item $credsPath $keysFile
+    Write-Host "  [OK] Board Gmail credentials installed" -ForegroundColor Green
+
+    if (Test-Path $tokenFile) {
+        $resetAuth = Read-Host "  Delete existing token.json to force re-authorization? (y/n)"
+        if ($resetAuth -eq 'y') {
+            Remove-Item $tokenFile
+            Write-Host "  [OK] Token deleted. Next Gmail use will prompt re-authorization." -ForegroundColor Green
+        }
+    } else {
+        Write-Host "  Note: A browser window will open on first use to authorize your board account." -ForegroundColor Gray
+    }
+
+    return $false
+}
+
+function Invoke-GmailCredsPersonal {
+    Write-Host ""
+    Write-Host "Gmail Credentials - Personal Account" -ForegroundColor Yellow
+    Write-Host ""
+
+    $gmailDir = "$env:USERPROFILE\\.config\\mcp-gmail-personal"
+    $keysFile = "$gmailDir\\gcp-oauth.keys.json"
+    $tokenFile = "$gmailDir\\token.json"
+
+    if (Test-Path $keysFile) {
+        Write-Host "  [OK] Credentials installed at: $keysFile" -ForegroundColor Green
+        if (Test-Path $tokenFile) {
+            Write-Host "  [OK] Auth token exists at: $tokenFile" -ForegroundColor Green
+        }
+        $replace = Read-Host "  Replace existing credentials? (y/n)"
+        if ($replace -ne 'y') {
+            if (Test-Path $tokenFile) {
+                $resetAuth = Read-Host "  Delete token.json to force re-authorization? (y/n)"
+                if ($resetAuth -eq 'y') {
+                    Remove-Item $tokenFile
+                    Write-Host "  [OK] Token deleted. Next Gmail use will prompt re-authorization." -ForegroundColor Green
+                }
+            }
+            return $false
+        }
+    }
+
+    $boardKeysFile = "$env:USERPROFILE\\.config\\mcp-gmail\\gcp-oauth.keys.json"
+    if (Test-Path $boardKeysFile) {
+        $reuseKeys = Read-Host "  Reuse the same OAuth keys file from board account? (y/n)"
+        if ($reuseKeys -eq 'y') {
+            New-Item -ItemType Directory -Path $gmailDir -Force | Out-Null
+            Copy-Item $boardKeysFile $keysFile
+            Write-Host "  [OK] Personal Gmail credentials installed (copied from board)" -ForegroundColor Green
+            if (Test-Path $tokenFile) {
+                $resetAuth = Read-Host "  Delete existing token.json to force re-authorization? (y/n)"
+                if ($resetAuth -eq 'y') {
+                    Remove-Item $tokenFile
+                    Write-Host "  [OK] Token deleted." -ForegroundColor Green
+                }
+            } else {
+                Write-Host "  Note: A browser window will open on first use to authorize your personal account." -ForegroundColor Gray
+            }
+            return $false
+        }
+    }
+
+    $credsPath = Read-Host "  Enter path to gcp-oauth.keys.json"
+    if (-not (Test-Path $credsPath)) {
+        Write-Host "  [ERROR] File not found: $credsPath" -ForegroundColor Red
+        return $false
+    }
+
+    New-Item -ItemType Directory -Path $gmailDir -Force | Out-Null
+    Copy-Item $credsPath $keysFile
+    Write-Host "  [OK] Personal Gmail credentials installed" -ForegroundColor Green
+
+    if (Test-Path $tokenFile) {
+        $resetAuth = Read-Host "  Delete existing token.json to force re-authorization? (y/n)"
+        if ($resetAuth -eq 'y') {
+            Remove-Item $tokenFile
+            Write-Host "  [OK] Token deleted." -ForegroundColor Green
+        }
+    } else {
+        Write-Host "  Note: A browser window will open on first use to authorize your personal account." -ForegroundColor Gray
+    }
+
+    return $false
+}
+
+function Invoke-UpdateApiKeys {
+    Write-Host ""
+    Write-Host "API Keys" -ForegroundColor Yellow
+    Write-Host ""
+
+    if (-not (Test-Path ".env")) {
+        if (Test-Path ".env.example") {
+            Copy-Item ".env.example" ".env"
+        } else {
+            @"
+# ${teamName} - Environment Variables
+ANTHROPIC_API_KEY=sk-ant-...
+OPENAI_API_KEY=sk-...
+RAG_DB_PATH=./data/rag.db
+POWERPOINT_TEMPLATES_PATH=./templates
+"@ | Set-Content ".env"
+        }
+    }
+
+    $anthropicKey = [System.Environment]::GetEnvironmentVariable("ANTHROPIC_API_KEY", "User")
+    $openaiKey = [System.Environment]::GetEnvironmentVariable("OPENAI_API_KEY", "User")
+    $anthropicMasked = Get-MaskedKey -Key $anthropicKey
+    $openaiMasked = Get-MaskedKey -Key $openaiKey
+
+    if ($anthropicMasked) {
+        Write-Host "  Anthropic: $anthropicMasked" -ForegroundColor Gray
+    } else {
+        Write-Host "  Anthropic: [not set]" -ForegroundColor DarkYellow
+    }
+    if ($openaiMasked) {
+        Write-Host "  OpenAI:    $openaiMasked" -ForegroundColor Gray
+    } else {
+        Write-Host "  OpenAI:    [not set]" -ForegroundColor DarkYellow
+    }
+    Write-Host ""
+
+    $changed = $false
+
+    Write-Host "  Get it at: https://console.anthropic.com/settings/keys" -ForegroundColor Gray
+    $newAnthropic = Read-Host "  New Anthropic API key (Enter to keep current)"
+    if ($newAnthropic) {
+        [System.Environment]::SetEnvironmentVariable("ANTHROPIC_API_KEY", $newAnthropic, "User")
+        $env:ANTHROPIC_API_KEY = $newAnthropic
+        $envContent = Get-Content .env -Raw
+        $envContent = $envContent -replace "ANTHROPIC_API_KEY=.*", "ANTHROPIC_API_KEY=$newAnthropic"
+        Set-Content .env $envContent -NoNewline
+        Write-Host "  [OK] Anthropic key saved" -ForegroundColor Green
+        $changed = $true
+    }
+
+    Write-Host ""
+    Write-Host "  Get it at: https://platform.openai.com/api-keys" -ForegroundColor Gray
+    $newOpenai = Read-Host "  New OpenAI API key (Enter to keep current)"
+    if ($newOpenai) {
+        [System.Environment]::SetEnvironmentVariable("OPENAI_API_KEY", $newOpenai, "User")
+        $env:OPENAI_API_KEY = $newOpenai
+        $envContent = Get-Content .env -Raw
+        $envContent = $envContent -replace "OPENAI_API_KEY=.*", "OPENAI_API_KEY=$newOpenai"
+        Set-Content .env $envContent -NoNewline
+        Write-Host "  [OK] OpenAI key saved" -ForegroundColor Green
+        $changed = $true
+    }
+
+    return $changed
+}
+
+function Invoke-GoogleDocsCreds {
+    Write-Host ""
+    Write-Host "Google Docs Credentials" -ForegroundColor Yellow
+    Write-Host ""
+    Write-Host "  Google Docs MCP needs a client ID, client secret, and refresh token." -ForegroundColor Gray
+    Write-Host "  See docs\\GOOGLE-OAUTH-SETUP.md for instructions." -ForegroundColor Gray
+    Write-Host ""
+
+    if (-not (Test-Path ".env")) {
+        if (Test-Path ".env.example") { Copy-Item ".env.example" ".env" }
+    }
+
+    $currentId = [System.Environment]::GetEnvironmentVariable("GOOGLE_DOCS_CLIENT_ID", "User")
+    if ($currentId -and $currentId -ne "{{GOOGLE_DOCS_CLIENT_ID}}") {
+        Write-Host "  Current client ID: $($currentId.Substring(0, [Math]::Min(20, $currentId.Length)))..." -ForegroundColor Gray
+    } else {
+        Write-Host "  Current client ID: [not set]" -ForegroundColor DarkYellow
+    }
+    Write-Host ""
+
+    $clientId = Read-Host "  Google Docs Client ID (Enter to keep current)"
+    $clientSecret = Read-Host "  Google Docs Client Secret (Enter to keep current)"
+    $refreshToken = Read-Host "  Google Docs Refresh Token (Enter to keep current)"
+
+    $changed = $false
+
+    if ($clientId) {
+        [System.Environment]::SetEnvironmentVariable("GOOGLE_DOCS_CLIENT_ID", $clientId, "User")
+        $env:GOOGLE_DOCS_CLIENT_ID = $clientId
+        $changed = $true
+    }
+    if ($clientSecret) {
+        [System.Environment]::SetEnvironmentVariable("GOOGLE_DOCS_CLIENT_SECRET", $clientSecret, "User")
+        $env:GOOGLE_DOCS_CLIENT_SECRET = $clientSecret
+        $changed = $true
+    }
+    if ($refreshToken) {
+        [System.Environment]::SetEnvironmentVariable("GOOGLE_DOCS_REFRESH_TOKEN", $refreshToken, "User")
+        $env:GOOGLE_DOCS_REFRESH_TOKEN = $refreshToken
+        $changed = $true
+    }
+
+    if ($changed) {
+        if (Test-Path ".env") {
+            $envContent = Get-Content .env -Raw
+            if ($clientId) {
+                if ($envContent -match "GOOGLE_DOCS_CLIENT_ID=") {
+                    $envContent = $envContent -replace "GOOGLE_DOCS_CLIENT_ID=.*", "GOOGLE_DOCS_CLIENT_ID=$clientId"
+                } else {
+                    $envContent += "\`nGOOGLE_DOCS_CLIENT_ID=$clientId"
+                }
+            }
+            if ($clientSecret) {
+                if ($envContent -match "GOOGLE_DOCS_CLIENT_SECRET=") {
+                    $envContent = $envContent -replace "GOOGLE_DOCS_CLIENT_SECRET=.*", "GOOGLE_DOCS_CLIENT_SECRET=$clientSecret"
+                } else {
+                    $envContent += "\`nGOOGLE_DOCS_CLIENT_SECRET=$clientSecret"
+                }
+            }
+            if ($refreshToken) {
+                if ($envContent -match "GOOGLE_DOCS_REFRESH_TOKEN=") {
+                    $envContent = $envContent -replace "GOOGLE_DOCS_REFRESH_TOKEN=.*", "GOOGLE_DOCS_REFRESH_TOKEN=$refreshToken"
+                } else {
+                    $envContent += "\`nGOOGLE_DOCS_REFRESH_TOKEN=$refreshToken"
+                }
+            }
+            Set-Content .env $envContent -NoNewline
+        }
+        Write-Host "  [OK] Google Docs credentials saved" -ForegroundColor Green
+    } else {
+        Write-Host "  No changes made." -ForegroundColor Gray
+    }
+
+    return $changed
+}
+
+# ============================================================
+# Main Menu Loop
+# ============================================================
+
+while ($true) {
+    Write-Host ""
+    Write-Host "======================================" -ForegroundColor Cyan
+    Write-Host "  ${teamName}" -ForegroundColor Cyan
+    Write-Host "  Reconfigure" -ForegroundColor Cyan
+    Write-Host "======================================" -ForegroundColor Cyan
+
+    Show-StatusSummary
+
+    Write-Host "What would you like to change?" -ForegroundColor White
+    Write-Host "  1. Email addresses"
+    Write-Host "  2. Gmail credentials (board account)"
+    Write-Host "  3. Gmail credentials (personal account)"
+    Write-Host "  4. API keys (Anthropic / OpenAI)"
+    Write-Host "  5. Google Docs credentials"
+    Write-Host "  6. Regenerate agent files"
+    Write-Host "  7. Run full status check"
+    Write-Host "  0. Exit"
+    Write-Host ""
+
+    $choice = Read-Host "Choice"
+
+    $needsRegen = $false
+
+    switch ($choice) {
+        "1" {
+            $needsRegen = Invoke-ChangeEmails
+        }
+        "2" {
+            Invoke-GmailCredsBoard | Out-Null
+        }
+        "3" {
+            Invoke-GmailCredsPersonal | Out-Null
+        }
+        "4" {
+            $needsRegen = Invoke-UpdateApiKeys
+        }
+        "5" {
+            $needsRegen = Invoke-GoogleDocsCreds
+        }
+        "6" {
+            Write-Host ""
+            Write-Host "Regenerating Agent Files" -ForegroundColor Yellow
+            Invoke-GenerateAgents
+        }
+        "7" {
+            Invoke-FullStatusCheck
+        }
+        "0" {
+            Write-Host ""
+            Write-Host "Done." -ForegroundColor Green
+            Write-Host ""
+            break
+        }
+        default {
+            Write-Host "  Invalid choice." -ForegroundColor Red
+        }
+    }
+
+    if ($choice -eq "0") { break }
+
+    if ($needsRegen) {
+        Write-Host ""
+        Write-Host "Applying changes..." -ForegroundColor Yellow
+        Invoke-GenerateAgents
+    }
+
+    Write-Host ""
+    Read-Host "Press Enter to continue"
+}
+`;
+}
+
 function generateCredentialGuide(deps) {
   return `# Google OAuth Setup Guide
 
@@ -1803,7 +2554,7 @@ function printDryRun(deps) {
   console.log(`  - .claude/settings.local.json (MCP server configs)`);
   console.log(`  - MCP CLI configs (npx/uvx, no Docker)`);
   console.log(`  - Filtered registries (agents.json, teams.json, buckets.json)`);
-  console.log(`  - Documentation (CLAUDE.md, README.md, install.ps1, setup.sh, OAuth guide)`);
+  console.log(`  - Documentation (CLAUDE.md, README.md, install.ps1, reconfigure.ps1, setup.sh, OAuth guide)`);
   console.log(`  - data/rag.db (SQLite RAG database, if available)`);
 
   console.log('\n' + '='.repeat(55));
@@ -1975,7 +2726,7 @@ Examples:
   console.log('\nPhase 8: Generating documentation...');
   generateDocumentation(exportDir, deps, { platform, noDocker });
   const docFiles = ['CLAUDE.md', 'README.md', '.env.example', 'SETUP.md', '.gitignore'];
-  if (platform === 'windows') docFiles.push('install.ps1');
+  if (platform === 'windows') docFiles.push('install.ps1', 'reconfigure.ps1');
   docFiles.push('setup.sh');
   docFiles.push('docs/GOOGLE-OAUTH-SETUP.md');
   console.log(`  [OK] ${docFiles.join(', ')}`);
