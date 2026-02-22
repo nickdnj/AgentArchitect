@@ -1234,7 +1234,9 @@ if ($gogOk) {
         $credsPath = Read-Host "  Enter path to your client-secret.json"
         if (Test-Path $credsPath) {
             Write-Host "  Importing credentials..." -ForegroundColor Gray
+            $savedEAP = $ErrorActionPreference; $ErrorActionPreference = 'Continue'
             & gog auth credentials $credsPath 2>&1
+            $ErrorActionPreference = $savedEAP
             Write-Host "  [OK] Google OAuth credentials imported" -ForegroundColor Green
 
             # Add board account
@@ -1242,7 +1244,9 @@ if ($gogOk) {
             $boardEmail = Read-Host "  Enter your board email address"
             if ($boardEmail) {
                 Write-Host "  Authenticating board account (browser will open)..." -ForegroundColor Gray
+                $savedEAP = $ErrorActionPreference; $ErrorActionPreference = 'Continue'
                 & gog auth add $boardEmail --services gmail,docs,drive 2>&1
+                $ErrorActionPreference = $savedEAP
                 Write-Host "  [OK] Board account authenticated" -ForegroundColor Green
             }
 
@@ -1251,7 +1255,9 @@ if ($gogOk) {
             $personalEmail = Read-Host "  Enter your personal email address (or press Enter to skip)"
             if ($personalEmail) {
                 Write-Host "  Authenticating personal account (browser will open)..." -ForegroundColor Gray
+                $savedEAP = $ErrorActionPreference; $ErrorActionPreference = 'Continue'
                 & gog auth add $personalEmail --services gmail 2>&1
+                $ErrorActionPreference = $savedEAP
                 Write-Host "  [OK] Personal account authenticated" -ForegroundColor Green
             }
         } else {
@@ -1327,7 +1333,9 @@ if ($gogOk) {
     Write-Host "  [OK] gog CLI (Gmail, Docs, Drive)" -ForegroundColor Green
     # Verify accounts
     try {
+        $savedEAP = $ErrorActionPreference; $ErrorActionPreference = 'Continue'
         $authList = & gog auth list --json 2>&1
+        $ErrorActionPreference = $savedEAP
         Write-Host "  [OK] Google accounts configured" -ForegroundColor Green
     } catch {
         Write-Host "  [WARN] gog installed but no accounts configured" -ForegroundColor DarkYellow
@@ -1394,7 +1402,9 @@ Write-Host "Tool Status:" -ForegroundColor Yellow
 $gogOk = Get-Command gog -ErrorAction SilentlyContinue
 if ($gogOk) {
     try {
+        $savedEAP = $ErrorActionPreference; $ErrorActionPreference = 'Continue'
         $authList = & gog auth list --json 2>&1
+        $ErrorActionPreference = $savedEAP
         Write-Host "  [OK] Google (Gmail, Docs, Drive) - gog authenticated" -ForegroundColor Green
     } catch {
         Write-Host "  [--] Google - gog installed but no accounts (run: gog auth add)" -ForegroundColor DarkYellow
@@ -1504,7 +1514,9 @@ function Show-StatusSummary {
     $gogOk = Get-Command gog -ErrorAction SilentlyContinue
     if ($gogOk) {
         try {
+            $savedEAP = $ErrorActionPreference; $ErrorActionPreference = 'Continue'
             $authOut = & gog auth list 2>&1 | Out-String
+            $ErrorActionPreference = $savedEAP
             Write-Host "  Google auth:    [OK] gog authenticated" -ForegroundColor Green
         } catch {
             Write-Host "  Google auth:    [--] gog installed, no accounts" -ForegroundColor DarkYellow
@@ -1626,7 +1638,9 @@ ${configFilesPs1}
     $gogOk = Get-Command gog -ErrorAction SilentlyContinue
     if ($gogOk) {
         try {
+            $savedEAP = $ErrorActionPreference; $ErrorActionPreference = 'Continue'
             $authOut = & gog auth list 2>&1 | Out-String
+            $ErrorActionPreference = $savedEAP
             Write-Host "  [PASS] Google accounts: gog authenticated" -ForegroundColor Green
             $passed++
         } catch {
@@ -1772,7 +1786,9 @@ function Invoke-GoogleAuthBoard {
     }
 
     Write-Host "  Authenticating..." -ForegroundColor Gray
+    $savedEAP = $ErrorActionPreference; $ErrorActionPreference = 'Continue'
     & gog auth add $boardEmail --services gmail,docs,drive 2>&1
+    $ErrorActionPreference = $savedEAP
     Write-Host "  [OK] Board account authenticated" -ForegroundColor Green
     return $false
 }
@@ -1799,7 +1815,9 @@ function Invoke-GoogleAuthPersonal {
     }
 
     Write-Host "  Authenticating..." -ForegroundColor Gray
+    $savedEAP = $ErrorActionPreference; $ErrorActionPreference = 'Continue'
     & gog auth add $personalEmail --services gmail 2>&1
+    $ErrorActionPreference = $savedEAP
     Write-Host "  [OK] Personal account authenticated" -ForegroundColor Green
     return $false
 }
@@ -1887,7 +1905,9 @@ function Invoke-GoogleAuthCredentials {
 
     $credsPath = Read-Host "  Path to client-secret.json (Enter to skip)"
     if ($credsPath -and (Test-Path $credsPath)) {
+        $savedEAP = $ErrorActionPreference; $ErrorActionPreference = 'Continue'
         & gog auth credentials $credsPath 2>&1
+        $ErrorActionPreference = $savedEAP
         Write-Host "  [OK] Credentials updated" -ForegroundColor Green
     } elseif ($credsPath) {
         Write-Host "  [ERROR] File not found: $credsPath" -ForegroundColor Red
