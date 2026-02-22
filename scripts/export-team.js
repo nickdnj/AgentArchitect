@@ -1254,6 +1254,19 @@ if ($gogOk) {
             Write-Host ""
             $personalEmail = Read-Host "  Enter your personal email address (or press Enter to skip)"
             if ($personalEmail) {
+                Write-Host ""
+                Write-Host "  If your personal email is on a different Google domain, you may" -ForegroundColor Gray
+                Write-Host "  need a separate client-secret.json for it." -ForegroundColor Gray
+                $personalCreds = Read-Host "  Path to personal client-secret.json (Enter to use same as board)"
+                if ($personalCreds -and (Test-Path $personalCreds)) {
+                    Write-Host "  Importing personal credentials..." -ForegroundColor Gray
+                    $savedEAP = $ErrorActionPreference; $ErrorActionPreference = 'SilentlyContinue'
+                    & gog auth credentials $personalCreds 2>&1
+                    $ErrorActionPreference = $savedEAP
+                    Write-Host "  [OK] Personal OAuth credentials imported" -ForegroundColor Green
+                } elseif ($personalCreds) {
+                    Write-Host "  [WARN] File not found, using existing credentials" -ForegroundColor DarkYellow
+                }
                 Write-Host "  Authenticating personal account (browser will open)..." -ForegroundColor Gray
                 $savedEAP = $ErrorActionPreference; $ErrorActionPreference = 'SilentlyContinue'
                 & gog auth add $personalEmail --services gmail 2>&1
@@ -1812,6 +1825,20 @@ function Invoke-GoogleAuthPersonal {
     if (-not $personalEmail) {
         Write-Host "  No changes made." -ForegroundColor Gray
         return $false
+    }
+
+    Write-Host ""
+    Write-Host "  If your personal email is on a different Google domain, you may" -ForegroundColor Gray
+    Write-Host "  need a separate client-secret.json for it." -ForegroundColor Gray
+    $personalCreds = Read-Host "  Path to personal client-secret.json (Enter to use existing)"
+    if ($personalCreds -and (Test-Path $personalCreds)) {
+        Write-Host "  Importing personal credentials..." -ForegroundColor Gray
+        $savedEAP = $ErrorActionPreference; $ErrorActionPreference = 'SilentlyContinue'
+        & gog auth credentials $personalCreds 2>&1
+        $ErrorActionPreference = $savedEAP
+        Write-Host "  [OK] Personal OAuth credentials imported" -ForegroundColor Green
+    } elseif ($personalCreds) {
+        Write-Host "  [WARN] File not found, using existing credentials" -ForegroundColor DarkYellow
     }
 
     Write-Host "  Authenticating..." -ForegroundColor Gray
