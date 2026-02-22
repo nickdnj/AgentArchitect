@@ -614,17 +614,22 @@ function generateClaudeMd(deps, skillAlias) {
     '',
     '## User Configuration',
     '',
-    'Update these with your own contact details:',
-    '- **Board Email:** Set `YOUR_BOARD_EMAIL` in agent configs',
-    '- **Personal Email:** Set `YOUR_PERSONAL_EMAIL` in agent configs',
+    '### Contact Information',
+    '- **Board Email:** YOUR_BOARD_EMAIL',
+    '- **Personal Email:** YOUR_PERSONAL_EMAIL',
     '',
-    '## Smart Routing',
+    'When working with email:',
+    '- Use the board email for Wharfside Manor board-related communications',
+    '- Use the personal email for personal matters and general research',
     '',
-    `All requests are routed through the team orchestrator. Invoke it with \`/${skillAlias}\`.`,
+    '## Smart Routing (MANDATORY)',
     '',
-    `| Topic | Invoke |`,
-    `|---|---|`,
-    `| Any request for this team | \`/${skillAlias}\` |`,
+    `**On startup, IMMEDIATELY invoke the \`/${skillAlias}\` skill using the Skill tool.** Do not wait for the user to type it. This is a single-team deployment — all requests go through the orchestrator.`,
+    '',
+    `When the user starts a conversation or sends any request, you MUST invoke the skill:`,
+    `- Use: \`Skill(skill: "${skillAlias}")\``,
+    `- Do NOT answer directly — always route through the orchestrator`,
+    `- The orchestrator handles delegation to the right specialist agent`,
     '',
     '## Setup',
     '',
@@ -1040,6 +1045,17 @@ function generateSetupSh(deps, skillAlias) {
 function generateInstallPs1(deps, skillAlias) {
   const teamName = deps.teamConfig.name;
 
+  // Build config files list for email placeholder replacement
+  const configFiles = [
+    'agents\\\\email-research\\\\config.json',
+    'agents\\\\board-comms\\\\config.json',
+    'agents\\\\monthly-bulletin\\\\config.json',
+    'agents\\\\proposal-review\\\\config.json',
+    `teams\\\\${deps.teamConfig.id}\\\\team.json`,
+    'CLAUDE.md',
+  ];
+  const installConfigFilesPs1 = configFiles.map(f => `        "${f}"`).join(',\n');
+
   return `# ${teamName} - Windows Installer
 # Run this script in PowerShell: .\\install.ps1
 
@@ -1051,6 +1067,10 @@ Write-Host "  ${teamName}" -ForegroundColor Cyan
 Write-Host "  Windows Setup" -ForegroundColor Cyan
 Write-Host "======================================" -ForegroundColor Cyan
 Write-Host ""
+
+# Track email addresses across steps
+$boardEmail = $null
+$personalEmail = $null
 
 # Resume support - picks up where we left off if interrupted
 $progressFile = ".setup-progress"
@@ -1284,6 +1304,44 @@ if ($gogOk) {
 }
 
 Set-Content $progressFile "3"
+}
+
+# ============================================================
+# Step 3b: Configure Email Addresses in Agent Files
+# ============================================================
+Write-Host ""
+Write-Host "Step 3b: Configuring email addresses in agent files..." -ForegroundColor Yellow
+
+# If emails weren't collected during Google auth, ask now
+if (-not $boardEmail) {
+    $boardEmail = Read-Host "  Board email address (e.g. you@wharfside.com)"
+}
+if (-not $personalEmail) {
+    $personalEmail = Read-Host "  Personal email address (Enter to skip)"
+}
+
+if ($boardEmail -or $personalEmail) {
+    $configFiles = @(
+${installConfigFilesPs1}
+    )
+
+    foreach ($f in $configFiles) {
+        if (Test-Path $f) {
+            $content = Get-Content $f -Raw
+            if ($boardEmail) {
+                $content = $content -replace [regex]::Escape("YOUR_BOARD_EMAIL"), $boardEmail
+            }
+            if ($personalEmail) {
+                $content = $content -replace [regex]::Escape("YOUR_PERSONAL_EMAIL"), $personalEmail
+            }
+            Set-Content $f $content -NoNewline
+        }
+    }
+
+    $updated = ($configFiles | Where-Object { Test-Path $_ }).Count
+    Write-Host "  [OK] Updated $updated config files with email addresses" -ForegroundColor Green
+} else {
+    Write-Host "  [SKIP] No emails provided. Update later with .\\reconfigure.ps1" -ForegroundColor DarkYellow
 }
 
 # ============================================================
