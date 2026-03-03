@@ -1384,7 +1384,7 @@ Altium Designer is a Windows application. Automating it requires Windows environ
 
 ## Appendix A: Mapping to Existing Agent Architect Agents
 
-The following table maps the conceptual agents in this architecture to existing agents in the Agent Architect repository (`/Users/nickd/Workspaces/AgentArchitect/agents/`).
+The following table maps the conceptual agents in this architecture to existing agents in the Agent Architect repository (`/Users/nickdemarco/AgentArchitect/agents/`).
 
 | Architecture Agent | Existing Agent | Status | Gap |
 |-------------------|---------------|--------|-----|

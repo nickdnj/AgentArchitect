@@ -80,7 +80,7 @@
     ]
   },
   "cli_tool": {
-    "path": "/Users/nickd/Workspaces/pdfscribe_cli",
+    "path": "/Users/nickdemarco/Workspaces/pdfscribe_cli",
     "transcribe_command": "python pdfscribe_cli.py",
     "website_command": "python pdf2website.py",
     "split_command": "python src/split_pdf.py",
@@ -99,7 +99,8 @@
       "type": "postgres+pgvector",
       "host": "localhost",
       "port": 5433,
-      "name": "rag"
+      "name": "rag",
+      "docker_compose": "/Users/nickdemarco/AgentArchitect/docker-compose.yml"
     },
     "env_vars": {
       "RAG_BACKEND": "postgres",

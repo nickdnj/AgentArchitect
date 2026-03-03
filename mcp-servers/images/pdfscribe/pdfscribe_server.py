@@ -23,7 +23,7 @@ except ImportError:
     sys.exit(1)
 
 # Configuration from environment
-PDFSCRIBE_PATH = Path(os.environ.get("PDFSCRIBE_CLI_PATH", "/Users/nickd/Workspaces/pdfscribe_cli"))
+PDFSCRIBE_PATH = Path(os.environ.get("PDFSCRIBE_CLI_PATH", "/Users/nickdemarco/Workspaces/pdfscribe_cli"))
 WORKSPACE_PATH = Path(os.environ.get("PDFSCRIBE_WORKSPACE", "/tmp/pdfscribe"))
 OUTPUT_PATH = Path(os.environ.get("PDFSCRIBE_OUTPUT", str(WORKSPACE_PATH / "outputs")))
 

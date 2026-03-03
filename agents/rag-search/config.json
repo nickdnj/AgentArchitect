@@ -51,7 +51,7 @@
     "description": "Called by other agents when semantic search is needed"
   },
   "rag_config": {
-    "cli_path": "/Users/nickd/Workspaces/pdfscribe_cli",
+    "cli_path": "/Users/nickdemarco/Workspaces/pdfscribe_cli",
     "database": {
       "type": "postgres+pgvector",
       "host": "localhost",

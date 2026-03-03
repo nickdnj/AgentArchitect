@@ -71,67 +71,29 @@ ffmpeg -y -i hero-image.jpg \
 
 #### Method A: YouTube Data API (PRIMARY — preferred method)
 
-Upload directly via the YouTube Data API v3 using a Python script. This is more reliable than browser automation.
+Upload directly via the YouTube Data API v3 using the `youtube-upload.py` script. This is more reliable than browser automation.
 
-```python
-import os
-from google.oauth2.credentials import Credentials
-from googleapiclient.discovery import build
-from googleapiclient.http import MediaFileUpload
+```bash
+python ~/Workspaces/max-assistant/scripts/youtube-upload.py --metadata output/metadata.json
+```
 
-YOUTUBE_SCOPES = [
-    'https://www.googleapis.com/auth/youtube.upload',
-    'https://www.googleapis.com/auth/youtube.readonly'
-]
+The script:
+- Reads `metadata.json` for title, description, tags, categoryId, visibility, videoPath, thumbnail
+- Loads OAuth credentials from `~/.config/youtube-upload/credentials.json`
+- Uploads video via resumable upload with progress reporting
+- Auto-compresses thumbnails over 2MB to JPEG
+- Sets thumbnail after upload completes
+- Prints YouTube URL on success (exit code 0) or error details (exit code 1)
 
-# Credentials from environment or config
-credentials = Credentials(
-    token=None,
-    refresh_token=os.environ.get('YOUTUBE_REFRESH_TOKEN'),
-    token_uri="https://oauth2.googleapis.com/token",
-    client_id=os.environ.get('YOUTUBE_CLIENT_ID'),
-    client_secret=os.environ.get('YOUTUBE_CLIENT_SECRET'),
-    scopes=YOUTUBE_SCOPES
-)
-
-youtube = build('youtube', 'v3', credentials=credentials)
-
-body = {
-    'snippet': {
-        'title': title[:100],
-        'description': description[:5000],
-        'tags': tags[:500],
-        'categoryId': category_id  # '27' = Education, '22' = People & Blogs, '28' = Science & Technology
-    },
-    'status': {
-        'privacyStatus': visibility,  # 'public', 'unlisted', or 'private'
-        'selfDeclaredMadeForKids': False
-    }
-}
-
-media = MediaFileUpload(video_path, mimetype='video/mp4', resumable=True)
-
-request = youtube.videos().insert(part='snippet,status', body=body, media_body=media)
-
-response = None
-while response is None:
-    status, response = request.next_chunk()
-    if status:
-        print(f"Upload progress: {int(status.progress() * 100)}%")
-
-video_id = response['id']
-video_url = f"https://youtu.be/{video_id}"
-print(f"Upload complete: {video_url}")
-
-# Upload thumbnail (separate API call)
-youtube.thumbnails().set(videoId=video_id, media_body=MediaFileUpload(thumbnail_path)).execute()
+**One-time setup** (already completed):
+```bash
+python ~/Workspaces/max-assistant/scripts/youtube-auth.py --client-secrets path/to/client_secret.json
 ```
 
 **Prerequisites:**
-- `pip install google-api-python-client google-auth-oauthlib`
-- Environment variables: `YOUTUBE_CLIENT_ID`, `YOUTUBE_CLIENT_SECRET`, `YOUTUBE_REFRESH_TOKEN`
-- OAuth app must have YouTube Data API v3 enabled in Google Cloud Console
-- First-time setup requires a one-time OAuth consent flow to get the refresh token
+- `google-api-python-client`, `google-auth-oauthlib` installed in system Python
+- YouTube Data API v3 enabled in Google Cloud project `d3marco-1`
+- OAuth credentials at `~/.config/youtube-upload/credentials.json` (created by `youtube-auth.py`)
 
 **Category IDs:** `22` = People & Blogs, `27` = Education, `28` = Science & Technology, `24` = Entertainment
 

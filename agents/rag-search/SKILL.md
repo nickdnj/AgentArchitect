@@ -20,7 +20,7 @@ This agent solves a critical problem: **semantic search requires running Python 
 ### Standard Search Command
 
 ```bash
-cd /Users/nickd/Workspaces/pdfscribe_cli && python -c "from src.rag import search_documents; results = search_documents('QUERY', bucket_id='BUCKET', limit=10, similarity_threshold=0.35); [print(f'[{r.similarity:.3f}] {r.source_file}\\n{r.chunk_text[:300]}\\n') for r in results]"
+cd /Users/nickdemarco/Workspaces/pdfscribe_cli && python -c "from src.rag import search_documents; results = search_documents('QUERY', bucket_id='BUCKET', limit=10, similarity_threshold=0.35); [print(f'[{r.similarity:.3f}] {r.source_file}\\n{r.chunk_text[:300]}\\n') for r in results]"
 ```
 
 **Parameters:**
@@ -60,12 +60,12 @@ For comprehensive results, run at least 2 queries:
 
 ### Query 1: Main Topic
 ```bash
-cd /Users/nickd/Workspaces/pdfscribe_cli && python -c "from src.rag import search_documents; [print(f'[{r.similarity:.3f}] {r.source_file}') for r in search_documents('MAIN TOPIC TERMS', bucket_id='wharfside-docs', limit=10, similarity_threshold=0.35)]"
+cd /Users/nickdemarco/Workspaces/pdfscribe_cli && python -c "from src.rag import search_documents; [print(f'[{r.similarity:.3f}] {r.source_file}') for r in search_documents('MAIN TOPIC TERMS', bucket_id='wharfside-docs', limit=10, similarity_threshold=0.35)]"
 ```
 
 ### Query 2: Amendments/Resolutions
 ```bash
-cd /Users/nickd/Workspaces/pdfscribe_cli && python -c "from src.rag import search_documents; [print(f'[{r.similarity:.3f}] {r.source_file}') for r in search_documents('TOPIC resolution amendment change', bucket_id='wharfside-docs', limit=5, similarity_threshold=0.35)]"
+cd /Users/nickdemarco/Workspaces/pdfscribe_cli && python -c "from src.rag import search_documents; [print(f'[{r.similarity:.3f}] {r.source_file}') for r in search_documents('TOPIC resolution amendment change', bucket_id='wharfside-docs', limit=5, similarity_threshold=0.35)]"
 ```
 
 ## Available Context Buckets

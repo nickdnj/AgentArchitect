@@ -149,7 +149,7 @@ Access Apple Contacts via the Contactbook CLI binary. Use a **Task subagent (Bas
 
 ### CLI Binary
 
-`/Users/nickd/Workspaces/Contactbook/.build/release/contactbook`
+`/Users/nickdemarco/Workspaces/Contactbook/.build/release/contactbook`
 
 ### Commands
 
@@ -167,7 +167,7 @@ All commands support `--json` for structured output. Always use `--json` when pr
 For any contacts operation, delegate to a Bash subagent:
 
 ```
-Task(subagent_type="Bash", prompt="Run: /Users/nickd/Workspaces/Contactbook/.build/release/contactbook contacts search 'DeMarco' --json")
+Task(subagent_type="Bash", prompt="Run: /Users/nickdemarco/Workspaces/Contactbook/.build/release/contactbook contacts search 'DeMarco' --json")
 ```
 
 This keeps potentially large contact lists from flooding the main conversation context.

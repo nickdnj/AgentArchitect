@@ -81,22 +81,22 @@ Update `~/Library/Application Support/Claude/claude_desktop_config.json`:
 {
   "mcpServers": {
     "gmail": {
-      "command": "/Users/nickd/Workspaces/ClaudeAgents/mcp-servers/wrappers/mcp-gmail-board.sh",
+      "command": "/Users/nickdemarco/AgentArchitect/mcp-servers/wrappers/mcp-gmail-board.sh",
       "args": [],
       "env": {}
     },
     "gmail-personal": {
-      "command": "/Users/nickd/Workspaces/ClaudeAgents/mcp-servers/wrappers/mcp-gmail-personal.sh",
+      "command": "/Users/nickdemarco/AgentArchitect/mcp-servers/wrappers/mcp-gmail-personal.sh",
       "args": [],
       "env": {}
     },
     "gdrive": {
-      "command": "/Users/nickd/Workspaces/ClaudeAgents/mcp-servers/wrappers/mcp-gdrive-board.sh",
+      "command": "/Users/nickdemarco/AgentArchitect/mcp-servers/wrappers/mcp-gdrive-board.sh",
       "args": [],
       "env": {}
     },
     "gdrive-personal": {
-      "command": "/Users/nickd/Workspaces/ClaudeAgents/mcp-servers/wrappers/mcp-gdrive-personal.sh",
+      "command": "/Users/nickdemarco/AgentArchitect/mcp-servers/wrappers/mcp-gdrive-personal.sh",
       "args": [],
       "env": {}
     }

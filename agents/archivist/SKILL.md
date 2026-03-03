@@ -10,7 +10,7 @@ The Archivist is the knowledge keeper for Wharfside Manor Condominium Associatio
 |--------|------|---------|
 | **RAG Vector DB** | `wharfside-docs` bucket | Primary search - semantic queries |
 | **Local Files** | `~/AppFolio-Sync/` | Direct file access when needed |
-| **AppFolio Portal** | Via Chrome Browser agent | Sync new documents from management portal |
+| **AppFolio Portal** | Via Chrome MCP | Sync new documents from management portal |
 
 **IMPORTANT:** Do NOT search the web for answers. All information must come from the RAG database or local files. If information cannot be found, say so - do not guess or search externally.
 
@@ -32,17 +32,17 @@ The Archivist is the knowledge keeper for Wharfside Manor Condominium Associatio
 For ANY question about policies, rules, procedures, or documents:
 
 ```bash
-cd /Users/nickd/Workspaces/pdfscribe_cli && python -c "from src.rag import search_documents; results = search_documents('QUERY', bucket_id='wharfside-docs', limit=10, similarity_threshold=0.35); [print(f'[{r.similarity:.3f}] {r.source_file}\\n{r.chunk_text[:300]}\\n') for r in results]"
+cd /Users/nickdemarco/Workspaces/pdfscribe_cli && python -c "from src.rag import search_documents; results = search_documents('QUERY', bucket_id='wharfside-docs', limit=10, similarity_threshold=0.35); [print(f'[{r.similarity:.3f}] {r.source_file}\\n{r.chunk_text[:300]}\\n') for r in results]"
 ```
 
 **Copy-paste templates for common questions:**
 
 | User Question | Bash Command to Run |
 |---------------|---------------------|
-| "shut off water" / "utilities" | `cd /Users/nickd/Workspaces/pdfscribe_cli && python -c "from src.rag import search_documents; results = search_documents('terminate utilities delinquent', bucket_id='wharfside-docs', limit=10, similarity_threshold=0.35); [print(f'[{r.similarity:.3f}] {r.source_file}') for r in results]"` |
-| "pet policy" / "dogs" | `cd /Users/nickd/Workspaces/pdfscribe_cli && python -c "from src.rag import search_documents; results = search_documents('pet policy dog weight', bucket_id='wharfside-docs', limit=10, similarity_threshold=0.35); [print(f'[{r.similarity:.3f}] {r.source_file}') for r in results]"` |
-| "rental" / "airbnb" | `cd /Users/nickd/Workspaces/pdfscribe_cli && python -c "from src.rag import search_documents; results = search_documents('rental minimum period lease', bucket_id='wharfside-docs', limit=10, similarity_threshold=0.35); [print(f'[{r.similarity:.3f}] {r.source_file}') for r in results]"` |
-| "fines" / "violations" | `cd /Users/nickd/Workspaces/pdfscribe_cli && python -c "from src.rag import search_documents; results = search_documents('fine violation schedule enforcement', bucket_id='wharfside-docs', limit=10, similarity_threshold=0.35); [print(f'[{r.similarity:.3f}] {r.source_file}') for r in results]"` |
+| "shut off water" / "utilities" | `cd /Users/nickdemarco/Workspaces/pdfscribe_cli && python -c "from src.rag import search_documents; results = search_documents('terminate utilities delinquent', bucket_id='wharfside-docs', limit=10, similarity_threshold=0.35); [print(f'[{r.similarity:.3f}] {r.source_file}') for r in results]"` |
+| "pet policy" / "dogs" | `cd /Users/nickdemarco/Workspaces/pdfscribe_cli && python -c "from src.rag import search_documents; results = search_documents('pet policy dog weight', bucket_id='wharfside-docs', limit=10, similarity_threshold=0.35); [print(f'[{r.similarity:.3f}] {r.source_file}') for r in results]"` |
+| "rental" / "airbnb" | `cd /Users/nickdemarco/Workspaces/pdfscribe_cli && python -c "from src.rag import search_documents; results = search_documents('rental minimum period lease', bucket_id='wharfside-docs', limit=10, similarity_threshold=0.35); [print(f'[{r.similarity:.3f}] {r.source_file}') for r in results]"` |
+| "fines" / "violations" | `cd /Users/nickdemarco/Workspaces/pdfscribe_cli && python -c "from src.rag import search_documents; results = search_documents('fine violation schedule enforcement', bucket_id='wharfside-docs', limit=10, similarity_threshold=0.35); [print(f'[{r.similarity:.3f}] {r.source_file}') for r in results]"` |
 
 ### 🛑 STOP - VERIFY RAG WAS RUN
 
@@ -82,7 +82,7 @@ Before proceeding, confirm:
    After the main search, ALWAYS run a second query for amendments:
 
    ```bash
-   cd /Users/nickd/Workspaces/pdfscribe_cli && python -c "from src.rag import search_documents; results = search_documents('TOPIC resolution amendment change', bucket_id='wharfside-docs', limit=5, similarity_threshold=0.35); [print(f'[{r.similarity:.3f}] {r.source_file}') for r in results]"
+   cd /Users/nickdemarco/Workspaces/pdfscribe_cli && python -c "from src.rag import search_documents; results = search_documents('TOPIC resolution amendment change', bucket_id='wharfside-docs', limit=5, similarity_threshold=0.35); [print(f'[{r.similarity:.3f}] {r.source_file}') for r in results]"
    ```
 
    Replace `TOPIC` with: pet, rental, fine, parking, utility, insurance, etc.
@@ -181,7 +181,7 @@ The Archivist can query a vector database containing all indexed Wharfside docum
 
 **How to search:**
 ```bash
-cd /Users/nickd/Workspaces/pdfscribe_cli && python -c "
+cd /Users/nickdemarco/Workspaces/pdfscribe_cli && python -c "
 from src.rag import search_documents
 
 # Use similarity_threshold=0.35 for broader results (default 0.5 is too strict)
@@ -464,18 +464,21 @@ Use these tools for direct file access when RAG identifies specific files:
 - **Read**: Read document contents
 - **Bash ls**: List folder contents when needed
 
-### PDF Transcription (CLI)
-Use the pdfscribe CLI to transcribe scanned/image-based PDFs into searchable Markdown:
+### PDF Scribe MCP (For scanned PDFs)
+Use PDF Scribe to transcribe scanned/image-based PDFs into searchable Markdown:
 
-```bash
-python pdfscribe_cli/pdfscribe_cli.py "/path/to/file.pdf" -o "/path/to/output.md" -b "Wharfside Manor Condominium Association document"
-```
+- **mcp__pdfscribe__transcribe_pdf**: Transcribe a PDF to Markdown using Claude vision
+- **mcp__pdfscribe__split_pdf**: Split large PDFs into smaller chunks before transcription
+- **mcp__pdfscribe__list_transcriptions**: List previously transcribed documents
 
-For large PDFs (50+ pages), split first:
+#### Alternative: pdfscribe CLI
+If the MCP server has path access issues, use the CLI directly:
 ```bash
-python pdfscribe_cli/src/split_pdf.py "/path/to/large-document.pdf" --output-dir "/path/to/chunks/" --pages-per-chunk 50
+source ~/.zshrc  # Loads ANTHROPIC_API_KEY
+cd /Users/nickdemarco/Workspaces/pdfscribe_cli
+python pdfscribe_cli.py "/path/to/file.pdf" -o "/path/to/output.md" -b "backstory"
 ```
-Then transcribe each chunk and optionally combine the results.
+**Note:** The Anthropic API key is stored in `~/.zshrc` as `ANTHROPIC_API_KEY`.
 
 #### PDF Transcription Workflow
 
@@ -486,12 +489,20 @@ When encountering a scanned PDF that cannot be searched with Grep:
    - The tool also creates a `-transcribed.md` cache file - this is normal
 2. **Check PDF size** - Use `Bash` to check page count: `pdfinfo "/path/to/file.pdf" | grep Pages`
 3. **For PDFs under 50 pages**, transcribe directly:
-   ```bash
-   python pdfscribe_cli/pdfscribe_cli.py "/path/to/document.pdf" -o "/path/to/document.md" -b "Wharfside Manor Condominium Association document"
+   ```
+   mcp__pdfscribe__transcribe_pdf(
+     pdf_path="/path/to/document.pdf",
+     output_path="/path/to/document.md",
+     backstory="Wharfside Manor Condominium Association document"
+   )
    ```
 4. **For PDFs 50+ pages**, MUST split first to avoid "Prompt is too long" errors:
-   ```bash
-   python pdfscribe_cli/src/split_pdf.py "/path/to/large-document.pdf" --output-dir "/path/to/chunks/" --pages-per-chunk 50
+   ```
+   mcp__pdfscribe__split_pdf(
+     pdf_path="/path/to/large-document.pdf",
+     output_dir="/path/to/chunks/",
+     pages_per_chunk=50
+   )
    ```
    Then transcribe each chunk and optionally combine the results.
 5. **Output location** - Always save the `.md` file in the same directory as the original PDF with the same base filename
@@ -526,8 +537,7 @@ PDF Scribe creates two files per transcription:
 - `document.md` - Clean markdown output (use this one)
 - `document-transcribed.md` - Internal cache file (can be ignored)
 
-### Chrome Browser (For portal sync)
-Use the Chrome Browser agent via Task delegation for portal automation:
+### Chrome MCP (For portal sync)
 - Navigate to AppFolio portal
 - Authenticate with user credentials
 - Download shared documents
@@ -544,7 +554,7 @@ https://eastcoastmgmt.appfolio.com/connect/shared_documents
 
 ### Local Sync Folder
 ```
-/Users/nickd/AppFolio-Sync
+/Users/nickdemarco/AppFolio-Sync
 ```
 
 **Important:** Do NOT use iCloud-synced folders (like ~/Downloads) as they may cause download issues.
@@ -570,21 +580,21 @@ The AppFolio portal organizes documents into two main sections:
 ### Sync Workflow
 
 1. **Navigate to Portal**
-   - Open the AppFolio shared documents page using Chrome Browser agent
+   - Open the AppFolio shared documents page using Chrome MCP
    - If not logged in, prompt user to authenticate (the Archivist does not store credentials)
 
 2. **Take Snapshot and Expand Folders**
-   - Capture the document list using the Chrome Browser agent's snapshot capability
+   - Capture the document list using `mcp__chrome__take_snapshot`
    - **Important:** Folders appear collapsed by default - click each folder button to expand and reveal contents
    - Look for `button "  [Folder Name]" expandable` elements - click to expand
 
 3. **Download Documents**
    - For each document, click the "Download" link (look for `link " Download" url="..."`)
-   - **Note:** Chrome Browser cannot change the browser's download location - files always go to the browser's default Downloads folder
-   - After downloading, move files to the correct subfolder in `/Users/nickd/AppFolio-Sync`
+   - **Note:** Chrome MCP cannot change the browser's download location - files always go to the browser's default Downloads folder
+   - After downloading, move files to the correct subfolder in `/Users/nickdemarco/AppFolio-Sync`
 
 4. **Organize Downloaded Files**
-   - Move files from Downloads to `/Users/nickd/AppFolio-Sync`
+   - Move files from Downloads to `/Users/nickdemarco/AppFolio-Sync`
    - Create subfolders matching the portal structure:
      ```
      AppFolio-Sync/
@@ -635,7 +645,7 @@ The Archivist does NOT store login credentials. When syncing:
 
 - **Login Required**: Notify user and wait for manual login
 - **Document Download Failed**: Log the error, continue with other documents
-- **iCloud Download Issues**: Use non-iCloud folder (`/Users/nickd/AppFolio-Sync`)
+- **iCloud Download Issues**: Use non-iCloud folder (`/Users/nickdemarco/AppFolio-Sync`)
 - **Portal Unavailable**: Report the error and suggest trying later
 
 ### Post-Sync: Ingest into RAG Database
@@ -647,7 +657,7 @@ After syncing to local AppFolio-Sync folder:
 
 **Ingestion command:**
 ```bash
-cd /Users/nickd/Workspaces/pdfscribe_cli && python -c "from src.rag import ingest_document; ingest_document('/path/to/file.md', bucket_id='wharfside-docs')"
+cd /Users/nickdemarco/Workspaces/pdfscribe_cli && python -c "from src.rag import ingest_document; ingest_document('/path/to/file.md', bucket_id='wharfside-docs')"
 ```
 
 ## Local Folder Organization

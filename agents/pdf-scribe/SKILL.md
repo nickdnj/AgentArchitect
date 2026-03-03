@@ -20,7 +20,7 @@ This agent solves the common problem of image-based PDFs (scanned documents, ins
 
 ## CLI Tool
 
-PDFScribe leverages the **pdfscribe_cli** tool located at `/Users/nickd/Workspaces/pdfscribe_cli/`.
+PDFScribe leverages the **pdfscribe_cli** tool located at `/Users/nickdemarco/Workspaces/pdfscribe_cli/`.
 
 This tool uses AI vision models to transcribe scanned PDFs with high accuracy:
 
@@ -52,7 +52,7 @@ export AI_PROVIDER=anthropic  # Higher accuracy when needed
 
 **Basic transcription (with automatic caching):**
 ```bash
-cd /Users/nickd/Workspaces/pdfscribe_cli
+cd /Users/nickdemarco/Workspaces/pdfscribe_cli
 python pdfscribe_cli.py <pdf_file>
 # Output: <pdf_file>-transcribed.md (next to source)
 ```
@@ -97,7 +97,7 @@ source ~/.zshrc  # Loads API keys into the current shell
 
 The pgvector database runs via Docker:
 ```bash
-cd /Users/nickd/Workspaces/AgentArchitect
+cd /Users/nickdemarco/AgentArchitect
 docker-compose up -d  # Starts pgvector on port 5433
 ```
 
@@ -134,7 +134,7 @@ Based on source type:
 
 **For local files (including Google Drive synced folders):**
 ```bash
-cd /Users/nickd/Workspaces/pdfscribe_cli
+cd /Users/nickdemarco/Workspaces/pdfscribe_cli
 python pdfscribe_cli.py /path/to/document.pdf
 ```
 
@@ -244,7 +244,7 @@ PDF → Transcribe → Markdown → Chunk (800 tokens) → Embed (OpenAI) → pg
 
 **Transcribe and ingest a single document:**
 ```bash
-cd /Users/nickd/Workspaces/pdfscribe_cli
+cd /Users/nickdemarco/Workspaces/pdfscribe_cli
 AI_PROVIDER=openai python pdfscribe_cli.py document.pdf --ingest --bucket wharfside-docs
 ```
 

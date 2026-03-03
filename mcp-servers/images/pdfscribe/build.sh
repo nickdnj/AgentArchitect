@@ -7,7 +7,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 
 # Path to pdfscribe_cli
-PDFSCRIBE_CLI="${PDFSCRIBE_CLI_PATH:-/Users/nickd/Workspaces/pdfscribe_cli}"
+PDFSCRIBE_CLI="${PDFSCRIBE_CLI_PATH:-/Users/nickdemarco/Workspaces/pdfscribe_cli}"
 
 if [ ! -d "$PDFSCRIBE_CLI" ]; then
     echo "Error: pdfscribe_cli not found at $PDFSCRIBE_CLI"

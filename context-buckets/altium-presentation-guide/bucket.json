@@ -43,5 +43,5 @@
     "allowed_teams": ["altium-solutions", "wharfside-board-assistant"]
   },
 
-  "notes": "Sourced from /Users/nickd/Workspaces/AltiumTestMCP/. The Altium_TEMPLATE.pptx file itself lives in agents/presentation/templates/ and at the MCP server path /Users/nickd/Workspaces/mcp_servers/Office-PowerPoint-MCP-Server/templates/Altium_TEMPLATE.pptx"
+  "notes": "Sourced from /Users/nickdemarco/Workspaces/AltiumTestMCP/. The Altium_TEMPLATE.pptx file itself lives in agents/presentation/templates/ and at the MCP server path /Users/nickdemarco/Workspaces/mcp_servers/Office-PowerPoint-MCP-Server/templates/Altium_TEMPLATE.pptx"
 }

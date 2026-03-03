@@ -339,7 +339,7 @@ Each bulletin includes a "🔧 Maintenance at a Glance" section summarizing work
 
 **Data Source:**
 - Work order CSV export from ECI system
-- File location: `/Users/nickd/Workspaces/ClaudeAgents/work_order-{date}.csv`
+- File location: `/Users/nickdemarco/AgentArchitect/work_order-{date}.csv`
 - Key columns: Created At, Completed On, Status, Work Order Issue
 
 **First Introduction (February 2026):**

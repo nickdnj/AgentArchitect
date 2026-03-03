@@ -63,12 +63,12 @@
       "auth": "none",
       "mounts": {
         "templates": {
-          "host": "/Users/nickd/Workspaces/mcp_servers/Office-PowerPoint-MCP-Server/templates",
+          "host": "/Users/nickdemarco/Workspaces/mcp_servers/Office-PowerPoint-MCP-Server/templates",
           "container": "/app/templates",
           "mode": "ro"
         },
         "workspace": {
-          "host": "/Users/nickd/Workspaces/mcp_servers/Office-PowerPoint-MCP-Server/workspace",
+          "host": "/Users/nickdemarco/Workspaces/mcp_servers/Office-PowerPoint-MCP-Server/workspace",
           "container": "/app/workspace",
           "mode": "rw"
         }
@@ -153,7 +153,7 @@
       ],
       "claude_code_config": {
         "type": "stdio",
-        "command": "/Users/nickd/Workspaces/Contactbook/.build/release/contactbook",
+        "command": "/Users/nickdemarco/Workspaces/Contactbook/.build/release/contactbook",
         "args": ["mcp", "serve"]
       },
       "platform": "macOS",
@@ -300,7 +300,7 @@
         "tools": ["ingest_document", "search_documents", "list_indexed"]
       },
       "mounts": {
-        "cli": "/Users/nickd/Workspaces/pdfscribe_cli",
+        "cli": "/Users/nickdemarco/Workspaces/pdfscribe_cli",
         "workspace": "~/.config/mcp-pdfscribe/workspace",
         "outputs": "~/.config/mcp-pdfscribe/outputs"
       },

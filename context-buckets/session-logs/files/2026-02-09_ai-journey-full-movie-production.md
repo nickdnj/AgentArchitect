@@ -24,12 +24,12 @@ Produced and published "My AI Journey: Three Years from Zero to 36 Agents" as a 
 
 ## Artifacts Created
 
-- `/Users/nickd/Desktop/youtube-projects/ai-journey-full/script/full-movie-script.md` - Unified 32-scene script
-- `/Users/nickd/Desktop/youtube-projects/ai-journey-full/output/my-ai-journey-full.mp4` - Final video (11:36, ~328MB)
-- `/Users/nickd/Desktop/youtube-projects/ai-journey-full/assets/images/` - 34 images (30 DALL-E 3 + 4 real photos)
-- `/Users/nickd/Desktop/youtube-projects/ai-journey-full/assets/audio/narration/` - 33 Kokoro TTS narration clips
-- `/Users/nickd/Desktop/youtube-projects/ai-journey-full/assets/thumbnails/thumbnail.png` - YouTube thumbnail
-- `/Users/nickd/Desktop/youtube-projects/ai-journey-full/output/metadata.md` - YouTube metadata
+- `/Users/nickdemarco/Desktop/youtube-projects/ai-journey-full/script/full-movie-script.md` - Unified 32-scene script
+- `/Users/nickdemarco/Desktop/youtube-projects/ai-journey-full/output/my-ai-journey-full.mp4` - Final video (11:36, ~328MB)
+- `/Users/nickdemarco/Desktop/youtube-projects/ai-journey-full/assets/images/` - 34 images (30 DALL-E 3 + 4 real photos)
+- `/Users/nickdemarco/Desktop/youtube-projects/ai-journey-full/assets/audio/narration/` - 33 Kokoro TTS narration clips
+- `/Users/nickdemarco/Desktop/youtube-projects/ai-journey-full/assets/thumbnails/thumbnail.png` - YouTube thumbnail
+- `/Users/nickdemarco/Desktop/youtube-projects/ai-journey-full/output/metadata.md` - YouTube metadata
 - **YouTube URL:** https://youtu.be/12EKCPWADkE (Public, HD processed)
 
 ## Production Specs

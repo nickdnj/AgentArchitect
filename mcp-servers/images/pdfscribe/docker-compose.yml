@@ -14,7 +14,7 @@ services:
       - PDFSCRIBE_OUTPUT=/outputs
     volumes:
       # Mount the pdfscribe_cli tool (read-only)
-      - ${PDFSCRIBE_CLI_PATH:-/Users/nickd/Workspaces/pdfscribe_cli}:/app/pdfscribe_cli:ro
+      - ${PDFSCRIBE_CLI_PATH:-/Users/nickdemarco/Workspaces/pdfscribe_cli}:/app/pdfscribe_cli:ro
       # Working directory for processing PDFs
       - ${PDFSCRIBE_WORKSPACE:-/tmp/pdfscribe}:/workspace
       # Output directory for transcriptions
