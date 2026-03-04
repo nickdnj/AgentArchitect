@@ -103,9 +103,8 @@
       "docker_compose": "/Users/nickdemarco/AgentArchitect/docker-compose.yml"
     },
     "env_vars": {
-      "RAG_BACKEND": "postgres",
-      "RAG_DB_HOST": "127.0.0.1",
-      "RAG_DB_PORT": "5433"
+      "RAG_BACKEND": "api",
+      "RAG_API_URL": "https://rag-api-934267405367.us-central1.run.app"
     },
     "embeddings": {
       "provider": "openai",

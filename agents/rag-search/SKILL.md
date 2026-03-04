@@ -20,7 +20,7 @@ This agent solves a critical problem: **semantic search requires running Python 
 ### Standard Search Command
 
 ```bash
-cd /Users/nickdemarco/Workspaces/pdfscribe_cli && python -c "from src.rag import search_documents; results = search_documents('QUERY', bucket_id='BUCKET', limit=10, similarity_threshold=0.35); [print(f'[{r.similarity:.3f}] {r.source_file}\\n{r.chunk_text[:300]}\\n') for r in results]"
+cd /Users/nickdemarco/Workspaces/pdfscribe_cli && PYTHONPATH=/Users/nickdemarco/Workspaces/pdfscribe_cli RAG_BACKEND=api RAG_API_URL=https://rag-api-934267405367.us-central1.run.app RAG_API_KEY=$RAG_API_KEY .venv/bin/python -c "from src.rag import search_documents; results = search_documents('QUERY', bucket_id='BUCKET', limit=10, similarity_threshold=0.35); [print(f'[{r.similarity:.3f}] {r.source_file}\\n{r.chunk_text[:300]}\\n') for r in results]"
 ```
 
 **Parameters:**
@@ -60,12 +60,12 @@ For comprehensive results, run at least 2 queries:
 
 ### Query 1: Main Topic
 ```bash
-cd /Users/nickdemarco/Workspaces/pdfscribe_cli && python -c "from src.rag import search_documents; [print(f'[{r.similarity:.3f}] {r.source_file}') for r in search_documents('MAIN TOPIC TERMS', bucket_id='wharfside-docs', limit=10, similarity_threshold=0.35)]"
+cd /Users/nickdemarco/Workspaces/pdfscribe_cli && PYTHONPATH=/Users/nickdemarco/Workspaces/pdfscribe_cli RAG_BACKEND=api RAG_API_URL=https://rag-api-934267405367.us-central1.run.app RAG_API_KEY=$RAG_API_KEY .venv/bin/python -c "from src.rag import search_documents; [print(f'[{r.similarity:.3f}] {r.source_file}') for r in search_documents('MAIN TOPIC TERMS', bucket_id='wharfside-docs', limit=10, similarity_threshold=0.35)]"
 ```
 
 ### Query 2: Amendments/Resolutions
 ```bash
-cd /Users/nickdemarco/Workspaces/pdfscribe_cli && python -c "from src.rag import search_documents; [print(f'[{r.similarity:.3f}] {r.source_file}') for r in search_documents('TOPIC resolution amendment change', bucket_id='wharfside-docs', limit=5, similarity_threshold=0.35)]"
+cd /Users/nickdemarco/Workspaces/pdfscribe_cli && PYTHONPATH=/Users/nickdemarco/Workspaces/pdfscribe_cli RAG_BACKEND=api RAG_API_URL=https://rag-api-934267405367.us-central1.run.app RAG_API_KEY=$RAG_API_KEY .venv/bin/python -c "from src.rag import search_documents; [print(f'[{r.similarity:.3f}] {r.source_file}') for r in search_documents('TOPIC resolution amendment change', bucket_id='wharfside-docs', limit=5, similarity_threshold=0.35)]"
 ```
 
 ## Available Context Buckets
@@ -113,9 +113,10 @@ This agent is called BY other agents:
 ## Error Handling
 
 If RAG search fails:
-1. Check if PostgreSQL is running on port 5433
-2. Verify the bucket exists: `python -c "from src.rag import list_indexed_documents; print(list_indexed_documents('wharfside-docs'))"`
-3. Report the specific error to the calling agent
+1. Verify RAG_API_KEY is set in the environment
+2. Test connectivity: `curl -s -H "X-API-Key: $RAG_API_KEY" https://rag-api-934267405367.us-central1.run.app/stats`
+3. Verify the bucket exists by checking stats output
+4. Report the specific error to the calling agent
 
 ## Success Criteria
 
