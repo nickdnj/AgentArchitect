@@ -272,6 +272,82 @@ deactivate
 
 ---
 
+## 7b. PDF Transcription Workflow
+
+When new PDFs need to be added to the RAG database (e.g., new Wharfside governing documents, scanned board minutes), they must be transcribed to markdown first. The file watcher and RAG ingestion only handle `.md`, `.txt`, and `.html` files — not PDFs directly.
+
+### Transcribe a local PDF
+
+```bash
+cd ~/Workspaces/pdfscribe_cli
+source .venv/bin/activate
+
+# Transcribe a PDF to markdown (output saved next to source as .md)
+python pdfscribe_cli.py /path/to/document.pdf
+
+# Transcribe and ingest into RAG in one step
+python pdfscribe_cli.py /path/to/document.pdf
+RAG_BACKEND=postgres python src/rag.py ingest-text \
+  --bucket wharfside-docs \
+  --source "document-name" \
+  < /path/to/document.md
+```
+
+### Transcribe from Google Drive
+
+```bash
+# By Drive file ID
+python pdfscribe_cli.py --drive-id 1ABC123...
+
+# By Drive folder (transcribes all PDFs)
+python pdfscribe_cli.py --drive-folder-id 1XYZ789...
+```
+
+### Ingest transcribed markdown into RAG
+
+If the file watcher (Step 10) is running, simply copy the `.md` file into the appropriate context bucket:
+
+```bash
+# Example: new board document
+cp /path/to/transcribed-document.md \
+   ~/Workspaces/AgentArchitect/context-buckets/wharfside-docs/files/
+
+# The file watcher will auto-detect and ingest it within ~5 seconds
+```
+
+Or ingest manually:
+
+```bash
+RAG_BACKEND=postgres python src/rag.py ingest-text \
+  --bucket wharfside-docs \
+  --source "new-document-name" \
+  < ~/Workspaces/AgentArchitect/context-buckets/wharfside-docs/files/new-document.md
+```
+
+### Bulk re-ingestion (all buckets)
+
+```bash
+# Preview what would be ingested
+python ingest_all_buckets.py --dry-run
+
+# Ingest all (skips unchanged files via checksum)
+RAG_BACKEND=postgres python ingest_all_buckets.py
+
+# Force re-ingest everything
+RAG_BACKEND=postgres python ingest_all_buckets.py --force
+
+# Single bucket only
+RAG_BACKEND=postgres python ingest_all_buckets.py --bucket wharfside-docs
+```
+
+### Requirements for PDF transcription
+
+- `ANTHROPIC_API_KEY` env var (uses Claude vision for OCR)
+- `poppler` installed via Homebrew (for `pdf2image`)
+- For Google Drive: OAuth credentials at `~/.config/mcp-gdrive/gcp-oauth.keys.json`
+
+---
+
 ## 8. Start the Gatekeeper
 
 ```bash
@@ -360,157 +436,9 @@ source .venv/bin/activate
 pip install watchdog
 ```
 
-### Create the watcher script
+### Watcher script
 
-Save as `~/Workspaces/pdfscribe_cli/scripts/rag-file-watcher.py`:
-
-```python
-#!/usr/bin/env python3
-"""Watch context bucket files/ directories and auto-ingest on change."""
-
-import os
-import sys
-import time
-import json
-import logging
-from pathlib import Path
-
-from watchdog.observers import Observer
-from watchdog.events import FileSystemEventHandler
-
-# Add parent for rag imports
-sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
-
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s [%(levelname)s] %(message)s",
-)
-log = logging.getLogger("rag-watcher")
-
-BUCKETS_ROOT = Path.home() / "Workspaces" / "AgentArchitect" / "context-buckets"
-SUPPORTED_EXTENSIONS = {".md", ".txt", ".html"}
-SKIP_FILES = {"home.html", "index.html", ".DS_Store"}
-DEBOUNCE_SECONDS = 5
-
-
-class BucketIngestHandler(FileSystemEventHandler):
-    """Handles file create/modify events in context bucket files/ dirs."""
-
-    def __init__(self):
-        self._pending = {}  # path -> timestamp (debounce)
-
-    def _should_process(self, path: str) -> bool:
-        p = Path(path)
-        if p.name in SKIP_FILES:
-            return False
-        if p.suffix.lower() not in SUPPORTED_EXTENSIONS:
-            return False
-        if "/files/" not in str(p):
-            return False
-        return True
-
-    def _get_bucket_id(self, path: str) -> str | None:
-        """Extract bucket_id from path like .../context-buckets/<bucket-id>/files/..."""
-        parts = Path(path).parts
-        try:
-            idx = parts.index("context-buckets")
-            return parts[idx + 1]
-        except (ValueError, IndexError):
-            return None
-
-    def _ingest_file(self, path: str):
-        from rag import ingest_document
-
-        p = Path(path)
-        bucket_id = self._get_bucket_id(path)
-        if not bucket_id:
-            log.warning(f"Could not determine bucket_id for {path}")
-            return
-
-        try:
-            text = p.read_text(encoding="utf-8", errors="replace")
-            if len(text.strip()) < 50:
-                log.info(f"Skipping {p.name} (too short)")
-                return
-
-            result = ingest_document(
-                text=text,
-                bucket_id=bucket_id,
-                source_file=p.name,
-                force=True,
-            )
-            log.info(
-                f"Ingested {p.name} into {bucket_id}: "
-                f"{result.get('chunk_count', 0)} chunks, "
-                f"{result.get('total_tokens', 0)} tokens"
-            )
-        except Exception:
-            log.exception(f"Failed to ingest {path}")
-
-    def on_created(self, event):
-        if event.is_directory or not self._should_process(event.src_path):
-            return
-        self._pending[event.src_path] = time.time()
-
-    def on_modified(self, event):
-        if event.is_directory or not self._should_process(event.src_path):
-            return
-        self._pending[event.src_path] = time.time()
-
-    def process_pending(self):
-        """Process files that have been stable for DEBOUNCE_SECONDS."""
-        now = time.time()
-        ready = [
-            p for p, t in self._pending.items()
-            if now - t >= DEBOUNCE_SECONDS
-        ]
-        for path in ready:
-            del self._pending[path]
-            if Path(path).exists():
-                log.info(f"Auto-ingesting: {path}")
-                self._ingest_file(path)
-
-
-def main():
-    os.environ.setdefault("RAG_BACKEND", "postgres")
-
-    if not BUCKETS_ROOT.exists():
-        log.error(f"Buckets root not found: {BUCKETS_ROOT}")
-        sys.exit(1)
-
-    # Discover all bucket files/ directories
-    watch_dirs = []
-    for bucket_dir in BUCKETS_ROOT.iterdir():
-        files_dir = bucket_dir / "files"
-        if files_dir.is_dir():
-            watch_dirs.append(str(files_dir))
-
-    if not watch_dirs:
-        log.error("No bucket files/ directories found")
-        sys.exit(1)
-
-    handler = BucketIngestHandler()
-    observer = Observer()
-
-    for d in watch_dirs:
-        observer.schedule(handler, d, recursive=True)
-        log.info(f"Watching: {d}")
-
-    log.info(f"RAG File Watcher started — monitoring {len(watch_dirs)} buckets")
-    observer.start()
-
-    try:
-        while True:
-            time.sleep(1)
-            handler.process_pending()
-    except KeyboardInterrupt:
-        observer.stop()
-    observer.join()
-
-
-if __name__ == "__main__":
-    main()
-```
+The watcher script is already in the pdfscribe_cli repo at `scripts/rag-file-watcher.py`. It watches all `context-buckets/*/files/` directories for `.md`, `.txt`, and `.html` changes, debounces for 5 seconds, then auto-ingests into the cloud RAG database.
 
 ### launchd service for the watcher
 
