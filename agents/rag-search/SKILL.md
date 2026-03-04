@@ -74,6 +74,23 @@ cd /Users/nickdemarco/Workspaces/pdfscribe_cli && PYTHONPATH=/Users/nickdemarco/
 |-----------|-------------|-----------|
 | `wharfside-docs` | Wharfside Manor governing documents | 110+ docs, 3,300+ chunks |
 
+## Document Source Classification (CRITICAL)
+
+The RAG database contains documents of varying authority. **ALWAYS classify each result** by its source file name using this table:
+
+| Source File Pattern | Classification | Authority Level |
+|---|---|---|
+| `CertMasterDeed*` | **Recorded Master Deed** | Highest — foundational governing document |
+| `*RecordedAmendment*`, `*RecordedResolution*` | **Recorded Amendment/Resolution** | High — officially recorded with county |
+| `ResolutionsAddendumsAmendments*` | **Recorded Resolutions Collection** | High — compiled recorded resolutions |
+| `*Amendment*merging*` | **Recorded Amendment** | High — officially recorded |
+| `*Parking-and-Towing-Resolution*` | **Board Resolution** | High — adopted by board vote |
+| `*Distribution-Letter*`, `*Letter*` | **Official Notice** | Medium — board-issued communication |
+| `*Review*Comments*`, `*DRAFT*`, `*draft*` | **Working Draft / Discussion** | Low — not adopted, proposals only |
+| `*Census*` | **Administrative Form** | Medium — operational document |
+
+**When returning results, always include the classification.** This prevents downstream agents from treating draft proposals as adopted policy.
+
 ## Response Format
 
 Return results in this structure:
@@ -88,10 +105,10 @@ Return results in this structure:
 
 ### Documents Found
 
-1. **[filename]** (similarity: 0.XXX)
+1. **[filename]** (similarity: 0.XXX) — [CLASSIFICATION]
    > [relevant excerpt - first 200 chars]
 
-2. **[filename]** (similarity: 0.XXX)
+2. **[filename]** (similarity: 0.XXX) — [CLASSIFICATION]
    > [relevant excerpt]
 
 [etc.]

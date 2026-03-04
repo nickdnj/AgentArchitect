@@ -32,17 +32,17 @@ The Archivist is the knowledge keeper for Wharfside Manor Condominium Associatio
 For ANY question about policies, rules, procedures, or documents:
 
 ```bash
-cd /Users/nickdemarco/Workspaces/pdfscribe_cli && python -c "from src.rag import search_documents; results = search_documents('QUERY', bucket_id='wharfside-docs', limit=10, similarity_threshold=0.35); [print(f'[{r.similarity:.3f}] {r.source_file}\\n{r.chunk_text[:300]}\\n') for r in results]"
+cd /Users/nickdemarco/Workspaces/pdfscribe_cli && PYTHONPATH=/Users/nickdemarco/Workspaces/pdfscribe_cli RAG_BACKEND=api RAG_API_URL=https://rag-api-934267405367.us-central1.run.app RAG_API_KEY=$RAG_API_KEY .venv/bin/python -c "from src.rag import search_documents; results = search_documents('QUERY', bucket_id='wharfside-docs', limit=10, similarity_threshold=0.35); [print(f'[{r.similarity:.3f}] {r.source_file}\\n{r.chunk_text[:300]}\\n') for r in results]"
 ```
 
 **Copy-paste templates for common questions:**
 
 | User Question | Bash Command to Run |
 |---------------|---------------------|
-| "shut off water" / "utilities" | `cd /Users/nickdemarco/Workspaces/pdfscribe_cli && python -c "from src.rag import search_documents; results = search_documents('terminate utilities delinquent', bucket_id='wharfside-docs', limit=10, similarity_threshold=0.35); [print(f'[{r.similarity:.3f}] {r.source_file}') for r in results]"` |
-| "pet policy" / "dogs" | `cd /Users/nickdemarco/Workspaces/pdfscribe_cli && python -c "from src.rag import search_documents; results = search_documents('pet policy dog weight', bucket_id='wharfside-docs', limit=10, similarity_threshold=0.35); [print(f'[{r.similarity:.3f}] {r.source_file}') for r in results]"` |
-| "rental" / "airbnb" | `cd /Users/nickdemarco/Workspaces/pdfscribe_cli && python -c "from src.rag import search_documents; results = search_documents('rental minimum period lease', bucket_id='wharfside-docs', limit=10, similarity_threshold=0.35); [print(f'[{r.similarity:.3f}] {r.source_file}') for r in results]"` |
-| "fines" / "violations" | `cd /Users/nickdemarco/Workspaces/pdfscribe_cli && python -c "from src.rag import search_documents; results = search_documents('fine violation schedule enforcement', bucket_id='wharfside-docs', limit=10, similarity_threshold=0.35); [print(f'[{r.similarity:.3f}] {r.source_file}') for r in results]"` |
+| "shut off water" / "utilities" | `cd /Users/nickdemarco/Workspaces/pdfscribe_cli && PYTHONPATH=/Users/nickdemarco/Workspaces/pdfscribe_cli RAG_BACKEND=api RAG_API_URL=https://rag-api-934267405367.us-central1.run.app RAG_API_KEY=$RAG_API_KEY .venv/bin/python -c "from src.rag import search_documents; results = search_documents('terminate utilities delinquent', bucket_id='wharfside-docs', limit=10, similarity_threshold=0.35); [print(f'[{r.similarity:.3f}] {r.source_file}') for r in results]"` |
+| "pet policy" / "dogs" | `cd /Users/nickdemarco/Workspaces/pdfscribe_cli && PYTHONPATH=/Users/nickdemarco/Workspaces/pdfscribe_cli RAG_BACKEND=api RAG_API_URL=https://rag-api-934267405367.us-central1.run.app RAG_API_KEY=$RAG_API_KEY .venv/bin/python -c "from src.rag import search_documents; results = search_documents('pet policy dog weight', bucket_id='wharfside-docs', limit=10, similarity_threshold=0.35); [print(f'[{r.similarity:.3f}] {r.source_file}') for r in results]"` |
+| "rental" / "airbnb" | `cd /Users/nickdemarco/Workspaces/pdfscribe_cli && PYTHONPATH=/Users/nickdemarco/Workspaces/pdfscribe_cli RAG_BACKEND=api RAG_API_URL=https://rag-api-934267405367.us-central1.run.app RAG_API_KEY=$RAG_API_KEY .venv/bin/python -c "from src.rag import search_documents; results = search_documents('rental minimum period lease', bucket_id='wharfside-docs', limit=10, similarity_threshold=0.35); [print(f'[{r.similarity:.3f}] {r.source_file}') for r in results]"` |
+| "fines" / "violations" | `cd /Users/nickdemarco/Workspaces/pdfscribe_cli && PYTHONPATH=/Users/nickdemarco/Workspaces/pdfscribe_cli RAG_BACKEND=api RAG_API_URL=https://rag-api-934267405367.us-central1.run.app RAG_API_KEY=$RAG_API_KEY .venv/bin/python -c "from src.rag import search_documents; results = search_documents('fine violation schedule enforcement', bucket_id='wharfside-docs', limit=10, similarity_threshold=0.35); [print(f'[{r.similarity:.3f}] {r.source_file}') for r in results]"` |
 
 ### 🛑 STOP - VERIFY RAG WAS RUN
 
@@ -82,7 +82,7 @@ Before proceeding, confirm:
    After the main search, ALWAYS run a second query for amendments:
 
    ```bash
-   cd /Users/nickdemarco/Workspaces/pdfscribe_cli && python -c "from src.rag import search_documents; results = search_documents('TOPIC resolution amendment change', bucket_id='wharfside-docs', limit=5, similarity_threshold=0.35); [print(f'[{r.similarity:.3f}] {r.source_file}') for r in results]"
+   cd /Users/nickdemarco/Workspaces/pdfscribe_cli && PYTHONPATH=/Users/nickdemarco/Workspaces/pdfscribe_cli RAG_BACKEND=api RAG_API_URL=https://rag-api-934267405367.us-central1.run.app RAG_API_KEY=$RAG_API_KEY .venv/bin/python -c "from src.rag import search_documents; results = search_documents('TOPIC resolution amendment change', bucket_id='wharfside-docs', limit=5, similarity_threshold=0.35); [print(f'[{r.similarity:.3f}] {r.source_file}') for r in results]"
    ```
 
    Replace `TOPIC` with: pet, rental, fine, parking, utility, insurance, etc.
@@ -135,6 +135,20 @@ Before proceeding, confirm:
 
 8. **Cite Sources** - Always reference the document name, date, and location
 
+9. **Classify Document Authority** - The RAG database contains documents of varying authority levels. **ALWAYS distinguish** between them when synthesizing answers:
+
+   | Source File Pattern | Classification | How to Treat |
+   |---|---|---|
+   | `CertMasterDeed*` | **Recorded Master Deed** | Foundational — cite as governing unless superseded |
+   | `*RecordedAmendment*`, `*RecordedResolution*` | **Recorded Amendment** | Official — supersedes earlier rules on same topic |
+   | `ResolutionsAddendumsAmendments*` | **Recorded Resolutions** | Official — compiled recorded resolutions |
+   | `*Parking-and-Towing-Resolution*` | **Board Resolution** | Official — adopted by board vote |
+   | `*Distribution-Letter*`, `*Letter*` | **Official Notice** | Informational — describes current practice |
+   | `*Review*Comments*`, `*DRAFT*`, `*draft*` | **Working Draft** | NOT adopted policy — label as "proposed" or "under discussion" |
+   | `*Census*` | **Administrative Form** | Operational — not policy |
+
+   **CRITICAL:** Never present draft/discussion documents as adopted policy. If a result comes from a working draft, explicitly state: "This was proposed in [document] but has not been formally adopted."
+
 ## Document Categories
 
 ### Governing Documents
@@ -181,7 +195,7 @@ The Archivist can query a vector database containing all indexed Wharfside docum
 
 **How to search:**
 ```bash
-cd /Users/nickdemarco/Workspaces/pdfscribe_cli && python -c "
+cd /Users/nickdemarco/Workspaces/pdfscribe_cli && PYTHONPATH=/Users/nickdemarco/Workspaces/pdfscribe_cli RAG_BACKEND=api RAG_API_URL=https://rag-api-934267405367.us-central1.run.app RAG_API_KEY=$RAG_API_KEY .venv/bin/python -c "
 from src.rag import search_documents
 
 # Use similarity_threshold=0.35 for broader results (default 0.5 is too strict)
@@ -657,7 +671,7 @@ After syncing to local AppFolio-Sync folder:
 
 **Ingestion command:**
 ```bash
-cd /Users/nickdemarco/Workspaces/pdfscribe_cli && python -c "from src.rag import ingest_document; ingest_document('/path/to/file.md', bucket_id='wharfside-docs')"
+cd /Users/nickdemarco/Workspaces/pdfscribe_cli && PYTHONPATH=/Users/nickdemarco/Workspaces/pdfscribe_cli RAG_BACKEND=api RAG_API_URL=https://rag-api-934267405367.us-central1.run.app RAG_API_KEY=$RAG_API_KEY .venv/bin/python -c "from src.rag import ingest_document; ingest_document('/path/to/file.md', bucket_id='wharfside-docs')"
 ```
 
 ## Local Folder Organization
