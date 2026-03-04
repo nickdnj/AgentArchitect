@@ -65,6 +65,23 @@
     "type": "on-demand",
     "description": "Invoked when Nick needs personal assistance - research, email, documents, notes, or task management"
   },
+  "rag_integration": {
+    "enabled": true,
+    "database": {
+      "type": "postgres+pgvector",
+      "host": "localhost",
+      "port": 5433,
+      "name": "rag"
+    },
+    "default_bucket": "research-cache",
+    "available_buckets": ["research-cache", "personal-notes", "session-logs"],
+    "cli_path": "/Users/nickd/Workspaces/pdfscribe_cli",
+    "env_vars": {
+      "RAG_BACKEND": "postgres",
+      "RAG_DB_HOST": "127.0.0.1",
+      "RAG_DB_PORT": "5433"
+    }
+  },
   "research_cache": {
     "bucket": "research-cache",
     "path": "context-buckets/research-cache/files/",

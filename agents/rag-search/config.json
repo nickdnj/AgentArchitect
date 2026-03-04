@@ -20,7 +20,13 @@
   "mcp_servers": [],
   "context_buckets": {
     "assigned": [
-      "wharfside-docs"
+      "wharfside-docs",
+      "research-cache",
+      "session-logs",
+      "altium-playbook",
+      "personal-notes",
+      "ai-journey",
+      "altium-presentation-guide"
     ],
     "access_level": "read-only"
   },
@@ -53,8 +59,22 @@
       "name": "rag"
     },
     "default_bucket": "wharfside-docs",
+    "available_buckets": [
+      "wharfside-docs",
+      "research-cache",
+      "session-logs",
+      "altium-playbook",
+      "personal-notes",
+      "ai-journey",
+      "altium-presentation-guide"
+    ],
     "default_limit": 10,
-    "default_threshold": 0.35
+    "default_threshold": 0.35,
+    "env_vars": {
+      "RAG_BACKEND": "postgres",
+      "RAG_DB_HOST": "127.0.0.1",
+      "RAG_DB_PORT": "5433"
+    }
   },
   "agent_type": "utility",
   "execution": {

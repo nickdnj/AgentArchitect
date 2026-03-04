@@ -104,7 +104,13 @@
       "name": "rag"
     },
     "default_bucket": "wharfside-docs",
+    "available_buckets": ["wharfside-docs"],
     "cli_path": "/Users/nickd/Workspaces/pdfscribe_cli",
+    "env_vars": {
+      "RAG_BACKEND": "postgres",
+      "RAG_DB_HOST": "127.0.0.1",
+      "RAG_DB_PORT": "5433"
+    },
     "search_command": "python -c \"from src.rag import search_documents; results = search_documents('{query}', bucket_id='{bucket}', limit={limit}); [print(f'{r.source_file}: {r.chunk_text[:300]}...') for r in results]\""
   },
   "portal_sync": {

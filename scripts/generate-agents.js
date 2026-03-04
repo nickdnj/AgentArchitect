@@ -177,8 +177,8 @@ function generateCliToolDocs(mcpServers) {
  * Extract RAG configuration and generate search command section
  */
 function extractRagConfig(config) {
-  const rag = config.rag_integration;
-  if (!rag || !rag.enabled === false) return null;
+  const rag = config.rag_integration || config.rag_config;
+  if (!rag || rag.enabled === false) return null;
 
   const lines = ['### RAG Search Commands', ''];
 
@@ -187,14 +187,36 @@ function extractRagConfig(config) {
     lines.push('');
   }
 
+  // Build env var prefix for commands
+  const envVars = rag.env_vars || {};
+  const envPrefix = Object.entries(envVars)
+    .map(([k, v]) => `${k}=${v}`)
+    .join(' ');
+  const cmdPrefix = envPrefix ? `${envPrefix} ` : '';
+
   // Generate the search command
-  if (rag.cli_path && rag.default_bucket) {
+  const cliPath = rag.cli_path;
+  const defaultBucket = rag.default_bucket;
+  if (cliPath && defaultBucket) {
     lines.push('**Search command:**');
     lines.push('```bash');
-    lines.push(`cd ${rag.cli_path} && python -c "from src.rag import search_documents; results = search_documents('YOUR_QUERY', bucket_id='${rag.default_bucket}', limit=10, similarity_threshold=0.35); [print(f'[{r.similarity:.3f}] {r.source_file}\\\\n{r.chunk_text[:300]}\\\\n') for r in results]"`);
+    lines.push(`cd ${cliPath} && ${cmdPrefix}python -c "from src.rag import search_documents; results = search_documents('YOUR_QUERY', bucket_id='${defaultBucket}', limit=10, similarity_threshold=0.35); [print(f'[{r.similarity:.3f}] {r.source_file}\\\\n{r.chunk_text[:300]}\\\\n') for r in results]"`);
     lines.push('```');
     lines.push('');
-    lines.push(`**Bucket ID:** \`${rag.default_bucket}\``);
+    lines.push(`**Default Bucket:** \`${defaultBucket}\``);
+  }
+
+  // Show available buckets for multi-bucket agents
+  const buckets = rag.available_buckets;
+  if (buckets && buckets.length > 1) {
+    lines.push('');
+    lines.push('**Available Buckets:** ' + buckets.map(b => `\`${b}\``).join(', '));
+    lines.push('');
+    lines.push('To search a different bucket, replace the bucket_id parameter:');
+    lines.push('```bash');
+    const altBucket = buckets.find(b => b !== defaultBucket) || buckets[1];
+    lines.push(`cd ${cliPath} && ${cmdPrefix}python -c "from src.rag import search_documents; results = search_documents('YOUR_QUERY', bucket_id='${altBucket}', limit=10, similarity_threshold=0.35); [print(f'[{r.similarity:.3f}] {r.source_file}\\\\n{r.chunk_text[:300]}\\\\n') for r in results]"`);
+    lines.push('```');
   }
 
   // Add tools if available (from pdf-scribe style config)
@@ -202,7 +224,8 @@ function extractRagConfig(config) {
     lines.push('');
     lines.push('**RAG CLI Commands:**');
     for (const [name, cmd] of Object.entries(rag.tools)) {
-      lines.push(`- **${name}:** \`${cmd}\``);
+      // Prepend env vars to each command
+      lines.push(`- **${name}:** \`${cmdPrefix}${cmd}\``);
     }
   }
 

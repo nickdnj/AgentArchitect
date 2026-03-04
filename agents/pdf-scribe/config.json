@@ -99,8 +99,12 @@
       "type": "postgres+pgvector",
       "host": "localhost",
       "port": 5433,
-      "name": "rag",
-      "docker_compose": "/Users/nickd/Workspaces/AgentArchitect/docker-compose.yml"
+      "name": "rag"
+    },
+    "env_vars": {
+      "RAG_BACKEND": "postgres",
+      "RAG_DB_HOST": "127.0.0.1",
+      "RAG_DB_PORT": "5433"
     },
     "embeddings": {
       "provider": "openai",
