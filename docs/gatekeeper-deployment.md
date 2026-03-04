@@ -17,14 +17,13 @@ Run these on the Gatekeeper Mac Mini:
 # Core tools
 brew install python@3.12 poppler node git
 
-# Cloud SQL Auth Proxy (for direct Postgres access)
-brew install cloud-sql-proxy
-
-# Google Cloud SDK (for gcloud auth)
-brew install --cask google-cloud-sdk
-
 # Ollama (local LLM for Gatekeeper classifier)
 brew install ollama
+
+# OPTIONAL: Only needed if using RAG_BACKEND=postgres (direct DB access)
+# For RAG_BACKEND=api (recommended), these are NOT required
+# brew install cloud-sql-proxy
+# brew install --cask google-cloud-sdk
 ```
 
 ### Claude Code CLI
@@ -33,7 +32,9 @@ brew install ollama
 npm install -g @anthropic-ai/claude-code
 ```
 
-### Authenticate gcloud
+### Authenticate gcloud (only for `RAG_BACKEND=postgres`)
+
+> **Skip this section if using `RAG_BACKEND=api`** — the API backend doesn't need gcloud.
 
 ```bash
 gcloud auth login
@@ -86,9 +87,11 @@ deactivate
 
 ---
 
-## 3. Cloud SQL Auth Proxy (launchd Service)
+## 3. Cloud SQL Auth Proxy (launchd Service) — OPTIONAL
 
-The proxy connects to the cloud Postgres database and exposes it on `localhost:5433`.
+> **Skip this section if using `RAG_BACKEND=api`** — the API backend communicates via HTTPS and doesn't need a local proxy.
+
+The proxy connects to the cloud Postgres database and exposes it on `localhost:5433`. Only needed for `RAG_BACKEND=postgres`.
 
 ### Create the launchd plist
 
@@ -156,22 +159,40 @@ launchctl kickstart -k gui/$(id -u)/com.pdfscribe.cloud-sql-proxy
 ### Get secrets from GCP Secret Manager
 
 ```bash
-# RAG database password
-gcloud secrets versions access latest --secret=rag-db-password --project=pdfscribe-prod
-
-# RAG API key (for REST API access)
+# RAG API key (for REST API access — needed for both api and postgres backends)
 gcloud secrets versions access latest --secret=rag-api-keys --project=pdfscribe-prod
 
-# OpenAI API key
-gcloud secrets versions access latest --secret=openai-api-key --project=pdfscribe-prod
+# ONLY for RAG_BACKEND=postgres:
+# gcloud secrets versions access latest --secret=rag-db-password --project=pdfscribe-prod
+# gcloud secrets versions access latest --secret=openai-api-key --project=pdfscribe-prod
 ```
 
 ### Gatekeeper `.env`
 
 Edit `~/Workspaces/local-ai-gatekeeper/config/.env`:
 
+#### Option A: API Backend (Recommended)
+
+No proxy, no gcloud, no OpenAI key needed — just the API URL and key.
+
 ```bash
-# === Core (already present) ===
+# === Core ===
+TELEGRAM_BOT_TOKEN=<your-telegram-bot-token>
+AUTHORIZED_CHAT_ID=8663651658
+
+# === RAG Shared Brain (via REST API) ===
+RAG_BACKEND=api
+RAG_API_URL=https://rag-api-934267405367.us-central1.run.app
+RAG_API_KEY=<from-gcp-secret-manager: rag-api-keys>
+
+# === Anthropic (for PDF transcription + Claude delegation) ===
+ANTHROPIC_API_KEY=<your-anthropic-api-key>
+```
+
+#### Option B: Direct Postgres (requires Cloud SQL Auth Proxy + gcloud + OpenAI key)
+
+```bash
+# === Core ===
 TELEGRAM_BOT_TOKEN=<your-telegram-bot-token>
 AUTHORIZED_CHAT_ID=8663651658
 OPENAI_API_KEY=<from-gcp-secret-manager>
@@ -193,14 +214,19 @@ ANTHROPIC_API_KEY=<your-anthropic-api-key>
 Add to `~/.zshrc` or `~/.bash_profile`:
 
 ```bash
-# RAG Shared Brain
-export RAG_BACKEND=postgres
-export RAG_DB_HOST=127.0.0.1
-export RAG_DB_PORT=5433
-export RAG_DB_USER=rag
-export RAG_DB_PASSWORD="<from-gcp-secret-manager>"
-export RAG_DB_NAME=rag
-export OPENAI_API_KEY="<from-gcp-secret-manager>"
+# RAG Shared Brain (API backend — recommended)
+export RAG_BACKEND=api
+export RAG_API_URL="https://rag-api-934267405367.us-central1.run.app"
+export RAG_API_KEY="<from-gcp-secret-manager: rag-api-keys>"
+
+# Alternative: Direct Postgres (requires Cloud SQL Auth Proxy + OpenAI key)
+# export RAG_BACKEND=postgres
+# export RAG_DB_HOST=127.0.0.1
+# export RAG_DB_PORT=5433
+# export RAG_DB_USER=rag
+# export RAG_DB_PASSWORD="<from-gcp-secret-manager>"
+# export RAG_DB_NAME=rag
+# export OPENAI_API_KEY="<from-gcp-secret-manager>"
 ```
 
 This ensures that when the Gatekeeper delegates to Claude Code (`claude -p`), the spawned subprocess inherits the RAG env vars through `os.environ`.
@@ -242,30 +268,33 @@ This generates:
 Verify RAG integration in generated skills:
 
 ```bash
-grep -r "RAG_BACKEND=postgres" .claude/skills/ | head -5
+grep -r "RAG_BACKEND=" .claude/skills/ | head -5
 ```
 
 ---
 
-## 7. Verify RAG Database Connection
+## 7. Verify RAG Connection
 
 ```bash
 cd ~/Workspaces/pdfscribe_cli
 source .venv/bin/activate
 
-# Check connection and index stats
-RAG_BACKEND=postgres python src/rag.py stats
+# === API backend (recommended) ===
+RAG_BACKEND=api RAG_API_URL=https://rag-api-934267405367.us-central1.run.app \
+  RAG_API_KEY=<key> python src/rag.py stats
 
-# Expected output:
+# Test a search
+RAG_BACKEND=api RAG_API_URL=https://rag-api-934267405367.us-central1.run.app \
+  RAG_API_KEY=<key> python src/rag.py search "parking rules" --bucket wharfside-docs
+
+# === Direct Postgres (alternative) ===
+# RAG_BACKEND=postgres python src/rag.py stats
+# RAG_BACKEND=postgres python src/rag.py search "parking rules" --bucket wharfside-docs
+
+# Expected output (either backend):
 #   Total documents: 109
 #   Total chunks: 816
 #   Buckets: wharfside-docs, research-cache, session-logs, ...
-
-# Test a search
-RAG_BACKEND=postgres python src/rag.py search "parking rules" --bucket wharfside-docs
-
-# Cross-bucket search
-RAG_BACKEND=postgres python src/rag.py search "assessment schedule"
 
 deactivate
 ```
@@ -397,17 +426,11 @@ cat > ~/Library/LaunchAgents/com.gatekeeper.ai.plist << 'PLIST'
         <key>HOME</key>
         <string>/Users/USERNAME</string>
         <key>RAG_BACKEND</key>
-        <string>postgres</string>
-        <key>RAG_DB_HOST</key>
-        <string>127.0.0.1</string>
-        <key>RAG_DB_PORT</key>
-        <string>5433</string>
-        <key>RAG_DB_USER</key>
-        <string>rag</string>
-        <key>RAG_DB_PASSWORD</key>
-        <string>REPLACE_WITH_ACTUAL_PASSWORD</string>
-        <key>RAG_DB_NAME</key>
-        <string>rag</string>
+        <string>api</string>
+        <key>RAG_API_URL</key>
+        <string>https://rag-api-934267405367.us-central1.run.app</string>
+        <key>RAG_API_KEY</key>
+        <string>REPLACE_WITH_ACTUAL_API_KEY</string>
     </dict>
 </dict>
 </plist>
@@ -468,19 +491,11 @@ cat > ~/Library/LaunchAgents/com.pdfscribe.rag-watcher.plist << 'PLIST'
     <key>EnvironmentVariables</key>
     <dict>
         <key>RAG_BACKEND</key>
-        <string>postgres</string>
-        <key>RAG_DB_HOST</key>
-        <string>127.0.0.1</string>
-        <key>RAG_DB_PORT</key>
-        <string>5433</string>
-        <key>RAG_DB_USER</key>
-        <string>rag</string>
-        <key>RAG_DB_PASSWORD</key>
-        <string>REPLACE_WITH_ACTUAL_PASSWORD</string>
-        <key>RAG_DB_NAME</key>
-        <string>rag</string>
-        <key>OPENAI_API_KEY</key>
-        <string>REPLACE_WITH_ACTUAL_KEY</string>
+        <string>api</string>
+        <key>RAG_API_URL</key>
+        <string>https://rag-api-934267405367.us-central1.run.app</string>
+        <key>RAG_API_KEY</key>
+        <string>REPLACE_WITH_ACTUAL_API_KEY</string>
     </dict>
 </dict>
 </plist>
@@ -495,12 +510,12 @@ launchctl load ~/Library/LaunchAgents/com.pdfscribe.rag-watcher.plist
 
 ## Quick Reference — Services on Gatekeeper
 
-| Service | launchd Label | Port | Logs |
-|---------|--------------|------|------|
-| Cloud SQL Auth Proxy | `com.pdfscribe.cloud-sql-proxy` | 5433 | `/tmp/cloud-sql-proxy.stderr.log` |
-| Gatekeeper Bot | `com.gatekeeper.ai` | — | `/tmp/gatekeeper.stderr.log` |
-| RAG File Watcher | `com.pdfscribe.rag-watcher` | — | `/tmp/rag-watcher.stderr.log` |
-| Ollama | `com.ollama.server` (auto) | 11434 | — |
+| Service | launchd Label | Port | Logs | Required |
+|---------|--------------|------|------|----------|
+| Cloud SQL Auth Proxy | `com.pdfscribe.cloud-sql-proxy` | 5433 | `/tmp/cloud-sql-proxy.stderr.log` | Only for `RAG_BACKEND=postgres` |
+| Gatekeeper Bot | `com.gatekeeper.ai` | — | `/tmp/gatekeeper.stderr.log` | Yes |
+| RAG File Watcher | `com.pdfscribe.rag-watcher` | — | `/tmp/rag-watcher.stderr.log` | Yes |
+| Ollama | `com.ollama.server` (auto) | 11434 | — | Yes |
 
 ### Common Commands
 
@@ -525,17 +540,17 @@ tail -f /tmp/cloud-sql-proxy.stderr.log
 ## Deployment Checklist
 
 - [ ] Homebrew + core tools installed (python3, node, git, poppler)
-- [ ] `cloud-sql-proxy` installed and gcloud authenticated
 - [ ] Claude Code CLI installed (`claude --version`)
 - [ ] Ollama installed and model pulled (`ollama pull glm4`)
 - [ ] Repos cloned: AgentArchitect, pdfscribe_cli, local-ai-gatekeeper
 - [ ] Python venvs created for pdfscribe_cli and gatekeeper
-- [ ] Cloud SQL Auth Proxy running as launchd service (port 5433)
-- [ ] `.env` file populated with all secrets
+- [ ] `.env` file populated with RAG_BACKEND + secrets (api or postgres)
 - [ ] Shell profile exports RAG env vars (for interactive Claude sessions)
+- [ ] *(postgres only)* `cloud-sql-proxy` installed and gcloud authenticated
+- [ ] *(postgres only)* Cloud SQL Auth Proxy running as launchd service (port 5433)
 - [ ] Gatekeeper `config.yaml` has `working_directory` set to AgentArchitect path
 - [ ] `node scripts/generate-agents.js` run in AgentArchitect
-- [ ] RAG stats verified: `RAG_BACKEND=postgres python src/rag.py stats`
+- [ ] RAG stats verified: `python src/rag.py stats`
 - [ ] RAG search verified: found results across buckets
 - [ ] Telegram bot responding to messages
 - [ ] Gatekeeper launchd service loaded (auto-start on boot)

@@ -189,9 +189,16 @@ function extractRagConfig(config) {
 
   // Build env var prefix for commands
   const envVars = rag.env_vars || {};
-  const envPrefix = Object.entries(envVars)
-    .map(([k, v]) => `${k}=${v}`)
-    .join(' ');
+  const isApiBackend = envVars.RAG_BACKEND === 'api';
+  let envPrefix;
+  if (isApiBackend) {
+    // API backend: use RAG_API_URL and RAG_API_KEY (read from environment at runtime)
+    envPrefix = 'RAG_BACKEND=api RAG_API_URL=$RAG_API_URL RAG_API_KEY=$RAG_API_KEY';
+  } else {
+    envPrefix = Object.entries(envVars)
+      .map(([k, v]) => `${k}=${v}`)
+      .join(' ');
+  }
   const cmdPrefix = envPrefix ? `${envPrefix} ` : '';
 
   // Generate the search command
