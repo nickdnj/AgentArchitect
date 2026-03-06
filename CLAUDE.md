@@ -14,7 +14,10 @@ When sending emails or reports:
 
 ## Smart Routing (MANDATORY)
 
-When the user starts a conversation without invoking a specific agent or team, you MUST route to the appropriate orchestrator by **invoking the skill using the Skill tool**. Do NOT bypass the orchestrator by calling specialist agents (e.g., Archivist, Email Research) directly via the Task tool. The orchestrator handles routing and delegation.
+When the user starts a conversation without invoking a specific agent or team, you MUST route to the appropriate orchestrator. Do NOT bypass the orchestrator by calling specialist agents directly. The orchestrator handles routing and delegation.
+
+### Claude Code Environment
+If you have access to the `Task` tool with named subagent types, use skill invocation:
 
 | Topic Signals | Invoke Skill |
 |---|---|
@@ -25,11 +28,23 @@ When the user starts a conversation without invoking a specific agent or team, y
 | YouTube, video, shorts, content, channel, upload | `Skill(skill: "youtube-content")` |
 | Build agent, create team, manage agents, modify agent, bucket | `Skill(skill: "architect")` |
 
-**Routing Rules:**
+### Cowork Environment
+If you have access to the `Agent` tool (with subagent_type="general-purpose"), read the orchestrator file and follow its instructions:
+
+| Topic Signals | Action |
+|---|---|
+| Wharfside, board, condo, HOA, marina, bulletin, governing docs, amendment, assessment | Read `AgentArchitect/cowork/skills/wharfside/SKILL.md` and follow its orchestration instructions |
+| Email, calendar, tasks, research, personal, reminders, notes | Read `AgentArchitect/cowork/skills/max/SKILL.md` and follow its orchestration instructions |
+| Altium, PCB, EDA, sales, deployment, customer, Cadence, Mentor, KiCad | Read `AgentArchitect/cowork/skills/altium/SKILL.md` and follow its orchestration instructions |
+| Software, code, app, feature, architecture, requirements, development, testing | Read `AgentArchitect/cowork/skills/software-project/SKILL.md` and follow its orchestration instructions |
+| YouTube, video, shorts, content, channel, upload | Read `AgentArchitect/cowork/skills/youtube-content/SKILL.md` and follow its orchestration instructions |
+| Build agent, create team, manage agents, modify agent, bucket, sync | Read `AgentArchitect/cowork/skills/architect/SKILL.md` and follow its instructions |
+
+### Routing Rules
 1. Match on keywords in the user's request
 2. If ambiguous, ask which team they want
 3. If clearly about agent/team management, use the Architect
-4. **ALWAYS invoke the team skill** — never call specialist subagents directly. The orchestrator will delegate to the right specialist(s) in their own forked context
+4. **ALWAYS invoke the team orchestrator** — never call specialist subagents directly. The orchestrator will delegate to the right specialist(s) in their own forked context
 5. The only exception is when the user explicitly invokes a specialist skill by name (e.g., `/archivist`)
 
 ## Getting Started (Agent Management)
@@ -111,6 +126,7 @@ Available MCP servers (configured in `mcp-servers/`):
 
 - `/architect` - Load the Architect agent for team/agent management
 - `/sync-agents` - Generate Claude Code native agents from Agent Architect definitions
+- `node AgentArchitect/scripts/generate-cowork.js` - Generate Cowork orchestrator skills
 
 ## Claude Code Native Agent Integration (v2.0)
 
@@ -166,3 +182,40 @@ This prevents context blowout by keeping heavy work isolated in subagents.
 - **Rich metadata preserved** - agent_type, execution config, collaboration rules stored as HTML comments
 - **Skills enable forked execution** - specialists get their own context window via `context: fork`
 - **Team skills are orchestrators** - they route and delegate, never do deep work themselves
+
+## Cowork Integration (v2.0)
+
+Agent Architect also generates orchestrator files for Cowork mode. Since Cowork's `.skills/` directory is read-only, orchestrators are stored in `cowork/skills/` and loaded via CLAUDE.md routing.
+
+### Architecture
+
+```
+agents/<agent-id>/              (SOURCE OF TRUTH - edit these)
+├── SKILL.md                    → Behavioral instructions
+└── config.json                 → Rich metadata
+
+teams/<team-id>/
+└── team.json                   → Members, orchestration config
+
+        ↓ generate (via generate-cowork.js)
+
+cowork/skills/<team-alias>/SKILL.md  (GENERATED - orchestrator for Cowork)
+cowork/skills/architect/SKILL.md     (GENERATED - management for Cowork)
+cowork/ROUTING.md                    (GENERATED - routing reference)
+```
+
+### How Cowork Delegation Works
+
+1. CLAUDE.md routing matches the user's request to a team
+2. Claude reads the orchestrator SKILL.md from `cowork/skills/<team>/`
+3. Orchestrator instructions tell Claude to read specialist SKILL.md files from `agents/<id>/`
+4. Claude delegates via `Agent(subagent_type="general-purpose", prompt="[specialist SKILL.md + task]")`
+5. Each specialist runs in its own isolated context via the Agent tool
+6. Results come back; orchestrator synthesizes and responds
+
+### Key Differences from Claude Code
+
+- **No named subagent types** — specialists are invoked as `general-purpose` agents with SKILL.md content in the prompt
+- **MCP tools are global** — Gmail, GDrive, GCal, Chrome are available to all agents natively (no CLI wrappers)
+- **No tool isolation** — tool access is advisory (via prompt instructions) rather than enforced
+- **Never edit `cowork/` files directly** — regenerate with `node scripts/generate-cowork.js`

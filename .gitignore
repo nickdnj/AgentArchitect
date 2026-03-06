@@ -40,3 +40,6 @@ teams/*/outputs/
 
 # Top-level outputs
 outputs/
+
+# Generated data (FTS5 database)
+data/
