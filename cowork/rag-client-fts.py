@@ -73,6 +73,7 @@ def search(query, bucket=None, limit=DEFAULT_LIMIT):
         """
         params = (query, limit)
 
+    expanded = False
     try:
         rows = conn.execute(sql, params).fetchall()
     except sqlite3.OperationalError as e:
@@ -86,6 +87,20 @@ def search(query, bucket=None, limit=DEFAULT_LIMIT):
         else:
             raise
 
+    # OR fallback: if AND query returned nothing and query has multiple terms
+    if not rows and ' ' in query and 'OR' not in query.upper():
+        terms = query.split()
+        or_query = ' OR '.join(terms)
+        try:
+            if bucket:
+                rows = conn.execute(sql, (or_query, bucket, limit)).fetchall()
+            else:
+                rows = conn.execute(sql, (or_query, limit)).fetchall()
+            if rows:
+                expanded = True
+        except sqlite3.OperationalError:
+            pass  # If OR query also fails, fall through to no-results
+
     conn.close()
 
     if not rows:
@@ -94,7 +109,11 @@ def search(query, bucket=None, limit=DEFAULT_LIMIT):
             print(f"  (bucket: {bucket})")
         return
 
-    print(f"## RAG Search Results: \"{query}\"")
+    if expanded:
+        print(f"## RAG Search Results: \"{query}\"")
+        print(f"**Note:** No exact matches. Showing expanded results (OR matching).")
+    else:
+        print(f"## RAG Search Results: \"{query}\"")
     if bucket:
         print(f"**Bucket:** {bucket}")
     print(f"**Results:** {len(rows)}")

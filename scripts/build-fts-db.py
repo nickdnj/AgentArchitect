@@ -18,7 +18,10 @@ import hashlib
 import json
 import re
 import sqlite3
+import subprocess
 import sys
+import xml.etree.ElementTree as ET
+import zipfile
 from html.parser import HTMLParser
 from pathlib import Path
 
@@ -36,7 +39,7 @@ CHUNK_SIZE = 800  # tokens (approximate)
 CHUNK_OVERLAP = 120  # ~15% overlap
 
 SKIP_FILES = {"home.html", "index.html", ".DS_Store"}
-INGESTABLE_EXTENSIONS = {".html", ".md", ".txt"}
+INGESTABLE_EXTENSIONS = {".html", ".md", ".txt", ".pdf", ".docx"}
 
 
 # ============================================================================
@@ -224,6 +227,40 @@ def collect_files(files_dir):
     return files
 
 
+def extract_pdf_text(filepath):
+    """Extract text from a PDF using pdftotext (poppler)."""
+    try:
+        result = subprocess.run(
+            ["pdftotext", "-layout", str(filepath), "-"],
+            capture_output=True, text=True, timeout=30
+        )
+        if result.returncode == 0:
+            return result.stdout
+        print(f"    [WARN] pdftotext failed for {filepath.name}: {result.stderr.strip()}", file=sys.stderr)
+        return None
+    except FileNotFoundError:
+        print("    [WARN] pdftotext not found — install poppler: brew install poppler", file=sys.stderr)
+        return None
+
+
+def extract_docx_text(filepath):
+    """Extract text from a DOCX file using stdlib zipfile + xml parsing."""
+    WORD_NS = "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}"
+    try:
+        with zipfile.ZipFile(filepath) as zf:
+            xml_content = zf.read("word/document.xml")
+        root = ET.fromstring(xml_content)
+        paragraphs = []
+        for para in root.iter(f"{WORD_NS}p"):
+            texts = [t.text for t in para.iter(f"{WORD_NS}t") if t.text]
+            if texts:
+                paragraphs.append("".join(texts))
+        return "\n\n".join(paragraphs)
+    except (zipfile.BadZipFile, KeyError, ET.ParseError) as e:
+        print(f"    [WARN] Failed to extract DOCX {filepath.name}: {e}", file=sys.stderr)
+        return None
+
+
 def extract_text(filepath):
     """Extract text from a file based on its extension."""
     ext = filepath.suffix.lower()
@@ -231,6 +268,10 @@ def extract_text(filepath):
         return extract_html_text(filepath)
     elif ext in ('.md', '.txt'):
         return filepath.read_text(encoding='utf-8', errors='replace')
+    elif ext == '.pdf':
+        return extract_pdf_text(filepath)
+    elif ext == '.docx':
+        return extract_docx_text(filepath)
     return None
 
 

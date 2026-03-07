@@ -577,6 +577,20 @@ Building real agents taught us valuable lessons:
 
 ---
 
+## The "I Know Kung Fu" Moment
+
+In *The Matrix*, Neo gets plugged in, downloads a lifetime of martial arts training in seconds, and wakes up saying *"I know Kung Fu."*
+
+That's what Agent Architect does — but it keeps happening.
+
+Every SKILL.md file is a training program. Write one, and Claude instantly "knows" how to be a deployment manager, a competitive analyst, a board communications specialist, or a document archivist. You're not configuring software. You're uploading expertise.
+
+The first time it clicks, it feels like magic. But the real power is the compounding. Each new agent you build, each team you assemble, each context bucket you connect — it's another download. Another *"I know Kung Fu"* moment stacked on top of the last one. Three years in, and the moments haven't stopped coming.
+
+Agent Architect is the chair Neo sits in. You're the operator deciding what gets loaded.
+
+---
+
 ## Philosophy
 
 Agent Architect is built on these principles:
