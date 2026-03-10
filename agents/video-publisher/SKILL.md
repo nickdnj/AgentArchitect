@@ -2,13 +2,13 @@
 
 ## Purpose
 
-Video Publisher handles the final stages of YouTube video production: generating optimized metadata (title, description, tags), creating thumbnails, uploading the video to YouTube via browser automation, and delivering the final package. It delegates the actual YouTube Studio browser interaction to the Chrome Browser agent.
+Video Publisher handles the final stages of YouTube video production: generating optimized metadata (title, description, tags), creating thumbnails, uploading the video to YouTube via the YouTube Data API, and delivering the final package.
 
 ## Core Responsibilities
 
 1. **Metadata & SEO** - Generate optimized titles, descriptions, tags for YouTube discovery
 2. **Thumbnail Creation** - Create eye-catching thumbnails using FFmpeg drawtext or OpenAI Image
-3. **YouTube Upload** - Delegate upload to Chrome Browser agent with detailed instructions
+3. **YouTube Upload** - Upload via YouTube Data API (OAuth); Chrome Browser as fallback
 4. **Final Delivery** - Present summary to user with all deliverables
 
 ## Workflow
@@ -71,31 +71,40 @@ ffmpeg -y -i hero-image.jpg \
 
 #### Method A: YouTube Data API (PRIMARY — preferred method)
 
-Upload directly via the YouTube Data API v3 using the `youtube-upload.py` script. This is more reliable than browser automation.
+Upload directly via the YouTube Data API v3. This is more reliable than browser automation.
 
 ```bash
-python ~/Workspaces/max-assistant/scripts/youtube-upload.py --metadata output/metadata.json
+python ~/Workspaces/AgentArchitect/scripts/youtube-upload.py \
+  --metadata output/metadata.json \
+  --video output/final-video.mp4 \
+  --thumbnail assets/thumbnails/thumbnail-final.jpg \
+  --visibility public
 ```
 
-The script:
-- Reads `metadata.json` for title, description, tags, categoryId, visibility, videoPath, thumbnail
-- Loads OAuth credentials from `~/.config/youtube-upload/credentials.json`
-- Uploads video via resumable upload with progress reporting
-- Auto-compresses thumbnails over 2MB to JPEG
-- Sets thumbnail after upload completes
-- Prints YouTube URL on success (exit code 0) or error details (exit code 1)
+**CLI arguments:**
+- `--metadata` (required): Path to metadata JSON (title, description, tags, category, visibility)
+- `--video` (required): Path to video file
+- `--thumbnail` (optional): Path to thumbnail image (overrides `thumbnail` field in metadata)
+- `--visibility` (optional): `public|unlisted|private` (overrides metadata)
 
-**One-time setup** (already completed):
+**How it works:**
+- Loads OAuth token from `~/.config/youtube-upload/token.pickle`
+- Uploads video via resumable upload (10MB chunks) with progress reporting
+- Sets thumbnail after upload (auto-detects JPEG/PNG MIME type)
+- Prints JSON result to stdout: `{ "video_id", "url", "title", "visibility", "status" }`
+- Progress messages go to stderr, parseable result goes to stdout
+
+**If token is expired or missing**, re-authenticate:
 ```bash
-python ~/Workspaces/max-assistant/scripts/youtube-auth.py --client-secrets path/to/client_secret.json
+python ~/Workspaces/AgentArchitect/scripts/youtube-reauth.py [--port 8090]
 ```
 
 **Prerequisites:**
 - `google-api-python-client`, `google-auth-oauthlib` installed in system Python
 - YouTube Data API v3 enabled in Google Cloud project `d3marco-1`
-- OAuth credentials at `~/.config/youtube-upload/credentials.json` (created by `youtube-auth.py`)
+- OAuth token at `~/.config/youtube-upload/token.pickle` (created by `youtube-reauth.py`)
 
-**Category IDs:** `22` = People & Blogs, `27` = Education, `28` = Science & Technology, `24` = Entertainment
+**Category IDs:** `22` = People & Blogs, `27` = Education, `28` = Science & Technology, `24` = Entertainment, `1` = Film & Animation
 
 #### Method B: Chrome Browser (FALLBACK — only if API fails)
 
@@ -163,7 +172,7 @@ Return a briefing to the orchestrator with:
 | `gmail-personal` | `send_email` | Progress notifications (optional) |
 
 **Delegation:**
-- `chrome-browser` agent - YouTube Studio upload automation
+- `chrome-browser` agent - YouTube Studio upload (fallback only, if API fails)
 
 ## Success Criteria
 

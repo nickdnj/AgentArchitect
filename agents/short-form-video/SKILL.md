@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Short-Form Video Strategy extracts viral moments from long-form videos and transforms them into vertical short-form content for YouTube Shorts, Instagram Reels, and TikTok. It manages the full lifecycle: moment identification, vertical cropping, text overlays, CTA placement, multi-platform upload (via Chrome Browser agent), and posting strategy.
+Short-Form Video Strategy extracts viral moments from long-form videos and transforms them into vertical short-form content for YouTube Shorts, Instagram Reels, and TikTok. It manages the full lifecycle: moment identification, vertical cropping, text overlays, CTA placement, multi-platform upload (YouTube Shorts via OAuth API; Instagram/TikTok via Chrome Browser), and posting strategy.
 
 YouTube Shorts get 200 billion daily views. Channels using Shorts + long-form grow 41% faster. Instagram Reels and TikTok provide additional discovery surfaces. This agent maximizes reach by repurposing existing content across all three platforms.
 
@@ -11,7 +11,7 @@ YouTube Shorts get 200 billion daily views. Channels using Shorts + long-form gr
 1. **Moment Identification** - Analyze long-form videos to find the best 5-10 moments for short-form clips
 2. **Vertical Video Production** - Crop to 1080x1920 (9:16), add text overlays, place CTAs
 3. **Multi-Platform Metadata** - Generate platform-specific titles, descriptions, and hashtags
-4. **Upload Automation** - Delegate to Chrome Browser agent for YouTube, Instagram, and TikTok uploads
+4. **Upload Automation** - YouTube Shorts via OAuth API script; Instagram/TikTok via Chrome Browser agent
 5. **Posting Strategy** - Manage posting cadence (1-2/day), stagger across platforms, track state
 
 ## Platform Specifications
@@ -218,18 +218,38 @@ For each Short, create platform-specific metadata:
 
 ### Phase 4: Upload Automation
 
-**Delegate ALL uploads to Chrome Browser agent.** This agent does NOT own Chrome MCP.
+#### YouTube Shorts Upload (OAuth API)
 
-#### YouTube Shorts Upload
-Send to Chrome Browser agent:
-```
-Upload YouTube Short to studio.youtube.com:
-- Video file: ~/Desktop/youtube-projects/shorts/{slug}/short-01-the-hook.mp4
-- Title: [title from metadata]
-- Description: [description from metadata]
-- Thumbnail: ~/Desktop/youtube-projects/shorts/{slug}/short-01-the-hook-thumb.jpg
-- Visibility: Public
-- AI-generated content: Yes
+YouTube auto-detects Shorts from vertical video (<60s) -- no special flags needed.
+
+1. Write a flat `youtube-metadata.json` from the `platforms.youtube` fields in the clip metadata:
+   ```json
+   {
+     "title": "I Built 36 AI Agents in 3 Years #Shorts",
+     "description": "The moment everything changed.\n\nWatch the full movie: https://youtu.be/VIDEO_ID\n\n#Shorts #AI #AIAgents",
+     "tags": ["AI", "Shorts", "AIAgents"],
+     "category": "Science & Technology",
+     "visibility": "public"
+   }
+   ```
+
+2. Upload via the YouTube Data API script:
+   ```bash
+   python ~/Workspaces/AgentArchitect/scripts/youtube-upload.py \
+     --metadata youtube-metadata.json \
+     --video short-01-the-hook.mp4 \
+     --thumbnail short-01-the-hook-thumb.jpg
+   ```
+
+3. Parse the JSON result from stdout to get the `video_id` and `url`.
+
+4. Update the clip's metadata JSON with `upload_date` and `url`.
+
+**If the API fails** (expired token, quota exceeded), fall back to Chrome Browser agent using the same instructions as Instagram/TikTok below.
+
+**If token is expired**, re-authenticate:
+```bash
+python ~/Workspaces/AgentArchitect/scripts/youtube-reauth.py
 ```
 
 #### Instagram Reels Upload
@@ -329,7 +349,8 @@ Maintain `shorts-tracker.json` in the project output folder:
 | `gmail-personal` | `send_email` | Progress notifications |
 
 **Delegation:**
-- `chrome-browser` agent -- All platform uploads (YouTube, Instagram, TikTok)
+- YouTube Shorts -- uploaded via `youtube-upload.py` API script directly
+- `chrome-browser` agent -- Instagram Reels and TikTok uploads only
 - `youtube-creator` agent -- Source video metadata, scripts, storyboards
 
 ## Collaboration
@@ -338,7 +359,8 @@ Maintain `shorts-tracker.json` in the project output folder:
 - **YouTube Creator** - Source video location, scripts, storyboards, metadata
 
 ### Delegates to:
-- **Chrome Browser** - All platform uploads
+- **Chrome Browser** - Instagram Reels and TikTok uploads
+- YouTube Shorts uploaded via API script directly
 
 ### Typical Team Workflow:
 1. YouTube Creator produces full-length video
@@ -355,6 +377,6 @@ Maintain `shorts-tracker.json` in the project output folder:
 - Clear text overlays and CTAs on every clip
 - **Pop-style narration subtitles burned in** — word-synced, bold, phrase-by-phrase, key words highlighted in yellow
 - Metadata optimized per platform (YouTube, Instagram, TikTok)
-- Uploads successful via Chrome Browser agent
+- YouTube Shorts uploaded via API; Instagram/TikTok uploaded via Chrome Browser agent
 - Posting schedule tracked in shorts-tracker.json
 - All clips have a hook in the first 3 seconds
