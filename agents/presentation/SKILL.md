@@ -6,6 +6,7 @@ This agent creates professional PowerPoint presentations using branded templates
 
 - **Wharfside Manor** - Board meetings, community updates, project reports (Wharfside_TEMPLATE.pptx)
 - **Altium** - Sales presentations, internal briefings, customer-facing decks (Altium_TEMPLATE.pptx)
+- **YouTube Storyboard** - Visual review decks for video production pipeline (YouTube_Storyboard_TEMPLATE.pptx)
 
 The agent automatically selects the correct template based on the topic and audience, then applies template-specific layout knowledge to produce professional, on-brand presentations.
 
@@ -85,6 +86,7 @@ Templates are stored in `./templates/` within the Presentation agent folder. The
 |----------|------|---------|-----------|
 | **Wharfside Standard** | `Wharfside_TEMPLATE.pptx` | 5 layouts | Board meetings, community updates, project reports |
 | **Altium Corporate** | `Altium_TEMPLATE.pptx` | 42 layouts | Sales presentations, internal briefings, customer decks, proposals |
+| **YouTube Storyboard** | `YouTube_Storyboard_TEMPLATE.pptx` | 6 layouts | Video storyboard review, chapter-based visual planning |
 
 ### Template Selection Logic
 
@@ -94,12 +96,14 @@ Templates are stored in `./templates/` within the Presentation agent folder. The
 |----------------|----------|-----------------|
 | Wharfside, board meeting, HOA, condo, community, residents | Wharfside Standard | `wharfside-docs` bucket |
 | Altium, PCB, EDA, designer, electronics, sales deal, customer briefing | Altium Corporate | `altium-presentation-guide` bucket |
+| YouTube, video, storyboard, chapter, narration, script review | YouTube Storyboard | N/A (self-contained layout guide below) |
 
 **Decision Rules:**
 1. If the request mentions Wharfside, board, HOA, or community topics -> **Wharfside template**
 2. If the request mentions Altium, PCB design, EDA, or is for the Altium Solutions Team -> **Altium template**
-3. If the request comes from the Altium Solutions Team workflow -> **Altium template** (default)
-4. If ambiguous, ask the user which template to use
+3. If the request mentions video storyboard, chapter review, or comes from the YouTube Content team -> **YouTube Storyboard template**
+4. If the request comes from the Altium Solutions Team workflow -> **Altium template** (default)
+5. If ambiguous, ask the user which template to use
 
 ### Altium Template Knowledge
 
@@ -195,6 +199,46 @@ When using the Altium template, consult the `altium-presentation-guide` context 
 6. Takeaway Slides (Layout 30) - Key metrics with callout
 7. Quote Slide (Layout 36) - Customer testimonial
 8. Summary (Layout 38) - CTA and next steps
+
+### 7. YouTube Video Storyboard (YouTube Storyboard Template)
+**Purpose:** Visual review deck for the video production pipeline. Each chapter of the video becomes a section of slides so the creator can review the story arc, narration, and visual plan before production begins.
+
+**Typical Structure:**
+1. Title Slide (Layout 0) - Video title, video type, target length, date
+2. Chapter Overview (Layout 1 — Agenda) - Bulleted chapter listing with timestamps
+3. For each chapter (repeated block):
+   a. Chapter Header (Layout 2 — Section Header) - Chapter title + summary sentence
+   b. Scene Detail Slides (Layout 3 — Content) - One per scene:
+      - Title: "Scene {N}: {Name} ({start_time} - {end_time})"
+      - Body bullets:
+        - `NARRATION: "{first 2-3 sentences of narration text}"`
+        - `VISUAL: {visual description from storyboard}`
+        - `IMAGE: {user-provided | AI-generated | title-card}`
+        - `MOTION: {ken-burns-zoom | gentle-zoom | static | pillarbox}`
+        - `TRANSITION: {crossfade 1s | cut | etc.}`
+   c. Dual Content slides (Layout 4) - When a scene has before/after or multiple visual concepts
+4. Summary Slide (Layout 5) - Total chapters, scenes, estimated runtime, asset counts, narration voice
+
+**YouTube Storyboard Template Layouts:**
+
+| Layout | Name | Placeholders | Use For |
+|--------|------|-------------|---------|
+| 0 | Title Slide | title, subtitle | Opening — video title and metadata |
+| 1 | Title and Content | title (ph 0), body (ph 1) | Chapter overview, scene details, summary (workhorse — 60%+ of slides) |
+| 2 | Section Header | main title (ph 0), subtitle (ph 1) | Chapter dividers |
+| 3 | Two Content | title (ph 0), left (ph 1), right (ph 2) | Before/after or multi-visual comparisons |
+| 5 | Title Only | title (ph 0) | Flexible — add body content with manage_text if needed |
+
+**Content Guidelines:**
+- Include actual narration text (not just summaries) so the reviewer can read the flow
+- Visual descriptions should be vivid enough to convey the look and feel
+- Note motion styles on every scene slide
+- Mark image source: user-provided, AI-generated, or title card
+- Keep timing annotations visible on every scene slide
+- No corporate branding — clean, neutral design focused on readability
+
+**Naming Convention:** `{project-slug}-storyboard.pptx`
+**Output Location:** `/app/workspace/` then copy to project's `script/` folder
 
 ## PowerPoint MCP Tools Reference (v1.21.1 - 37 tools)
 

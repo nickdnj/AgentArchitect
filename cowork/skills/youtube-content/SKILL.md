@@ -1,7 +1,7 @@
 ---
 name: youtube-content
 description: "Video production and multi-platform short-form content strategy.
-  - TRIGGER KEYWORDS: script outline, asset generation, video assembly, metadata upload, shorts reels, full video, general
+  - TRIGGER KEYWORDS: script outline, storyboard review, audio production, visual production, video assembly, metadata upload, shorts reels, full video, general
   - CAPABILITIES: Research, outline, narration script, and storyboard creation, AI image generation, TTS narration, background music production, FFmpeg video assembly with multiple visual styles (Ken Burns, gentle zoom, static, pillarbox), transitions, encoding, Metadata/SEO, thumbnails, YouTube upload, final delivery, Shorts/Reels/TikTok extraction and posting strategy"
 ---
 
@@ -15,7 +15,19 @@ Video production and multi-platform short-form content strategy.
 
 ## Orchestration Strategy
 
-ALWAYS start with a Creative Brief conversation before delegating to any specialist. Ask about audience, tone, visual style, source material, target length, and whether to publish or stop at review. Once the brief is complete, run the sequential pipeline: Script Writer -> Asset Generator -> Assembler -> Publisher (if publishing). Each specialist runs in its own forked context. Pass the creative brief, project folder path, and previous phase briefing to each successive specialist. After full video is published, optionally route to Short-Form Video for clip extraction.
+ALWAYS start with a Creative Brief conversation before delegating to any specialist. Once the brief is complete, run the chapter-based pipeline with two human review gates:
+
+1. Script Writer produces chapter-structured outline, script, storyboard, and PowerPoint storyboard deck
+2. GATE 1: Present the PowerPoint deck to user. Ask for feedback on story arc, chapters, and visual vision
+3. ITERATE: If user requests changes, delegate back to Script Writer to revise and regenerate deck
+4. Once storyboard is approved, delegate to Asset Generator in AUDIO-ONLY mode
+5. GATE 2: Present audio files to user for listening review
+6. Once audio is approved, delegate to Asset Generator in VISUALS-ONLY mode
+7. Delegate to Assembler with all approved assets
+8. Delegate to Publisher (if publishing)
+9. Optionally route to Short-Form Video for clip extraction
+
+Each specialist runs in its own forked context. Pass the creative brief, project folder path, and previous phase briefing to each.
 
 ## Phase 0: Creative Brief (MANDATORY for full-video requests)
 
@@ -37,7 +49,44 @@ Before delegating ANY work for a new video, have an interactive conversation wit
 - Summarize the complete brief before proceeding to delegation
 - Save the brief as part of the project.json settings
 
-**Skip the brief when:** The user is asking for a specific pipeline step (e.g., "just assemble the video" or "upload this to YouTube") — go directly to the relevant specialist.
+**Skip the brief when:** The user is asking for a specific pipeline step (e.g., 'just assemble the video' or 'upload this to YouTube') — go directly to the relevant specialist.
+
+## Phase 2: PowerPoint Storyboard Review Gate
+
+After the Script Writer returns with the storyboard and PowerPoint deck:
+
+1. **Present the deck to the user:**
+   - Share the PPTX file path so they can open it in PowerPoint
+   - List the chapters with brief summaries
+   - Note total estimated runtime and scene count
+
+2. **Ask for feedback:**
+   - 'Does this story arc and chapter flow work for your vision?'
+   - 'Any chapters to reorder, add, remove, or modify?'
+   - 'Are the visual descriptions aligned with what you're imagining?'
+
+3. **If changes requested:** Delegate back to Script Writer with specific feedback. The script writer updates the markdown files and regenerates the PowerPoint deck. Re-present for review.
+
+4. **If approved:** Set `phases.storyboard_review.status = 'approved'` in project.json, proceed to audio production.
+
+**Tip:** Suggest batching feedback rather than one change at a time to reduce iteration cycles.
+
+## Phase 4: Audio Review Gate
+
+After the Asset Generator returns from audio-only mode:
+
+1. **Present audio for review:**
+   - List per-scene narration files with durations
+   - Share the audio folder path so they can listen
+   - Note total narration duration and voice used
+
+2. **Ask for feedback:**
+   - 'Does the pacing and flow work? Any scenes feel too fast or too slow?'
+   - 'Is the voice and tone right for this video?'
+
+3. **If changes requested:** Delegate back to Asset Generator (audio-only mode) with specific scenes to regenerate.
+
+4. **If approved:** Proceed to visual production (Asset Generator in visuals-only mode).
 
 ## CRITICAL: Delegation Rules
 
@@ -115,7 +164,9 @@ For each specialist delegation, follow this pattern:
 | Request Type | Route To |
 |---|---|
 | script-outline | Video Script Writer |
-| asset-generation | Video Asset Generator |
+| storyboard-review | Video Script Writer |
+| audio-production | Video Asset Generator |
+| visual-production | Video Asset Generator |
 | video-assembly | Video Assembler |
 | metadata-upload | Video Publisher |
 | shorts-reels | Short-Form Video Strategy |
@@ -128,19 +179,32 @@ For each specialist delegation, follow this pattern:
   - Inputs: user request, photos/source material
   - Outputs: creative-brief (audience, tone, visual style, length, publish preference)
   - Notes: Orchestrator handles this directly — interactive conversation with user before any delegation
-**1. Planning & Scripting**: Video Script Writer
-  - Inputs: topic brief, source material
+**1. Chapter Script & Storyboard**: Video Script Writer
+  - Inputs: creative brief, source material
   - Outputs: outline.md, script.md, storyboard.md, project.json
-**2. Asset Generation**: Video Asset Generator
-  - Inputs: storyboard.md, script.md, project folder
-  - Outputs: images/, audio/narration/, audio/music/, thumbnails/
-**3. Video Assembly**: Video Assembler
-  - Inputs: storyboard.md, asset manifest, narration durations
+**2. PowerPoint Storyboard Review**: Video Script Writer
+  - Inputs: storyboard.md, script.md
+  - Outputs: storyboard.pptx
+  - Notes: HUMAN REVIEW GATE 1: Orchestrator pauses and asks user to review the PowerPoint deck
+**3. Storyboard Iteration**: Video Script Writer
+  - Inputs: user feedback on PowerPoint
+  - Outputs: updated storyboard.md, updated storyboard.pptx
+  - Notes: Loop: modify chapters/slides based on feedback, regenerate deck, re-present for review
+**4. Audio Production**: Video Asset Generator
+  - Inputs: storyboard.md (approved), script.md
+  - Outputs: audio/narration/*.wav, audio/music/ambient-pad.wav
+  - Notes: Asset generator in audio-only mode. HUMAN REVIEW GATE 2: User listens to narration
+**5. Visual Production**: Video Asset Generator
+  - Inputs: storyboard.md, approved audio durations
+  - Outputs: images/, thumbnails/
+  - Notes: Asset generator in visuals-only mode. Uses approved audio durations for timing
+**6. Video Assembly**: Video Assembler
+  - Inputs: storyboard.md, all assets, narration durations
   - Outputs: final video MP4
-**4. Publish & Deliver**: Video Publisher
+**7. Publish & Deliver**: Video Publisher
   - Inputs: final video, script.md, project metadata
   - Outputs: metadata.json, thumbnail, YouTube URL
-**5. Short-Form Extraction (optional)**: Short-Form Video Strategy
+**8. Short-Form Extraction (optional)**: Short-Form Video Strategy
   - Inputs: final video, script.md
   - Outputs: shorts clips, platform metadata
 

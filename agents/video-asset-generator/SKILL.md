@@ -12,6 +12,37 @@ Video Asset Generator produces all visual and audio assets needed for YouTube vi
 4. **User Photo Processing** - Convert and resize user-provided images for video use
 5. **Thumbnail Options** - Generate 1-2 thumbnail candidates
 
+## Invocation Modes
+
+This agent supports three invocation modes, controlled by the orchestrator's prompt:
+
+### Mode: audio-only
+Generate ONLY audio assets. Used after storyboard approval, before visual production.
+- Step 1: Parse storyboard (identify scenes with narration)
+- Step 2: SKIP (no image generation)
+- Step 3: SKIP (no user photo processing)
+- Step 4: Generate narration audio (per-scene TTS)
+- Step 5: Generate background music
+- Step 6: SKIP (no thumbnails)
+- Step 7: Update project.json with `phases.audio.status = "complete"`
+
+Output briefing includes per-scene narration files with durations, background music file, voice used, total narration duration. The orchestrator will pause for human audio review before proceeding.
+
+### Mode: visuals-only
+Generate ONLY visual assets. Called AFTER audio is approved by the user.
+- Step 1: Parse storyboard (identify scenes needing images)
+- Step 2: Generate AI images
+- Step 3: Process user-provided photos
+- Step 4: SKIP (audio already generated and approved)
+- Step 5: SKIP (music already generated)
+- Step 6: Generate thumbnail options
+- Step 7: Update project.json with `phases.visuals.status = "complete"`
+
+Uses the approved narration durations as source of truth for scene timing.
+
+### Mode: full (backward-compatible)
+Original behavior — generate all assets (images + audio + music + thumbnails) in one pass.
+
 ## Workflow
 
 ### Input
@@ -20,8 +51,10 @@ The orchestrator provides:
 - **Project folder path** (e.g., `~/Desktop/youtube-projects/{slug}/`)
 - **Storyboard path** (`script/storyboard.md`)
 - **Script path** (`script/script.md`) for narration text extraction
+- **Mode**: `audio-only`, `visuals-only`, or `full` (default: `full`)
+- **Narration durations** (for `visuals-only` mode — from approved audio phase)
 
-Read these files to understand what assets are needed.
+Read these files to understand what assets are needed. Follow the mode instructions above to determine which steps to execute.
 
 ### Step 1: Parse Storyboard
 
@@ -141,14 +174,28 @@ Generate 1-2 thumbnail candidates at 1280x720 to `assets/thumbnails/`:
 
 ### Step 7: Update Project State
 
-Update `project.json`:
-- Set `phases.assets.status` to "complete"
-- Populate `assets.images[]` with all generated/processed images
-- Populate `assets.narration[]` with audio files and durations
+Update `project.json` based on mode:
+- **audio-only**: Set `phases.audio.status = "complete"`, record voice used, total duration, per-scene durations
+- **visuals-only**: Set `phases.visuals.status = "complete"`, populate `assets.images[]`
+- **full**: Set both `phases.audio.status` and `phases.visuals.status` to "complete"
 
 ## Output
 
-Return a briefing to the orchestrator with:
+Return a briefing to the orchestrator based on mode:
+
+### audio-only mode:
+- **Narration files** - Count, per-scene durations, total duration, voice used
+- **Background music** - Generated or skipped, duration
+- **Any failures** - Scenes that need re-recording
+- **Review gate note**: "Audio assets ready for human review. The orchestrator should present the audio files to the user for listening before proceeding to visual production."
+
+### visuals-only mode:
+- **Images generated** - Count and list (AI-generated vs user-provided)
+- **Thumbnail options** - Paths to candidates
+- **Any failures** - Scenes that need manual resolution
+- **Asset manifest** - Complete list with paths for the Video Assembler
+
+### full mode:
 - **Images generated** - Count and list (AI-generated vs user-provided)
 - **Narration files** - Count, total duration, voice used
 - **Background music** - Generated or skipped, duration

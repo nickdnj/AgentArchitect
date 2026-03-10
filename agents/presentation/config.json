@@ -90,6 +90,16 @@
           "proposals"
         ],
         "guide_bucket": "altium-presentation-guide"
+      },
+      {
+        "id": "youtube-storyboard",
+        "file": "YouTube_Storyboard_TEMPLATE.pptx",
+        "layouts": 6,
+        "use_cases": [
+          "video storyboard review",
+          "chapter-based visual planning"
+        ],
+        "guide_bucket": null
       }
     ],
     "default_template": "Wharfside_TEMPLATE.pptx"

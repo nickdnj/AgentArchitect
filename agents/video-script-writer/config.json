@@ -24,7 +24,8 @@
   },
   "mcp_servers": [
     "pdfscribe",
-    "google-docs"
+    "google-docs",
+    "powerpoint"
   ],
   "context_buckets": {
     "assigned": [
