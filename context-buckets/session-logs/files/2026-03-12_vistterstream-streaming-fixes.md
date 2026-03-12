@@ -48,8 +48,9 @@ Fixed multiple VistterStream issues: SQLAlchemy connection pool exhaustion crash
 - [ ] Investigate transient "[Errno 101] Network is unreachable" on YouTube API calls
 - [ ] Consider publishing Google OAuth app (still in testing mode)
 - [ ] Preview container showing "unhealthy" (up 28h) — may need investigation
-- [ ] Verify VA-API hardware encoding in production — start a stream and check logs for `h264_vaapi` instead of `libx264`, monitor CPU usage drop
+- [x] ~~Verify VA-API hardware encoding in production~~ — confirmed `h264_vaapi on intel` active, 183% CPU (overlay compositing is CPU-bound, encoding on GPU)
+- [ ] Stress test multi-camera + multi-platform streaming (5 concurrent VAAPI streams supported)
 
 ## Context for Next Session
 
-VistterStream is fully deployed and streaming to YouTube with correct overlays. The mini PC is at 192.168.12.136 (Tailscale: 100.108.181.24). Intel VA-API hardware encoding has been added to the Docker image and FFmpeg manager — the container was rebuilt and VAAPI encoding verified inside the container with a test encode, but needs a production stream test to confirm the hardware detector picks up `h264_vaapi` over `libx264` and CPU usage drops. The YouTube embed toggle is working. Stream metadata auto-populates from hardcoded values in timeline_execution.py. All 7 commits pushed and deployed. Next priorities: verify GPU encoding in production, set DHCP reservations, recapture Sunba PTZ presets on the other network.
+VistterStream is fully deployed and streaming to YouTube with correct overlays and GPU-accelerated encoding. VA-API hardware encoding confirmed working in production — hardware detector selects `h264_vaapi on intel` with support for 5 concurrent streams. CPU at ~183% is expected since overlay compositing (scale + blend) remains CPU-bound; only H.264 encoding is GPU-offloaded. Multi-platform streaming (YouTube + Facebook + Twitch simultaneously) is now feasible. The mini PC is at 192.168.12.136 (Tailscale: 100.108.181.24). Next priorities: set DHCP reservations, stress test multi-camera/multi-platform when Sunba PTZ is available, recapture Sunba presets on the other network.
