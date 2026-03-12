@@ -1,4 +1,4 @@
-# VistterStream: Streaming Fixes & YouTube Toggle
+# VistterStream: Streaming Fixes, GPU Encoding & Hardware Migration
 
 **Date:** 2026-03-12
 **Session type:** execution
@@ -6,7 +6,7 @@
 
 ## Summary
 
-Fixed multiple VistterStream issues: SQLAlchemy connection pool exhaustion crashing the backend, camera unreachable after WiFi-to-ethernet switch, stale YouTube broadcast reuse preventing live streams, and added a YouTube embed / overlay editor toggle button. Also added proper stream metadata, re-added the Sunba PTZ camera, fixed the mini PC hostname typo, and enabled Intel GPU hardware encoding (VA-API) to replace software libx264.
+Fixed multiple VistterStream issues: SQLAlchemy connection pool exhaustion, camera connectivity, stale YouTube broadcasts, and overlay editor toggle. Enabled Intel VA-API GPU hardware encoding and verified it in production. Updated the README to replace Raspberry Pi 5 with the Beelink Mini S12 (Intel N95) as the reference hardware platform, including cost comparison and "Why not Raspberry Pi?" explainer.
 
 ## Key Findings
 
@@ -27,6 +27,7 @@ Fixed multiple VistterStream issues: SQLAlchemy connection pool exhaustion crash
 - Use full Monmouth Beach Live Cam title and description for auto-created broadcasts
 - Added toggle button in YouTube links bar to switch between embed and overlay editor while streaming
 - Enabled Intel VA-API hardware encoding — Docker GPU passthrough, libva libraries, FFmpeg VAAPI encoder support with CPU→GPU upload chain
+- Migrated reference hardware from Raspberry Pi 5 to Beelink Mini S12 (Intel N95) in README — comparable cost (~$130-170 vs Pi 5 fully equipped at $185-235) with significantly better performance and hardware video encoding
 
 ## Artifacts Created
 
@@ -39,6 +40,7 @@ Fixed multiple VistterStream issues: SQLAlchemy connection pool exhaustion crash
 - `backend/services/ffmpeg_manager.py` — Added h264_vaapi and h264_qsv encoder cases with VAAPI pixel format upload (commit 5e978ff)
 - `docker/docker-compose.rpi.yml` — GPU device passthrough `/dev/dri:/dev/dri` and render group 993 (commit 5e978ff)
 - `backend/Dockerfile` — Added libva-drm2, libva2, intel-media-va-driver for VA-API runtime (commit 7caece8)
+- `README.md` — Replaced Raspberry Pi with Beelink Mini S12 as reference hardware, updated status to March 2026, added Claude Code to acknowledgments (commit a40df68)
 
 ## Open Items
 
@@ -53,4 +55,4 @@ Fixed multiple VistterStream issues: SQLAlchemy connection pool exhaustion crash
 
 ## Context for Next Session
 
-VistterStream is fully deployed and streaming to YouTube with correct overlays and GPU-accelerated encoding. VA-API hardware encoding confirmed working in production — hardware detector selects `h264_vaapi on intel` with support for 5 concurrent streams. CPU at ~183% is expected since overlay compositing (scale + blend) remains CPU-bound; only H.264 encoding is GPU-offloaded. Multi-platform streaming (YouTube + Facebook + Twitch simultaneously) is now feasible. The mini PC is at 192.168.12.136 (Tailscale: 100.108.181.24). Next priorities: set DHCP reservations, stress test multi-camera/multi-platform when Sunba PTZ is available, recapture Sunba presets on the other network.
+VistterStream is fully deployed and streaming to YouTube with correct overlays and GPU-accelerated encoding. VA-API hardware encoding confirmed working in production — hardware detector selects `h264_vaapi on intel` with support for 5 concurrent streams. CPU at ~183% is expected since overlay compositing (scale + blend) remains CPU-bound; only H.264 encoding is GPU-offloaded. Multi-platform streaming (YouTube + Facebook + Twitch simultaneously) is now feasible. README updated to reflect the Beelink Mini S12 as the reference platform with full cost comparison. The mini PC is at 192.168.12.136 (Tailscale: 100.108.181.24). All 8 commits pushed (7 code + 1 README). Next priorities: set DHCP reservations, stress test multi-camera/multi-platform when Sunba PTZ is available, recapture Sunba presets on the other network.
