@@ -587,11 +587,11 @@ function generateDocumentation(exportDir, deps, options = {}) {
 
 function copyVoiceSkills(exportDir) {
   const skillsToCopy = [
-    { src: '.claude/skills/voice/SKILL.md', dest: '.claude/skills/voice/SKILL.md' },
-    { src: '.claude/skills/end-voice/SKILL.md', dest: '.claude/skills/end-voice/SKILL.md' },
+    { src: '.claude/skills/voice-local/SKILL.md', dest: '.claude/skills/voice-local/SKILL.md' },
+    { src: '.claude/skills/end-voice-local/SKILL.md', dest: '.claude/skills/end-voice-local/SKILL.md' },
   ];
   const commandsToCopy = [
-    { src: '.claude/commands/voice.md', dest: '.claude/commands/voice.md' },
+    { src: '.claude/commands/voice-local.md', dest: '.claude/commands/voice-local.md' },
   ];
 
   for (const item of [...skillsToCopy, ...commandsToCopy]) {
@@ -741,7 +741,7 @@ function generateReadme(deps, skillAlias, platform) {
     '',
     'Then try any of these:',
     '',
-    `- **Voice mode:** Type \`/voice\` to start talking`,
+    `- **Voice mode:** Type \`/voice\` for native voice, or \`/voice-local\` for local Whisper+Kokoro`,
     `- **Search email:** \`/${skillAlias} search email for insurance renewal\``,
     `- **Find a rule:** \`/${skillAlias} what does the governing docs say about parking?\``,
     `- **Generate bulletin:** \`/${skillAlias} generate this month\'s bulletin\``,

@@ -1,6 +1,6 @@
-# Voice Mode
+# Voice Local Mode
 
-Start a voice conversation using the VoiceMode MCP server.
+Start a local voice conversation using the VoiceMode MCP server (Whisper + Kokoro).
 
 ## Quick Start
 

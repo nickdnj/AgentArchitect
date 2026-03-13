@@ -1,6 +1,6 @@
 ---
-name: end-voice
-description: Deactivate voice mode and return to text-only interaction
+name: end-voice-local
+description: Deactivate local voice mode and return to text-only interaction
 allowed-tools: mcp__voicemode__converse
 ---
 

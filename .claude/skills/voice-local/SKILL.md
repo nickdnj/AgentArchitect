@@ -1,12 +1,12 @@
 ---
-name: voice
-description: Activate voice mode - all responses spoken aloud, all inputs via microphone
+name: voice-local
+description: Activate local voice mode (Whisper + Kokoro) - all responses spoken aloud, all inputs via microphone
 allowed-tools: mcp__voicemode__converse, mcp__voicemode__service, Read, Write, Edit, Glob, Grep, Bash, Task, WebFetch, WebSearch
 ---
 
 # Voice Mode Activation
 
-When this skill is invoked, switch to voice-based interaction for the rest of the session (until `/end-voice` is called).
+When this skill is invoked, switch to voice-based interaction for the rest of the session (until `/end-voice-local` is called).
 
 ## Startup Sequence
 

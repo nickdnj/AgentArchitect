@@ -85,7 +85,7 @@ prs.save('output.pptx')
 \`\`\`
 `,
   'voicemode': `## Voice Mode
-Voice mode is available via the /voice skill command. No additional tool setup needed.
+Local voice mode is available via the /voice-local skill command. Native Claude Code voice is available via /voice.
 `,
   'chrome': `## Chrome Browser
 Use the Chrome Browser agent via Task delegation for browser automation tasks.
