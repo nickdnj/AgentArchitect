@@ -39,9 +39,12 @@ Major overhaul of all VistterStream modal dialogs to be responsive and scrollabl
 - `frontend/src/components/PresetManagement.tsx` — 2 modals standardized (Capture/Edit PTZ)
 - `frontend/src/components/PTZControlPanel.tsx` — Full-screen panel scrollable on mobile
 
+## Tailwind JIT Enablement
+
+After the inline-style workaround phase, enabled `mode: 'jit'` in tailwind.config.js (also fixed `content:` → `purge:` for v2 compatibility). CSS output dropped from **318KB to 6.9KB** gzipped. All inline style workarounds cleaned up and replaced with proper Tailwind JIT classes (`max-h-[90vh]`, `bg-black/70`, `overscroll-contain`, etc.).
+
 ## Open Items
 
-- [ ] Consider enabling Tailwind JIT mode (`mode: 'jit'` in tailwind.config.js) to avoid inline style workarounds globally
 - [ ] Stress test multi-camera + multi-platform streaming when network is stable
 - [ ] Remaining architecture debt (see vistterstream.md memory file)
 
