@@ -17,8 +17,9 @@
 
 ## Scene 2: Modern Batter Up
 - **Duration:** 16 seconds
-- **Image source:** AI-generated (OpenAI)
-- **Image prompt:** "Wide establishing shot of outdoor batting cages on a warm summer evening, golden hour light, chain-link fence enclosures with batting machines visible inside, families scattered around, a teenager mid-swing in the nearest cage, suburban Long Island setting, parking lot with cars in background, warm inviting atmosphere, photorealistic, 16:9 aspect ratio"
+- **Image source:** User-provided photo
+- **Image file:** images/real/scene-02-batter-up-entrance.jpg
+- **Photo description:** View from parking lot — Batter Up entrance with colorful red and blue/purple pointed tents over the batting cage area, "OPEN" sign on fence, American flag, cars in foreground, blue sky. Vibrant and alive.
 - **Image orientation:** landscape
 - **Text overlay:** None
 - **Motion:** ken-burns-pan
@@ -62,8 +63,9 @@
 
 ## Scene 6: The Park in Its Glory
 - **Duration:** 25 seconds
-- **Image source:** AI-generated (OpenAI)
-- **Image prompt:** "Panoramic view of a bustling 1950s American amusement park called Happyland at peak summer, a Ferris wheel turning against blue sky, a miniature railway circling the perimeter, a large indoor pavilion with glowing arcade lights visible through open doors, a 48-horse carousel spinning, hundreds of 1950s families with children running between rides, cotton candy vendors, a massive parking lot full of 1950s cars (Chevrolet Bel Airs, Ford Fairlanes), warm saturated colors, nostalgic Americana, photorealistic vintage style, 16:9 aspect ratio"
+- **Image source:** User-provided photo
+- **Image file:** images/real/scene-06-nunleys-happyland-night.jpg
+- **Photo description:** Black & white night photo — large illuminated "NUNLEY'S HAPPYLAND" neon signs blazing on building facade, Ferris wheel glowing on the left, two women standing out front. Extraordinary atmosphere. THE hero image of the documentary.
 - **Image orientation:** landscape
 - **Text overlay:** None
 - **Motion:** ken-burns-pan
@@ -72,8 +74,9 @@
 
 ## Scene 7: The Mechanical Organ
 - **Duration:** 15 seconds
-- **Image source:** AI-generated (OpenAI)
-- **Image prompt:** "Detailed close-up of an ornate 1910 German mechanical organ inside an amusement park, elaborately carved and gilded wooden frame, animated musician figures in Bavarian-style clothing positioned as if playing instruments, intricate craftsmanship with gold leaf and painted details, children staring up in wide-eyed wonder, warm indoor lighting, museum-quality detail, photorealistic, 16:9 aspect ratio"
+- **Image source:** User-provided photo
+- **Image file:** images/real/scene-07-carousel-interior.jpg
+- **Photo description:** Indoor shot — ornate carousel spinning in background with glowing lights and riders, two boys riding a white boat-shaped ride in the foreground. 1970s color photo. Shows the park interior alive and full.
 - **Image orientation:** landscape
 - **Text overlay:** None
 - **Motion:** ken-burns-zoom
@@ -87,9 +90,10 @@
 
 ## Scene 8: The Restaurant Opens
 - **Duration:** 20 seconds
-- **Image source:** AI-generated (OpenAI)
-- **Image prompt:** "A 1950s pirate-themed fast food restaurant called 'Jolly Roger' with a large pirate ship sign and nautical decorations on the facade, connected to an amusement park by a glass-walled enclosed walkway, families streaming in and out, 1950s cars in the parking lot, bright cheerful atmosphere, red and white color scheme with pirate flags, suburban Long Island setting, vintage photography style, 16:9 aspect ratio"
-- **Image orientation:** landscape
+- **Image source:** User-provided photos (2 — cut between them)
+- **Image file:** images/real/scene-08a-jolly-roger-postcard.jpg (primary), images/real/scene-08b-jolly-roger-matchbook.jpg (secondary cut)
+- **Photo description:** (a) Vintage illustrated postcard — Jolly Roger Drive-In on Hempstead Turnpike, Bethpage L.I. NY, showing exterior with colored umbrellas and the busy soda fountain interior. (b) Jolly Roger matchbook — green and white, pirate illustration, "On Hempstead Turnpike Near Levittown L.I." Perfect era ephemera.
+- **Image orientation:** portrait (postcard), portrait (matchbook) — use pillarbox or crop center
 - **Text overlay:** None
 - **Motion:** ken-burns-pan
 - **Audio:** Narration scene-8.wav + background music at 15% volume
@@ -107,8 +111,9 @@
 
 ## Scene 10: Peak Jolly Roger's
 - **Duration:** 20 seconds
-- **Image source:** AI-generated (OpenAI)
-- **Image prompt:** "Summer evening at a Long Island amusement park in the 1960s, warm golden sunset sky, a Ferris wheel silhouetted against orange and purple clouds, families everywhere eating hot dogs and cotton candy, ride lights twinkling on, children on a carousel, teenagers at bumper cars, the whole scene bathed in nostalgic warm light, quintessential American summer, photorealistic vintage style, 16:9 aspect ratio"
+- **Image source:** User-provided photo
+- **Image file:** images/real/scene-10-fire-chief-ride.jpg
+- **Photo description:** 1960s color photo — young blonde boy riding a red "Fire Chief" miniature car on the Happyland track, Ferris wheel rising in the background, 1960s cars visible on Hempstead Turnpike behind the fence. Park fully alive and buzzing.
 - **Image orientation:** landscape
 - **Text overlay:** None
 - **Motion:** ken-burns-pan
@@ -122,8 +127,9 @@
 
 ## Scene 11: Decline
 - **Duration:** 20 seconds
-- **Image source:** AI-generated (OpenAI)
-- **Image prompt:** "A 1970s suburban restaurant building with a faded sign reading 'Robin Hood' where a pirate-themed 'Jolly Roger' sign has been painted over, the building showing wear, paint peeling, fewer cars in the parking lot than its heyday, autumn leaves scattered, overcast sky, melancholy atmosphere but not abandoned, muted desaturated color palette, suburban Long Island, photorealistic, 16:9 aspect ratio"
+- **Image source:** User-provided photo
+- **Image file:** images/real/scene-11-robin-hood-sign.jpg
+- **Photo description:** Black & white photo — "Robin Hood" sign has replaced the Jolly Roger, with "Smiley's Happyland" still visible on the left building facade. "Hamburgers," "Frankfurters," "Party Facility" signage. Shot from across Hempstead Turnpike. The whole story of decline in one frame.
 - **Image orientation:** landscape
 - **Text overlay:** None
 - **Motion:** ken-burns-zoom
@@ -132,8 +138,9 @@
 
 ## Scene 12: Demolition Photos
 - **Duration:** 20 seconds
-- **Image source:** AI-generated (OpenAI)
-- **Image prompt:** "Haunting photograph of an abandoned amusement park awaiting demolition, March 1979, empty ride structures standing silent, a Ferris wheel motionless against a grey winter sky, an abandoned restaurant building with boarded windows, chain-link fencing around the perimeter, no people, documentary photography style, slightly grainy black and white with hints of cold blue tint, melancholy but respectful, 16:9 aspect ratio"
+- **Image source:** User-provided photo (+ pending Robert Berkowitz license)
+- **Image file:** images/real/scene-12-smiley-jolly-roger-corner.jpg
+- **Photo description:** Color photo from Hicksville Road — "Smiley's Happyland" sign on the arcade building, Ferris wheel standing idle, pumpkin-shaped dome ride, Jolly Roger sign visible on the corner. Park looks empty, end-of-era. Also: if Berkowitz license obtained, substitute with his March 1979 pre-demolition photo (images/real/scene-12-berkowitz-1979.jpg).
 - **Image orientation:** landscape
 - **Text overlay:** "Pre-demolition, March 1979 -- Photos by Robert Berkowitz" -- lower third
 - **Motion:** ken-burns-pan
@@ -152,8 +159,9 @@
 
 ## Scene 14: The Survivor
 - **Duration:** 10 seconds
-- **Image source:** AI-generated (OpenAI)
-- **Image prompt:** "Aerial view slowly revealing outdoor batting cages and a miniature golf course across a suburban road from a strip mall, the batting cage area is green, vibrant, alive with warm light and activity, contrasting with the generic strip mall on the opposite side, a sense of discovery and hope, golden warm light on the batting cages side, late afternoon, photorealistic, 16:9 aspect ratio"
+- **Image source:** User-provided photo
+- **Image file:** images/real/scene-14-batter-up-entrance.jpg
+- **Photo description:** Batter Up entrance from parking lot — colorful tents, OPEN sign, American flag, the facility alive against blue sky. Hard cut from the strip mall (Scene 13) to this. The contrast IS the story.
 - **Image orientation:** landscape
 - **Text overlay:** None
 - **Motion:** ken-burns-zoom
@@ -177,8 +185,9 @@
 
 ## Scene 16: Batter Up Today
 - **Duration:** 30 seconds
-- **Image source:** AI-generated (OpenAI)
-- **Image prompt:** "Vibrant modern batting cage facility on Long Island, eleven batting cages in a row with chain-link enclosures, automatic arm-style pitching machines visible inside each cage, colorful hand-painted 'Batter Up' signage, an 18-hole mini golf course visible alongside with bright colored obstacles, families of all ages, a teenager crushing a fastball, a dad helping a small child hold a bat, well-worn batting helmets hanging on hooks, summer day, warm and inviting, photorealistic, 16:9 aspect ratio"
+- **Image source:** User-provided photos (sequence of 2)
+- **Image file:** images/real/scene-16a-batting-cages.jpg (batting cage row with families), images/real/scene-16b-batting-cages-wide.jpg (wide courtyard view with umbrellas)
+- **Photo description:** (a) Batting cage row — "Batter Up Home Run" mural visible in background, families watching, blue sky. (b) Wide courtyard — cages, patio tables with umbrellas, open and active. Together they show the full facility in operation.
 - **Image orientation:** landscape
 - **Text overlay:** None
 - **Motion:** ken-burns-pan
@@ -187,8 +196,9 @@
 
 ## Scene 17: The Family Legacy
 - **Duration:** 25 seconds
-- **Image source:** AI-generated (OpenAI)
-- **Image prompt:** "Heartwarming multi-generational family scene at outdoor batting cages, a grandfather in his 70s with silver hair watching proudly as his 10-year-old grandson takes a swing, a grandmother standing nearby pointing across the street telling a story, late afternoon golden light streaming through the chain-link fence casting long shadows, the scene radiates warmth and continuity, suburban Long Island, photorealistic, emotional, 16:9 aspect ratio"
+- **Image source:** User-provided photo
+- **Image file:** images/real/scene-17-carousel-grandparent.jpg
+- **Photo description:** Color photo from Happyland — grandparent sitting on an ornate carved carousel horse holding a baby/toddler, painted horses surrounding them. Multigenerational, warm, emotional. Perfectly captures the idea of parents bringing their children to the same place their parents brought them.
 - **Image orientation:** landscape
 - **Text overlay:** None
 - **Motion:** ken-burns-zoom
@@ -212,8 +222,9 @@
 
 ## Scene 19: Community Memory
 - **Duration:** 20 seconds
-- **Image source:** AI-generated (OpenAI)
-- **Image prompt:** "Collage-style composition representing online community nostalgia, overlapping vintage photographs of an amusement park mixed with modern social media comment bubbles containing phrases like 'Remember Jolly Roger's?', 'Best summers of my life', 'My dad took us every Saturday', warm sepia tones blending with modern digital blue accents, a sense of shared memory and community connection, 16:9 aspect ratio"
+- **Image source:** User-provided photo
+- **Image file:** images/real/scene-19-mini-golf-garden.jpg
+- **Photo description:** Wide shot of Batter Up mini golf course — sunflowers and colorful mums in bloom, lighthouse obstacle, manicured landscaping, blue sky. Radiates care, love, and continuity. A place someone tends with pride.
 - **Image orientation:** landscape
 - **Text overlay:** None
 - **Motion:** gentle-zoom
@@ -222,8 +233,9 @@
 
 ## Scene 20: Closing / Call to Action
 - **Duration:** 20 seconds
-- **Image source:** AI-generated (OpenAI)
-- **Image prompt:** "Golden hour wide shot of batting cages at sunset, families in warm silhouette, a kid mid-swing with bat blurred in motion, the glow of the setting sun painting everything in amber and gold, other families playing mini golf in the background, the whole scene radiates joy and continuity, a celebration of a place that has endured, cinematic and beautiful, photorealistic, 16:9 aspect ratio"
+- **Image source:** User-provided photos (sequence of 2)
+- **Image file:** images/real/scene-20a-mini-golf-sunny.jpg (mini golf with waterfall, summer), images/real/scene-20b-batting-cages-courtyard.jpg (wide courtyard with families)
+- **Photo description:** (a) Mini golf course on a sunny summer day — waterfall feature, batting cage nets visible above the tree line in background. (b) Courtyard with patio tables, batting cages, families. Together they close the documentary on warmth and life.
 - **Image orientation:** landscape
 - **Text overlay:** "Batter Up -- 130 Hicksville Road, Bethpage, NY" (first 8s), then "Share your Jolly Roger's memories in the comments" (next 6s), then "Subscribe for more Long Island stories" (final 6s)
 - **Motion:** ken-burns-zoom
@@ -236,12 +248,35 @@
 
 | Category | Count | Notes |
 |----------|-------|-------|
-| AI-generated images | 20 | All via OpenAI image generation |
-| User-provided images | 0 | DeMarco family photos may be added later |
+| AI-generated images | 7 | Scenes 1, 4, 5, 9, 13, 15 + one aerial TBD |
+| User-provided photos (real) | 13 | Scenes 2, 6, 7, 8, 10, 11, 12, 14, 16, 17, 19, 20 + logo |
 | Title cards | 0 | Title integrated into Scene 1 AI image |
 | Text overlays | 8 | Various lower thirds and callouts |
 | Narration audio clips | 19 | Scenes 2-20 (Scene 1 is title card only) |
 | Background music | 1 | Upbeat nostalgic Americana track, continuous |
+
+## Real Photo File Naming Convention
+
+Save photos to: `teams/youtube-content/projects/batter-up-history/images/real/`
+
+| Filename | Scene | Description |
+|----------|-------|-------------|
+| scene-02-batter-up-entrance.jpg | 2 | Parking lot entrance, red/blue tents |
+| scene-06-nunleys-happyland-night.jpg | 6 | B&W neon night shot |
+| scene-07-carousel-interior.jpg | 7 | Carousel + boat ride, color |
+| scene-08a-jolly-roger-postcard.jpg | 8 | Jolly Roger illustrated postcard |
+| scene-08b-jolly-roger-matchbook.jpg | 8 | Jolly Roger matchbook cover |
+| scene-10-fire-chief-ride.jpg | 10 | Boy on Fire Chief car, 1960s |
+| scene-11-robin-hood-sign.jpg | 11 | Robin Hood sign, B&W |
+| scene-12-smiley-jolly-roger-corner.jpg | 12 | Smiley's + Jolly Roger corner |
+| scene-12-berkowitz-1979.jpg | 12 | Berkowitz pre-demolition (pending license) |
+| scene-14-batter-up-entrance.jpg | 14 | Same as Scene 2 or alternate angle |
+| scene-16a-batting-cages.jpg | 16 | Batting cages with families |
+| scene-16b-batting-cages-wide.jpg | 16 | Wide courtyard view |
+| scene-17-carousel-grandparent.jpg | 17 | Grandparent + baby on carousel |
+| scene-19-mini-golf-garden.jpg | 19 | Mini golf garden with flowers |
+| scene-20a-mini-golf-sunny.jpg | 20 | Mini golf, sunny, waterfall |
+| scene-20b-batting-cages-courtyard.jpg | 20 | Wide courtyard with families |
 
 ## Image Generation Priority
 

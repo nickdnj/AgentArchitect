@@ -1,0 +1,13 @@
+# Exclude large binary media files from git
+# These are generated assets stored locally only
+*.mp4
+*.mov
+*.avi
+*.mkv
+*.wav
+*.mp3
+*.aac
+*.m4a
+
+# Assembly working files
+*/assembly/
