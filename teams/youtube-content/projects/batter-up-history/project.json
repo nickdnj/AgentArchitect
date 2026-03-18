@@ -1,0 +1,71 @@
+{
+  "id": "batter-up-history",
+  "title": "Batter Up: The Last Piece of Jolly Roger's",
+  "topic": "The history of Batter Up batting cages at 130 Hicksville Road, Bethpage, NY and its connection to the legendary Nunley's Happyland / Jolly Roger's amusement park on Long Island",
+  "video_type": "documentary",
+  "created": "2026-03-18",
+  "last_updated": "2026-03-18",
+  "status": "in-progress",
+  "phases": {
+    "setup": {"status": "complete"},
+    "research": {"status": "complete"},
+    "scripting": {"status": "complete"},
+    "storyboard": {"status": "complete"},
+    "storyboard_pptx": {"status": "complete"},
+    "storyboard_review": {"status": "pending"},
+    "audio": {"status": "pending"},
+    "audio_review": {"status": "pending"},
+    "visuals": {"status": "pending"},
+    "assembly": {"status": "pending"},
+    "metadata": {"status": "pending"},
+    "upload": {"status": "pending"},
+    "review": {"status": "pending"}
+  },
+  "settings": {
+    "target_length_minutes": 7,
+    "resolution": "1920x1080",
+    "fps": 30,
+    "narration_voice": "upbeat-local-news",
+    "background_music": true,
+    "music_volume": 0.15,
+    "default_visual_style": "ken-burns-zoom",
+    "publish_to_youtube": false
+  },
+  "research_sources": [
+    {
+      "type": "web",
+      "url": "https://en.wikipedia.org/wiki/Nunley's_Happyland",
+      "description": "Wikipedia article on Nunley's Happyland"
+    },
+    {
+      "type": "web",
+      "url": "https://www.flickr.com/photos/robertberkowitzrsbimageworks/albums/72157651353153441/",
+      "description": "Robert Berkowitz pre-demolition photos (March 1979)"
+    },
+    {
+      "type": "web",
+      "url": "https://kids.kiddle.co/Nunley's_Happyland",
+      "description": "Kiddle encyclopedia - detailed ride and attraction list"
+    },
+    {
+      "type": "web",
+      "url": "https://theoldmotor.com/?p=168691",
+      "description": "The Old Motor - vintage footage and park details"
+    },
+    {
+      "type": "web",
+      "url": "https://www.longisland70skid.com/happyland/",
+      "description": "Long Island 70s Kid blog - personal memories and photos"
+    },
+    {
+      "type": "web",
+      "url": "https://www.dandb.com/businessdirectory/mmbatterupinc-bethpage-ny-21706605.html",
+      "description": "M & M Batter Up Inc. business listing (since 1986)"
+    },
+    {
+      "type": "web",
+      "url": "https://www.licm.org/visit/nunleys/",
+      "description": "Nunley's Carousel at Long Island Children's Museum"
+    }
+  ]
+}
