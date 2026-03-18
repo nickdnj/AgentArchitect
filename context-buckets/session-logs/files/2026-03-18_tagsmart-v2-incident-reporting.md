@@ -25,7 +25,7 @@ Built a complete incident reporting system for TagSmart v2 from scratch — data
 - Image stored to GCS bucket `pdfscribe-prod-uploads` under `tagsmart/vision-scans/{date}/{uuid}.jpg`
 - Reporter identity: left join with users table, `coalesce(display_name, username)`
 - Geolocation: captured on form mount via `navigator.geolocation.getCurrentPosition()`, stored as lat/lng columns
-- Map display: OpenStreetMap iframe + Google Maps deep link when lat/lng present
+- Map display: static image from `staticmap.openstreetmap.de` (replaced OSM iframe which is blocked by X-Frame-Options) + Google Maps deep link when lat/lng present
 - Incident row design: accordion (summary always visible, click to expand full detail)
 - `DetailField` component always renders — shows `—` for null values (not hidden)
 
@@ -47,7 +47,7 @@ Built a complete incident reporting system for TagSmart v2 from scratch — data
 - `client/src/pages/VisionScan.tsx` — Added Report Incident button after save (alongside Scan Another)
 - `client/src/components/Navbar.tsx` — Added Incidents nav item (AlertTriangle icon)
 - `client/src/App.tsx` — Added /report-incident and /incidents routes (both ProtectedRoute)
-- Production: revision tagsmart-00019-544 deployed
+- Production: revisions 19-21 deployed (19: initial, 20: search enhancements, 21: date+time + map fix)
 
 ## Open Items
 
@@ -57,10 +57,27 @@ Built a complete incident reporting system for TagSmart v2 from scratch — data
 - [ ] Email notifications for new incidents (configurable frequency from dashboard)
 - [ ] More component/page tests
 
+## Updates — 2026-03-18 (Session 2)
+
+### Search Enhancements (revision 20)
+- **Assets general search**: added `unit_number` to OR condition (tag, fob, plate, owner, unit)
+- **Assets Advanced Search**: collapsible panel with individual LIKE filters for unit, make, model, color, state — AND logic; button highlights blue when active
+- **Incidents search**: new text input doing partial LIKE matching across license_plate, unit_number, assigned_to, notes
+- Files changed: `server/src/schemas.ts`, `assetRepository.ts`, `incidentRepository.ts`, `client/src/types/asset.ts`, `types/incident.ts`, `api/assets.ts`, `api/incidents.ts`, `pages/Assets.tsx`, `pages/Incidents.tsx`
+
+### Bug Fixes (revision 21)
+- **Date+time in summary row**: was `toLocaleDateString()` (date only) → now shows stacked date (`Mar 18, 2026`) and time (`4:48 PM`)
+- **Map not showing**: OpenStreetMap `/export/embed.html` iframe blocked by X-Frame-Options → replaced with `<img>` tag from `staticmap.openstreetmap.de`; clicking the image opens Google Maps
+- **GCS CORS error**: incident photos blocked by browser CORS policy → fixed with `gsutil cors set` on `pdfscribe-prod-uploads` bucket (no redeploy needed); allows GET/HEAD from any origin
+
+### Key Technical Notes
+- `staticmap.openstreetmap.de/staticmap.php?center={lat},{lng}&zoom=17&size=600x200&markers={lat},{lng},red-pushpin` — free static map image, no API key needed
+- GCS bucket CORS is a one-time bucket-level config, not per-object. Public ACL ≠ CORS headers — both are required for browser image loading from a different origin.
+
 ## Context for Next Session
 
-TagSmart v2 is live at revision 19 with full incident reporting. The system supports logging parking violations, notices, security concerns, abandoned vehicles, and found/lost fobs. Each incident can have a photo (stored in GCS), GPS location (displayed on OpenStreetMap), reporter identity, and vehicle details auto-filled via GPT-4.1-mini camera analysis. The management dashboard (/incidents) shows all incidents with expandable detail rows, filter controls, and status workflow (Acknowledge/Resolve/Reopen).
+TagSmart v2 is live at revision 21. Incidents dashboard has full search (fuzzy plate/unit/owner), date+time in every row, working static map in expanded detail, and incident photos loading without CORS errors.
 
-Report Incident buttons exist in all three scan flows (QR scan, fob lookup, vision scan). The form pre-fills vehicle data from the scan result when navigated to via React Router state.
+Assets page has general search (tag/fob/plate/owner/unit) plus an Advanced Search panel for make/model/color/state/unit.
 
-GCS upload uses Cloud Run's metadata server for ADC token — no SDK needed. The bucket is `pdfscribe-prod-uploads`, path prefix `tagsmart/`.
+GCS storage: bucket `pdfscribe-prod-uploads`, CORS configured, objects uploaded with `predefinedAcl=publicRead` via Cloud Run metadata server ADC token.
