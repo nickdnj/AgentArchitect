@@ -43,8 +43,9 @@
 
 ## Scene 4: William Nunley's Vision
 - **Duration:** 30 seconds
-- **Image source:** AI-generated (OpenAI)
-- **Image prompt:** "1950s Long Island suburban landscape, new Levittown-style housing developments stretching to the horizon, a distinguished businessman in a fedora and overcoat studying architectural blueprints at a barren crossroads, the corner of two wide roads in an undeveloped area, post-war optimism, warm golden light, vintage photography style with slight grain, nostalgic color palette, 16:9 aspect ratio"
+- **Image source:** User-provided photo
+- **Image file:** images/jr13.jpg
+- **Photo description:** 1953 aerial photograph of the Hempstead Turnpike / Hicksville Road intersection showing the site before or just as Happyland was being built — the raw suburban landscape of post-war Long Island. Purchased by Brian Quinn. Top=north, Hempstead Turnpike runs left-right, Hicksville Road runs lower-right to top-center. Happyland site is SW corner of intersection.
 - **Image orientation:** landscape
 - **Text overlay:** None
 - **Motion:** ken-burns-pan
@@ -74,10 +75,10 @@
 
 ## Scene 7: The Mechanical Organ
 - **Duration:** 15 seconds
-- **Image source:** User-provided photo
-- **Image file:** images/real/scene-07-carousel-interior.jpg
-- **Photo description:** Indoor shot — ornate carousel spinning in background with glowing lights and riders, two boys riding a white boat-shaped ride in the foreground. 1970s color photo. Shows the park interior alive and full.
-- **Image orientation:** landscape
+- **Image source:** User-provided photos (2 — cut between them)
+- **Image file:** images/jr15.jpg (primary — color), images/jr16.jpg (secondary — B&W with crowd)
+- **Photo description:** (a) jr15: Color photo of the actual RUTH Organ at Nunley's Happyland, Bethpage NY — green and gold ornate case with animated musician figures in period dress. Painted by George Lechtner in 1954. Photo by Robert A. Miller, 1965. (b) jr16: B&W photo of families crowded around the organ watching it play — children in front, mothers pointing. The organ that the script describes.
+- **Image orientation:** portrait → use pillarbox or crop center
 - **Text overlay:** None
 - **Motion:** ken-burns-zoom
 - **Audio:** Narration scene-7.wav + background music at 15% volume
@@ -101,8 +102,9 @@
 
 ## Scene 9: Expansion -- Aerial View
 - **Duration:** 20 seconds
-- **Image source:** AI-generated (OpenAI)
-- **Image prompt:** "Bird's eye aerial view illustration of a 1960s amusement park complex in suburban Long Island, the main park with Ferris wheel and rides on one side of a road labeled 'Hicksville Road', a pirate-themed restaurant connected by a walkway, and across the road on the other side: batting cages with chain-link enclosures and a miniature golf course with colorful obstacles, 1960s cars throughout, the whole complex thriving, illustrated map style with warm colors and clear labels, 16:9 aspect ratio"
+- **Image source:** User-provided photo
+- **Image file:** images/jr14.jpg
+- **Photo description:** 1966 aerial photograph with color-coded annotations by Brian Quinn. Blue=indoor rides building, Green=Jolly Roger restaurant, Red=Wetson's, Black=gas station, Orange=Mal Pierce Pontiac dealership, Purple=Miles shoes, Yellow=Pergament. Island Trees HS athletic field in lower-left. Shows the FULL complex at peak — the entire Hicksville Rd / Hempstead Turnpike intersection. Purchased by Brian Quinn. This IS the scene.
 - **Image orientation:** landscape
 - **Text overlay:** "Batting cages & mini golf -- est. 1960s" with subtle arrow pointing to the Hicksville Road location
 - **Motion:** ken-burns-zoom
@@ -111,10 +113,10 @@
 
 ## Scene 10: Peak Jolly Roger's
 - **Duration:** 20 seconds
-- **Image source:** User-provided photo
-- **Image file:** images/real/scene-10-fire-chief-ride.jpg
-- **Photo description:** 1960s color photo — young blonde boy riding a red "Fire Chief" miniature car on the Happyland track, Ferris wheel rising in the background, 1960s cars visible on Hempstead Turnpike behind the fence. Park fully alive and buzzing.
-- **Image orientation:** landscape
+- **Image source:** User-provided photos (sequence of 2)
+- **Image file:** images/jr3.jpg (primary — 4-panel collage), images/jr_fire_chief.jpg (secondary — see note)
+- **Photo description:** (a) jr3: 4-panel collage of Happyland rides in action — roller coaster, Ferris wheel cabin with "10¢" sign, mother walking with child past "Jolly Roger" sign visible, children in helicopter ride. 1950s-60s color. Shows the park as a living, bustling place. (b) The fire chief car ride boy photo (shared in chat, save as jr_fire_chief.jpg if not already saved). Use as a second cut within the scene.
+- **Image orientation:** landscape (collage is square — pillarbox or crop)
 - **Text overlay:** None
 - **Motion:** ken-burns-pan
 - **Audio:** Narration scene-10.wav + background music at 15% volume
@@ -196,9 +198,9 @@
 
 ## Scene 17: The Family Legacy
 - **Duration:** 25 seconds
-- **Image source:** User-provided photo
-- **Image file:** images/real/scene-17-carousel-grandparent.jpg
-- **Photo description:** Color photo from Happyland — grandparent sitting on an ornate carved carousel horse holding a baby/toddler, painted horses surrounding them. Multigenerational, warm, emotional. Perfectly captures the idea of parents bringing their children to the same place their parents brought them.
+- **Image source:** User-provided photos (2 — cut between them)
+- **Image file:** images/jr2.jpg (primary — carousel + boat ride with families), images/jr4.jpg (secondary — carousel interior alternate angle)
+- **Photo description:** (a) jr2: Ornate carousel spinning with families riding, two boys in a white boat-shaped ride in the foreground — 1970s color, indoor, full of life. (b) jr4: Similar carousel scene from a different angle — kids in bumper boat foreground, carousel behind. Together they convey the timeless multigenerational experience at Happyland.
 - **Image orientation:** landscape
 - **Text overlay:** None
 - **Motion:** ken-burns-zoom
@@ -212,9 +214,10 @@
 
 ## Scene 18: The Carousel Connection
 - **Duration:** 20 seconds
-- **Image source:** AI-generated (OpenAI)
-- **Image prompt:** "Split composition image: on the left side, a vintage-style illustration of an ornate antique carousel with painted horses in an amusement park setting from the 1950s; on the right side, the same carousel beautifully restored and operating inside a modern museum building (the Long Island Children's Museum), children riding the painted horses, a thin dividing line between past and present, warm color palette on both sides, 16:9 aspect ratio"
-- **Image orientation:** landscape
+- **Image source:** User-provided photo + pending LICM photo
+- **Image file:** images/jr7.jpg (historical — boy on carousel horse B&W), [licm_carousel.jpg — to be obtained from carousel@licm.org]
+- **Photo description:** (a) jr7: B&W photo of a young boy standing up triumphantly on a carousel horse, arm raised, crowd in background — 1950s Happyland. Joyful and iconic. (b) Need a matching photo of the Nunley's Carousel at its current LICM home. Email carousel@licm.org to request. If unavailable, AI-generate the right panel.
+- **Image orientation:** landscape (consider side-by-side split screen: jr7 left, LICM right)
 - **Text overlay:** "Nunley's Carousel -- Long Island Children's Museum, Garden City"
 - **Motion:** ken-burns-pan
 - **Audio:** Narration scene-18.wav + background music at 15% volume
@@ -234,9 +237,9 @@
 ## Scene 20: Closing / Call to Action
 - **Duration:** 20 seconds
 - **Image source:** User-provided photos (sequence of 2)
-- **Image file:** images/real/scene-20a-mini-golf-sunny.jpg (mini golf with waterfall, summer), images/real/scene-20b-batting-cages-courtyard.jpg (wide courtyard with families)
-- **Photo description:** (a) Mini golf course on a sunny summer day — waterfall feature, batting cage nets visible above the tree line in background. (b) Courtyard with patio tables, batting cages, families. Together they close the documentary on warmth and life.
-- **Image orientation:** landscape
+- **Image file:** images/bu8.jpg (primary — SUNSET shot), images/bu6.jpg (secondary — mini golf garden)
+- **Photo description:** (a) bu8: Batting cages at dusk/sunset — families silhouetted against a pink/purple sky, people lined up along the cage fence. Cinematic and emotional. THE closing image. (b) bu6: Mini golf garden in full bloom — sunflowers, mums, manicured greens, blue sky. Closes on beauty and continuity.
+- **Image orientation:** landscape (bu8 is square crop — pillarbox or crop to 16:9)
 - **Text overlay:** "Batter Up -- 130 Hicksville Road, Bethpage, NY" (first 8s), then "Share your Jolly Roger's memories in the comments" (next 6s), then "Subscribe for more Long Island stories" (final 6s)
 - **Motion:** ken-burns-zoom
 - **Audio:** Narration scene-20.wav + background music fade out over final 3s
@@ -248,35 +251,49 @@
 
 | Category | Count | Notes |
 |----------|-------|-------|
-| AI-generated images | 7 | Scenes 1, 4, 5, 9, 13, 15 + one aerial TBD |
-| User-provided photos (real) | 13 | Scenes 2, 6, 7, 8, 10, 11, 12, 14, 16, 17, 19, 20 + logo |
+| AI-generated images | 3 | Scenes 1, 5, 15 (possibly 13 via Google Maps) |
+| User-provided photos (real) | 17 | Scenes 2, 4, 6, 7, 8, 9, 10, 11, 12, 14, 16, 17, 18(partial), 19, 20 |
 | Title cards | 0 | Title integrated into Scene 1 AI image |
 | Text overlays | 8 | Various lower thirds and callouts |
 | Narration audio clips | 19 | Scenes 2-20 (Scene 1 is title card only) |
 | Background music | 1 | Upbeat nostalgic Americana track, continuous |
 
-## Real Photo File Naming Convention
+## Real Photo File Index (all files in images/ folder)
 
-Save photos to: `teams/youtube-content/projects/batter-up-history/images/real/`
+| Filename | Scene | Description | Source |
+|----------|-------|-------------|--------|
+| jr1.jpg | 12 | Smiley's Happyland + Jolly Roger corner, rides idle | Brian Quinn album |
+| jr2.jpg | 17 | Carousel + boat ride interior, 1970s color | Brian Quinn album |
+| jr3.jpg | 10 | 4-panel collage of rides in action, 1950s-60s | Brian Quinn album |
+| jr4.jpg | 17 | Carousel interior alternate angle, boat ride | Brian Quinn album |
+| jr5.jpg | 8 | Jolly Roger postcard — exterior + interior illustrated | Brian Quinn album |
+| jr6.jpg | 8 | Jolly Roger matchbook — green/white, pirate | Brian Quinn album |
+| jr7.jpg | 18 | Boy triumphant on carousel horse, B&W 1950s | Brian Quinn album |
+| jr8.jpg | 6 | Nunley's Happyland at night — B&W neon signs | Brian Quinn album |
+| jr9.jpg | 11 alt | Nunley's Happyland exterior, late-era color | Brian Quinn album |
+| jr10.jpg | 8 | Jolly Roger interior — soda fountain B&W | Brian Quinn album |
+| jr11.jpg | 11 | Robin Hood sign B&W — decline era | Brian Quinn album |
+| jr12.jpg | unused | Fortune teller automaton | Brian Quinn album |
+| jr13.jpg | 4 | 1953 aerial — empty corner before park | Purchased by Brian Quinn |
+| jr14.jpg | 9 | 1966 aerial with color annotations — full complex | Purchased by Brian Quinn |
+| jr15.jpg | 7 | RUTH Organ color photo 1965 (photo: Robert A. Miller) | Brian Quinn album |
+| jr16.jpg | 7 | B&W crowds watching the organ play | Brian Quinn album |
+| jr17.jpg | 7 alt | The organ from the front — white/gold | Brian Quinn album |
+| jr18.jpg | 7 detail | Close-up of animated musicians | Brian Quinn album |
+| bu1.jpg | title | Batter Up logo | DeMarco family |
+| bu2.jpg | 16/19 | Mini golf + cages, sunny | DeMarco family |
+| bu3.jpg | 16 | Batting cages close view | DeMarco family |
+| bu4.jpg | 19 | Mini golf overcast, lighthouse obstacle | DeMarco family |
+| bu5.jpg | 16 | Batting cages courtyard + Home Run mural | DeMarco family |
+| bu6.jpg | 20 | Mini golf garden — flowers, sunflowers, fall | DeMarco family |
+| bu8.jpg | 20 | **Batting cages at SUNSET — silhouettes** | DeMarco family |
+| bu9.jpg | 2/14 | Entrance from parking lot — OPEN sign, tents | DeMarco family |
 
-| Filename | Scene | Description |
-|----------|-------|-------------|
-| scene-02-batter-up-entrance.jpg | 2 | Parking lot entrance, red/blue tents |
-| scene-06-nunleys-happyland-night.jpg | 6 | B&W neon night shot |
-| scene-07-carousel-interior.jpg | 7 | Carousel + boat ride, color |
-| scene-08a-jolly-roger-postcard.jpg | 8 | Jolly Roger illustrated postcard |
-| scene-08b-jolly-roger-matchbook.jpg | 8 | Jolly Roger matchbook cover |
-| scene-10-fire-chief-ride.jpg | 10 | Boy on Fire Chief car, 1960s |
-| scene-11-robin-hood-sign.jpg | 11 | Robin Hood sign, B&W |
-| scene-12-smiley-jolly-roger-corner.jpg | 12 | Smiley's + Jolly Roger corner |
-| scene-12-berkowitz-1979.jpg | 12 | Berkowitz pre-demolition (pending license) |
-| scene-14-batter-up-entrance.jpg | 14 | Same as Scene 2 or alternate angle |
-| scene-16a-batting-cages.jpg | 16 | Batting cages with families |
-| scene-16b-batting-cages-wide.jpg | 16 | Wide courtyard view |
-| scene-17-carousel-grandparent.jpg | 17 | Grandparent + baby on carousel |
-| scene-19-mini-golf-garden.jpg | 19 | Mini golf garden with flowers |
-| scene-20a-mini-golf-sunny.jpg | 20 | Mini golf, sunny, waterfall |
-| scene-20b-batting-cages-courtyard.jpg | 20 | Wide courtyard with families |
+**Still needed:**
+- bu7.jpg — check download (user noted 9 BU photos, bu7 missing from folder)
+- licm_carousel.jpg — modern carousel at LICM for Scene 18 (email carousel@licm.org)
+- Scene 13 (strip mall today) — Google Maps screenshot or AI
+- Berkowitz 1979 pre-demolition photos — pending license reply
 
 ## Image Generation Priority
 
