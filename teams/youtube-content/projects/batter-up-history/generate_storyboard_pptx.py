@@ -94,15 +94,15 @@ SCENES = {
         "text_overlay": '"Batter Up: The Last Piece of Jolly Roger\'s" in large serif font, centered',
         "motion": "static",
         "audio": "Background music fade in -- upbeat nostalgic Americana",
-        "notes": "AI TO GENERATE",
+        "notes": "USE AI BG + ADD CLEAN TEXT OVERLAY (AI text has misspellings)",
     },
     2: {
         "title": "Modern Batter Up",
         "duration": "16 seconds",
         "image_type": "real",
-        "image_files": ["bu9.jpg"],
+        "image_files": ["bu8.jpg"],
         "ai_prompt": "",
-        "photo_desc": "Batter Up entrance from parking lot -- colorful red and blue/purple pointed tents, OPEN sign, American flag, cars, blue sky.",
+        "photo_desc": "Batting cages at dusk/sunset -- families silhouetted against pink/purple sky, people lined up along cage fence. Cinematic and alive.",
         "orientation_note": "Square (414x414) -- crop to 16:9",
         "text_overlay": "None",
         "motion": "ken-burns-pan",
@@ -112,28 +112,28 @@ SCENES = {
     3: {
         "title": "The Reveal",
         "duration": "23 seconds",
-        "image_type": "ai",
-        "image_files": [],
-        "ai_prompt": "Aerial view of suburban Long Island intersection, batting cages and mini golf on one side, strip mall opposite, Hempstead Turnpike / Hicksville Road, Bethpage NY, photorealistic satellite-style, 16:9",
-        "photo_desc": "",
-        "orientation_note": "Landscape",
-        "text_overlay": '"130 Hicksville Road, Bethpage, NY" -- lower third',
-        "motion": "ken-burns-zoom",
+        "image_type": "real",
+        "image_files": ["bu-streetview-tents.jpg", "bu-streetview-minigolf.jpg"],
+        "ai_prompt": "",
+        "photo_desc": "(a) bu-streetview-tents: Wide street-level shot from across parking lot -- colorful blue/pink tents over batting cages, full facility visible. Oct 2018 Google Street View. (b) bu-streetview-minigolf: Mini golf entrance angle -- 'Miniature Golf' sign, OPEN, American flag. Shows both halves of the facility.",
+        "orientation_note": "Both landscape 1920x1080 -- native 16:9",
+        "text_overlay": '"130 Hicksville Road, Bethpage, NY" -- lower third on first cut',
+        "motion": "ken-burns-zoom then ken-burns-pan",
         "audio": "Narration scene-3.wav + bg music 15%",
-        "notes": "AI -- or use Google Maps satellite screenshot",
+        "notes": "Google Street View (Oct 2018) -- real street-level shots",
     },
     4: {
         "title": "William Nunley's Vision",
         "duration": "30 seconds",
         "image_type": "real",
-        "image_files": ["jr13.jpg"],
+        "image_files": ["jr13.jpg", "jr9.jpg"],
         "ai_prompt": "",
-        "photo_desc": "1953 aerial photograph of Hempstead Turnpike / Hicksville Road intersection showing the site before Happyland. Purchased by Brian Quinn.",
-        "orientation_note": "Square (960x960) -- aerial photo",
+        "photo_desc": "(a) jr13: 1953 aerial of Hempstead Tpke / Hicksville Rd intersection before Happyland. (b) jr9: Nunley's Happyland entrance daytime color -- park entrance coming alive. Cut between them to break up the 30s.",
+        "orientation_note": "Both approx square -- crop to 16:9",
         "text_overlay": "None",
         "motion": "ken-burns-pan",
         "audio": "Narration scene-4.wav + bg music 15%",
-        "notes": "Aerial photo",
+        "notes": "Two images to cover 30-second narration",
     },
     5: {
         "title": "Miriam Takes Over",
@@ -242,23 +242,23 @@ SCENES = {
     13: {
         "title": "The Strip Mall",
         "duration": "10 seconds",
-        "image_type": "ai",
-        "image_files": [],
-        "ai_prompt": "Modern-day unremarkable suburban strip mall at busy Long Island intersection, generic storefronts, parking lot, traffic, overcast, slightly desaturated, documentary realism, 16:9",
-        "photo_desc": "",
-        "orientation_note": "Landscape",
+        "image_type": "real",
+        "image_files": ["jr-today-stripmall.jpg"],
+        "ai_prompt": "",
+        "photo_desc": "Google Street View (Aug 2025) of what was once the Jolly Roger's / Happyland site on Hempstead Turnpike, Bethpage -- now a Cadillac dealership parking lot and strip of unremarkable storefronts. Poignant contrast with the archival photos.",
+        "orientation_note": "Landscape 1920x1080 -- native 16:9",
         "text_overlay": "None",
         "motion": "static",
         "audio": "Narration scene-13.wav + bg music 10%",
-        "notes": "AI TO GENERATE -- or Google Maps screenshot",
+        "notes": "Google Street View screenshot (Aug 2025)",
     },
     14: {
         "title": "The Survivor",
         "duration": "10 seconds",
         "image_type": "real",
-        "image_files": ["bu9.jpg"],
+        "image_files": ["bu3.jpg"],
         "ai_prompt": "",
-        "photo_desc": "Batter Up entrance -- colorful tents, OPEN sign, American flag. Hard cut from strip mall. The contrast IS the story.",
+        "photo_desc": "Batting cages exterior daytime -- chain-link fencing, pitching machines visible, facility in operation. Hard cut from strip mall. The contrast IS the story.",
         "orientation_note": "Square (414x414) -- crop to 16:9",
         "text_overlay": "None",
         "motion": "ken-burns-zoom",
@@ -334,10 +334,10 @@ SCENES = {
         "title": "Closing / Call to Action",
         "duration": "20 seconds",
         "image_type": "real",
-        "image_files": ["bu8.jpg", "bu6.jpg"],
+        "image_files": ["bu6.jpg", "bu2.jpg"],
         "ai_prompt": "",
-        "photo_desc": "(a) bu8: Batting cages at dusk/sunset -- families silhouetted, pink/purple sky. THE closing image. (b) bu6: Mini golf garden in full bloom.",
-        "orientation_note": "bu8: SQUARE (414x414) -- note square crop. bu6: Square (414x414)",
+        "photo_desc": "(a) bu6: Mini golf garden in full bloom -- sunflowers, mums, blue sky. Beauty and continuity. (b) bu2: Wide courtyard with mini golf + cages, sunny day. Facility alive.",
+        "orientation_note": "Both square (414x414) -- crop to 16:9",
         "text_overlay": '"Batter Up -- 130 Hicksville Road, Bethpage, NY" then "Share your Jolly Roger\'s memories" then "Subscribe"',
         "motion": "ken-burns-zoom",
         "audio": "Narration scene-20.wav + bg music fade out",
@@ -438,27 +438,32 @@ def create_title_slide(prs):
     bar_w = Inches(3)
     bar_h = Inches(1.2)
 
+    # Count dynamically
+    real_count = sum(1 for s in SCENES.values() if s["image_type"] == "real")
+    ai_count = sum(1 for s in SCENES.values() if s["image_type"] == "ai")
+
     # Real photos box
     box1 = add_shape(slide, Inches(1.3), bar_top, bar_w, bar_h, DARK_GREEN)
     add_textbox(slide, Inches(1.3), bar_top + Inches(0.15), bar_w, Inches(0.4),
-                "17 REAL PHOTOS", font_size=20, color=GREEN, bold=True, alignment=PP_ALIGN.CENTER)
+                f"{real_count} REAL PHOTOS", font_size=20, color=GREEN, bold=True, alignment=PP_ALIGN.CENTER)
     add_textbox(slide, Inches(1.3), bar_top + Inches(0.55), bar_w, Inches(0.4),
                 "Historical + modern", font_size=12, color=LIGHT_GRAY, alignment=PP_ALIGN.CENTER)
 
     # AI images box
+    ai_scenes = [str(n) for n, s in SCENES.items() if s["image_type"] == "ai"]
     box2 = add_shape(slide, Inches(5.15), bar_top, bar_w, bar_h, DARK_ORANGE)
     add_textbox(slide, Inches(5.15), bar_top + Inches(0.15), bar_w, Inches(0.4),
-                "3 AI TO GENERATE", font_size=20, color=ORANGE, bold=True, alignment=PP_ALIGN.CENTER)
+                f"{ai_count} AI IMAGES", font_size=20, color=ORANGE, bold=True, alignment=PP_ALIGN.CENTER)
     add_textbox(slide, Inches(5.15), bar_top + Inches(0.55), bar_w, Inches(0.4),
-                "Scenes 1, 5, 15", font_size=12, color=LIGHT_GRAY, alignment=PP_ALIGN.CENTER)
+                f"Scenes {', '.join(ai_scenes)}", font_size=12, color=LIGHT_GRAY, alignment=PP_ALIGN.CENTER)
 
     # Pending box
     box3_color = RGBColor(0x7B, 0x24, 0x1C)
     box3 = add_shape(slide, Inches(9), bar_top, bar_w, bar_h, box3_color)
     add_textbox(slide, Inches(9), bar_top + Inches(0.15), bar_w, Inches(0.4),
-                "2 PENDING", font_size=20, color=MUTED_RED, bold=True, alignment=PP_ALIGN.CENTER)
+                "1 PENDING", font_size=20, color=MUTED_RED, bold=True, alignment=PP_ALIGN.CENTER)
     add_textbox(slide, Inches(9), bar_top + Inches(0.55), bar_w, Inches(0.5),
-                "Scene 13 (strip mall)\nScene 18 (LICM photo)", font_size=11, color=LIGHT_GRAY, alignment=PP_ALIGN.CENTER)
+                "Scene 18 (LICM photo)", font_size=11, color=LIGHT_GRAY, alignment=PP_ALIGN.CENTER)
 
     # Date
     add_textbox(slide, Inches(1), Inches(6.5), Inches(11), Inches(0.4),
@@ -606,7 +611,35 @@ def create_scene_slide(prs, scene_num, scene):
                 print(f"  Warning: Could not embed {primary_file}: {e}")
 
     if not image_embedded and scene["image_type"] == "ai":
-        # Show AI prompt text in the placeholder
+        # Try to embed existing AI-generated scene image
+        ai_img_path = os.path.join(IMAGES_DIR, f"scene-{scene_num:02d}.png")
+        if os.path.exists(ai_img_path):
+            try:
+                from PIL import Image as PILImage
+                pil_img = PILImage.open(ai_img_path)
+                iw, ih = pil_img.size
+
+                pad = Inches(0.15)
+                max_w = img_area_w - 2 * pad
+                max_h = img_area_h - 2 * pad
+
+                w_ratio = max_w / iw
+                h_ratio = max_h / ih
+                ratio = min(w_ratio, h_ratio)
+
+                final_w = int(iw * ratio)
+                final_h = int(ih * ratio)
+
+                x_offset = img_left + pad + (max_w - final_w) // 2
+                y_offset = img_top + pad + (max_h - final_h) // 2
+
+                slide.shapes.add_picture(ai_img_path, x_offset, y_offset, final_w, final_h)
+                image_embedded = True
+            except Exception as e:
+                print(f"  Warning: Could not embed AI image scene-{scene_num:02d}.png: {e}")
+
+    if not image_embedded and scene["image_type"] == "ai":
+        # Fallback: show AI prompt text in the placeholder
         add_textbox(slide, img_left + Inches(0.3), img_top + Inches(0.5),
                     img_area_w - Inches(0.6), img_area_h - Inches(1),
                     f"AI PROMPT:\n{scene['ai_prompt']}",

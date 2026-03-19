@@ -172,7 +172,7 @@ NARRATION:
 [VISUAL: AI-generated illustration -- late 1970s batting cage facility being rebuilt, construction activity, chain-link fencing going up, a sense of renewal against the backdrop of the demolished park site across the road]
 
 NARRATION:
-"In nineteen seventy-nine, just one year after the park closed, the batting cage facility at 130 Hicksville Road was rebuilt and expanded. It was like the place refused to die. And then, in nineteen eighty-four, two local partners stepped up to take the reins. Nick DeMarco and his partner John Simons named it Batter Up. Nick ran the day-to-day, building it from the ground up with his family. And they've been running it ever since."
+"In nineteen seventy-nine, just one year after the park closed, the batting cage facility at 130 Hicksville Road was rebuilt and expanded. It was like the place refused to die. And then, in nineteen eighty-four, two local partners stepped up to take the reins. Nick DeMarco and his partner John Simoncic named it Batter Up. Nick ran the day-to-day, building it from the ground up with his family. And they've been running it ever since."
 
 [TEXT OVERLAY: "Batter Up -- DeMarco family, 1984-present"]
 [TRANSITION: Crossfade, 1s]
