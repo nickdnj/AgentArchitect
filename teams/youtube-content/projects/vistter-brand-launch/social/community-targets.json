@@ -1,0 +1,235 @@
+{
+  "video_id": "FlWXi3aNOxA",
+  "video_title": "Monmouth Beach: Sand, Scandal, and the Shore",
+  "location": "Monmouth Beach, NJ",
+  "premiere_date": "2026-03-28T14:00:00-04:00",
+  "youtube_url": "https://youtu.be/FlWXi3aNOxA",
+  "research_date": "2026-03-21",
+  "targets": [
+    {
+      "platform": "facebook_group",
+      "name": "Monmouth Beach Residents",
+      "url": "https://www.facebook.com/groups/153985318134491/",
+      "members": "unknown (private group)",
+      "posting_rules": "Residents group — keep it hyper-local and authentic. Do NOT post as promotion. Ask if locals remember specific landmarks or stories from the video.",
+      "priority": "high",
+      "why": "Direct residents of Monmouth Beach. The most targeted audience possible. Even with a small group, these are the people who will share it virally if they love it."
+    },
+    {
+      "platform": "facebook_page",
+      "name": "Boro of Monmouth Beach (Official)",
+      "url": "https://www.facebook.com/p/Boro-of-Monmouth-Beach-100075804083737/",
+      "members": "unknown",
+      "posting_rules": "Official borough page — do NOT post directly. Comment on relevant posts or message the admin to share.",
+      "priority": "medium",
+      "why": "Official borough page. If admin shares it, instant credibility with residents."
+    },
+    {
+      "platform": "facebook_page",
+      "name": "Monmouth Beach Cultural Center",
+      "url": "https://www.facebook.com/people/Monmouth-Beach-Cultural-Center/100066753548093/",
+      "members": "unknown",
+      "posting_rules": "This is the former Life-Saving Station featured in the video. Reach out to admin — they may want to share a video that highlights their building's history.",
+      "priority": "high",
+      "why": "The Cultural Center IS the old Life-Saving Station from 1895. The video tells their origin story. They have strong reason to share this."
+    },
+    {
+      "platform": "facebook_page",
+      "name": "Monmouth County Historical Association",
+      "url": "https://www.facebook.com/monmouthhistory/",
+      "members": "unknown",
+      "posting_rules": "Established historical society (founded 1898). Professional tone. Share as a resource, not self-promotion.",
+      "priority": "high",
+      "why": "County-level historical organization. The video covers land pirates, wreckers, Gilded Age corruption — all Monmouth County history. Perfect fit."
+    },
+    {
+      "platform": "facebook_group",
+      "name": "Monmouth County Community Page",
+      "url": "https://www.facebook.com/groups/677887502417097/",
+      "members": "unknown",
+      "posting_rules": "General community group. Lead with an interesting fact about the county, not a video link.",
+      "priority": "medium",
+      "why": "Broader Monmouth County audience. Good for reach beyond the borough itself."
+    },
+    {
+      "platform": "facebook_group",
+      "name": "Monmouth County NJ News and Events",
+      "url": "https://www.facebook.com/groups/1194431427302800/",
+      "members": "unknown",
+      "posting_rules": "News and events focus. Frame the premiere as a local event.",
+      "priority": "medium",
+      "why": "News-oriented group. The premiere can be framed as a local cultural event."
+    },
+    {
+      "platform": "facebook_group",
+      "name": "Historic Long Branch",
+      "url": "https://www.facebook.com/groups/HistoricLongBranch/",
+      "members": "unknown",
+      "posting_rules": "History-focused group for neighboring town. Long Branch and Monmouth Beach share Gilded Age history.",
+      "priority": "high",
+      "why": "Long Branch is immediately south of Monmouth Beach. The Gilded Age era, Millionaire's Row, and the Monmouth Beach Association all overlap with Long Branch history. Presidents vacationed in Long Branch."
+    },
+    {
+      "platform": "facebook_group",
+      "name": "All About Sea Bright",
+      "url": "https://www.facebook.com/groups/AllAboutSeaBright/",
+      "members": "unknown",
+      "posting_rules": "Neighboring town group. The Sea Bright skiff (rum-runner boats) originated here. Lead with that angle.",
+      "priority": "high",
+      "why": "Sea Bright is immediately north of Monmouth Beach. The Sea Bright skiff — the boat modified for rum running — is named for this town. The seawall they share is an engineering landmark."
+    },
+    {
+      "platform": "facebook_page",
+      "name": "Jersey Shore Memories",
+      "url": "https://www.facebook.com/jsmemories/",
+      "members": "unknown (page with active following)",
+      "posting_rules": "Nostalgia-focused page. Share a compelling historic image or fact. They have a YouTube channel too — potential cross-promotion.",
+      "priority": "medium",
+      "why": "Jersey Shore nostalgia audience. The Gilded Age mansions, fishing village, rum runners — all nostalgia gold."
+    },
+    {
+      "platform": "facebook_page",
+      "name": "Jersey Shore Historical Society",
+      "url": "https://www.facebook.com/JSHISTORY1/",
+      "members": "unknown",
+      "posting_rules": "501(c)(3) historical society founded 1962. Professional approach. Share as a historical resource.",
+      "priority": "medium",
+      "why": "Established historical society covering the Shore region. Land pirates, Life-Saving Service, and Hurricane Sandy are all within their scope."
+    },
+    {
+      "platform": "facebook_page",
+      "name": "Jersey Shore Hurricane News (JSHN)",
+      "url": "https://www.facebook.com/JerseyShoreHurricaneNews/",
+      "members": "~264,000 followers",
+      "posting_rules": "Major Shore news outlet. Do NOT post uninvited. Pitch via message — they cover Shore stories and local content. If they share it, massive reach.",
+      "priority": "high",
+      "why": "264K followers. Founded during Hurricane Sandy — the video's climactic event. If JSHN shares this, it reaches the exact audience who lived through Sandy and cares about Shore history."
+    },
+    {
+      "platform": "facebook_page",
+      "name": "Old New Jersey",
+      "url": "https://www.facebook.com/OldNewJersey/",
+      "members": "~25,700 likes",
+      "posting_rules": "Nostalgia page — 'No crazy stuff, just Jersey stuff and lots of Down the Shore stuff.' Share a historic fact or image.",
+      "priority": "medium",
+      "why": "25K+ audience interested in old New Jersey and Shore culture. The Gilded Age mansions and fishing village content fits perfectly."
+    },
+    {
+      "platform": "facebook_page",
+      "name": "New Jersey Memories",
+      "url": "https://www.facebook.com/NewJerseyMemories/",
+      "members": "~62,000 likes",
+      "posting_rules": "Stories and pictures of NJ history. Submit content that fits their format — a historic image with a story.",
+      "priority": "medium",
+      "why": "62K audience interested in NJ history, people, food, lifestyle. Broad but engaged."
+    },
+    {
+      "platform": "facebook_page",
+      "name": "New Jersey Historical Society",
+      "url": "https://www.facebook.com/newjerseyhistoricalsociety/",
+      "members": "unknown",
+      "posting_rules": "State-level historical society (founded 1845). Professional outreach only.",
+      "priority": "low",
+      "why": "State-level organization. Less targeted but lends credibility if they share or engage."
+    },
+    {
+      "platform": "facebook_page",
+      "name": "US Life-Saving Service Heritage Association",
+      "url": "https://www.facebook.com/p/US-Life-Saving-Service-Heritage-Association-100064985220003/",
+      "members": "~3,000+ likes",
+      "posting_rules": "National nonprofit dedicated to preserving Life-Saving stations. The Monmouth Beach station is one of their key sites. Pitch directly.",
+      "priority": "high",
+      "why": "The video features the Monmouth Beach Life-Saving Station (1895) and the Storm Warriors motto. This organization exists to tell exactly these stories. They will likely share it."
+    },
+    {
+      "platform": "facebook_page",
+      "name": "Monmouth Timeline",
+      "url": "https://monmouthtimeline.org/",
+      "members": "unknown (active website + social)",
+      "posting_rules": "They already have an article called 'Wreckers! The Land Pirates of Monmouth County.' Share as complementary content.",
+      "priority": "high",
+      "why": "They publish Monmouth County history content. They literally have articles on the same topics (land pirates, wreckers). Natural partner."
+    },
+    {
+      "platform": "reddit",
+      "name": "r/newjersey",
+      "url": "https://www.reddit.com/r/newjersey/",
+      "members": "~400,000+",
+      "posting_rules": "Large state subreddit. Self-promotion rules apply. Post as a genuine share, not a plug. Lead with an interesting fact. Flair appropriately. Best posted during weekday lunch hours ET.",
+      "priority": "high",
+      "why": "Largest NJ community on Reddit. History posts with interesting hooks do well. The 'land pirates' angle and $4 land purchase are strong hooks."
+    },
+    {
+      "platform": "reddit",
+      "name": "r/Documentaries",
+      "url": "https://www.reddit.com/r/Documentaries/",
+      "members": "~18,000,000+",
+      "posting_rules": "Strict formatting: Title (Year) - Description [duration]. Must be freely available. No excessive self-promotion. Post once and let it stand.",
+      "priority": "high",
+      "why": "Massive audience. Local history documentaries with strong hooks (pirates, corruption, hurricanes) perform well. The title format '[7:51]' signals a quick watch."
+    },
+    {
+      "platform": "reddit",
+      "name": "r/history",
+      "url": "https://www.reddit.com/r/history/",
+      "members": "~17,000,000+",
+      "posting_rules": "Educational focus. Must provide genuine historical value. No clickbait. Lead with the historical content, not the video.",
+      "priority": "medium",
+      "why": "Huge history audience. The Robeson Navy scandal, Life-Saving Service, and 'land pirates' debunking are all strong historical content."
+    },
+    {
+      "platform": "reddit",
+      "name": "r/ObscureHistory",
+      "url": "https://www.reddit.com/r/ObscureHistory/",
+      "members": "unknown",
+      "posting_rules": "Obscure, lesser-known history. Perfect for the land pirates myth or the Robeson scandal.",
+      "priority": "medium",
+      "why": "The Robeson Navy scandal and the land pirates myth are exactly the kind of obscure American history this sub loves."
+    },
+    {
+      "platform": "reddit",
+      "name": "r/TropicalWeather",
+      "url": "https://www.reddit.com/r/TropicalWeather/",
+      "members": "~200,000+",
+      "posting_rules": "Weather-focused. Post only when relevant (hurricane season, Sandy anniversary). The Sandy segment must be the angle.",
+      "priority": "low",
+      "why": "The Hurricane Sandy segment is compelling. Best saved for October (Sandy anniversary) rather than March launch."
+    },
+    {
+      "platform": "nextdoor",
+      "name": "Monmouth Beach Neighborhood",
+      "url": "https://nextdoor.com/neighborhood/monmouthbeach--monmouth-beach--nj/",
+      "members": "~3,200 residents in borough",
+      "posting_rules": "Must be a verified resident or nearby neighbor to post. Hyper-local. Share as a neighbor who made something about the town, not as a content creator.",
+      "priority": "high",
+      "why": "Direct access to Monmouth Beach residents. The most personal and trusted platform for local sharing. If you are a local or know a local, this is the top-priority post."
+    },
+    {
+      "platform": "other",
+      "name": "Monmouth Beach Life (website/blog)",
+      "url": "http://www.monmouthbeachlife.com/",
+      "members": "unknown (active local blog)",
+      "posting_rules": "Local blog with extensive history section. Reach out to the editor — they may feature or link to the video.",
+      "priority": "medium",
+      "why": "Active local blog with articles on Monmouth Beach history, the Cultural Center, and the Historical Committee. Natural editorial partner."
+    },
+    {
+      "platform": "other",
+      "name": "The Link News (Long Branch)",
+      "url": "https://www.facebook.com/TheLinkNews/",
+      "members": "unknown",
+      "posting_rules": "Local news outlet covering Long Branch, Sea Bright, Monmouth Beach area. Pitch as a local interest story.",
+      "priority": "medium",
+      "why": "Local news covering the exact geographic area. A mention or share from them reaches the core audience."
+    },
+    {
+      "platform": "other",
+      "name": "Patch.com - Red Bank / Monmouth County",
+      "url": "https://patch.com/new-jersey/redbank",
+      "members": "unknown (regional news)",
+      "posting_rules": "Hyperlocal news platform. Submit as a community event or local interest story.",
+      "priority": "low",
+      "why": "Regional Patch covers Monmouth County stories. Low effort to submit, potential for pickup."
+    }
+  ]
+}

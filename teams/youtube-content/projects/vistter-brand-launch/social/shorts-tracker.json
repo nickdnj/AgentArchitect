@@ -1,0 +1,111 @@
+{
+  "project": "monmouth-beach-history",
+  "source_video": "teams/youtube-content/projects/monmouth-beach-history/monmouth-beach-v11.mp4",
+  "full_video_url": null,
+  "full_video_publish_date": null,
+  "total_shorts": 3,
+  "shorts": [
+    {
+      "id": "short-01",
+      "slug": "land-pirates",
+      "title": "Land Pirates",
+      "source_timestamp": "1:05 - 1:50",
+      "duration_seconds": 45,
+      "file_vertical": "social/short-01-land-pirates-vertical.mp4",
+      "file_overlay": "social/short-01-land-pirates-overlay.mp4",
+      "file_final": null,
+      "thumbnail": "social/short-01-land-pirates-thumb.jpg",
+      "subtitles_ass": null,
+      "status": "overlay_complete",
+      "notes": "Test clip produced. Awaiting Whisper subtitle pass to produce final.",
+      "youtube": {
+        "title": "New Jersey's \"Land Pirates\" — The Truth Is Darker #Shorts",
+        "description": "They were accused of luring ships onto rocks and plundering the wreckage.\nBut the real story is even more interesting.\n\nWatch the full documentary: [LINK]\n\n#Shorts #NewJersey #History #TrueHistory #JerseyShore #LandPirates",
+        "tags": ["NewJersey", "History", "Shorts", "JerseyShore", "TrueHistory", "Maritime", "LandPirates"],
+        "status": "ready",
+        "upload_date": null,
+        "url": null
+      },
+      "instagram": {
+        "caption": "\"Land pirates.\" That's what newspapers called the people of Monmouth County, NJ\n— accused of hanging false lights to lure ships onto rocks and strip them clean.\n\nThe truth? There's no evidence it ever happened. They were the ones saving lives.\n\nFull documentary on my YouTube channel — link in bio.\n\n#History #NewJersey #JerseyShore #TrueHistory #Maritime #LandPirates #Reels #NJHistory",
+        "status": "ready",
+        "upload_date": null,
+        "url": null
+      },
+      "tiktok": {
+        "caption": "NJ's \"land pirates\" were actually the heroes #NewJersey #History #TrueHistory #JerseyShore #Maritime #LandPirates",
+        "status": "ready",
+        "upload_date": null,
+        "url": null
+      }
+    },
+    {
+      "id": "short-02",
+      "slug": "scandal",
+      "title": "The Scandal — $15M Vanished",
+      "source_timestamp": "3:40 - 4:20",
+      "duration_seconds": 40,
+      "file_vertical": null,
+      "file_overlay": null,
+      "file_final": null,
+      "thumbnail": null,
+      "subtitles_ass": null,
+      "status": "planned",
+      "notes": null,
+      "youtube": {
+        "title": "The Navy Secretary Who Stole $15 Million — Then Got Away With It #Shorts",
+        "description": "The Secretary of the Navy controlled $56 million in federal funds.\nCongress found $15 million missing. The President refused to act.\nAnd the briber? A sitting U.S. Senator.\n\nFull documentary: [LINK]\n\n#Shorts #History #Corruption #NewJersey #USHistory #PoliticalScandal",
+        "tags": ["History", "Shorts", "Corruption", "NewJersey", "USHistory", "PoliticalScandal", "Robeson"],
+        "status": "ready",
+        "upload_date": null,
+        "url": null
+      },
+      "instagram": {
+        "caption": "In 1876, Congress discovered the U.S. Secretary of the Navy had \"lost\" $15 million in federal construction funds. A contractor gave him horses, real estate, and a $320,000 vacation house on the Jersey Shore as bribes.\n\nCongress recommended impeachment. President Grant said no.\n\nThe briber? A sitting Senator — who had voted to impeach a DIFFERENT president just 8 years earlier.\n\nFull documentary on YouTube — link in bio.\n\n#History #Corruption #NewJersey #PoliticalScandal #JerseyShore #USHistory #NJHistory #Reels",
+        "status": "ready",
+        "upload_date": null,
+        "url": null
+      },
+      "tiktok": {
+        "caption": "He \"lost\" $15M of Navy funds and the President covered for him #History #Corruption #USHistory #NewJersey #PoliticalScandal",
+        "status": "ready",
+        "upload_date": null,
+        "url": null
+      }
+    },
+    {
+      "id": "short-03",
+      "slug": "rum-runners",
+      "title": "The Rum Runners",
+      "source_timestamp": "5:25 - 6:05",
+      "duration_seconds": 40,
+      "file_vertical": null,
+      "file_overlay": null,
+      "file_final": null,
+      "thumbnail": null,
+      "subtitles_ass": null,
+      "status": "planned",
+      "notes": null,
+      "youtube": {
+        "title": "NJ Fishermen Became Prohibition Bootleggers — On the Same Boats #Shorts",
+        "description": "\"The same skills that made them legendary fishermen made them exceptional criminals.\"\n\nMonmouth County's Sea Bright fishermen souped up their flat-bottomed skiffs and\nstarted outrunning Coast Guard cutters in the dark.\n\nFull documentary: [LINK]\n\n#Shorts #History #Prohibition #NewJersey #Bootleggers #RumRunners #JerseyShore",
+        "tags": ["History", "Shorts", "Prohibition", "NewJersey", "Bootleggers", "RumRunners", "JerseyShore"],
+        "status": "ready",
+        "upload_date": null,
+        "url": null
+      },
+      "instagram": {
+        "caption": "\"The same skills that made them legendary fishermen made them exceptional criminals.\"\n\nWhen Prohibition hit Monmouth County, NJ, the fishermen of Galilee already had everything they needed: knowledge of every inlet, flat-bottomed skiffs, and zero fear of dark water.\n\nThey modified their boats into speedboats that could outrun Coast Guard cutters. On the darkest nights, they ran whiskey onto the beach and vanished.\n\nFull documentary on YouTube — link in bio.\n\n#History #Prohibition #NewJersey #Bootleggers #RumRunners #JerseyShore #NJHistory #Reels",
+        "status": "ready",
+        "upload_date": null,
+        "url": null
+      },
+      "tiktok": {
+        "caption": "NJ fishermen became Prohibition bootleggers using their own fishing boats #History #Prohibition #NewJersey #Bootleggers #RumRunners #JerseyShore",
+        "status": "ready",
+        "upload_date": null,
+        "url": null
+      }
+    }
+  ]
+}

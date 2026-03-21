@@ -1,0 +1,122 @@
+[Script Info]
+Title: Pop Subtitles
+ScriptType: v4.00+
+PlayResX: 1080
+PlayResY: 1920
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Pop,Arial,52,&H00888888,&H000000FF,&H00000000,&H80000000,-1,0,0,0,100,100,0,0,1,4,0,5,60,60,480
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.00,0:00:00.38,Pop,,0,0,0,,{\c&HFFFFFF&}4 {\c&H888888&}pounds. Paid in blankets, clothing and hardware, roughly 11 cents an acre.
+Dialogue: 0,0:00:00.38,0:00:00.76,Pop,,0,0,0,,{\c&HFFFFFF&}4 {\c&HFFFFFF&}pounds. {\c&H888888&}Paid in blankets, clothing and hardware, roughly 11 cents an acre.
+Dialogue: 0,0:00:00.76,0:00:01.15,Pop,,0,0,0,,{\c&HFFFFFF&}4 pounds. {\c&HFFFFFF&}Paid {\c&H888888&}in blankets, clothing and hardware, roughly 11 cents an acre.
+Dialogue: 0,0:00:01.15,0:00:01.53,Pop,,0,0,0,,{\c&HFFFFFF&}4 pounds. Paid {\c&HFFFFFF&}in {\c&H888888&}blankets, clothing and hardware, roughly 11 cents an acre.
+Dialogue: 0,0:00:01.53,0:00:01.92,Pop,,0,0,0,,{\c&HFFFFFF&}4 pounds. Paid in {\c&HFFFFFF&}blankets, {\c&H888888&}clothing and hardware, roughly 11 cents an acre.
+Dialogue: 0,0:00:01.92,0:00:02.30,Pop,,0,0,0,,{\c&HFFFFFF&}4 pounds. Paid in blankets, {\c&HFFFFFF&}clothing {\c&H888888&}and hardware, roughly 11 cents an acre.
+Dialogue: 0,0:00:02.30,0:00:02.69,Pop,,0,0,0,,{\c&HFFFFFF&}4 pounds. Paid in blankets, clothing {\c&HFFFFFF&}and {\c&H888888&}hardware, roughly 11 cents an acre.
+Dialogue: 0,0:00:02.69,0:00:03.07,Pop,,0,0,0,,{\c&HFFFFFF&}4 pounds. Paid in blankets, clothing and {\c&HFFFFFF&}hardware, {\c&H888888&}roughly 11 cents an acre.
+Dialogue: 0,0:00:03.07,0:00:03.46,Pop,,0,0,0,,{\c&HFFFFFF&}4 pounds. Paid in blankets, clothing and hardware, {\c&HFFFFFF&}roughly {\c&H888888&}11 cents an acre.
+Dialogue: 0,0:00:03.46,0:00:03.84,Pop,,0,0,0,,{\c&HFFFFFF&}4 pounds. Paid in blankets, clothing and hardware, roughly {\c&HFFFFFF&}11 {\c&H888888&}cents an acre.
+Dialogue: 0,0:00:03.84,0:00:04.23,Pop,,0,0,0,,{\c&HFFFFFF&}4 pounds. Paid in blankets, clothing and hardware, roughly 11 {\c&HFFFFFF&}cents {\c&H888888&}an acre.
+Dialogue: 0,0:00:04.23,0:00:04.61,Pop,,0,0,0,,{\c&HFFFFFF&}4 pounds. Paid in blankets, clothing and hardware, roughly 11 cents {\c&HFFFFFF&}an {\c&H888888&}acre.
+Dialogue: 0,0:00:04.61,0:00:05.00,Pop,,0,0,0,,{\c&HFFFFFF&}4 pounds. Paid in blankets, clothing and hardware, roughly 11 cents an {\c&HFFFFFF&}acre.
+Dialogue: 0,0:00:05.00,0:00:05.40,Pop,,0,0,0,,{\c&HFFFFFF&}As {\c&H888888&}settlements grew along the shore, so did the shipwrecks.
+Dialogue: 0,0:00:05.40,0:00:05.79,Pop,,0,0,0,,{\c&HFFFFFF&}As {\c&HFFFFFF&}settlements {\c&H888888&}grew along the shore, so did the shipwrecks.
+Dialogue: 0,0:00:05.79,0:00:06.20,Pop,,0,0,0,,{\c&HFFFFFF&}As settlements {\c&HFFFFFF&}grew {\c&H888888&}along the shore, so did the shipwrecks.
+Dialogue: 0,0:00:06.20,0:00:06.59,Pop,,0,0,0,,{\c&HFFFFFF&}As settlements grew {\c&HFFFFFF&}along {\c&H888888&}the shore, so did the shipwrecks.
+Dialogue: 0,0:00:06.59,0:00:07.00,Pop,,0,0,0,,{\c&HFFFFFF&}As settlements grew along {\c&HFFFFFF&}the {\c&H888888&}shore, so did the shipwrecks.
+Dialogue: 0,0:00:07.00,0:00:07.40,Pop,,0,0,0,,{\c&HFFFFFF&}As settlements grew along the {\c&HFFFFFF&}shore, {\c&H888888&}so did the shipwrecks.
+Dialogue: 0,0:00:07.40,0:00:07.80,Pop,,0,0,0,,{\c&HFFFFFF&}As settlements grew along the shore, {\c&HFFFFFF&}so {\c&H888888&}did the shipwrecks.
+Dialogue: 0,0:00:07.80,0:00:08.19,Pop,,0,0,0,,{\c&HFFFFFF&}As settlements grew along the shore, so {\c&HFFFFFF&}did {\c&H888888&}the shipwrecks.
+Dialogue: 0,0:00:08.19,0:00:08.59,Pop,,0,0,0,,{\c&HFFFFFF&}As settlements grew along the shore, so did {\c&HFFFFFF&}the {\c&H888888&}shipwrecks.
+Dialogue: 0,0:00:08.59,0:00:09.00,Pop,,0,0,0,,{\c&HFFFFFF&}As settlements grew along the shore, so did the {\c&HFFFFFF&}shipwrecks.
+Dialogue: 0,0:00:09.00,0:00:09.46,Pop,,0,0,0,,{\c&HFFFFFF&}Between {\c&H888888&}1846 and 1848 alone, more than 120 vessels wrecked along the New Jersey coast.
+Dialogue: 0,0:00:09.46,0:00:09.93,Pop,,0,0,0,,{\c&HFFFFFF&}Between {\c&HFFFFFF&}1846 {\c&H888888&}and 1848 alone, more than 120 vessels wrecked along the New Jersey coast.
+Dialogue: 0,0:00:09.93,0:00:10.40,Pop,,0,0,0,,{\c&HFFFFFF&}Between 1846 {\c&HFFFFFF&}and {\c&H888888&}1848 alone, more than 120 vessels wrecked along the New Jersey coast.
+Dialogue: 0,0:00:10.40,0:00:10.86,Pop,,0,0,0,,{\c&HFFFFFF&}Between 1846 and {\c&HFFFFFF&}1848 {\c&H888888&}alone, more than 120 vessels wrecked along the New Jersey coast.
+Dialogue: 0,0:00:10.86,0:00:11.33,Pop,,0,0,0,,{\c&HFFFFFF&}Between 1846 and 1848 {\c&HFFFFFF&}alone, {\c&H888888&}more than 120 vessels wrecked along the New Jersey coast.
+Dialogue: 0,0:00:11.33,0:00:11.80,Pop,,0,0,0,,{\c&HFFFFFF&}Between 1846 and 1848 alone, {\c&HFFFFFF&}more {\c&H888888&}than 120 vessels wrecked along the New Jersey coast.
+Dialogue: 0,0:00:11.80,0:00:12.26,Pop,,0,0,0,,{\c&HFFFFFF&}Between 1846 and 1848 alone, more {\c&HFFFFFF&}than {\c&H888888&}120 vessels wrecked along the New Jersey coast.
+Dialogue: 0,0:00:12.26,0:00:12.73,Pop,,0,0,0,,{\c&HFFFFFF&}Between 1846 and 1848 alone, more than {\c&HFFFFFF&}120 {\c&H888888&}vessels wrecked along the New Jersey coast.
+Dialogue: 0,0:00:12.73,0:00:13.19,Pop,,0,0,0,,{\c&HFFFFFF&}Between 1846 and 1848 alone, more than 120 {\c&HFFFFFF&}vessels {\c&H888888&}wrecked along the New Jersey coast.
+Dialogue: 0,0:00:13.19,0:00:13.66,Pop,,0,0,0,,{\c&HFFFFFF&}Between 1846 and 1848 alone, more than 120 vessels {\c&HFFFFFF&}wrecked {\c&H888888&}along the New Jersey coast.
+Dialogue: 0,0:00:13.66,0:00:14.13,Pop,,0,0,0,,{\c&HFFFFFF&}Between 1846 and 1848 alone, more than 120 vessels wrecked {\c&HFFFFFF&}along {\c&H888888&}the New Jersey coast.
+Dialogue: 0,0:00:14.13,0:00:14.59,Pop,,0,0,0,,{\c&HFFFFFF&}Between 1846 and 1848 alone, more than 120 vessels wrecked along {\c&HFFFFFF&}the {\c&H888888&}New Jersey coast.
+Dialogue: 0,0:00:14.59,0:00:15.06,Pop,,0,0,0,,{\c&HFFFFFF&}Between 1846 and 1848 alone, more than 120 vessels wrecked along the {\c&HFFFFFF&}New {\c&H888888&}Jersey coast.
+Dialogue: 0,0:00:15.06,0:00:15.53,Pop,,0,0,0,,{\c&HFFFFFF&}Between 1846 and 1848 alone, more than 120 vessels wrecked along the New {\c&HFFFFFF&}Jersey {\c&H888888&}coast.
+Dialogue: 0,0:00:15.53,0:00:16.00,Pop,,0,0,0,,{\c&HFFFFFF&}Between 1846 and 1848 alone, more than 120 vessels wrecked along the New Jersey {\c&HFFFFFF&}coast.
+Dialogue: 0,0:00:16.00,0:00:16.35,Pop,,0,0,0,,{\c&HFFFFFF&}And {\c&H888888&}with each disaster came a damning rumor that the locals were not just salvaging the wreckage.
+Dialogue: 0,0:00:16.35,0:00:16.70,Pop,,0,0,0,,{\c&HFFFFFF&}And {\c&HFFFFFF&}with {\c&H888888&}each disaster came a damning rumor that the locals were not just salvaging the wreckage.
+Dialogue: 0,0:00:16.70,0:00:17.05,Pop,,0,0,0,,{\c&HFFFFFF&}And with {\c&HFFFFFF&}each {\c&H888888&}disaster came a damning rumor that the locals were not just salvaging the wreckage.
+Dialogue: 0,0:00:17.05,0:00:17.41,Pop,,0,0,0,,{\c&HFFFFFF&}And with each {\c&HFFFFFF&}disaster {\c&H888888&}came a damning rumor that the locals were not just salvaging the wreckage.
+Dialogue: 0,0:00:17.41,0:00:17.76,Pop,,0,0,0,,{\c&HFFFFFF&}And with each disaster {\c&HFFFFFF&}came {\c&H888888&}a damning rumor that the locals were not just salvaging the wreckage.
+Dialogue: 0,0:00:17.76,0:00:18.11,Pop,,0,0,0,,{\c&HFFFFFF&}And with each disaster came {\c&HFFFFFF&}a {\c&H888888&}damning rumor that the locals were not just salvaging the wreckage.
+Dialogue: 0,0:00:18.11,0:00:18.47,Pop,,0,0,0,,{\c&HFFFFFF&}And with each disaster came a {\c&HFFFFFF&}damning {\c&H888888&}rumor that the locals were not just salvaging the wreckage.
+Dialogue: 0,0:00:18.47,0:00:18.82,Pop,,0,0,0,,{\c&HFFFFFF&}And with each disaster came a damning {\c&HFFFFFF&}rumor {\c&H888888&}that the locals were not just salvaging the wreckage.
+Dialogue: 0,0:00:18.82,0:00:19.17,Pop,,0,0,0,,{\c&HFFFFFF&}And with each disaster came a damning rumor {\c&HFFFFFF&}that {\c&H888888&}the locals were not just salvaging the wreckage.
+Dialogue: 0,0:00:19.17,0:00:19.52,Pop,,0,0,0,,{\c&HFFFFFF&}And with each disaster came a damning rumor that {\c&HFFFFFF&}the {\c&H888888&}locals were not just salvaging the wreckage.
+Dialogue: 0,0:00:19.52,0:00:19.88,Pop,,0,0,0,,{\c&HFFFFFF&}And with each disaster came a damning rumor that the {\c&HFFFFFF&}locals {\c&H888888&}were not just salvaging the wreckage.
+Dialogue: 0,0:00:19.88,0:00:20.23,Pop,,0,0,0,,{\c&HFFFFFF&}And with each disaster came a damning rumor that the locals {\c&HFFFFFF&}were {\c&H888888&}not just salvaging the wreckage.
+Dialogue: 0,0:00:20.23,0:00:20.58,Pop,,0,0,0,,{\c&HFFFFFF&}And with each disaster came a damning rumor that the locals were {\c&HFFFFFF&}not {\c&H888888&}just salvaging the wreckage.
+Dialogue: 0,0:00:20.58,0:00:20.94,Pop,,0,0,0,,{\c&HFFFFFF&}And with each disaster came a damning rumor that the locals were not {\c&HFFFFFF&}just {\c&H888888&}salvaging the wreckage.
+Dialogue: 0,0:00:20.94,0:00:21.29,Pop,,0,0,0,,{\c&HFFFFFF&}And with each disaster came a damning rumor that the locals were not just {\c&HFFFFFF&}salvaging {\c&H888888&}the wreckage.
+Dialogue: 0,0:00:21.29,0:00:21.64,Pop,,0,0,0,,{\c&HFFFFFF&}And with each disaster came a damning rumor that the locals were not just salvaging {\c&HFFFFFF&}the {\c&H888888&}wreckage.
+Dialogue: 0,0:00:21.64,0:00:22.00,Pop,,0,0,0,,{\c&HFFFFFF&}And with each disaster came a damning rumor that the locals were not just salvaging the {\c&HFFFFFF&}wreckage.
+Dialogue: 0,0:00:22.00,0:00:22.50,Pop,,0,0,0,,{\c&HFFFFFF&}They {\c&H888888&}were causing it.
+Dialogue: 0,0:00:22.50,0:00:23.00,Pop,,0,0,0,,{\c&HFFFFFF&}They {\c&HFFFFFF&}were {\c&H888888&}causing it.
+Dialogue: 0,0:00:23.00,0:00:23.50,Pop,,0,0,0,,{\c&HFFFFFF&}They were {\c&HFFFFFF&}causing {\c&H888888&}it.
+Dialogue: 0,0:00:23.50,0:00:24.00,Pop,,0,0,0,,{\c&HFFFFFF&}They were causing {\c&HFFFFFF&}it.
+Dialogue: 0,0:00:24.00,0:00:24.45,Pop,,0,0,0,,{\c&HFFFFFF&}The {\c&H888888&}people of Monmouth County were branded bandits and land pirates.
+Dialogue: 0,0:00:24.45,0:00:24.90,Pop,,0,0,0,,{\c&HFFFFFF&}The {\c&HFFFFFF&}people {\c&H888888&}of Monmouth County were branded bandits and land pirates.
+Dialogue: 0,0:00:24.90,0:00:25.36,Pop,,0,0,0,,{\c&HFFFFFF&}The people {\c&HFFFFFF&}of {\c&H888888&}Monmouth County were branded bandits and land pirates.
+Dialogue: 0,0:00:25.36,0:00:25.81,Pop,,0,0,0,,{\c&HFFFFFF&}The people of {\c&HFFFFFF&}Monmouth {\c&H888888&}County were branded bandits and land pirates.
+Dialogue: 0,0:00:25.81,0:00:26.27,Pop,,0,0,0,,{\c&HFFFFFF&}The people of Monmouth {\c&HFFFFFF&}County {\c&H888888&}were branded bandits and land pirates.
+Dialogue: 0,0:00:26.27,0:00:26.72,Pop,,0,0,0,,{\c&HFFFFFF&}The people of Monmouth County {\c&HFFFFFF&}were {\c&H888888&}branded bandits and land pirates.
+Dialogue: 0,0:00:26.72,0:00:27.18,Pop,,0,0,0,,{\c&HFFFFFF&}The people of Monmouth County were {\c&HFFFFFF&}branded {\c&H888888&}bandits and land pirates.
+Dialogue: 0,0:00:27.18,0:00:27.63,Pop,,0,0,0,,{\c&HFFFFFF&}The people of Monmouth County were branded {\c&HFFFFFF&}bandits {\c&H888888&}and land pirates.
+Dialogue: 0,0:00:27.63,0:00:28.09,Pop,,0,0,0,,{\c&HFFFFFF&}The people of Monmouth County were branded bandits {\c&HFFFFFF&}and {\c&H888888&}land pirates.
+Dialogue: 0,0:00:28.09,0:00:28.54,Pop,,0,0,0,,{\c&HFFFFFF&}The people of Monmouth County were branded bandits and {\c&HFFFFFF&}land {\c&H888888&}pirates.
+Dialogue: 0,0:00:28.54,0:00:29.00,Pop,,0,0,0,,{\c&HFFFFFF&}The people of Monmouth County were branded bandits and land {\c&HFFFFFF&}pirates.
+Dialogue: 0,0:00:29.00,0:00:29.45,Pop,,0,0,0,,{\c&HFFFFFF&}Newspapers {\c&H888888&}accused them of hanging false lights to confuse ships captains,
+Dialogue: 0,0:00:29.45,0:00:29.90,Pop,,0,0,0,,{\c&HFFFFFF&}Newspapers {\c&HFFFFFF&}accused {\c&H888888&}them of hanging false lights to confuse ships captains,
+Dialogue: 0,0:00:29.90,0:00:30.36,Pop,,0,0,0,,{\c&HFFFFFF&}Newspapers accused {\c&HFFFFFF&}them {\c&H888888&}of hanging false lights to confuse ships captains,
+Dialogue: 0,0:00:30.36,0:00:30.81,Pop,,0,0,0,,{\c&HFFFFFF&}Newspapers accused them {\c&HFFFFFF&}of {\c&H888888&}hanging false lights to confuse ships captains,
+Dialogue: 0,0:00:30.81,0:00:31.27,Pop,,0,0,0,,{\c&HFFFFFF&}Newspapers accused them of {\c&HFFFFFF&}hanging {\c&H888888&}false lights to confuse ships captains,
+Dialogue: 0,0:00:31.27,0:00:31.72,Pop,,0,0,0,,{\c&HFFFFFF&}Newspapers accused them of hanging {\c&HFFFFFF&}false {\c&H888888&}lights to confuse ships captains,
+Dialogue: 0,0:00:31.72,0:00:32.18,Pop,,0,0,0,,{\c&HFFFFFF&}Newspapers accused them of hanging false {\c&HFFFFFF&}lights {\c&H888888&}to confuse ships captains,
+Dialogue: 0,0:00:32.18,0:00:32.63,Pop,,0,0,0,,{\c&HFFFFFF&}Newspapers accused them of hanging false lights {\c&HFFFFFF&}to {\c&H888888&}confuse ships captains,
+Dialogue: 0,0:00:32.63,0:00:33.09,Pop,,0,0,0,,{\c&HFFFFFF&}Newspapers accused them of hanging false lights to {\c&HFFFFFF&}confuse {\c&H888888&}ships captains,
+Dialogue: 0,0:00:33.09,0:00:33.54,Pop,,0,0,0,,{\c&HFFFFFF&}Newspapers accused them of hanging false lights to confuse {\c&HFFFFFF&}ships {\c&H888888&}captains,
+Dialogue: 0,0:00:33.54,0:00:34.00,Pop,,0,0,0,,{\c&HFFFFFF&}Newspapers accused them of hanging false lights to confuse ships {\c&HFFFFFF&}captains,
+Dialogue: 0,0:00:34.00,0:00:34.36,Pop,,0,0,0,,{\c&HFFFFFF&}driving {\c&H888888&}vessels onto sand bars so they could plunder the cargo.
+Dialogue: 0,0:00:34.36,0:00:34.72,Pop,,0,0,0,,{\c&HFFFFFF&}driving {\c&HFFFFFF&}vessels {\c&H888888&}onto sand bars so they could plunder the cargo.
+Dialogue: 0,0:00:34.72,0:00:35.09,Pop,,0,0,0,,{\c&HFFFFFF&}driving vessels {\c&HFFFFFF&}onto {\c&H888888&}sand bars so they could plunder the cargo.
+Dialogue: 0,0:00:35.09,0:00:35.45,Pop,,0,0,0,,{\c&HFFFFFF&}driving vessels onto {\c&HFFFFFF&}sand {\c&H888888&}bars so they could plunder the cargo.
+Dialogue: 0,0:00:35.45,0:00:35.81,Pop,,0,0,0,,{\c&HFFFFFF&}driving vessels onto sand {\c&HFFFFFF&}bars {\c&H888888&}so they could plunder the cargo.
+Dialogue: 0,0:00:35.81,0:00:36.18,Pop,,0,0,0,,{\c&HFFFFFF&}driving vessels onto sand bars {\c&HFFFFFF&}so {\c&H888888&}they could plunder the cargo.
+Dialogue: 0,0:00:36.18,0:00:36.54,Pop,,0,0,0,,{\c&HFFFFFF&}driving vessels onto sand bars so {\c&HFFFFFF&}they {\c&H888888&}could plunder the cargo.
+Dialogue: 0,0:00:36.54,0:00:36.90,Pop,,0,0,0,,{\c&HFFFFFF&}driving vessels onto sand bars so they {\c&HFFFFFF&}could {\c&H888888&}plunder the cargo.
+Dialogue: 0,0:00:36.90,0:00:37.27,Pop,,0,0,0,,{\c&HFFFFFF&}driving vessels onto sand bars so they could {\c&HFFFFFF&}plunder {\c&H888888&}the cargo.
+Dialogue: 0,0:00:37.27,0:00:37.63,Pop,,0,0,0,,{\c&HFFFFFF&}driving vessels onto sand bars so they could plunder {\c&HFFFFFF&}the {\c&H888888&}cargo.
+Dialogue: 0,0:00:37.63,0:00:38.00,Pop,,0,0,0,,{\c&HFFFFFF&}driving vessels onto sand bars so they could plunder the {\c&HFFFFFF&}cargo.
+Dialogue: 0,0:00:38.00,0:00:38.38,Pop,,0,0,0,,{\c&HFFFFFF&}In {\c&H888888&}1799, the New Jersey legislature made it a crime to display false lights to induce a shipwreck.
+Dialogue: 0,0:00:38.38,0:00:38.77,Pop,,0,0,0,,{\c&HFFFFFF&}In {\c&HFFFFFF&}1799, {\c&H888888&}the New Jersey legislature made it a crime to display false lights to induce a shipwreck.
+Dialogue: 0,0:00:38.77,0:00:39.16,Pop,,0,0,0,,{\c&HFFFFFF&}In 1799, {\c&HFFFFFF&}the {\c&H888888&}New Jersey legislature made it a crime to display false lights to induce a shipwreck.
+Dialogue: 0,0:00:39.16,0:00:39.55,Pop,,0,0,0,,{\c&HFFFFFF&}In 1799, the {\c&HFFFFFF&}New {\c&H888888&}Jersey legislature made it a crime to display false lights to induce a shipwreck.
+Dialogue: 0,0:00:39.55,0:00:39.94,Pop,,0,0,0,,{\c&HFFFFFF&}In 1799, the New {\c&HFFFFFF&}Jersey {\c&H888888&}legislature made it a crime to display false lights to induce a shipwreck.
+Dialogue: 0,0:00:39.94,0:00:40.33,Pop,,0,0,0,,{\c&HFFFFFF&}In 1799, the New Jersey {\c&HFFFFFF&}legislature {\c&H888888&}made it a crime to display false lights to induce a shipwreck.
+Dialogue: 0,0:00:40.33,0:00:40.72,Pop,,0,0,0,,{\c&HFFFFFF&}In 1799, the New Jersey legislature {\c&HFFFFFF&}made {\c&H888888&}it a crime to display false lights to induce a shipwreck.
+Dialogue: 0,0:00:40.72,0:00:41.11,Pop,,0,0,0,,{\c&HFFFFFF&}In 1799, the New Jersey legislature made {\c&HFFFFFF&}it {\c&H888888&}a crime to display false lights to induce a shipwreck.
+Dialogue: 0,0:00:41.11,0:00:41.50,Pop,,0,0,0,,{\c&HFFFFFF&}In 1799, the New Jersey legislature made it {\c&HFFFFFF&}a {\c&H888888&}crime to display false lights to induce a shipwreck.
+Dialogue: 0,0:00:41.50,0:00:41.88,Pop,,0,0,0,,{\c&HFFFFFF&}In 1799, the New Jersey legislature made it a {\c&HFFFFFF&}crime {\c&H888888&}to display false lights to induce a shipwreck.
+Dialogue: 0,0:00:41.88,0:00:42.27,Pop,,0,0,0,,{\c&HFFFFFF&}In 1799, the New Jersey legislature made it a crime {\c&HFFFFFF&}to {\c&H888888&}display false lights to induce a shipwreck.
+Dialogue: 0,0:00:42.27,0:00:42.66,Pop,,0,0,0,,{\c&HFFFFFF&}In 1799, the New Jersey legislature made it a crime to {\c&HFFFFFF&}display {\c&H888888&}false lights to induce a shipwreck.
+Dialogue: 0,0:00:42.66,0:00:43.05,Pop,,0,0,0,,{\c&HFFFFFF&}In 1799, the New Jersey legislature made it a crime to display {\c&HFFFFFF&}false {\c&H888888&}lights to induce a shipwreck.
+Dialogue: 0,0:00:43.05,0:00:43.44,Pop,,0,0,0,,{\c&HFFFFFF&}In 1799, the New Jersey legislature made it a crime to display false {\c&HFFFFFF&}lights {\c&H888888&}to induce a shipwreck.
+Dialogue: 0,0:00:43.44,0:00:43.83,Pop,,0,0,0,,{\c&HFFFFFF&}In 1799, the New Jersey legislature made it a crime to display false lights {\c&HFFFFFF&}to {\c&H888888&}induce a shipwreck.
+Dialogue: 0,0:00:43.83,0:00:44.22,Pop,,0,0,0,,{\c&HFFFFFF&}In 1799, the New Jersey legislature made it a crime to display false lights to {\c&HFFFFFF&}induce {\c&H888888&}a shipwreck.
+Dialogue: 0,0:00:44.22,0:00:44.61,Pop,,0,0,0,,{\c&HFFFFFF&}In 1799, the New Jersey legislature made it a crime to display false lights to induce {\c&HFFFFFF&}a {\c&H888888&}shipwreck.
+Dialogue: 0,0:00:44.61,0:00:45.00,Pop,,0,0,0,,{\c&HFFFFFF&}In 1799, the New Jersey legislature made it a crime to display false lights to induce a {\c&HFFFFFF&}shipwreck.

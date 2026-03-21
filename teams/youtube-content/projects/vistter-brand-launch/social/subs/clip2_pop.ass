@@ -1,0 +1,106 @@
+[Script Info]
+Title: Pop Subtitles
+ScriptType: v4.00+
+PlayResX: 1080
+PlayResY: 1920
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Pop,Arial,52,&H00888888,&H000000FF,&H00000000,&H80000000,-1,0,0,0,100,100,0,0,1,4,0,5,60,60,480
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.00,0:00:00.37,Pop,,0,0,0,,{\c&HFFFFFF&}They {\c&H888888&}built what locals called the "Wooden Palaces."
+Dialogue: 0,0:00:00.37,0:00:00.75,Pop,,0,0,0,,{\c&HFFFFFF&}They {\c&HFFFFFF&}built {\c&H888888&}what locals called the "Wooden Palaces."
+Dialogue: 0,0:00:00.75,0:00:01.12,Pop,,0,0,0,,{\c&HFFFFFF&}They built {\c&HFFFFFF&}what {\c&H888888&}locals called the "Wooden Palaces."
+Dialogue: 0,0:00:01.12,0:00:01.50,Pop,,0,0,0,,{\c&HFFFFFF&}They built what {\c&HFFFFFF&}locals {\c&H888888&}called the "Wooden Palaces."
+Dialogue: 0,0:00:01.50,0:00:01.87,Pop,,0,0,0,,{\c&HFFFFFF&}They built what locals {\c&HFFFFFF&}called {\c&H888888&}the "Wooden Palaces."
+Dialogue: 0,0:00:01.87,0:00:02.25,Pop,,0,0,0,,{\c&HFFFFFF&}They built what locals called {\c&HFFFFFF&}the {\c&H888888&}"Wooden Palaces."
+Dialogue: 0,0:00:02.25,0:00:02.62,Pop,,0,0,0,,{\c&HFFFFFF&}They built what locals called the {\c&HFFFFFF&}"Wooden {\c&H888888&}Palaces."
+Dialogue: 0,0:00:02.62,0:00:03.00,Pop,,0,0,0,,{\c&HFFFFFF&}They built what locals called the "Wooden {\c&HFFFFFF&}Palaces."
+Dialogue: 0,0:00:03.00,0:00:03.38,Pop,,0,0,0,,{\c&HFFFFFF&}Along {\c&H888888&}a 1.6-mile stretch of ocean avenue, 100 feet wide, lined with mansions,
+Dialogue: 0,0:00:03.38,0:00:03.76,Pop,,0,0,0,,{\c&HFFFFFF&}Along {\c&HFFFFFF&}a {\c&H888888&}1.6-mile stretch of ocean avenue, 100 feet wide, lined with mansions,
+Dialogue: 0,0:00:03.76,0:00:04.15,Pop,,0,0,0,,{\c&HFFFFFF&}Along a {\c&HFFFFFF&}1.6-mile {\c&H888888&}stretch of ocean avenue, 100 feet wide, lined with mansions,
+Dialogue: 0,0:00:04.15,0:00:04.53,Pop,,0,0,0,,{\c&HFFFFFF&}Along a 1.6-mile {\c&HFFFFFF&}stretch {\c&H888888&}of ocean avenue, 100 feet wide, lined with mansions,
+Dialogue: 0,0:00:04.53,0:00:04.92,Pop,,0,0,0,,{\c&HFFFFFF&}Along a 1.6-mile stretch {\c&HFFFFFF&}of {\c&H888888&}ocean avenue, 100 feet wide, lined with mansions,
+Dialogue: 0,0:00:04.92,0:00:05.30,Pop,,0,0,0,,{\c&HFFFFFF&}Along a 1.6-mile stretch of {\c&HFFFFFF&}ocean {\c&H888888&}avenue, 100 feet wide, lined with mansions,
+Dialogue: 0,0:00:05.30,0:00:05.69,Pop,,0,0,0,,{\c&HFFFFFF&}Along a 1.6-mile stretch of ocean {\c&HFFFFFF&}avenue, {\c&H888888&}100 feet wide, lined with mansions,
+Dialogue: 0,0:00:05.69,0:00:06.07,Pop,,0,0,0,,{\c&HFFFFFF&}Along a 1.6-mile stretch of ocean avenue, {\c&HFFFFFF&}100 {\c&H888888&}feet wide, lined with mansions,
+Dialogue: 0,0:00:06.07,0:00:06.46,Pop,,0,0,0,,{\c&HFFFFFF&}Along a 1.6-mile stretch of ocean avenue, 100 {\c&HFFFFFF&}feet {\c&H888888&}wide, lined with mansions,
+Dialogue: 0,0:00:06.46,0:00:06.84,Pop,,0,0,0,,{\c&HFFFFFF&}Along a 1.6-mile stretch of ocean avenue, 100 feet {\c&HFFFFFF&}wide, {\c&H888888&}lined with mansions,
+Dialogue: 0,0:00:06.84,0:00:07.23,Pop,,0,0,0,,{\c&HFFFFFF&}Along a 1.6-mile stretch of ocean avenue, 100 feet wide, {\c&HFFFFFF&}lined {\c&H888888&}with mansions,
+Dialogue: 0,0:00:07.23,0:00:07.61,Pop,,0,0,0,,{\c&HFFFFFF&}Along a 1.6-mile stretch of ocean avenue, 100 feet wide, lined {\c&HFFFFFF&}with {\c&H888888&}mansions,
+Dialogue: 0,0:00:07.61,0:00:08.00,Pop,,0,0,0,,{\c&HFFFFFF&}Along a 1.6-mile stretch of ocean avenue, 100 feet wide, lined with {\c&HFFFFFF&}mansions,
+Dialogue: 0,0:00:08.00,0:00:08.45,Pop,,0,0,0,,{\c&HFFFFFF&}the {\c&H888888&}nation's bankers, industrialists and political elite erected their summer kingdoms.
+Dialogue: 0,0:00:08.45,0:00:08.90,Pop,,0,0,0,,{\c&HFFFFFF&}the {\c&HFFFFFF&}nation's {\c&H888888&}bankers, industrialists and political elite erected their summer kingdoms.
+Dialogue: 0,0:00:08.90,0:00:09.36,Pop,,0,0,0,,{\c&HFFFFFF&}the nation's {\c&HFFFFFF&}bankers, {\c&H888888&}industrialists and political elite erected their summer kingdoms.
+Dialogue: 0,0:00:09.36,0:00:09.81,Pop,,0,0,0,,{\c&HFFFFFF&}the nation's bankers, {\c&HFFFFFF&}industrialists {\c&H888888&}and political elite erected their summer kingdoms.
+Dialogue: 0,0:00:09.81,0:00:10.27,Pop,,0,0,0,,{\c&HFFFFFF&}the nation's bankers, industrialists {\c&HFFFFFF&}and {\c&H888888&}political elite erected their summer kingdoms.
+Dialogue: 0,0:00:10.27,0:00:10.72,Pop,,0,0,0,,{\c&HFFFFFF&}the nation's bankers, industrialists and {\c&HFFFFFF&}political {\c&H888888&}elite erected their summer kingdoms.
+Dialogue: 0,0:00:10.72,0:00:11.18,Pop,,0,0,0,,{\c&HFFFFFF&}the nation's bankers, industrialists and political {\c&HFFFFFF&}elite {\c&H888888&}erected their summer kingdoms.
+Dialogue: 0,0:00:11.18,0:00:11.63,Pop,,0,0,0,,{\c&HFFFFFF&}the nation's bankers, industrialists and political elite {\c&HFFFFFF&}erected {\c&H888888&}their summer kingdoms.
+Dialogue: 0,0:00:11.63,0:00:12.09,Pop,,0,0,0,,{\c&HFFFFFF&}the nation's bankers, industrialists and political elite erected {\c&HFFFFFF&}their {\c&H888888&}summer kingdoms.
+Dialogue: 0,0:00:12.09,0:00:12.54,Pop,,0,0,0,,{\c&HFFFFFF&}the nation's bankers, industrialists and political elite erected their {\c&HFFFFFF&}summer {\c&H888888&}kingdoms.
+Dialogue: 0,0:00:12.54,0:00:13.00,Pop,,0,0,0,,{\c&HFFFFFF&}the nation's bankers, industrialists and political elite erected their summer {\c&HFFFFFF&}kingdoms.
+Dialogue: 0,0:00:13.00,0:00:13.57,Pop,,0,0,0,,{\c&HFFFFFF&}The {\c&H888888&}avenue was nicknamed "The Golden Road."
+Dialogue: 0,0:00:13.57,0:00:14.14,Pop,,0,0,0,,{\c&HFFFFFF&}The {\c&HFFFFFF&}avenue {\c&H888888&}was nicknamed "The Golden Road."
+Dialogue: 0,0:00:14.14,0:00:14.71,Pop,,0,0,0,,{\c&HFFFFFF&}The avenue {\c&HFFFFFF&}was {\c&H888888&}nicknamed "The Golden Road."
+Dialogue: 0,0:00:14.71,0:00:15.28,Pop,,0,0,0,,{\c&HFFFFFF&}The avenue was {\c&HFFFFFF&}nicknamed {\c&H888888&}"The Golden Road."
+Dialogue: 0,0:00:15.28,0:00:15.85,Pop,,0,0,0,,{\c&HFFFFFF&}The avenue was nicknamed {\c&HFFFFFF&}"The {\c&H888888&}Golden Road."
+Dialogue: 0,0:00:15.85,0:00:16.42,Pop,,0,0,0,,{\c&HFFFFFF&}The avenue was nicknamed "The {\c&HFFFFFF&}Golden {\c&H888888&}Road."
+Dialogue: 0,0:00:16.42,0:00:17.00,Pop,,0,0,0,,{\c&HFFFFFF&}The avenue was nicknamed "The Golden {\c&HFFFFFF&}Road."
+Dialogue: 0,0:00:17.00,0:00:17.28,Pop,,0,0,0,,{\c&HFFFFFF&}But {\c&H888888&}the money that built Millionaires' Road did not all come from honest enterprise.
+Dialogue: 0,0:00:17.28,0:00:17.57,Pop,,0,0,0,,{\c&HFFFFFF&}But {\c&HFFFFFF&}the {\c&H888888&}money that built Millionaires' Road did not all come from honest enterprise.
+Dialogue: 0,0:00:17.57,0:00:17.85,Pop,,0,0,0,,{\c&HFFFFFF&}But the {\c&HFFFFFF&}money {\c&H888888&}that built Millionaires' Road did not all come from honest enterprise.
+Dialogue: 0,0:00:17.85,0:00:18.14,Pop,,0,0,0,,{\c&HFFFFFF&}But the money {\c&HFFFFFF&}that {\c&H888888&}built Millionaires' Road did not all come from honest enterprise.
+Dialogue: 0,0:00:18.14,0:00:18.42,Pop,,0,0,0,,{\c&HFFFFFF&}But the money that {\c&HFFFFFF&}built {\c&H888888&}Millionaires' Road did not all come from honest enterprise.
+Dialogue: 0,0:00:18.42,0:00:18.71,Pop,,0,0,0,,{\c&HFFFFFF&}But the money that built {\c&HFFFFFF&}Millionaires' {\c&H888888&}Road did not all come from honest enterprise.
+Dialogue: 0,0:00:18.71,0:00:19.00,Pop,,0,0,0,,{\c&HFFFFFF&}But the money that built Millionaires' {\c&HFFFFFF&}Road {\c&H888888&}did not all come from honest enterprise.
+Dialogue: 0,0:00:19.00,0:00:19.28,Pop,,0,0,0,,{\c&HFFFFFF&}But the money that built Millionaires' Road {\c&HFFFFFF&}did {\c&H888888&}not all come from honest enterprise.
+Dialogue: 0,0:00:19.28,0:00:19.57,Pop,,0,0,0,,{\c&HFFFFFF&}But the money that built Millionaires' Road did {\c&HFFFFFF&}not {\c&H888888&}all come from honest enterprise.
+Dialogue: 0,0:00:19.57,0:00:19.85,Pop,,0,0,0,,{\c&HFFFFFF&}But the money that built Millionaires' Road did not {\c&HFFFFFF&}all {\c&H888888&}come from honest enterprise.
+Dialogue: 0,0:00:19.85,0:00:20.14,Pop,,0,0,0,,{\c&HFFFFFF&}But the money that built Millionaires' Road did not all {\c&HFFFFFF&}come {\c&H888888&}from honest enterprise.
+Dialogue: 0,0:00:20.14,0:00:20.42,Pop,,0,0,0,,{\c&HFFFFFF&}But the money that built Millionaires' Road did not all come {\c&HFFFFFF&}from {\c&H888888&}honest enterprise.
+Dialogue: 0,0:00:20.42,0:00:20.71,Pop,,0,0,0,,{\c&HFFFFFF&}But the money that built Millionaires' Road did not all come from {\c&HFFFFFF&}honest {\c&H888888&}enterprise.
+Dialogue: 0,0:00:20.71,0:00:21.00,Pop,,0,0,0,,{\c&HFFFFFF&}But the money that built Millionaires' Road did not all come from honest {\c&HFFFFFF&}enterprise.
+Dialogue: 0,0:00:21.00,0:00:21.57,Pop,,0,0,0,,{\c&HFFFFFF&}George {\c&H888888&}Robson, the association's most prominent founder,
+Dialogue: 0,0:00:21.57,0:00:22.14,Pop,,0,0,0,,{\c&HFFFFFF&}George {\c&HFFFFFF&}Robson, {\c&H888888&}the association's most prominent founder,
+Dialogue: 0,0:00:22.14,0:00:22.71,Pop,,0,0,0,,{\c&HFFFFFF&}George Robson, {\c&HFFFFFF&}the {\c&H888888&}association's most prominent founder,
+Dialogue: 0,0:00:22.71,0:00:23.28,Pop,,0,0,0,,{\c&HFFFFFF&}George Robson, the {\c&HFFFFFF&}association's {\c&H888888&}most prominent founder,
+Dialogue: 0,0:00:23.28,0:00:23.85,Pop,,0,0,0,,{\c&HFFFFFF&}George Robson, the association's {\c&HFFFFFF&}most {\c&H888888&}prominent founder,
+Dialogue: 0,0:00:23.85,0:00:24.42,Pop,,0,0,0,,{\c&HFFFFFF&}George Robson, the association's most {\c&HFFFFFF&}prominent {\c&H888888&}founder,
+Dialogue: 0,0:00:24.42,0:00:25.00,Pop,,0,0,0,,{\c&HFFFFFF&}George Robson, the association's most prominent {\c&HFFFFFF&}founder,
+Dialogue: 0,0:00:25.00,0:00:25.36,Pop,,0,0,0,,{\c&HFFFFFF&}was {\c&H888888&}running what Congress would later call "a system of corruption."
+Dialogue: 0,0:00:25.36,0:00:25.72,Pop,,0,0,0,,{\c&HFFFFFF&}was {\c&HFFFFFF&}running {\c&H888888&}what Congress would later call "a system of corruption."
+Dialogue: 0,0:00:25.72,0:00:26.09,Pop,,0,0,0,,{\c&HFFFFFF&}was running {\c&HFFFFFF&}what {\c&H888888&}Congress would later call "a system of corruption."
+Dialogue: 0,0:00:26.09,0:00:26.45,Pop,,0,0,0,,{\c&HFFFFFF&}was running what {\c&HFFFFFF&}Congress {\c&H888888&}would later call "a system of corruption."
+Dialogue: 0,0:00:26.45,0:00:26.81,Pop,,0,0,0,,{\c&HFFFFFF&}was running what Congress {\c&HFFFFFF&}would {\c&H888888&}later call "a system of corruption."
+Dialogue: 0,0:00:26.81,0:00:27.18,Pop,,0,0,0,,{\c&HFFFFFF&}was running what Congress would {\c&HFFFFFF&}later {\c&H888888&}call "a system of corruption."
+Dialogue: 0,0:00:27.18,0:00:27.54,Pop,,0,0,0,,{\c&HFFFFFF&}was running what Congress would later {\c&HFFFFFF&}call {\c&H888888&}"a system of corruption."
+Dialogue: 0,0:00:27.54,0:00:27.90,Pop,,0,0,0,,{\c&HFFFFFF&}was running what Congress would later call {\c&HFFFFFF&}"a {\c&H888888&}system of corruption."
+Dialogue: 0,0:00:27.90,0:00:28.27,Pop,,0,0,0,,{\c&HFFFFFF&}was running what Congress would later call "a {\c&HFFFFFF&}system {\c&H888888&}of corruption."
+Dialogue: 0,0:00:28.27,0:00:28.63,Pop,,0,0,0,,{\c&HFFFFFF&}was running what Congress would later call "a system {\c&HFFFFFF&}of {\c&H888888&}corruption."
+Dialogue: 0,0:00:28.63,0:00:29.00,Pop,,0,0,0,,{\c&HFFFFFF&}was running what Congress would later call "a system of {\c&HFFFFFF&}corruption."
+Dialogue: 0,0:00:29.00,0:00:29.50,Pop,,0,0,0,,{\c&HFFFFFF&}As {\c&H888888&}Secretary of the Navy, Robson controlled $56 million in construction funds.
+Dialogue: 0,0:00:29.50,0:00:30.00,Pop,,0,0,0,,{\c&HFFFFFF&}As {\c&HFFFFFF&}Secretary {\c&H888888&}of the Navy, Robson controlled $56 million in construction funds.
+Dialogue: 0,0:00:30.00,0:00:30.50,Pop,,0,0,0,,{\c&HFFFFFF&}As Secretary {\c&HFFFFFF&}of {\c&H888888&}the Navy, Robson controlled $56 million in construction funds.
+Dialogue: 0,0:00:30.50,0:00:31.00,Pop,,0,0,0,,{\c&HFFFFFF&}As Secretary of {\c&HFFFFFF&}the {\c&H888888&}Navy, Robson controlled $56 million in construction funds.
+Dialogue: 0,0:00:31.00,0:00:31.50,Pop,,0,0,0,,{\c&HFFFFFF&}As Secretary of the {\c&HFFFFFF&}Navy, {\c&H888888&}Robson controlled $56 million in construction funds.
+Dialogue: 0,0:00:31.50,0:00:32.00,Pop,,0,0,0,,{\c&HFFFFFF&}As Secretary of the Navy, {\c&HFFFFFF&}Robson {\c&H888888&}controlled $56 million in construction funds.
+Dialogue: 0,0:00:32.00,0:00:32.50,Pop,,0,0,0,,{\c&HFFFFFF&}As Secretary of the Navy, Robson {\c&HFFFFFF&}controlled {\c&H888888&}$56 million in construction funds.
+Dialogue: 0,0:00:32.50,0:00:33.00,Pop,,0,0,0,,{\c&HFFFFFF&}As Secretary of the Navy, Robson controlled {\c&HFFFFFF&}$56 {\c&H888888&}million in construction funds.
+Dialogue: 0,0:00:33.00,0:00:33.50,Pop,,0,0,0,,{\c&HFFFFFF&}As Secretary of the Navy, Robson controlled $56 {\c&HFFFFFF&}million {\c&H888888&}in construction funds.
+Dialogue: 0,0:00:33.50,0:00:34.00,Pop,,0,0,0,,{\c&HFFFFFF&}As Secretary of the Navy, Robson controlled $56 million {\c&HFFFFFF&}in {\c&H888888&}construction funds.
+Dialogue: 0,0:00:34.00,0:00:34.50,Pop,,0,0,0,,{\c&HFFFFFF&}As Secretary of the Navy, Robson controlled $56 million in {\c&HFFFFFF&}construction {\c&H888888&}funds.
+Dialogue: 0,0:00:34.50,0:00:35.00,Pop,,0,0,0,,{\c&HFFFFFF&}As Secretary of the Navy, Robson controlled $56 million in construction {\c&HFFFFFF&}funds.
+Dialogue: 0,0:00:35.00,0:00:35.45,Pop,,0,0,0,,{\c&HFFFFFF&}In {\c&H888888&}1876, a congressional investigation discovered that 15 million of it.
+Dialogue: 0,0:00:35.45,0:00:35.90,Pop,,0,0,0,,{\c&HFFFFFF&}In {\c&HFFFFFF&}1876, {\c&H888888&}a congressional investigation discovered that 15 million of it.
+Dialogue: 0,0:00:35.90,0:00:36.36,Pop,,0,0,0,,{\c&HFFFFFF&}In 1876, {\c&HFFFFFF&}a {\c&H888888&}congressional investigation discovered that 15 million of it.
+Dialogue: 0,0:00:36.36,0:00:36.81,Pop,,0,0,0,,{\c&HFFFFFF&}In 1876, a {\c&HFFFFFF&}congressional {\c&H888888&}investigation discovered that 15 million of it.
+Dialogue: 0,0:00:36.81,0:00:37.27,Pop,,0,0,0,,{\c&HFFFFFF&}In 1876, a congressional {\c&HFFFFFF&}investigation {\c&H888888&}discovered that 15 million of it.
+Dialogue: 0,0:00:37.27,0:00:37.72,Pop,,0,0,0,,{\c&HFFFFFF&}In 1876, a congressional investigation {\c&HFFFFFF&}discovered {\c&H888888&}that 15 million of it.
+Dialogue: 0,0:00:37.72,0:00:38.18,Pop,,0,0,0,,{\c&HFFFFFF&}In 1876, a congressional investigation discovered {\c&HFFFFFF&}that {\c&H888888&}15 million of it.
+Dialogue: 0,0:00:38.18,0:00:38.63,Pop,,0,0,0,,{\c&HFFFFFF&}In 1876, a congressional investigation discovered that {\c&HFFFFFF&}15 {\c&H888888&}million of it.
+Dialogue: 0,0:00:38.63,0:00:39.09,Pop,,0,0,0,,{\c&HFFFFFF&}In 1876, a congressional investigation discovered that 15 {\c&HFFFFFF&}million {\c&H888888&}of it.
+Dialogue: 0,0:00:39.09,0:00:39.54,Pop,,0,0,0,,{\c&HFFFFFF&}In 1876, a congressional investigation discovered that 15 million {\c&HFFFFFF&}of {\c&H888888&}it.
+Dialogue: 0,0:00:39.54,0:00:40.00,Pop,,0,0,0,,{\c&HFFFFFF&}In 1876, a congressional investigation discovered that 15 million of {\c&HFFFFFF&}it.
