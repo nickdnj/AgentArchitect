@@ -1,0 +1,64 @@
+{
+  "id": "social-distributor",
+  "name": "Social Distributor",
+  "description": "Plans and executes social media launch campaigns for each published video — pre-premiere buzz, launch day posts, and follow-up across YouTube Community, Facebook groups, Reddit, Instagram, and TikTok.",
+  "version": "1.0",
+  "expertise": {
+    "domains": [
+      "social-media-marketing",
+      "community-engagement",
+      "hyper-local-promotion",
+      "youtube-premieres",
+      "content-distribution",
+      "audience-growth"
+    ],
+    "capabilities": [
+      "platform-specific-copywriting",
+      "community-targeting",
+      "premiere-scheduling",
+      "teaser-content-creation",
+      "facebook-group-strategy",
+      "reddit-community-engagement",
+      "instagram-caption-writing",
+      "email-campaign-drafting",
+      "launch-calendar-creation",
+      "post-performance-tracking"
+    ]
+  },
+  "mcp_servers": [
+    "chrome",
+    "gmail-personal"
+  ],
+  "context_buckets": {
+    "assigned": [
+      "ai-journey"
+    ],
+    "access_level": "read-only"
+  },
+  "output": {
+    "folder": "teams/youtube-content/projects/{project}/social/",
+    "formats": [
+      "markdown",
+      "json"
+    ]
+  },
+  "collaboration": {
+    "can_request_from": [
+      "video-publisher",
+      "short-form-video",
+      "chrome-browser"
+    ],
+    "provides_to": [],
+    "handoff_format": "structured-summary"
+  },
+  "trigger": {
+    "type": "on-demand",
+    "description": "Invoked by YouTube Content team orchestrator after video is published or scheduled as a premiere"
+  },
+  "agent_type": "specialist",
+  "execution": {
+    "context": "fork",
+    "max_turns": 30,
+    "model": "sonnet"
+  }
+}

@@ -30,6 +30,11 @@
       "agent_id": "short-form-video",
       "role": "Shorts/Reels/TikTok extraction and posting strategy",
       "context_override": null
+    },
+    {
+      "agent_id": "social-distributor",
+      "role": "Social media launch campaigns — community research, launch calendar, platform-specific posts, premiere buzz, follow-up",
+      "context_override": null
     }
   ],
 
@@ -49,7 +54,10 @@
       "video-assembly": ["video-assembler"],
       "metadata-upload": ["video-publisher"],
       "shorts-reels": ["short-form-video"],
+      "social-launch": ["social-distributor"],
+      "social-promotion": ["social-distributor"],
       "full-video": ["video-script-writer", "video-asset-generator", "video-assembler", "video-publisher"],
+      "full-launch": ["video-script-writer", "video-asset-generator", "video-assembler", "video-publisher", "social-distributor"],
       "general": ["video-script-writer"]
     },
     "delegation_strategy": "ALWAYS start with a Creative Brief conversation before delegating to any specialist. Once the brief is complete, run the chapter-based pipeline with two human review gates:\n\n1. Script Writer produces chapter-structured outline, script, storyboard, and PowerPoint storyboard deck\n2. GATE 1: Present the PowerPoint deck to user. Ask for feedback on story arc, chapters, and visual vision\n3. ITERATE: If user requests changes, delegate back to Script Writer to revise and regenerate deck\n4. Once storyboard is approved, delegate to Asset Generator in AUDIO-ONLY mode\n5. GATE 2: Present audio files to user for listening review\n6. Once audio is approved, delegate to Asset Generator in VISUALS-ONLY mode\n7. Delegate to Assembler with all approved assets\n8. Delegate to Publisher (if publishing)\n9. Optionally route to Short-Form Video for clip extraction\n\nEach specialist runs in its own forked context. Pass the creative brief, project folder path, and previous phase briefing to each.",
@@ -129,6 +137,14 @@
         "parallel": false,
         "inputs": ["final video", "script.md"],
         "outputs": ["shorts clips", "platform metadata"]
+      },
+      {
+        "name": "9. Social Launch Campaign",
+        "agents": ["social-distributor"],
+        "parallel": true,
+        "inputs": ["YouTube URL", "video title", "description", "premiere date", "target location", "short-form clips (if available)", "thumbnail"],
+        "outputs": ["community-targets.json", "launch-calendar.md", "platform posts", "performance-report.md"],
+        "notes": "Can run in parallel with Short-Form Extraction. Produces ready-to-post social content for all platforms."
       }
     ]
   },
