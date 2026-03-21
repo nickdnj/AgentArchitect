@@ -1,11 +1,14 @@
 {
   "id": "batter-up-history",
-  "title": "Batter Up: The Last Piece of Jolly Roger's",
+  "title": "Batter Up: The Last Piece of Jolly Roger",
   "topic": "The history of Batter Up batting cages at 130 Hicksville Road, Bethpage, NY and its connection to the legendary Nunley's Happyland / Jolly Roger's amusement park on Long Island",
   "video_type": "documentary",
   "created": "2026-03-18",
-  "last_updated": "2026-03-18",
-  "status": "in-progress",
+  "last_updated": "2026-03-20",
+  "status": "published",
+  "youtube_url": "https://www.youtube.com/watch?v=IQA6vicaDmc",
+  "youtube_video_id": "IQA6vicaDmc",
+  "youtube_previous_video_id": "G3pM9UkVbWs",
   "phases": {
     "setup": {"status": "complete"},
     "research": {"status": "complete"},
@@ -46,9 +49,16 @@
     "audio_review": {"status": "pending"},
     "visuals": {"status": "pending"},
     "assembly": {"status": "pending"},
-    "metadata": {"status": "pending"},
-    "upload": {"status": "pending"},
-    "review": {"status": "pending"}
+    "metadata": {"status": "complete"},
+    "upload": {
+      "status": "complete",
+      "video_file": "output/batter-up-history-v9.mp4",
+      "youtube_url": "https://www.youtube.com/watch?v=IQA6vicaDmc",
+      "visibility": "unlisted",
+      "uploaded_at": "2026-03-20",
+      "notes": "v9: added photo credits to description; previous upload G3pM9UkVbWs"
+    },
+    "review": {"status": "pending-user-review"}
   },
   "settings": {
     "target_length_minutes": 7,

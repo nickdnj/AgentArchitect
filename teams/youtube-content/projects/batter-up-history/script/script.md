@@ -184,7 +184,7 @@ NARRATION:
 [VISUAL: Modern imagery of Batter Up -- the row of batting cages, pitching machines in action, families lined up, the mini golf course, colorful signage]
 
 NARRATION:
-"Today, Batter Up has eleven fully automatic batting cages throwing baseball and softball at speeds from thirty-five to eighty miles per hour. There's an eighteen-hole mini golf course right alongside. It's not fancy. It's not a chain. It's a family business on a piece of land that's been making families happy since the nineteen sixties. Forty-plus years of DeMarco family ownership, and they're still going strong."
+"Today, Batter Up has eleven fully automatic batting cages throwing baseball and softball at speeds from thirty-five to eighty miles per hour. There's an eighteen-hole mini golf course right alongside. It's not fancy. It's not a chain. It's a family business on a piece of land that's been making families happy since the nineteen sixties. Forty-plus years of DeMarco family stewardship, and they're still going strong."
 
 [TRANSITION: Crossfade, 1s]
 

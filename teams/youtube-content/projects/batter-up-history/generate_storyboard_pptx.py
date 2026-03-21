@@ -100,23 +100,23 @@ SCENES = {
         "title": "Modern Batter Up",
         "duration": "16 seconds",
         "image_type": "real",
-        "image_files": ["bu-streetview-tents.jpg"],
+        "image_files": ["bu-streetview-tents.jpg", "bu8.jpg"],
         "ai_prompt": "",
-        "photo_desc": "bu-streetview-tents: Wide street-level shot from across parking lot -- colorful blue/pink tents over batting cages, full facility visible. Oct 2018 Google Street View.",
-        "orientation_note": "Landscape 1920x1080 -- native 16:9",
+        "photo_desc": "(a) bu-streetview-tents: Wide street-level shot -- colorful blue/pink tents over batting cages, full facility visible. Oct 2018 Google Street View. (b) bu8: Batting cages at dusk/sunset -- families silhouetted against pink/purple sky, cinematic.",
+        "orientation_note": "(a) Landscape 1920x1080 -- native 16:9. (b) Square (414x414) -- pillarbox",
         "text_overlay": "None",
         "motion": "ken-burns-zoom",
         "audio": "Narration scene-2.wav + bg music 15%",
-        "notes": "Single street view -- opening establishing shot",
+        "notes": "2-image opening sequence",
     },
     3: {
         "title": "The Reveal",
         "duration": "23 seconds",
         "image_type": "real",
-        "image_files": ["bu8.jpg"],
+        "image_files": ["bu-streetview-minigolf.jpg"],
         "ai_prompt": "",
-        "photo_desc": "Batting cages at dusk/sunset -- families silhouetted against pink/purple sky, people lined up along cage fence. Cinematic and alive.",
-        "orientation_note": "Square (414x414) -- crop to 16:9",
+        "photo_desc": "bu-streetview-minigolf: Google Street View of Batter Up mini golf entrance -- 'Miniature Golf' sign, OPEN flag, American flag. Shows the full facility from the street.",
+        "orientation_note": "Landscape 1920x1080 -- native 16:9",
         "text_overlay": '"130 Hicksville Road, Bethpage, NY" -- lower third',
         "motion": "ken-burns-pan",
         "audio": "Narration scene-3.wav + bg music 15%",
@@ -126,9 +126,9 @@ SCENES = {
         "title": "William Nunley's Vision",
         "duration": "30 seconds",
         "image_type": "real",
-        "image_files": ["jr13.jpg", "jr9.jpg", "william-nunley-portrait.jpg"],
+        "image_files": ["jr13.jpg", "william-nunley-portrait.jpg"],
         "ai_prompt": "",
-        "photo_desc": "(a) jr13: 1953 aerial of Hempstead Tpke / Hicksville Rd intersection before Happyland. (b) jr9: Nunley's Happyland entrance daytime color -- park entrance coming alive. Cut between them to break up the 30s.",
+        "photo_desc": "(a) jr13: 1953 aerial of Hempstead Tpke / Hicksville Rd intersection before Happyland. (b) william-nunley-portrait: Formal portrait of William Nunley + obituary clipping.",
         "orientation_note": "Both approx square -- crop to 16:9",
         "text_overlay": "None",
         "motion": "ken-burns-pan",
@@ -295,14 +295,14 @@ SCENES = {
         "title": "The Family Legacy",
         "duration": "15 seconds",
         "image_type": "real",
-        "image_files": ["bu-streetview-minigolf.jpg"],
+        "image_files": ["bu32.jpeg", "bu31.jpeg", "bu30.jpeg"],
         "ai_prompt": "",
-        "photo_desc": "bu-streetview-minigolf: Google Street View of Batter Up mini golf entrance -- 'Miniature Golf' sign, OPEN flag, American flag. Shows the full facility.",
-        "orientation_note": "Landscape 1920x1080 -- native 16:9",
+        "photo_desc": "(a) bu32: Courtyard patio with red shade umbrellas, families at tables, batting cages behind -- sunny day. (b) bu31: Wide view from inside cages -- mini golf sign + red tents visible, full facility. (c) bu30: Inside the batting cage -- kid in helmet at the plate, coach/parent behind, red tents in background.",
+        "orientation_note": "All landscape ~960x720 -- pillarbox or crop to 16:9",
         "text_overlay": "None",
         "motion": "ken-burns-pan",
         "audio": "Narration scene-17.wav + bg music 15%",
-        "notes": "Replaced carousel photos -- Batter Up narration needs Batter Up visuals",
+        "notes": "3 action shots from the facility -- families, cages, full complex",
     },
     18: {
         "title": "The Carousel Connection",
@@ -343,6 +343,30 @@ SCENES = {
         "audio": "Narration scene-20.wav + bg music fade out",
         "notes": "Closing on batting cage shots; bu4 in Scene 19 is the one golf shot",
     },
+}
+
+
+NARRATION = {
+    1: "",
+    2: "\"Listen. You can hear it from the parking lot. The whir of a pitching machine winding up. The crack of an aluminum bat. Kids laughing, parents coaching from behind the fence. It's a summer evening on Hicksville Road in Bethpage, and Batter Up is doing what it's done for over forty years.\"",
+    3: "\"But here's the thing most people don't know. This little batting cage -- right here at 130 Hicksville Road -- is the last surviving piece of one of the most legendary amusement parks Long Island has ever seen. A place called Jolly Roger's. And if you grew up on the Island, that name just hit you right in the chest.\"",
+    4: "\"Our story starts in 1951, with a man named William Nunley. He was a third-generation amusement park entrepreneur -- his family already ran parks in Baldwin, Rockaway Beach, and Yonkers. But William had a bigger vision. He wanted to build the largest Nunley's yet, right here at the corner of Hempstead Turnpike and Hicksville Road. Critics called the location 'virtually deserted.' But Nunley saw what was coming -- Levittown was just down the road, and suburbs were spreading across Long Island like wildfire.\"",
+    5: "\"Tragically, William Nunley died in April of 1951 -- six months before his dream was finished. His widow Miriam made a decision that would shape Long Island childhoods for a generation. She would open Happyland herself. On October twelfth, nineteen fifty-one, the gates swung open.\"",
+    6: "\"And what a park it was. A Schiff Ferris wheel and roller coaster. A forty-eight-horse carousel. Bumper cars, hand cars, a miniature railway. Over a hundred arcade games inside a heated indoor pavilion -- this place ran year-round. On a summer Saturday, four thousand kids would pour through those gates.\"",
+    7: "\"And presiding over it all was a one-of-a-kind treasure: a nineteen-ten German mechanical organ, built by A. Ruth and Sohn of Waldkirch, with elaborately carved musicians that moved in time with the music. There was nothing else like it in America.\"",
+    8: "\"In nineteen fifty-two, a fast-food restaurant called the Jolly Roger opened right next door, connected to the park by a glass-walled passageway. And here's the thing about names -- the official name was Nunley's Happyland, but nobody called it that. To every kid on Long Island, it was Jolly Roger's. That was the name that stuck for a generation.\"",
+    9: "\"By the nineteen sixties, new owners -- the Tarnow and Giddens families -- expanded the whole complex. They added a Wild Mouse roller coaster, a dedicated bumper car building, and right across Hicksville Road, they built batting cages and a miniature golf course. That spot, directly across the street -- remember it. That's where our story is heading.\"",
+    10: "\"For nearly three decades, Jolly Roger's was the place. Birthday parties, first dates, Little League celebrations. If you grew up on Long Island in the fifties, sixties, or seventies, you were there. Everybody was there.\"",
+    11: "\"But nothing lasts forever. In nineteen seventy-four, the Jolly Roger restaurant changed its name to Robin Hood. By nineteen seventy-six, the restaurant had closed. And in nineteen seventy-eight, nearly three decades after Miriam Nunley first opened those gates, the park shut down for good.\"",
+    12: "\"In March of nineteen seventy-nine, a photographer named Robert Berkowitz walked through the empty park one last time, capturing haunting images of the rides sitting silent, the buildings waiting for the wrecking ball. Those photographs are some of the only visual records we have of the park's final days.\"",
+    13: "\"Today, a strip mall stands where Happyland used to be. Not a plaque, not a marker, not a trace. It's gone.\"",
+    14: "\"But across the street? Across the street, the bats never stopped swinging.\"",
+    15: "\"In nineteen seventy-nine, just one year after the park closed, the batting cage facility at 130 Hicksville Road was rebuilt and expanded. It was like the place refused to die. And then, in nineteen eighty-four, two local partners stepped up to take the reins. Nick DeMarco and his partner John Simoncic named it Batter Up. Nick ran the day-to-day, building it from the ground up with his family. And they've been running it ever since.\"",
+    16: "\"Today, Batter Up has eleven fully automatic batting cages throwing baseball and softball at speeds from thirty-five to eighty miles per hour. There's an eighteen-hole mini golf course right alongside. It's not fancy. It's not a chain. It's a family business on a piece of land that's been making families happy since the nineteen sixties. Forty-plus years of DeMarco family stewardship, and they're still going strong.\"",
+    17: "\"Think about that for a second. Three generations of Long Islanders have stepped up to those cages. Grandparents who rode the Ferris wheel at Jolly Roger's bring their grandkids here to hit. The corner of Hicksville Road and Hempstead Turnpike has been in the business of making families smile since nineteen fifty-one. Seventy-five years and counting.\"",
+    18: "\"Now, there is one other piece of the Nunley's story that survived. The family's famous carousel from their Baldwin location was rescued and restored -- you can ride it today at the Long Island Children's Museum in Garden City. But that carousel was moved. It was saved and relocated. Batter Up? Batter Up never left. It's been right here, on its original ground, since the beginning.\"",
+    19: "\"Online, thousands of Long Islanders keep the memory alive. The Facebook group 'Remembering Nunley's and Jolly Roger's' is packed with stories, old photos, and that one question that comes up again and again: 'Remember Jolly Roger's?' Yeah. We remember.\"",
+    20: "\"So next time you're driving down Hicksville Road in Bethpage, pull over. Grab a helmet. Step into one of those cages at Batter Up, and take a swing. Because you won't just be hitting a baseball. You'll be standing on seventy-five years of Long Island history. And that history? It's still alive.\"",
 }
 
 
@@ -574,72 +598,51 @@ def create_scene_slide(prs, scene_num, scene):
     img_area_h = Inches(4.2)
 
     # Image placeholder background
-    img_bg = add_shape(slide, img_left, img_top, img_area_w, img_area_h,
-                       RGBColor(0x15, 0x17, 0x2A))
+    add_shape(slide, img_left, img_top, img_area_w, img_area_h,
+              RGBColor(0x15, 0x17, 0x2A))
 
-    # Try to embed actual image
-    image_embedded = False
+    # Build list of image paths to show
+    from PIL import Image as PILImage
+    img_files_to_show = []
     if scene["image_type"] == "real" and scene["image_files"]:
-        primary_file = scene["image_files"][0]
-        img_path = os.path.join(IMAGES_DIR, primary_file)
-        if os.path.exists(img_path):
-            try:
-                from PIL import Image as PILImage
-                pil_img = PILImage.open(img_path)
-                iw, ih = pil_img.size
-
-                # Calculate fit within the area (with small padding)
-                pad = Inches(0.15)
-                max_w = img_area_w - 2 * pad
-                max_h = img_area_h - 2 * pad
-
-                # Scale to fit
-                w_ratio = max_w / iw
-                h_ratio = max_h / ih
-                ratio = min(w_ratio, h_ratio)
-
-                final_w = int(iw * ratio)
-                final_h = int(ih * ratio)
-
-                # Center within area
-                x_offset = img_left + pad + (max_w - final_w) // 2
-                y_offset = img_top + pad + (max_h - final_h) // 2
-
-                slide.shapes.add_picture(img_path, x_offset, y_offset, final_w, final_h)
-                image_embedded = True
-            except Exception as e:
-                print(f"  Warning: Could not embed {primary_file}: {e}")
-
-    if not image_embedded and scene["image_type"] == "ai":
-        # Try to embed existing AI-generated scene image
+        for fname in scene["image_files"]:
+            p = os.path.join(IMAGES_DIR, fname)
+            if os.path.exists(p):
+                img_files_to_show.append((fname, p))
+    elif scene["image_type"] == "ai":
         ai_img_path = os.path.join(IMAGES_DIR, f"scene-{scene_num:02d}.png")
         if os.path.exists(ai_img_path):
+            img_files_to_show.append((f"scene-{scene_num:02d}.png", ai_img_path))
+
+    if img_files_to_show:
+        n = len(img_files_to_show)
+        pad = Inches(0.1)
+        gap = Inches(0.08)
+        # Stack images vertically, each gets equal share of height
+        slot_h = (img_area_h - 2 * pad - gap * (n - 1)) / n
+        slot_w = img_area_w - 2 * pad
+        for i, (fname, img_path) in enumerate(img_files_to_show):
             try:
-                from PIL import Image as PILImage
-                pil_img = PILImage.open(ai_img_path)
+                pil_img = PILImage.open(img_path)
                 iw, ih = pil_img.size
-
-                pad = Inches(0.15)
-                max_w = img_area_w - 2 * pad
-                max_h = img_area_h - 2 * pad
-
-                w_ratio = max_w / iw
-                h_ratio = max_h / ih
+                w_ratio = slot_w / iw
+                h_ratio = slot_h / ih
                 ratio = min(w_ratio, h_ratio)
-
                 final_w = int(iw * ratio)
                 final_h = int(ih * ratio)
-
-                x_offset = img_left + pad + (max_w - final_w) // 2
-                y_offset = img_top + pad + (max_h - final_h) // 2
-
-                slide.shapes.add_picture(ai_img_path, x_offset, y_offset, final_w, final_h)
-                image_embedded = True
+                slot_top = img_top + pad + i * (slot_h + gap)
+                x_off = img_left + pad + (slot_w - final_w) // 2
+                y_off = slot_top + (slot_h - final_h) // 2
+                slide.shapes.add_picture(img_path, x_off, y_off, final_w, final_h)
+                # Label each image
+                if n > 1:
+                    add_textbox(slide, img_left + pad, slot_top + Inches(0.02),
+                                Inches(3), Inches(0.2),
+                                f"{i+1}. {fname}", font_size=8, color=ACCENT_BLUE)
             except Exception as e:
-                print(f"  Warning: Could not embed AI image scene-{scene_num:02d}.png: {e}")
-
-    if not image_embedded and scene["image_type"] == "ai":
-        # Fallback: show AI prompt text in the placeholder
+                print(f"  Warning: Could not embed {fname}: {e}")
+    elif scene["image_type"] == "ai":
+        # Fallback: show AI prompt text
         add_textbox(slide, img_left + Inches(0.3), img_top + Inches(0.5),
                     img_area_w - Inches(0.6), img_area_h - Inches(1),
                     f"AI PROMPT:\n{scene['ai_prompt']}",
@@ -709,11 +712,23 @@ def create_scene_slide(prs, scene_num, scene):
 
     # --- Bottom bar: multi-image indicator ---
     if len(scene["image_files"]) > 1:
-        bottom_y = Inches(6.8)
-        add_shape(slide, Inches(0.5), bottom_y, Inches(5.8), Inches(0.45), RGBColor(0x22, 0x25, 0x38))
-        add_textbox(slide, Inches(0.5), bottom_y + Inches(0.05), Inches(5.8), Inches(0.35),
-                    f"MULTI-IMAGE SCENE: {' + '.join(scene['image_files'])} (cut between)",
-                    font_size=10, color=ACCENT_BLUE, bold=True, alignment=PP_ALIGN.CENTER)
+        bottom_y = Inches(5.8)
+        add_shape(slide, Inches(0.5), bottom_y, Inches(5.8), Inches(0.35), RGBColor(0x22, 0x25, 0x38))
+        add_textbox(slide, Inches(0.5), bottom_y + Inches(0.05), Inches(5.8), Inches(0.28),
+                    f"MULTI-IMAGE: {' + '.join(scene['image_files'])}",
+                    font_size=9, color=ACCENT_BLUE, bold=True, alignment=PP_ALIGN.CENTER)
+
+    # --- Narration script box (full width, bottom of slide) ---
+    narration_text = NARRATION.get(scene_num, "")
+    if narration_text:
+        nar_y = Inches(6.2)
+        nar_h = Inches(1.2)
+        add_shape(slide, Inches(0.3), nar_y, SLIDE_WIDTH - Inches(0.6), nar_h,
+                  RGBColor(0x1A, 0x1D, 0x2E))
+        add_textbox(slide, Inches(0.5), nar_y + Inches(0.05), Inches(1.5), Inches(0.25),
+                    "NARRATION:", font_size=9, color=AMBER, bold=True)
+        add_textbox(slide, Inches(0.5), nar_y + Inches(0.28), SLIDE_WIDTH - Inches(1.0), nar_h - Inches(0.35),
+                    narration_text, font_size=10, color=WHITE)
 
 
 def create_summary_slide(prs):
