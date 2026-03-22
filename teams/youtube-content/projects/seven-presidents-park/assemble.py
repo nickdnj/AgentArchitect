@@ -62,7 +62,7 @@ SCENES = [
     # Remaining ~19.8s goes to 1e
     {
         "id": "1a", "segment": 1,
-        "image": "ai-scene-1a.png",
+        "image": "nick-park-opening.jpg",
         "motion": "ken-burns-pan",
         "duration": 10,
         "text": "Long Branch, New Jersey",
