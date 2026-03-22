@@ -1,0 +1,65 @@
+{
+  "id": "jersey-shore-sharks-1916",
+  "title": "12 Days of Terror: The Real Story Behind Jaws",
+  "topic": "The 1916 Jersey Shore shark attacks -- five attacks in twelve days that killed four people, inspired Jaws, and forever changed America's relationship with the ocean",
+  "video_type": "documentary",
+  "created": "2026-03-21",
+  "last_updated": "2026-03-21",
+  "status": "in-progress",
+  "phases": {
+    "setup": {"status": "complete"},
+    "research": {"status": "complete"},
+    "scripting": {"status": "complete"},
+    "storyboard": {"status": "complete"},
+    "storyboard_pptx": {"status": "complete"},
+    "storyboard_review": {"status": "pending"},
+    "audio": {"status": "pending"},
+    "audio_review": {"status": "pending"},
+    "visuals": {"status": "pending"},
+    "assembly": {"status": "pending"},
+    "metadata": {"status": "pending"},
+    "upload": {"status": "pending"},
+    "review": {"status": "pending"}
+  },
+  "settings": {
+    "target_length_minutes": 9,
+    "resolution": "1920x1080",
+    "fps": 30,
+    "narration_voice": "onyx",
+    "narration_model": "tts-1-hd",
+    "narration_speed": 1.0,
+    "background_music": true,
+    "music_volume": 0.15,
+    "default_visual_style": "ken-burns-zoom",
+    "publish_to_youtube": false
+  },
+  "research_sources": [
+    {
+      "type": "book",
+      "title": "Close to Shore: A True Story of Terror in an Age of Innocence",
+      "author": "Michael Capuzzo",
+      "year": 2001
+    },
+    {
+      "type": "book",
+      "title": "Twelve Days of Terror: A Definitive Investigation of the 1916 New Jersey Shark Attacks",
+      "author": "Richard G. Fernicola, M.D.",
+      "year": 2001
+    },
+    {
+      "type": "archive",
+      "title": "Matawan Historical Society",
+      "url": "https://matawanhistoricalsociety.org/"
+    },
+    {
+      "type": "archive",
+      "title": "Library of Congress - Chronicling America",
+      "url": "https://chroniclingamerica.loc.gov/"
+    },
+    {
+      "type": "archive",
+      "title": "International Shark Attack File - Florida Museum of Natural History",
+      "url": "https://www.floridamuseum.ufl.edu/shark-attacks/"
+    }
+  ]
+}

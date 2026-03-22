@@ -1,0 +1,98 @@
+{
+  "id": "seven-presidents-park",
+  "title": "Seven Presidents Park: The Myth and The Shore",
+  "topic": "Seven Presidents Park, Long Branch, NJ -- the myth that seven presidents vacationed here, the real history, and the extraordinary stories behind it",
+  "video_type": "documentary",
+  "series": {
+    "name": "Seven Presidents",
+    "video_number": 1,
+    "total_videos": 5,
+    "description": "5-video series: 1 overview + 3 presidential deep dives + 1 resort era",
+    "videos": [
+      {"number": 1, "title": "Seven Presidents Park: The Myth and The Shore", "status": "scripted"},
+      {"number": 2, "title": "The General's Summer White House (Grant)", "status": "stub-outline"},
+      {"number": 3, "title": "The President Who Died at the Shore (Garfield)", "status": "stub-outline"},
+      {"number": 4, "title": "Shadow Lawn and the War (Wilson)", "status": "stub-outline"},
+      {"number": 5, "title": "When Long Branch Was America's Playground (Resort Era)", "status": "stub-outline"}
+    ]
+  },
+  "created": "2026-03-21",
+  "last_updated": "2026-03-22",
+  "status": "in-progress",
+  "phases": {
+    "setup": {"status": "complete"},
+    "research": {"status": "complete"},
+    "scripting": {"status": "complete", "notes": "v2: Garfield trimmed to ~60s, Grant/Wilson expanded, series restructured to 5 videos"},
+    "storyboard": {"status": "complete", "notes": "v2: 25 scenes (down from 26), 5 AI images (down from 14)"},
+    "storyboard_pptx": {"status": "complete", "notes": "v2: regenerated with revised scenes"},
+    "storyboard_review": {"status": "pending"},
+    "audio": {"status": "pending"},
+    "audio_review": {"status": "pending"},
+    "visuals": {"status": "pending"},
+    "assembly": {"status": "pending"},
+    "metadata": {"status": "pending"},
+    "upload": {"status": "pending"},
+    "review": {"status": "pending"}
+  },
+  "settings": {
+    "target_length_minutes": 8,
+    "resolution": "1920x1080",
+    "fps": 30,
+    "narration_voice": "onyx",
+    "narration_model": "tts-1-hd",
+    "background_music": true,
+    "music_volume": 0.15,
+    "default_visual_style": "ken-burns-zoom",
+    "publish_to_youtube": false,
+    "youtube_visibility": "unlisted"
+  },
+  "segments": [
+    {
+      "id": 1,
+      "title": "The Myth -- Hook",
+      "scenes": ["1a", "1b", "1c", "1d"]
+    },
+    {
+      "id": 2,
+      "title": "America's Summer Capital",
+      "scenes": ["2a", "2b", "2c"]
+    },
+    {
+      "id": 3,
+      "title": "Grant -- The First Summer White House",
+      "scenes": ["3a", "3b", "3c", "3d"]
+    },
+    {
+      "id": 4,
+      "title": "The Garfield Story",
+      "scenes": ["4a", "4b", "4c", "4d", "4e"]
+    },
+    {
+      "id": 5,
+      "title": "The Disputed Presidents",
+      "scenes": ["5a", "5b"]
+    },
+    {
+      "id": 6,
+      "title": "Wilson, McKinley, and the End of an Era",
+      "scenes": ["6a", "6b", "6c", "6d"]
+    },
+    {
+      "id": 7,
+      "title": "What Endures",
+      "scenes": ["7a", "7b", "7c"]
+    }
+  ],
+  "revision_history": [
+    {
+      "version": "v1",
+      "date": "2026-03-21",
+      "changes": "Initial script, outline, storyboard, PPTX. 26 scenes, ~9:48 runtime, 8-video series."
+    },
+    {
+      "version": "v2",
+      "date": "2026-03-22",
+      "changes": "Garfield trimmed from ~3min/8scenes to ~60s/5scenes. Grant expanded (+Julia quote, +Homer painting). Wilson expanded (+Hughes election night, +nomination photo). Series restructured from 8 to 5 videos. Hayes/Harrison cut as standalone episodes. Title simplified. Netflix nod added. Runtime reduced to ~7:52."
+    }
+  ]
+}
