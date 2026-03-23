@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Generate storyboard PowerPoint deck for "Seven Presidents Park: The Myth and The Shore"
-v2: Garfield trimmed, Grant/Wilson expanded, series restructured to 5 videos.
+v3: Updated to match V5 assembly. Nick's real photos replace AI where applicable.
 Embeds real public domain photos where available; marks AI-needed slides with descriptions.
 """
 
@@ -59,12 +59,12 @@ CHAPTERS = [
 # --- Scene Data (v2) ---
 SCENES = [
     {
-        "id": "1a", "title": "Park Aerial", "chapter": 1,
-        "duration": "10s", "image_type": "ai",
-        "image_files": ["ai-scene-1a.png"],
+        "id": "1a", "title": "Park Opening (Nick Photo)", "chapter": 1,
+        "duration": "10s", "image_type": "real",
+        "image_files": ["nick-park-opening.jpg"],
         "text_overlay": '"Long Branch, New Jersey"',
         "motion": "ken-burns-pan",
-        "ai_prompt": "Aerial view of wide public beach on New Jersey shore at golden hour, Atlantic Ocean waves, boardwalk, scattered beachgoers, warm golden light, cinematic drone style, 16:9",
+        "ai_prompt": "",
         "narration": '"Seven Presidents Oceanfront Park. Thirty-eight acres of public beach on the Jersey Shore. The name promises that seven American presidents once called this stretch of shoreline home."',
     },
     {
@@ -88,7 +88,7 @@ SCENES = [
     },
     {
         "id": "1d", "title": "Church of the Presidents", "chapter": 1,
-        "duration": "10s", "image_type": "real",
+        "duration": "20s", "image_type": "real",
         "image_files": ["church-presidents-habs.jpg"],
         "text_overlay": '"The Church of the Presidents -- Long Branch, NJ -- Est. 1879"',
         "motion": "ken-burns-zoom",
@@ -290,13 +290,22 @@ SCENES = [
         "narration": '"Today, Seven Presidents Park is a public beach. Anyone can visit. You can swim where Grant walked and surf where Garfield was carried to die."',
     },
     {
-        "id": "7b", "title": "Tea House Exterior + Interior (Nick Photos)", "chapter": 7,
-        "duration": "8s", "image_type": "real",
-        "image_files": ["nick-teahouse-exterior.jpg", "nick-teahouse-interior.jpg"],
+        "id": "7b", "title": "Tea House Exterior (Nick Photo)", "chapter": 7,
+        "duration": "4s", "image_type": "real",
+        "image_files": ["nick-teahouse-exterior.jpg"],
         "text_overlay": '"The Garfield Tea House -- Built from the Railroad Ties of 1881"',
         "motion": "ken-burns-zoom",
         "ai_prompt": "",
-        "narration": '"On the grounds of the Church of the Presidents, there is a small tea house. It was built from the actual railroad ties that volunteers laid through the night to bring a dying president to the sea. One of the original iron rails serves as its ridgepole."',
+        "narration": '"On the grounds of the Church of the Presidents, there is a small tea house. It was built from the actual railroad ties that volunteers laid through the night to bring a dying president to the sea."',
+    },
+    {
+        "id": "7b-int", "title": "Tea House Interior (Nick Photo)", "chapter": 7,
+        "duration": "4s", "image_type": "real",
+        "image_files": ["nick-teahouse-interior.jpg"],
+        "text_overlay": '"Railroad Tie Walls -- Stained Glass Windows"',
+        "motion": "ken-burns-pan",
+        "ai_prompt": "",
+        "narration": '"One of the original iron rails serves as its ridgepole."',
     },
     {
         "id": "7b2", "title": "Park Jetty (Nick Photo)", "chapter": 7,
@@ -408,11 +417,11 @@ def create_title_slide(prs):
                 font_name="Georgia")
 
     add_textbox(slide, Inches(1), Inches(2.8), Inches(11.3), Inches(0.6),
-                "VIDEO STORYBOARD v2 -- REVISED",
+                "VIDEO STORYBOARD v3 -- MATCHES DRAFT V5",
                 font_size=18, color=ACCENT_BLUE, alignment=PP_ALIGN.CENTER)
 
     add_textbox(slide, Inches(1), Inches(3.5), Inches(11.3), Inches(0.5),
-                "Documentary | ~8 min target | 29 scenes | 7 chapters | Ken Burns style",
+                f"Documentary | ~8 min target | {len(SCENES)} scenes | 7 chapters | Ken Burns style",
                 font_size=14, color=LIGHT_GRAY, alignment=PP_ALIGN.CENTER)
 
     # Stats
@@ -453,7 +462,7 @@ def create_title_slide(prs):
 
     # v2 changes note
     add_textbox(slide, Inches(1), Inches(6.0), Inches(11.3), Inches(0.5),
-                "v2 changes: Garfield trimmed to ~60s | Grant/Wilson expanded | Series: 5 videos (was 8)",
+                "v3: Matches draft V5 | Nick's real photos replace AI | Tea house split exterior/interior",
                 font_size=13, color=AMBER, alignment=PP_ALIGN.CENTER)
 
     add_textbox(slide, Inches(1), Inches(6.5), Inches(11.3), Inches(0.5),
@@ -600,7 +609,7 @@ def create_summary_slide(prs):
     set_slide_bg(slide, NAVY)
 
     add_textbox(slide, Inches(0.5), Inches(0.3), Inches(12), Inches(0.6),
-                "SCENE OVERVIEW -- IMAGE STATUS (v2)",
+                "SCENE OVERVIEW -- IMAGE STATUS (v3 -- matches V5)",
                 font_size=24, color=WHITE, bold=True, alignment=PP_ALIGN.CENTER)
 
     y = Inches(1.1)
