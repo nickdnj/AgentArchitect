@@ -1,0 +1,1755 @@
+{
+  "task": "transcribe",
+  "language": "english",
+  "duration": 55.007999420166016,
+  "text": " But the other Presidents, Hayes spent his summers in\n Washington.\n Researchers have found no evidence placing him near Long\n Branch.\n Harrison is a Cape May man.\n His summer White House was over a hundred miles to the\n South.\n Arthur, his most documented visit was the night he came to\n comfort the widow of the man whose murder made him\n President.\n Three of the seven are at best on thin ice.\n But try renaming it for Presidents Park.\n Two more Presidents have strong connections to Long Branch.\n In 1899, William McKinley came to deliver a defense of the\n American flag at Ocean Grove's great auditorium\n and to visit his ailing Vice President Garrett Hobart in\n West Long Branch.\n Two years later, McKinley was assassinated.\n The second President in the seven President's story killed\n in office.\n And then Woodrow Wilson.\n In 1916, Wilson moved into Shadow Lawn,\n",
+  "segments": [
+    {
+      "id": 0,
+      "text": " But the other Presidents, Hayes spent his summers in",
+      "start": 0.0,
+      "end": 3.0300000000000002,
+      "tokens": [
+        583,
+        264,
+        661,
+        2718,
+        6026,
+        11,
+        8721,
+        279,
+        4418,
+        702,
+        46474,
+        294
+      ],
+      "words": [
+        {
+          "word": " But",
+          "start": 0.07,
+          "end": 0.2,
+          "t_dtw": -1,
+          "probability": 0.5313523411750793
+        },
+        {
+          "word": " the",
+          "start": 0.2,
+          "end": 0.31,
+          "t_dtw": -1,
+          "probability": 0.9879236817359924
+        },
+        {
+          "word": " other",
+          "start": 0.39,
+          "end": 0.74,
+          "t_dtw": -1,
+          "probability": 0.9935321807861328
+        },
+        {
+          "word": " Pres",
+          "start": 0.74,
+          "end": 1.01,
+          "t_dtw": -1,
+          "probability": 0.9897852540016174
+        },
+        {
+          "word": "idents",
+          "start": 1.01,
+          "end": 1.42,
+          "t_dtw": -1,
+          "probability": 0.9996700882911682
+        },
+        {
+          "word": ",",
+          "start": 1.42,
+          "end": 1.54,
+          "t_dtw": -1,
+          "probability": 0.5643489360809326
+        },
+        {
+          "word": " Hay",
+          "start": 1.58,
+          "end": 1.75,
+          "t_dtw": -1,
+          "probability": 0.7760812640190125
+        },
+        {
+          "word": "es",
+          "start": 1.75,
+          "end": 1.85,
+          "t_dtw": -1,
+          "probability": 0.990281879901886
+        },
+        {
+          "word": " spent",
+          "start": 1.8800000000000001,
+          "end": 2.22,
+          "t_dtw": -1,
+          "probability": 0.6889141201972961
+        },
+        {
+          "word": " his",
+          "start": 2.22,
+          "end": 2.42,
+          "t_dtw": -1,
+          "probability": 0.9940250515937805
+        },
+        {
+          "word": " summers",
+          "start": 2.42,
+          "end": 2.89,
+          "t_dtw": -1,
+          "probability": 0.9911152124404907
+        },
+        {
+          "word": " in",
+          "start": 2.9,
+          "end": 3.0300000000000002,
+          "t_dtw": -1,
+          "probability": 0.9978926777839661
+        }
+      ],
+      "temperature": 0.0,
+      "avg_logprob": -0.14512135088443756,
+      "no_speech_prob": 0.009668080136179924
+    },
+    {
+      "id": 1,
+      "text": " Washington.",
+      "start": 3.0300000000000002,
+      "end": 4.0,
+      "tokens": [
+        6149,
+        13
+      ],
+      "words": [
+        {
+          "word": " Washington",
+          "start": 3.0300000000000002,
+          "end": 3.71,
+          "t_dtw": -1,
+          "probability": 0.9977385401725769
+        },
+        {
+          "word": ".",
+          "start": 3.71,
+          "end": 4.0,
+          "t_dtw": -1,
+          "probability": 0.9450922012329102
+        }
+      ],
+      "temperature": 0.0,
+      "avg_logprob": -0.019578933715820312,
+      "no_speech_prob": 0.0
+    },
+    {
+      "id": 2,
+      "text": " Researchers have found no evidence placing him near Long",
+      "start": 4.0,
+      "end": 7.36,
+      "tokens": [
+        43555,
+        362,
+        1352,
+        572,
+        4467,
+        17221,
+        796,
+        2651,
+        8282
+      ],
+      "words": [
+        {
+          "word": " Researchers",
+          "start": 4.0600000000000005,
+          "end": 4.76,
+          "t_dtw": -1,
+          "probability": 0.9836245775222778
+        },
+        {
+          "word": " have",
+          "start": 4.76,
+          "end": 5.04,
+          "t_dtw": -1,
+          "probability": 0.9833554029464722
+        },
+        {
+          "word": " found",
+          "start": 5.05,
+          "end": 5.4,
+          "t_dtw": -1,
+          "probability": 0.9991344213485718
+        },
+        {
+          "word": " no",
+          "start": 5.4,
+          "end": 5.53,
+          "t_dtw": -1,
+          "probability": 0.9969871044158936
+        },
+        {
+          "word": " evidence",
+          "start": 5.58,
+          "end": 6.08,
+          "t_dtw": -1,
+          "probability": 0.9986676573753357
+        },
+        {
+          "word": " placing",
+          "start": 6.16,
+          "end": 6.59,
+          "t_dtw": -1,
+          "probability": 0.9848326444625854
+        },
+        {
+          "word": " him",
+          "start": 6.59,
+          "end": 6.8,
+          "t_dtw": -1,
+          "probability": 0.9966753125190735
+        },
+        {
+          "word": " near",
+          "start": 6.8,
+          "end": 7.08,
+          "t_dtw": -1,
+          "probability": 0.9987838268280029
+        },
+        {
+          "word": " Long",
+          "start": 7.08,
+          "end": 7.3500000000000005,
+          "t_dtw": -1,
+          "probability": 0.9623218178749084
+        }
+      ],
+      "temperature": 0.0,
+      "avg_logprob": -0.010749923065304756,
+      "no_speech_prob": 0.009668080136179924
+    },
+    {
+      "id": 3,
+      "text": " Branch.",
+      "start": 7.36,
+      "end": 8.0,
+      "tokens": [
+        40482,
+        13
+      ],
+      "words": [
+        {
+          "word": " Branch",
+          "start": 7.36,
+          "end": 7.78,
+          "t_dtw": -1,
+          "probability": 0.8976337909698486
+        },
+        {
+          "word": ".",
+          "start": 7.78,
+          "end": 8.0,
+          "t_dtw": -1,
+          "probability": 0.9946091771125793
+        }
+      ],
+      "temperature": 0.0,
+      "avg_logprob": -0.037799518555402756,
+      "no_speech_prob": 0.0
+    },
+    {
+      "id": 4,
+      "text": " Harrison is a Cape May man.",
+      "start": 8.0,
+      "end": 10.0,
+      "tokens": [
+        34272,
+        307,
+        257,
+        27517,
+        1891,
+        587,
+        13
+      ],
+      "words": [
+        {
+          "word": " Harrison",
+          "start": 8.06,
+          "end": 8.64,
+          "t_dtw": -1,
+          "probability": 0.9847997426986694
+        },
+        {
+          "word": " is",
+          "start": 8.66,
+          "end": 8.82,
+          "t_dtw": -1,
+          "probability": 0.9700914025306702
+        },
+        {
+          "word": " a",
+          "start": 8.82,
+          "end": 8.9,
+          "t_dtw": -1,
+          "probability": 0.9955961108207703
+        },
+        {
+          "word": " Cape",
+          "start": 8.9,
+          "end": 9.23,
+          "t_dtw": -1,
+          "probability": 0.7637162804603577
+        },
+        {
+          "word": " May",
+          "start": 9.23,
+          "end": 9.48,
+          "t_dtw": -1,
+          "probability": 0.8474661111831665
+        },
+        {
+          "word": " man",
+          "start": 9.58,
+          "end": 9.73,
+          "t_dtw": -1,
+          "probability": 0.6094843745231628
+        },
+        {
+          "word": ".",
+          "start": 9.73,
+          "end": 9.86,
+          "t_dtw": -1,
+          "probability": 0.6051278710365295
+        }
+      ],
+      "temperature": 0.0,
+      "avg_logprob": -0.18532705307006836,
+      "no_speech_prob": 0.009668080136179924
+    },
+    {
+      "id": 5,
+      "text": " His summer White House was over a hundred miles to the",
+      "start": 10.0,
+      "end": 12.48,
+      "tokens": [
+        2812,
+        4266,
+        5552,
+        4928,
+        390,
+        670,
+        257,
+        3262,
+        6193,
+        281,
+        264
+      ],
+      "words": [
+        {
+          "word": " His",
+          "start": 10.07,
+          "end": 10.17,
+          "t_dtw": -1,
+          "probability": 0.9833666682243347
+        },
+        {
+          "word": " summer",
+          "start": 10.17,
+          "end": 10.51,
+          "t_dtw": -1,
+          "probability": 0.9322091937065125
+        },
+        {
+          "word": " White",
+          "start": 10.51,
+          "end": 10.790000000000001,
+          "t_dtw": -1,
+          "probability": 0.8388270735740662
+        },
+        {
+          "word": " House",
+          "start": 10.790000000000001,
+          "end": 11.07,
+          "t_dtw": -1,
+          "probability": 0.9645876288414001
+        },
+        {
+          "word": " was",
+          "start": 11.07,
+          "end": 11.23,
+          "t_dtw": -1,
+          "probability": 0.9957898259162903
+        },
+        {
+          "word": " over",
+          "start": 11.24,
+          "end": 11.47,
+          "t_dtw": -1,
+          "probability": 0.9947495460510254
+        },
+        {
+          "word": " a",
+          "start": 11.47,
+          "end": 11.51,
+          "t_dtw": -1,
+          "probability": 0.546825110912323
+        },
+        {
+          "word": " hundred",
+          "start": 11.58,
+          "end": 11.9,
+          "t_dtw": -1,
+          "probability": 0.9559664130210876
+        },
+        {
+          "word": " miles",
+          "start": 11.92,
+          "end": 12.200000000000001,
+          "t_dtw": -1,
+          "probability": 0.9925889372825623
+        },
+        {
+          "word": " to",
+          "start": 12.200000000000001,
+          "end": 12.31,
+          "t_dtw": -1,
+          "probability": 0.9935511350631714
+        },
+        {
+          "word": " the",
+          "start": 12.31,
+          "end": 12.48,
+          "t_dtw": -1,
+          "probability": 0.995561957359314
+        }
+      ],
+      "temperature": 0.0,
+      "avg_logprob": -0.08866136521100998,
+      "no_speech_prob": 0.009668080136179924
+    },
+    {
+      "id": 6,
+      "text": " South.",
+      "start": 12.48,
+      "end": 13.0,
+      "tokens": [
+        4242,
+        13
+      ],
+      "words": [
+        {
+          "word": " South",
+          "start": 12.48,
+          "end": 12.76,
+          "t_dtw": -1,
+          "probability": 0.5276539325714111
+        },
+        {
+          "word": ".",
+          "start": 12.76,
+          "end": 13.0,
+          "t_dtw": -1,
+          "probability": 0.993729293346405
+        }
+      ],
+      "temperature": 0.0,
+      "avg_logprob": -0.21520169079303741,
+      "no_speech_prob": 0.0
+    },
+    {
+      "id": 7,
+      "text": " Arthur, his most documented visit was the night he came to",
+      "start": 13.0,
+      "end": 16.31,
+      "tokens": [
+        19624,
+        11,
+        702,
+        881,
+        23007,
+        3441,
+        390,
+        264,
+        1818,
+        415,
+        1361,
+        281
+      ],
+      "words": [
+        {
+          "word": " Arthur",
+          "start": 13.06,
+          "end": 13.4,
+          "t_dtw": -1,
+          "probability": 0.9785907864570618
+        },
+        {
+          "word": ",",
+          "start": 13.41,
+          "end": 13.540000000000001,
+          "t_dtw": -1,
+          "probability": 0.8163630366325378
+        },
+        {
+          "word": " his",
+          "start": 13.540000000000001,
+          "end": 13.74,
+          "t_dtw": -1,
+          "probability": 0.9799439907073975
+        },
+        {
+          "word": " most",
+          "start": 13.74,
+          "end": 14.01,
+          "t_dtw": -1,
+          "probability": 0.9986923933029175
+        },
+        {
+          "word": " documented",
+          "start": 14.01,
+          "end": 14.700000000000001,
+          "t_dtw": -1,
+          "probability": 0.9937558174133301
+        },
+        {
+          "word": " visit",
+          "start": 14.700000000000001,
+          "end": 15.030000000000001,
+          "t_dtw": -1,
+          "probability": 0.9961963891983032
+        },
+        {
+          "word": " was",
+          "start": 15.030000000000001,
+          "end": 15.24,
+          "t_dtw": -1,
+          "probability": 0.5617157220840454
+        },
+        {
+          "word": " the",
+          "start": 15.24,
+          "end": 15.43,
+          "t_dtw": -1,
+          "probability": 0.991370439529419
+        },
+        {
+          "word": " night",
+          "start": 15.44,
+          "end": 15.77,
+          "t_dtw": -1,
+          "probability": 0.9974188804626465
+        },
+        {
+          "word": " he",
+          "start": 15.780000000000001,
+          "end": 15.91,
+          "t_dtw": -1,
+          "probability": 0.9897342920303345
+        },
+        {
+          "word": " came",
+          "start": 15.91,
+          "end": 16.18,
+          "t_dtw": -1,
+          "probability": 0.9963445663452148
+        },
+        {
+          "word": " to",
+          "start": 16.18,
+          "end": 16.31,
+          "t_dtw": -1,
+          "probability": 0.9938733577728271
+        }
+      ],
+      "temperature": 0.0,
+      "avg_logprob": -0.07202649116516113,
+      "no_speech_prob": 0.009668080136179924
+    },
+    {
+      "id": 8,
+      "text": " comfort the widow of the man whose murder made him",
+      "start": 16.31,
+      "end": 19.19,
+      "tokens": [
+        3400,
+        264,
+        37207,
+        295,
+        264,
+        587,
+        6104,
+        6568,
+        1027,
+        796
+      ],
+      "words": [
+        {
+          "word": " comfort",
+          "start": 16.31,
+          "end": 16.79,
+          "t_dtw": -1,
+          "probability": 0.996715247631073
+        },
+        {
+          "word": " the",
+          "start": 16.79,
+          "end": 16.990000000000002,
+          "t_dtw": -1,
+          "probability": 0.9937217235565186
+        },
+        {
+          "word": " widow",
+          "start": 16.990000000000002,
+          "end": 17.330000000000002,
+          "t_dtw": -1,
+          "probability": 0.9615732431411743
+        },
+        {
+          "word": " of",
+          "start": 17.330000000000002,
+          "end": 17.46,
+          "t_dtw": -1,
+          "probability": 0.9938240647315979
+        },
+        {
+          "word": " the",
+          "start": 17.46,
+          "end": 17.66,
+          "t_dtw": -1,
+          "probability": 0.9890210032463074
+        },
+        {
+          "word": " man",
+          "start": 17.66,
+          "end": 18.0,
+          "t_dtw": -1,
+          "probability": 0.9885872006416321
+        },
+        {
+          "word": " whose",
+          "start": 18.0,
+          "end": 18.330000000000002,
+          "t_dtw": -1,
+          "probability": 0.5201009511947632
+        },
+        {
+          "word": " murder",
+          "start": 18.330000000000002,
+          "end": 18.69,
+          "t_dtw": -1,
+          "probability": 0.979469358921051
+        },
+        {
+          "word": " made",
+          "start": 18.73,
+          "end": 18.990000000000002,
+          "t_dtw": -1,
+          "probability": 0.9969376921653748
+        },
+        {
+          "word": " him",
+          "start": 18.990000000000002,
+          "end": 19.19,
+          "t_dtw": -1,
+          "probability": 0.9984905123710632
+        }
+      ],
+      "temperature": 0.0,
+      "avg_logprob": -0.0756540298461914,
+      "no_speech_prob": 0.0
+    },
+    {
+      "id": 9,
+      "text": " President.",
+      "start": 19.19,
+      "end": 20.0,
+      "tokens": [
+        3117,
+        13
+      ],
+      "words": [
+        {
+          "word": " President",
+          "start": 19.19,
+          "end": 19.78,
+          "t_dtw": -1,
+          "probability": 0.7947810292243958
+        },
+        {
+          "word": ".",
+          "start": 19.78,
+          "end": 20.0,
+          "t_dtw": -1,
+          "probability": 0.9958810210227966
+        }
+      ],
+      "temperature": 0.0,
+      "avg_logprob": -0.07793871313333511,
+      "no_speech_prob": 0.0
+    },
+    {
+      "id": 10,
+      "text": " Three of the seven are at best on thin ice.",
+      "start": 20.0,
+      "end": 24.0,
+      "tokens": [
+        6244,
+        295,
+        264,
+        3407,
+        366,
+        412,
+        1151,
+        322,
+        5862,
+        4435,
+        13
+      ],
+      "words": [
+        {
+          "word": " Three",
+          "start": 20.06,
+          "end": 20.54,
+          "t_dtw": -1,
+          "probability": 0.9794058203697205
+        },
+        {
+          "word": " of",
+          "start": 20.55,
+          "end": 20.77,
+          "t_dtw": -1,
+          "probability": 0.9984753131866455
+        },
+        {
+          "word": " the",
+          "start": 20.77,
+          "end": 21.1,
+          "t_dtw": -1,
+          "probability": 0.996470034122467
+        },
+        {
+          "word": " seven",
+          "start": 21.1,
+          "end": 21.650000000000002,
+          "t_dtw": -1,
+          "probability": 0.980770468711853
+        },
+        {
+          "word": " are",
+          "start": 21.650000000000002,
+          "end": 21.89,
+          "t_dtw": -1,
+          "probability": 0.9458460211753845
+        },
+        {
+          "word": " at",
+          "start": 21.98,
+          "end": 22.2,
+          "t_dtw": -1,
+          "probability": 0.9790846109390259
+        },
+        {
+          "word": " best",
+          "start": 22.2,
+          "end": 22.64,
+          "t_dtw": -1,
+          "probability": 0.8513218760490417
+        },
+        {
+          "word": " on",
+          "start": 22.64,
+          "end": 22.86,
+          "t_dtw": -1,
+          "probability": 0.9583214521408081
+        },
+        {
+          "word": " thin",
+          "start": 22.86,
+          "end": 23.29,
+          "t_dtw": -1,
+          "probability": 0.617643415927887
+        },
+        {
+          "word": " ice",
+          "start": 23.29,
+          "end": 23.62,
+          "t_dtw": -1,
+          "probability": 0.9944763779640198
+        },
+        {
+          "word": ".",
+          "start": 23.62,
+          "end": 24.0,
+          "t_dtw": -1,
+          "probability": 0.8409737348556519
+        }
+      ],
+      "temperature": 0.0,
+      "avg_logprob": -0.08218463510274887,
+      "no_speech_prob": 0.009668080136179924
+    },
+    {
+      "id": 11,
+      "text": " But try renaming it for Presidents Park.",
+      "start": 24.0,
+      "end": 27.0,
+      "tokens": [
+        583,
+        853,
+        8124,
+        5184,
+        309,
+        337,
+        2718,
+        6026,
+        4964,
+        13
+      ],
+      "words": [
+        {
+          "word": " But",
+          "start": 24.07,
+          "end": 24.22,
+          "t_dtw": -1,
+          "probability": 0.9627220034599304
+        },
+        {
+          "word": " try",
+          "start": 24.26,
+          "end": 24.5,
+          "t_dtw": -1,
+          "probability": 0.993528425693512
+        },
+        {
+          "word": " ren",
+          "start": 24.5,
+          "end": 24.75,
+          "t_dtw": -1,
+          "probability": 0.8574851751327515
+        },
+        {
+          "word": "aming",
+          "start": 24.75,
+          "end": 25.150000000000002,
+          "t_dtw": -1,
+          "probability": 0.9987152814865112
+        },
+        {
+          "word": " it",
+          "start": 25.16,
+          "end": 25.32,
+          "t_dtw": -1,
+          "probability": 0.9888738393783569
+        },
+        {
+          "word": " for",
+          "start": 25.32,
+          "end": 25.560000000000002,
+          "t_dtw": -1,
+          "probability": 0.7596868872642517
+        },
+        {
+          "word": " Pres",
+          "start": 25.580000000000002,
+          "end": 25.89,
+          "t_dtw": -1,
+          "probability": 0.8383455872535706
+        },
+        {
+          "word": "idents",
+          "start": 25.89,
+          "end": 26.39,
+          "t_dtw": -1,
+          "probability": 0.9982943534851074
+        },
+        {
+          "word": " Park",
+          "start": 26.39,
+          "end": 26.72,
+          "t_dtw": -1,
+          "probability": 0.9736133217811584
+        },
+        {
+          "word": ".",
+          "start": 26.72,
+          "end": 27.0,
+          "t_dtw": -1,
+          "probability": 0.9886249303817749
+        }
+      ],
+      "temperature": 0.0,
+      "avg_logprob": -0.06379734724760056,
+      "no_speech_prob": 0.009668080136179924
+    },
+    {
+      "id": 12,
+      "text": " Two more Presidents have strong connections to Long Branch.",
+      "start": 27.0,
+      "end": 31.0,
+      "tokens": [
+        4453,
+        544,
+        2718,
+        6026,
+        362,
+        2068,
+        9271,
+        281,
+        8282,
+        40482,
+        13
+      ],
+      "words": [
+        {
+          "word": " Two",
+          "start": 27.07,
+          "end": 27.22,
+          "t_dtw": -1,
+          "probability": 0.9848006963729858
+        },
+        {
+          "word": " more",
+          "start": 27.22,
+          "end": 27.52,
+          "t_dtw": -1,
+          "probability": 0.9973523020744324
+        },
+        {
+          "word": " Pres",
+          "start": 27.52,
+          "end": 27.810000000000002,
+          "t_dtw": -1,
+          "probability": 0.9924696683883667
+        },
+        {
+          "word": "idents",
+          "start": 27.810000000000002,
+          "end": 28.27,
+          "t_dtw": -1,
+          "probability": 0.999662458896637
+        },
+        {
+          "word": " have",
+          "start": 28.27,
+          "end": 28.560000000000002,
+          "t_dtw": -1,
+          "probability": 0.9965840578079224
+        },
+        {
+          "word": " strong",
+          "start": 28.580000000000002,
+          "end": 29.01,
+          "t_dtw": -1,
+          "probability": 0.9947723150253296
+        },
+        {
+          "word": " connections",
+          "start": 29.03,
+          "end": 29.84,
+          "t_dtw": -1,
+          "probability": 0.9680858850479126
+        },
+        {
+          "word": " to",
+          "start": 29.84,
+          "end": 29.990000000000002,
+          "t_dtw": -1,
+          "probability": 0.9962153434753418
+        },
+        {
+          "word": " Long",
+          "start": 29.990000000000002,
+          "end": 30.29,
+          "t_dtw": -1,
+          "probability": 0.9955809116363525
+        },
+        {
+          "word": " Branch",
+          "start": 30.29,
+          "end": 30.73,
+          "t_dtw": -1,
+          "probability": 0.9938847422599792
+        },
+        {
+          "word": ".",
+          "start": 30.740000000000002,
+          "end": 31.0,
+          "t_dtw": -1,
+          "probability": 0.9943170547485352
+        }
+      ],
+      "temperature": 0.0,
+      "avg_logprob": -0.00669347308576107,
+      "no_speech_prob": 1.6001125402453908e-07
+    },
+    {
+      "id": 13,
+      "text": " In 1899, William McKinley came to deliver a defense of the",
+      "start": 31.0,
+      "end": 34.22,
+      "tokens": [
+        682,
+        2443,
+        8494,
+        11,
+        6740,
+        21765,
+        259,
+        3420,
+        1361,
+        281,
+        4239,
+        257,
+        7654,
+        295,
+        264
+      ],
+      "words": [
+        {
+          "word": " In",
+          "start": 31.07,
+          "end": 31.11,
+          "t_dtw": -1,
+          "probability": 0.9975805878639221
+        },
+        {
+          "word": " 18",
+          "start": 31.11,
+          "end": 31.45,
+          "t_dtw": -1,
+          "probability": 0.9898834228515625
+        },
+        {
+          "word": "99",
+          "start": 31.45,
+          "end": 31.79,
+          "t_dtw": -1,
+          "probability": 0.9900023937225342
+        },
+        {
+          "word": ",",
+          "start": 31.79,
+          "end": 31.900000000000002,
+          "t_dtw": -1,
+          "probability": 0.9358184337615967
+        },
+        {
+          "word": " William",
+          "start": 31.900000000000002,
+          "end": 32.3,
+          "t_dtw": -1,
+          "probability": 0.9962324500083923
+        },
+        {
+          "word": " McK",
+          "start": 32.3,
+          "end": 32.47,
+          "t_dtw": -1,
+          "probability": 0.8293549418449402
+        },
+        {
+          "word": "in",
+          "start": 32.58,
+          "end": 32.58,
+          "t_dtw": -1,
+          "probability": 0.9826794862747192
+        },
+        {
+          "word": "ley",
+          "start": 32.58,
+          "end": 32.75,
+          "t_dtw": -1,
+          "probability": 0.9644891619682312
+        },
+        {
+          "word": " came",
+          "start": 32.75,
+          "end": 32.87,
+          "t_dtw": -1,
+          "probability": 0.9947761297225952
+        },
+        {
+          "word": " to",
+          "start": 32.980000000000004,
+          "end": 33.09,
+          "t_dtw": -1,
+          "probability": 0.998536229133606
+        },
+        {
+          "word": " deliver",
+          "start": 33.15,
+          "end": 33.49,
+          "t_dtw": -1,
+          "probability": 0.9991534948348999
+        },
+        {
+          "word": " a",
+          "start": 33.49,
+          "end": 33.54,
+          "t_dtw": -1,
+          "probability": 0.9870271682739258
+        },
+        {
+          "word": " defense",
+          "start": 33.54,
+          "end": 33.94,
+          "t_dtw": -1,
+          "probability": 0.8931140899658203
+        },
+        {
+          "word": " of",
+          "start": 33.94,
+          "end": 34.05,
+          "t_dtw": -1,
+          "probability": 0.9953340888023376
+        },
+        {
+          "word": " the",
+          "start": 34.05,
+          "end": 34.22,
+          "t_dtw": -1,
+          "probability": 0.987143874168396
+        }
+      ],
+      "temperature": 0.0,
+      "avg_logprob": -0.03231646120548248,
+      "no_speech_prob": 1.6001125402453908e-07
+    },
+    {
+      "id": 14,
+      "text": " American flag at Ocean Grove's great auditorium",
+      "start": 34.22,
+      "end": 37.0,
+      "tokens": [
+        2665,
+        7166,
+        412,
+        18101,
+        43111,
+        311,
+        869,
+        33970,
+        2197
+      ],
+      "words": [
+        {
+          "word": " American",
+          "start": 34.22,
+          "end": 34.68,
+          "t_dtw": -1,
+          "probability": 0.9943587779998779
+        },
+        {
+          "word": " flag",
+          "start": 34.68,
+          "end": 35.0,
+          "t_dtw": -1,
+          "probability": 0.9363076686859131
+        },
+        {
+          "word": " at",
+          "start": 35.0,
+          "end": 35.13,
+          "t_dtw": -1,
+          "probability": 0.9412029981613159
+        },
+        {
+          "word": " Ocean",
+          "start": 35.17,
+          "end": 35.49,
+          "t_dtw": -1,
+          "probability": 0.9243691563606262
+        },
+        {
+          "word": " Grove",
+          "start": 35.49,
+          "end": 35.82,
+          "t_dtw": -1,
+          "probability": 0.6606898903846741
+        },
+        {
+          "word": "'s",
+          "start": 35.92,
+          "end": 36.0,
+          "t_dtw": -1,
+          "probability": 0.9922217130661011
+        },
+        {
+          "word": " great",
+          "start": 36.0,
+          "end": 36.33,
+          "t_dtw": -1,
+          "probability": 0.5680748224258423
+        },
+        {
+          "word": " auditor",
+          "start": 36.33,
+          "end": 36.69,
+          "t_dtw": -1,
+          "probability": 0.9617621302604675
+        },
+        {
+          "word": "ium",
+          "start": 36.79,
+          "end": 37.0,
+          "t_dtw": -1,
+          "probability": 0.9997653961181641
+        }
+      ],
+      "temperature": 0.0,
+      "avg_logprob": -0.1237712875008583,
+      "no_speech_prob": 0.0
+    },
+    {
+      "id": 15,
+      "text": " and to visit his ailing Vice President Garrett Hobart in",
+      "start": 37.0,
+      "end": 39.88,
+      "tokens": [
+        293,
+        281,
+        3441,
+        702,
+        257,
+        4883,
+        13276,
+        3117,
+        40266,
+        22966,
+        446,
+        294
+      ],
+      "words": [
+        {
+          "word": " and",
+          "start": 37.07,
+          "end": 37.18,
+          "t_dtw": -1,
+          "probability": 0.9649980068206787
+        },
+        {
+          "word": " to",
+          "start": 37.18,
+          "end": 37.300000000000004,
+          "t_dtw": -1,
+          "probability": 0.9909923672676086
+        },
+        {
+          "word": " visit",
+          "start": 37.300000000000004,
+          "end": 37.61,
+          "t_dtw": -1,
+          "probability": 0.9991001486778259
+        },
+        {
+          "word": " his",
+          "start": 37.61,
+          "end": 37.79,
+          "t_dtw": -1,
+          "probability": 0.9923087954521179
+        },
+        {
+          "word": " a",
+          "start": 37.79,
+          "end": 37.84,
+          "t_dtw": -1,
+          "probability": 0.6054291725158691
+        },
+        {
+          "word": "iling",
+          "start": 37.85,
+          "end": 38.15,
+          "t_dtw": -1,
+          "probability": 0.9920419454574585
+        },
+        {
+          "word": " Vice",
+          "start": 38.160000000000004,
+          "end": 38.410000000000004,
+          "t_dtw": -1,
+          "probability": 0.8131787776947021
+        },
+        {
+          "word": " President",
+          "start": 38.410000000000004,
+          "end": 38.96,
+          "t_dtw": -1,
+          "probability": 0.9732902646064758
+        },
+        {
+          "word": " Garrett",
+          "start": 38.97,
+          "end": 39.4,
+          "t_dtw": -1,
+          "probability": 0.6031079292297363
+        },
+        {
+          "word": " Hob",
+          "start": 39.410000000000004,
+          "end": 39.58,
+          "t_dtw": -1,
+          "probability": 0.7266604900360107
+        },
+        {
+          "word": "art",
+          "start": 39.58,
+          "end": 39.76,
+          "t_dtw": -1,
+          "probability": 0.9956701993942261
+        },
+        {
+          "word": " in",
+          "start": 39.76,
+          "end": 39.88,
+          "t_dtw": -1,
+          "probability": 0.8679968118667603
+        }
+      ],
+      "temperature": 0.0,
+      "avg_logprob": -0.1473204344511032,
+      "no_speech_prob": 1.6001125402453908e-07
+    },
+    {
+      "id": 16,
+      "text": " West Long Branch.",
+      "start": 39.88,
+      "end": 41.0,
+      "tokens": [
+        4055,
+        8282,
+        40482,
+        13
+      ],
+      "words": [
+        {
+          "word": " West",
+          "start": 39.88,
+          "end": 40.12,
+          "t_dtw": -1,
+          "probability": 0.9335116147994995
+        },
+        {
+          "word": " Long",
+          "start": 40.12,
+          "end": 40.37,
+          "t_dtw": -1,
+          "probability": 0.9969091415405273
+        },
+        {
+          "word": " Branch",
+          "start": 40.37,
+          "end": 40.74,
+          "t_dtw": -1,
+          "probability": 0.9926514029502869
+        },
+        {
+          "word": ".",
+          "start": 40.75,
+          "end": 41.0,
+          "t_dtw": -1,
+          "probability": 0.9956455230712891
+        }
+      ],
+      "temperature": 0.0,
+      "avg_logprob": -0.016727447509765625,
+      "no_speech_prob": 0.0
+    },
+    {
+      "id": 17,
+      "text": " Two years later, McKinley was assassinated.",
+      "start": 41.0,
+      "end": 45.0,
+      "tokens": [
+        4453,
+        924,
+        1780,
+        11,
+        21765,
+        259,
+        3420,
+        390,
+        16475,
+        5410,
+        13
+      ],
+      "words": [
+        {
+          "word": " Two",
+          "start": 41.07,
+          "end": 41.29,
+          "t_dtw": -1,
+          "probability": 0.9874113202095032
+        },
+        {
+          "word": " years",
+          "start": 41.29,
+          "end": 41.76,
+          "t_dtw": -1,
+          "probability": 0.9983038902282715
+        },
+        {
+          "word": " later",
+          "start": 41.76,
+          "end": 42.24,
+          "t_dtw": -1,
+          "probability": 0.9982391595840454
+        },
+        {
+          "word": ",",
+          "start": 42.25,
+          "end": 42.43,
+          "t_dtw": -1,
+          "probability": 0.9501784443855286
+        },
+        {
+          "word": " McK",
+          "start": 42.58,
+          "end": 42.730000000000004,
+          "t_dtw": -1,
+          "probability": 0.9945484399795532
+        },
+        {
+          "word": "in",
+          "start": 42.730000000000004,
+          "end": 42.86,
+          "t_dtw": -1,
+          "probability": 0.9994451403617859
+        },
+        {
+          "word": "ley",
+          "start": 42.92,
+          "end": 43.21,
+          "t_dtw": -1,
+          "probability": 0.9985209703445435
+        },
+        {
+          "word": " was",
+          "start": 43.21,
+          "end": 43.5,
+          "t_dtw": -1,
+          "probability": 0.9984181523323059
+        },
+        {
+          "word": " assass",
+          "start": 43.5,
+          "end": 44.08,
+          "t_dtw": -1,
+          "probability": 0.9921403527259827
+        },
+        {
+          "word": "inated",
+          "start": 44.08,
+          "end": 44.65,
+          "t_dtw": -1,
+          "probability": 0.999340295791626
+        },
+        {
+          "word": ".",
+          "start": 44.660000000000004,
+          "end": 45.0,
+          "t_dtw": -1,
+          "probability": 0.9161720275878906
+        }
+      ],
+      "temperature": 0.0,
+      "avg_logprob": -0.014368374831974506,
+      "no_speech_prob": 1.6001125402453908e-07
+    },
+    {
+      "id": 18,
+      "text": " The second President in the seven President's story killed",
+      "start": 45.0,
+      "end": 48.22,
+      "tokens": [
+        440,
+        1150,
+        3117,
+        294,
+        264,
+        3407,
+        3117,
+        311,
+        1657,
+        4652
+      ],
+      "words": [
+        {
+          "word": " The",
+          "start": 45.07,
+          "end": 45.19,
+          "t_dtw": -1,
+          "probability": 0.9849810004234314
+        },
+        {
+          "word": " second",
+          "start": 45.19,
+          "end": 45.54,
+          "t_dtw": -1,
+          "probability": 0.9714171290397644
+        },
+        {
+          "word": " President",
+          "start": 45.54,
+          "end": 46.15,
+          "t_dtw": -1,
+          "probability": 0.886255145072937
+        },
+        {
+          "word": " in",
+          "start": 46.160000000000004,
+          "end": 46.29,
+          "t_dtw": -1,
+          "probability": 0.6309086680412292
+        },
+        {
+          "word": " the",
+          "start": 46.29,
+          "end": 46.480000000000004,
+          "t_dtw": -1,
+          "probability": 0.991608738899231
+        },
+        {
+          "word": " seven",
+          "start": 46.58,
+          "end": 46.800000000000004,
+          "t_dtw": -1,
+          "probability": 0.7438686490058899
+        },
+        {
+          "word": " President",
+          "start": 46.800000000000004,
+          "end": 47.38,
+          "t_dtw": -1,
+          "probability": 0.6614729166030884
+        },
+        {
+          "word": "'s",
+          "start": 47.38,
+          "end": 47.5,
+          "t_dtw": -1,
+          "probability": 0.8744142651557922
+        },
+        {
+          "word": " story",
+          "start": 47.51,
+          "end": 47.83,
+          "t_dtw": -1,
+          "probability": 0.8448418974876404
+        },
+        {
+          "word": " killed",
+          "start": 47.83,
+          "end": 48.22,
+          "t_dtw": -1,
+          "probability": 0.9141733646392822
+        }
+      ],
+      "temperature": 0.0,
+      "avg_logprob": -0.17356224358081818,
+      "no_speech_prob": 1.6001125402453908e-07
+    },
+    {
+      "id": 19,
+      "text": " in office.",
+      "start": 48.22,
+      "end": 49.0,
+      "tokens": [
+        294,
+        3398,
+        13
+      ],
+      "words": [
+        {
+          "word": " in",
+          "start": 48.22,
+          "end": 48.34,
+          "t_dtw": -1,
+          "probability": 0.9345413446426392
+        },
+        {
+          "word": " office",
+          "start": 48.35,
+          "end": 48.730000000000004,
+          "t_dtw": -1,
+          "probability": 0.9679511189460754
+        },
+        {
+          "word": ".",
+          "start": 48.74,
+          "end": 49.0,
+          "t_dtw": -1,
+          "probability": 0.8321373462677002
+        }
+      ],
+      "temperature": 0.0,
+      "avg_logprob": -0.07100772857666016,
+      "no_speech_prob": 0.0
+    },
+    {
+      "id": 20,
+      "text": " And then Woodrow Wilson.",
+      "start": 49.0,
+      "end": 51.0,
+      "tokens": [
+        400,
+        550,
+        11558,
+        1892,
+        15388,
+        13
+      ],
+      "words": [
+        {
+          "word": " And",
+          "start": 49.07,
+          "end": 49.22,
+          "t_dtw": -1,
+          "probability": 0.9295920133590698
+        },
+        {
+          "word": " then",
+          "start": 49.26,
+          "end": 49.59,
+          "t_dtw": -1,
+          "probability": 0.9940932989120483
+        },
+        {
+          "word": " Wood",
+          "start": 49.59,
+          "end": 49.93,
+          "t_dtw": -1,
+          "probability": 0.9517619013786316
+        },
+        {
+          "word": "row",
+          "start": 49.93,
+          "end": 50.2,
+          "t_dtw": -1,
+          "probability": 0.9919208884239197
+        },
+        {
+          "word": " Wilson",
+          "start": 50.2,
+          "end": 50.72,
+          "t_dtw": -1,
+          "probability": 0.9902932643890381
+        },
+        {
+          "word": ".",
+          "start": 50.72,
+          "end": 50.86,
+          "t_dtw": -1,
+          "probability": 0.9811222553253174
+        }
+      ],
+      "temperature": 0.0,
+      "avg_logprob": -0.02361406572163105,
+      "no_speech_prob": 1.6001125402453908e-07
+    },
+    {
+      "id": 21,
+      "text": " In 1916, Wilson moved into Shadow Lawn,",
+      "start": 51.0,
+      "end": 55.0,
+      "tokens": [
+        682,
+        1294,
+        6866,
+        11,
+        15388,
+        4259,
+        666,
+        19036,
+        2369,
+        895,
+        11
+      ],
+      "words": [
+        {
+          "word": " In",
+          "start": 51.07,
+          "end": 51.19,
+          "t_dtw": -1,
+          "probability": 0.6167052388191223
+        },
+        {
+          "word": " 19",
+          "start": 51.19,
+          "end": 51.76,
+          "t_dtw": -1,
+          "probability": 0.9773186445236206
+        },
+        {
+          "word": "16",
+          "start": 51.76,
+          "end": 52.34,
+          "t_dtw": -1,
+          "probability": 0.9956018328666687
+        },
+        {
+          "word": ",",
+          "start": 52.35,
+          "end": 52.53,
+          "t_dtw": -1,
+          "probability": 0.9520505666732788
+        },
+        {
+          "word": " Wilson",
+          "start": 52.58,
+          "end": 53.08,
+          "t_dtw": -1,
+          "probability": 0.9971963167190552
+        },
+        {
+          "word": " moved",
+          "start": 53.160000000000004,
+          "end": 53.6,
+          "t_dtw": -1,
+          "probability": 0.996922492980957
+        },
+        {
+          "word": " into",
+          "start": 53.6,
+          "end": 53.99,
+          "t_dtw": -1,
+          "probability": 0.9844475984573364
+        },
+        {
+          "word": " Shadow",
+          "start": 53.99,
+          "end": 54.56,
+          "t_dtw": -1,
+          "probability": 0.6962236166000366
+        },
+        {
+          "word": " La",
+          "start": 54.56,
+          "end": 54.75,
+          "t_dtw": -1,
+          "probability": 0.29913023114204407
+        },
+        {
+          "word": "wn",
+          "start": 54.76,
+          "end": 55.0,
+          "t_dtw": -1,
+          "probability": 0.8952220678329468
+        },
+        {
+          "word": ",",
+          "start": 55.0,
+          "end": 55.0,
+          "t_dtw": -1,
+          "probability": 0.5801260471343994
+        }
+      ],
+      "temperature": 0.0,
+      "avg_logprob": -0.23379750549793243,
+      "no_speech_prob": 1.6001125402453908e-07
+    }
+  ],
+  "detected_language": "english",
+  "detected_language_probability": 0.9986921548843384,
+  "language_probabilities": {
+    "en": 0.9986921548843384
+  }
+}
