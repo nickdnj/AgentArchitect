@@ -11,38 +11,38 @@ Style: Pop,Arial Black,56,&H00FFFFFF,&H000000FF,&H00000000,&H80000000,-1,0,0,0,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
-Dialogue: 0,0:00:00.00,0:00:02.28,Pop,,0,0,0,,anyone can visit. You
-Dialogue: 0,0:00:02.28,0:00:03.38,Pop,,0,0,0,,can swim where {\c&H00FFFF&}Grant{\c&HFFFFFF&}
-Dialogue: 0,0:00:03.38,0:00:04.48,Pop,,0,0,0,,walked and surf where
-Dialogue: 0,0:00:04.48,0:00:05.68,Pop,,0,0,0,,{\c&H00FFFF&}Garfield{\c&HFFFFFF&} was carried to
-Dialogue: 0,0:00:05.68,0:00:06.66,Pop,,0,0,0,,die. On the grounds
-Dialogue: 0,0:00:06.66,0:00:07.55,Pop,,0,0,0,,of the Church of
-Dialogue: 0,0:00:07.55,0:00:08.43,Pop,,0,0,0,,the Presidents, there is
-Dialogue: 0,0:00:08.43,0:00:10.00,Pop,,0,0,0,,a small tea house.
-Dialogue: 0,0:00:10.00,0:00:11.13,Pop,,0,0,0,,It was built from
-Dialogue: 0,0:00:11.13,0:00:12.26,Pop,,0,0,0,,the actual {\c&H00FFFF&}railroad{\c&HFFFFFF&} ties
-Dialogue: 0,0:00:12.26,0:00:13.34,Pop,,0,0,0,,that volunteers laid through
-Dialogue: 0,0:00:13.34,0:00:14.35,Pop,,0,0,0,,the night to bring
-Dialogue: 0,0:00:14.35,0:00:15.36,Pop,,0,0,0,,a dying President to
-Dialogue: 0,0:00:15.36,0:00:16.73,Pop,,0,0,0,,the sea. One of
-Dialogue: 0,0:00:16.73,0:00:18.18,Pop,,0,0,0,,the original Iron Rail
-Dialogue: 0,0:00:18.18,0:00:19.64,Pop,,0,0,0,,serves as its Ridge
-Dialogue: 0,0:00:19.64,0:00:22.00,Pop,,0,0,0,,Pole. {\c&H00FFFF&}Seven{\c&HFFFFFF&} Presidents. {\c&H00FFFF&}Four{\c&HFFFFFF&}
-Dialogue: 0,0:00:22.00,0:00:24.30,Pop,,0,0,0,,Undeniable. {\c&H00FFFF&}Three{\c&HFFFFFF&} debatable. But
-Dialogue: 0,0:00:24.30,0:00:25.51,Pop,,0,0,0,,the stories they left
-Dialogue: 0,0:00:25.51,0:00:26.71,Pop,,0,0,0,,behind of power, of
-Dialogue: 0,0:00:26.71,0:00:28.06,Pop,,0,0,0,,tragedy, of a community
-Dialogue: 0,0:00:28.06,0:00:29.81,Pop,,0,0,0,,pushing a train car
-Dialogue: 0,0:00:29.81,0:00:31.56,Pop,,0,0,0,,by hand, those are
-Dialogue: 0,0:00:31.56,0:00:32.86,Pop,,0,0,0,,real. This is the
-Dialogue: 0,0:00:32.86,0:00:34.00,Pop,,0,0,0,,first of {\c&H00FFFF&}five{\c&HFFFFFF&} videos.
-Dialogue: 0,0:00:34.00,0:00:35.14,Pop,,0,0,0,,Next, Grant's poker games
-Dialogue: 0,0:00:35.14,0:00:36.40,Pop,,0,0,0,,and financial ruin. Then
-Dialogue: 0,0:00:36.40,0:00:38.00,Pop,,0,0,0,,the full {\c&H00FFFF&}Garfield{\c&HFFFFFF&} story.
-Dialogue: 0,0:00:38.00,0:00:40.50,Pop,,0,0,0,,79 days. Then
-Dialogue: 0,0:00:40.50,0:00:42.36,Pop,,0,0,0,,Wilson's broken promise. And
-Dialogue: 0,0:00:42.36,0:00:43.79,Pop,,0,0,0,,the resort itself. The
-Dialogue: 0,0:00:43.79,0:00:45.22,Pop,,0,0,0,,hotels, the gamblers, and
-Dialogue: 0,0:00:45.22,0:00:46.57,Pop,,0,0,0,,the fire. Subscribe so
-Dialogue: 0,0:00:46.57,0:00:47.71,Pop,,0,0,0,,you do not miss
-Dialogue: 0,0:00:47.71,0:00:48.00,Pop,,0,0,0,,them.
+Dialogue: 0,0:00:00.00,0:00:01.40,Pop,,0,0,0,,Anyone can visit. You
+Dialogue: 0,0:00:01.40,0:00:02.79,Pop,,0,0,0,,can swim where {\c&H00FFFF&}Grant{\c&HFFFFFF&}
+Dialogue: 0,0:00:02.79,0:00:04.13,Pop,,0,0,0,,walked and surf where
+Dialogue: 0,0:00:04.13,0:00:05.22,Pop,,0,0,0,,{\c&H00FFFF&}Garfield{\c&HFFFFFF&} was carried to
+Dialogue: 0,0:00:05.22,0:00:06.22,Pop,,0,0,0,,die. On the grounds
+Dialogue: 0,0:00:06.22,0:00:07.22,Pop,,0,0,0,,of the Church of
+Dialogue: 0,0:00:07.22,0:00:08.15,Pop,,0,0,0,,the Pres idents there
+Dialogue: 0,0:00:08.15,0:00:09.12,Pop,,0,0,0,,is a small tea
+Dialogue: 0,0:00:09.12,0:00:10.42,Pop,,0,0,0,,house. It was built
+Dialogue: 0,0:00:10.42,0:00:11.72,Pop,,0,0,0,,from the actual {\c&H00FFFF&}railroad{\c&HFFFFFF&}
+Dialogue: 0,0:00:11.72,0:00:13.20,Pop,,0,0,0,,ties that volunteers laid
+Dialogue: 0,0:00:13.20,0:00:14.55,Pop,,0,0,0,,through the night to
+Dialogue: 0,0:00:14.55,0:00:15.91,Pop,,0,0,0,,bring a dying president
+Dialogue: 0,0:00:15.91,0:00:17.13,Pop,,0,0,0,,to the sea. One
+Dialogue: 0,0:00:17.13,0:00:18.16,Pop,,0,0,0,,of the original iron
+Dialogue: 0,0:00:18.16,0:00:19.74,Pop,,0,0,0,,rails serves as its
+Dialogue: 0,0:00:19.74,0:00:21.32,Pop,,0,0,0,,ridge pole, {\c&H00FFFF&}seven{\c&HFFFFFF&} presidents,
+Dialogue: 0,0:00:21.32,0:00:23.66,Pop,,0,0,0,,{\c&H00FFFF&}four{\c&HFFFFFF&} undeniable, {\c&H00FFFF&}three{\c&HFFFFFF&} debatable.
+Dialogue: 0,0:00:23.66,0:00:25.17,Pop,,0,0,0,,But the stories they
+Dialogue: 0,0:00:25.17,0:00:26.68,Pop,,0,0,0,,left behind of power,
+Dialogue: 0,0:00:26.68,0:00:28.12,Pop,,0,0,0,,of tragedy, of a
+Dialogue: 0,0:00:28.12,0:00:29.49,Pop,,0,0,0,,community pushing a train
+Dialogue: 0,0:00:29.49,0:00:30.84,Pop,,0,0,0,,car by hand, those
+Dialogue: 0,0:00:30.84,0:00:32.19,Pop,,0,0,0,,are real. This is
+Dialogue: 0,0:00:32.19,0:00:33.33,Pop,,0,0,0,,the first of {\c&H00FFFF&}five{\c&HFFFFFF&}
+Dialogue: 0,0:00:33.33,0:00:34.70,Pop,,0,0,0,,videos. Next, Grant's poker
+Dialogue: 0,0:00:34.70,0:00:36.17,Pop,,0,0,0,,games and financial ruin.
+Dialogue: 0,0:00:36.17,0:00:37.80,Pop,,0,0,0,,Then the full {\c&H00FFFF&}Garfield{\c&HFFFFFF&}
+Dialogue: 0,0:00:37.80,0:00:39.66,Pop,,0,0,0,,story, 79 days, then
+Dialogue: 0,0:00:39.66,0:00:41.46,Pop,,0,0,0,,Wilson's broken promise and
+Dialogue: 0,0:00:41.46,0:00:43.02,Pop,,0,0,0,,the resort itself ,
+Dialogue: 0,0:00:43.02,0:00:44.23,Pop,,0,0,0,,the hotels, the gamblers,
+Dialogue: 0,0:00:44.23,0:00:46.41,Pop,,0,0,0,,and the fire. Subscribe
+Dialogue: 0,0:00:46.41,0:00:48.59,Pop,,0,0,0,,so you do not
+Dialogue: 0,0:00:48.59,0:00:49.68,Pop,,0,0,0,,miss them.

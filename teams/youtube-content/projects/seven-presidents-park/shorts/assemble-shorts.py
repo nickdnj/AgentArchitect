@@ -29,7 +29,7 @@ import requests
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_DIR = os.path.dirname(SCRIPT_DIR)
-SOURCE_VIDEO = os.path.join(PROJECT_DIR, "output", "seven-presidents-draft-v5.mp4")
+SOURCE_VIDEO = os.path.join(PROJECT_DIR, "output", "seven-presidents-clean.mp4")
 SUBS_DIR = os.path.join(SCRIPT_DIR, "subs")
 FONT = "/System/Library/Fonts/Supplemental/Arial Black.ttf"
 
@@ -131,17 +131,12 @@ def crop():
         if os.path.exists(out):
             print(f"  SKIP: {out} already exists")
             continue
-        # Scale height to 1920, center-crop width to 1080,
-        # then add dark gradient bar at bottom to cover original burned-in
-        # lower-third text from the landscape source video
+        # Scale height to 1920, center-crop width to 1080.
+        # Source is the clean (no text overlay) version of the documentary.
         run([
             "ffmpeg", "-y",
             "-i", inp,
-            "-vf", (
-                "scale=-1:1920,"
-                "crop=1080:1920:(iw-1080)/2:0,"
-                "drawbox=x=0:y=ih-200:w=iw:h=200:color=black@0.85:t=fill"
-            ),
+            "-vf", "scale=-1:1920,crop=1080:1920:(iw-1080)/2:0",
             "-c:a", "copy",
             out,
         ], f"Vertical crop {s['id']}")
@@ -176,13 +171,15 @@ def overlay():
         hook2 = esc(s["hook_line2"])
         cta   = esc(s["cta_text"])
 
-        # Hook text: smaller font (48px), positioned in upper area
-        # CTA: smaller font (36px), positioned above the dark gradient bar
+        # Hook text: sized to fit 1080px vertical frame (38px for safety)
+        # CTA: 32px, positioned near bottom
         # All text centered with black border for readability
+        hook_size = 38
+        cta_size = 32
         vf = (
             f"drawtext=text='{hook1}'"
             f":fontfile='{FONT}'"
-            f":fontsize=48"
+            f":fontsize={hook_size}"
             f":fontcolor=white"
             f":borderw=4:bordercolor=black"
             f":x=(w-text_w)/2:y=250"
@@ -190,18 +187,18 @@ def overlay():
 
             f"drawtext=text='{hook2}'"
             f":fontfile='{FONT}'"
-            f":fontsize=48"
+            f":fontsize={hook_size}"
             f":fontcolor=yellow"
             f":borderw=4:bordercolor=black"
-            f":x=(w-text_w)/2:y=330"
+            f":x=(w-text_w)/2:y=320"
             f":enable='lte(t\\,{hook_end})',"
 
             f"drawtext=text='{cta}'"
             f":fontfile='{FONT}'"
-            f":fontsize=36"
+            f":fontsize={cta_size}"
             f":fontcolor=white"
             f":borderw=3:bordercolor=black"
-            f":x=(w-text_w)/2:y=h-160"
+            f":x=(w-text_w)/2:y=h-120"
             f":enable='gte(t\\,{cta_start})'"
         )
 

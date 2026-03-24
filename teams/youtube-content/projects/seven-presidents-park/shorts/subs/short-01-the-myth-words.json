@@ -2,88 +2,115 @@
   "task": "transcribe",
   "language": "english",
   "duration": 50.005374908447266,
-  "text": " Seven Presidents Ocean Front Park.\n 38 acres of public beach on the Jersey Shore.\n The name promises that seven American Presidents once\n called this stretch of Shoreline home.\n The truth, the real number might be four, maybe five.\n But the stories behind these men, of ambition, of tragedy,\n of a community building a railroad overnight to save a\n dying President, are far more extraordinary than any myth.\n The story begins with a chapel.\n In 1925, St. James Chapel on Ocean Avenue was on the verge\n of closing.\n A local benefactor saved it, and his attorney declared the\n chapel had been attended by six American Presidents.\n He called it the Westminster Abbey of America.\n By 1930, a seventh name was added.\n The park that opened nearby was Chrison's seven Presidents\n Ocean Front Park.\n",
+  "text": " Seven presidents oceanfront park, 38 acres of public beach\n on the Jersey Shore.\n The name promises that seven American presidents once\n called this stretch of shoreline home.\n The truth, the real number might be four, maybe five. But\n the stories behind these men,\n of ambition, of tragedy, of a community building a railroad\n overnight to save a dying president\n are far more extraordinary than any myth. The story begins\n with a chapel. In 1925,\n St. James Chapel on Ocean Avenue was on the verge of\n closing. A local benefactor saved it and his\n attorney declared the chapel had been attended by six\n American presidents. He called it the Westminster\n Abbey of America. By 1930, a seventh name was added. The\n park that opened nearby was\n Chris and seven presidents oceanfront parties.\n",
   "segments": [
     {
       "id": 0,
-      "text": " Seven Presidents Ocean Front Park.",
+      "text": " Seven presidents oceanfront park, 38 acres of public beach",
       "start": 0.0,
-      "end": 2.0,
+      "end": 3.5,
       "tokens": [
         14868,
-        2718,
-        6026,
-        18101,
-        17348,
-        4964,
-        13
+        27611,
+        7810,
+        11496,
+        3884,
+        11,
+        12843,
+        19852,
+        295,
+        1908,
+        7534
       ],
       "words": [
         {
           "word": " Seven",
           "start": 0.12,
-          "end": 0.34,
+          "end": 0.32,
           "t_dtw": -1,
-          "probability": 0.3873497545719147
+          "probability": 0.8533507585525513
         },
         {
-          "word": " Pres",
-          "start": 0.34,
-          "end": 0.61,
-          "t_dtw": -1,
-          "probability": 0.985383152961731
-        },
-        {
-          "word": "idents",
-          "start": 0.61,
+          "word": " presidents",
+          "start": 0.32,
           "end": 0.89,
           "t_dtw": -1,
-          "probability": 0.9996815323829651
+          "probability": 0.9793647527694702
         },
         {
-          "word": " Ocean",
-          "start": 1.03,
-          "end": 1.32,
+          "word": " ocean",
+          "start": 0.97,
+          "end": 1.28,
           "t_dtw": -1,
-          "probability": 0.8639699220657349
+          "probability": 0.5656302571296692
         },
         {
-          "word": " Front",
-          "start": 1.4000000000000001,
-          "end": 1.7,
+          "word": "front",
+          "start": 1.28,
+          "end": 1.51,
           "t_dtw": -1,
-          "probability": 0.5261735320091248
+          "probability": 0.790235698223114
         },
         {
-          "word": " Park",
-          "start": 1.7,
-          "end": 2.0,
+          "word": " park",
+          "start": 1.59,
+          "end": 1.84,
           "t_dtw": -1,
-          "probability": 0.9676908254623413
+          "probability": 0.9699803590774536
         },
         {
-          "word": ".",
-          "start": 2.0,
-          "end": 2.0,
+          "word": ",",
+          "start": 1.85,
+          "end": 1.97,
           "t_dtw": -1,
-          "probability": 0.5238983035087585
+          "probability": 0.7289496064186096
+        },
+        {
+          "word": " 38",
+          "start": 2.33,
+          "end": 2.35,
+          "t_dtw": -1,
+          "probability": 0.9496023058891296
+        },
+        {
+          "word": " acres",
+          "start": 2.35,
+          "end": 2.67,
+          "t_dtw": -1,
+          "probability": 0.9879067540168762
+        },
+        {
+          "word": " of",
+          "start": 2.67,
+          "end": 2.8000000000000003,
+          "t_dtw": -1,
+          "probability": 0.996565043926239
+        },
+        {
+          "word": " public",
+          "start": 2.8000000000000003,
+          "end": 3.18,
+          "t_dtw": -1,
+          "probability": 0.9918773174285889
+        },
+        {
+          "word": " beach",
+          "start": 3.18,
+          "end": 3.5,
+          "t_dtw": -1,
+          "probability": 0.9767493009567261
         }
       ],
       "temperature": 0.0,
-      "avg_logprob": -0.27012360095977783,
-      "no_speech_prob": 2.6184119761296643e-08
+      "avg_logprob": -0.11919212341308594,
+      "no_speech_prob": 6.475631266766868e-07
     },
     {
       "id": 1,
-      "text": " 38 acres of public beach on the Jersey Shore.",
-      "start": 2.0,
-      "end": 6.0,
+      "text": " on the Jersey Shore.",
+      "start": 3.5,
+      "end": 4.8,
       "tokens": [
-        12843,
-        19852,
-        295,
-        1908,
-        7534,
         322,
         264,
         16601,
@@ -92,85 +119,50 @@
       ],
       "words": [
         {
-          "word": " 38",
-          "start": 2.14,
-          "end": 2.5500000000000003,
-          "t_dtw": -1,
-          "probability": 0.846355140209198
-        },
-        {
-          "word": " acres",
-          "start": 2.5500000000000003,
-          "end": 2.89,
-          "t_dtw": -1,
-          "probability": 0.8698770999908447
-        },
-        {
-          "word": " of",
-          "start": 3.0300000000000002,
-          "end": 3.19,
-          "t_dtw": -1,
-          "probability": 0.9962761998176575
-        },
-        {
-          "word": " public",
-          "start": 3.19,
-          "end": 3.74,
-          "t_dtw": -1,
-          "probability": 0.9874904155731201
-        },
-        {
-          "word": " beach",
-          "start": 3.74,
-          "end": 4.2,
-          "t_dtw": -1,
-          "probability": 0.9813936352729797
-        },
-        {
           "word": " on",
-          "start": 4.34,
-          "end": 4.38,
+          "start": 3.5,
+          "end": 3.62,
           "t_dtw": -1,
-          "probability": 0.9938240647315979
+          "probability": 0.9939075112342834
         },
         {
           "word": " the",
-          "start": 4.38,
-          "end": 4.65,
+          "start": 3.63,
+          "end": 3.81,
           "t_dtw": -1,
-          "probability": 0.9833216667175293
+          "probability": 0.9867975115776062
         },
         {
           "word": " Jersey",
-          "start": 4.65,
-          "end": 5.18,
+          "start": 3.8200000000000003,
+          "end": 4.2,
           "t_dtw": -1,
-          "probability": 0.9654213786125183
+          "probability": 0.9047490358352661
         },
         {
           "word": " Shore",
-          "start": 5.19,
-          "end": 5.65,
+          "start": 4.2,
+          "end": 4.5200000000000005,
           "t_dtw": -1,
-          "probability": 0.8192979693412781
+          "probability": 0.5255792737007141
         },
         {
           "word": ".",
-          "start": 5.66,
-          "end": 6.0,
+          "start": 4.5200000000000005,
+          "end": 4.8,
           "t_dtw": -1,
-          "probability": 0.9910868406295776
+          "probability": 0.8966848850250244
         }
       ],
       "temperature": 0.0,
-      "avg_logprob": -0.05525324493646622,
-      "no_speech_prob": 2.6184119761296643e-08
+      "avg_logprob": -0.1453007012605667,
+      "no_speech_prob": 0.0
     },
     {
       "id": 2,
-      "text": " The name promises that seven American Presidents once",
-      "start": 6.0,
-      "end": 8.34,
+      "text": " The name promises that seven American presidents once",
+      "start": 4.8,
+      "end": 7.83,
       "tokens": [
         440,
         1315,
@@ -178,90 +170,82 @@
         300,
         3407,
         2665,
-        2718,
-        6026,
+        27611,
         1564
       ],
       "words": [
         {
           "word": " The",
-          "start": 6.12,
-          "end": 6.140000000000001,
+          "start": 4.92,
+          "end": 5.0,
           "t_dtw": -1,
-          "probability": 0.9897192120552063
+          "probability": 0.9950417876243591
         },
         {
           "word": " name",
-          "start": 6.140000000000001,
-          "end": 6.33,
+          "start": 5.0,
+          "end": 5.23,
           "t_dtw": -1,
-          "probability": 0.9876750111579895
+          "probability": 0.99396812915802
         },
         {
           "word": " promises",
-          "start": 6.33,
-          "end": 6.72,
+          "start": 5.29,
+          "end": 5.69,
           "t_dtw": -1,
-          "probability": 0.9961127638816833
+          "probability": 0.9961583614349365
         },
         {
           "word": " that",
-          "start": 6.72,
-          "end": 6.890000000000001,
+          "start": 5.79,
+          "end": 6.05,
           "t_dtw": -1,
-          "probability": 0.9519706964492798
+          "probability": 0.9878746867179871
         },
         {
           "word": " seven",
-          "start": 6.93,
-          "end": 7.13,
+          "start": 6.05,
+          "end": 6.3100000000000005,
           "t_dtw": -1,
-          "probability": 0.8744843006134033
+          "probability": 0.9150753021240234
         },
         {
           "word": " American",
-          "start": 7.15,
-          "end": 7.51,
+          "start": 6.38,
+          "end": 6.91,
           "t_dtw": -1,
-          "probability": 0.9897871613502502
+          "probability": 0.9736170768737793
         },
         {
-          "word": " Pres",
-          "start": 7.61,
-          "end": 7.73,
+          "word": " presidents",
+          "start": 7.140000000000001,
+          "end": 7.5600000000000005,
           "t_dtw": -1,
-          "probability": 0.8916996121406555
-        },
-        {
-          "word": "idents",
-          "start": 7.73,
-          "end": 8.01,
-          "t_dtw": -1,
-          "probability": 0.9996586441993713
+          "probability": 0.9802898168563843
         },
         {
           "word": " once",
-          "start": 8.01,
-          "end": 8.21,
+          "start": 7.57,
+          "end": 7.83,
           "t_dtw": -1,
-          "probability": 0.8966472744941711
+          "probability": 0.919870138168335
         }
       ],
       "temperature": 0.0,
-      "avg_logprob": -0.04936642199754715,
-      "no_speech_prob": 2.6184119761296643e-08
+      "avg_logprob": -0.03074812889099121,
+      "no_speech_prob": 6.475631266766868e-07
     },
     {
       "id": 3,
-      "text": " called this stretch of Shoreline home.",
-      "start": 8.34,
+      "text": " called this stretch of shoreline home.",
+      "start": 7.83,
       "end": 10.0,
       "tokens": [
         1219,
         341,
         5985,
         295,
-        47977,
+        17805,
         1889,
         1280,
         13
@@ -269,70 +253,70 @@
       "words": [
         {
           "word": " called",
-          "start": 8.34,
-          "end": 8.5,
+          "start": 7.83,
+          "end": 8.22,
           "t_dtw": -1,
-          "probability": 0.9968692064285278
+          "probability": 0.995805025100708
         },
         {
           "word": " this",
-          "start": 8.5,
-          "end": 8.69,
+          "start": 8.23,
+          "end": 8.49,
           "t_dtw": -1,
-          "probability": 0.9693330526351929
+          "probability": 0.9790658950805664
         },
         {
           "word": " stretch",
-          "start": 8.69,
-          "end": 9.03,
+          "start": 8.49,
+          "end": 8.94,
           "t_dtw": -1,
-          "probability": 0.9518290758132935
+          "probability": 0.9793965220451355
         },
         {
           "word": " of",
-          "start": 9.03,
-          "end": 9.120000000000001,
+          "start": 8.950000000000001,
+          "end": 9.08,
           "t_dtw": -1,
-          "probability": 0.9941880702972412
+          "probability": 0.9931911826133728
         },
         {
-          "word": " Shore",
-          "start": 9.120000000000001,
-          "end": 9.36,
+          "word": " shore",
+          "start": 9.08,
+          "end": 9.4,
           "t_dtw": -1,
-          "probability": 0.6087890267372131
+          "probability": 0.6749549508094788
         },
         {
           "word": "line",
-          "start": 9.36,
-          "end": 9.540000000000001,
+          "start": 9.4,
+          "end": 9.75,
           "t_dtw": -1,
-          "probability": 0.9232617020606995
+          "probability": 0.9811503291130066
         },
         {
           "word": " home",
-          "start": 9.55,
-          "end": 9.74,
+          "start": 9.76,
+          "end": 9.89,
           "t_dtw": -1,
-          "probability": 0.6088464856147766
+          "probability": 0.9606145024299622
         },
         {
           "word": ".",
-          "start": 9.74,
+          "start": 9.89,
           "end": 10.0,
           "t_dtw": -1,
-          "probability": 0.9872079491615295
+          "probability": 0.9150124788284302
         }
       ],
       "temperature": 0.0,
-      "avg_logprob": -0.13051901757717133,
+      "avg_logprob": -0.06601662188768387,
       "no_speech_prob": 0.0
     },
     {
       "id": 4,
-      "text": " The truth, the real number might be four, maybe five.",
+      "text": " The truth, the real number might be four, maybe five. But",
       "start": 10.0,
-      "end": 14.0,
+      "end": 15.120000000000001,
       "tokens": [
         440,
         3494,
@@ -346,324 +330,350 @@
         11,
         1310,
         1732,
-        13
+        13,
+        583
       ],
       "words": [
         {
           "word": " The",
-          "start": 10.14,
-          "end": 10.6,
+          "start": 10.120000000000001,
+          "end": 10.28,
           "t_dtw": -1,
-          "probability": 0.992380678653717
+          "probability": 0.9925321340560913
         },
         {
           "word": " truth",
-          "start": 10.6,
-          "end": 11.5,
+          "start": 10.31,
+          "end": 10.790000000000001,
           "t_dtw": -1,
-          "probability": 0.9193228483200073
+          "probability": 0.9946433305740356
         },
         {
           "word": ",",
-          "start": 11.59,
-          "end": 12.0,
+          "start": 10.790000000000001,
+          "end": 10.89,
           "t_dtw": -1,
-          "probability": 0.5532181262969971
+          "probability": 0.9030594825744629
         },
         {
           "word": " the",
-          "start": 12.0,
-          "end": 12.23,
+          "start": 10.99,
+          "end": 11.28,
           "t_dtw": -1,
-          "probability": 0.9717395901679993
+          "probability": 0.9911889433860779
         },
         {
           "word": " real",
-          "start": 12.34,
-          "end": 12.530000000000001,
+          "start": 11.28,
+          "end": 11.68,
           "t_dtw": -1,
-          "probability": 0.9969719052314758
+          "probability": 0.9983000755310059
         },
         {
           "word": " number",
-          "start": 12.530000000000001,
-          "end": 12.99,
+          "start": 11.68,
+          "end": 12.26,
           "t_dtw": -1,
-          "probability": 0.9901496767997742
+          "probability": 0.9968084096908569
         },
         {
           "word": " might",
-          "start": 12.99,
-          "end": 13.370000000000001,
+          "start": 12.34,
+          "end": 12.75,
           "t_dtw": -1,
-          "probability": 0.9522321820259094
+          "probability": 0.9873208999633789
         },
         {
           "word": " be",
-          "start": 13.370000000000001,
-          "end": 13.52,
+          "start": 12.76,
+          "end": 12.89,
           "t_dtw": -1,
-          "probability": 0.8929710388183594
+          "probability": 0.8604374527931213
         },
         {
           "word": " four",
-          "start": 13.52,
-          "end": 13.81,
+          "start": 12.96,
+          "end": 13.36,
           "t_dtw": -1,
-          "probability": 0.9315692782402039
+          "probability": 0.956885814666748
         },
         {
           "word": ",",
-          "start": 13.82,
-          "end": 14.0,
+          "start": 13.36,
+          "end": 13.540000000000001,
           "t_dtw": -1,
-          "probability": 0.48631179332733154
+          "probability": 0.8276388049125671
         },
         {
           "word": " maybe",
-          "start": 14.0,
-          "end": 14.0,
+          "start": 13.55,
+          "end": 14.040000000000001,
           "t_dtw": -1,
-          "probability": 0.9505627155303955
+          "probability": 0.9455970525741577
         },
         {
           "word": " five",
-          "start": 14.0,
-          "end": 14.0,
+          "start": 14.040000000000001,
+          "end": 14.44,
           "t_dtw": -1,
-          "probability": 0.9974436163902283
+          "probability": 0.9974321722984314
         },
         {
           "word": ".",
-          "start": 14.0,
-          "end": 14.0,
+          "start": 14.44,
+          "end": 14.8,
           "t_dtw": -1,
-          "probability": 0.924362063407898
+          "probability": 0.8414807319641113
+        },
+        {
+          "word": " But",
+          "start": 14.8,
+          "end": 15.120000000000001,
+          "t_dtw": -1,
+          "probability": 0.7792078852653503
         }
       ],
       "temperature": 0.0,
-      "avg_logprob": -0.1293727308511734,
-      "no_speech_prob": 2.6184119761296643e-08
+      "avg_logprob": -0.07182039320468903,
+      "no_speech_prob": 6.475631266766868e-07
     },
     {
       "id": 5,
-      "text": " But the stories behind these men, of ambition, of tragedy,",
-      "start": 14.0,
-      "end": 18.0,
+      "text": " the stories behind these men,",
+      "start": 15.120000000000001,
+      "end": 16.8,
       "tokens": [
-        583,
         264,
         3676,
         2261,
         613,
         1706,
-        11,
+        11
+      ],
+      "words": [
+        {
+          "word": " the",
+          "start": 15.120000000000001,
+          "end": 15.3,
+          "t_dtw": -1,
+          "probability": 0.9803478121757507
+        },
+        {
+          "word": " stories",
+          "start": 15.3,
+          "end": 15.71,
+          "t_dtw": -1,
+          "probability": 0.9954935908317566
+        },
+        {
+          "word": " behind",
+          "start": 15.71,
+          "end": 16.080000000000002,
+          "t_dtw": -1,
+          "probability": 0.9986124038696289
+        },
+        {
+          "word": " these",
+          "start": 16.080000000000002,
+          "end": 16.32,
+          "t_dtw": -1,
+          "probability": 0.9527045488357544
+        },
+        {
+          "word": " men",
+          "start": 16.32,
+          "end": 16.8,
+          "t_dtw": -1,
+          "probability": 0.8498325943946838
+        },
+        {
+          "word": ",",
+          "start": 16.8,
+          "end": 16.8,
+          "t_dtw": -1,
+          "probability": 0.45182502269744873
+        }
+      ],
+      "temperature": 0.0,
+      "avg_logprob": -0.14733995497226715,
+      "no_speech_prob": 0.0
+    },
+    {
+      "id": 6,
+      "text": " of ambition, of tragedy, of a community building a railroad",
+      "start": 16.8,
+      "end": 20.22,
+      "tokens": [
         295,
         22814,
         11,
         295,
         18563,
-        11
-      ],
-      "words": [
-        {
-          "word": " But",
-          "start": 14.120000000000001,
-          "end": 14.200000000000001,
-          "t_dtw": -1,
-          "probability": 0.9906748533248901
-        },
-        {
-          "word": " the",
-          "start": 14.200000000000001,
-          "end": 14.4,
-          "t_dtw": -1,
-          "probability": 0.9957442283630371
-        },
-        {
-          "word": " stories",
-          "start": 14.4,
-          "end": 14.88,
-          "t_dtw": -1,
-          "probability": 0.9964320063591003
-        },
-        {
-          "word": " behind",
-          "start": 14.88,
-          "end": 15.290000000000001,
-          "t_dtw": -1,
-          "probability": 0.999309778213501
-        },
-        {
-          "word": " these",
-          "start": 15.290000000000001,
-          "end": 15.63,
-          "t_dtw": -1,
-          "probability": 0.9933919906616211
-        },
-        {
-          "word": " men",
-          "start": 15.63,
-          "end": 15.82,
-          "t_dtw": -1,
-          "probability": 0.9946167469024658
-        },
-        {
-          "word": ",",
-          "start": 15.83,
-          "end": 16.0,
-          "t_dtw": -1,
-          "probability": 0.6066116690635681
-        },
-        {
-          "word": " of",
-          "start": 16.0,
-          "end": 16.17,
-          "t_dtw": -1,
-          "probability": 0.9772114753723145
-        },
-        {
-          "word": " ambition",
-          "start": 16.34,
-          "end": 16.86,
-          "t_dtw": -1,
-          "probability": 0.9920438528060913
-        },
-        {
-          "word": ",",
-          "start": 16.86,
-          "end": 17.03,
-          "t_dtw": -1,
-          "probability": 0.9958126544952393
-        },
-        {
-          "word": " of",
-          "start": 17.03,
-          "end": 17.2,
-          "t_dtw": -1,
-          "probability": 0.9922898411750793
-        },
-        {
-          "word": " tragedy",
-          "start": 17.2,
-          "end": 17.8,
-          "t_dtw": -1,
-          "probability": 0.9991154074668884
-        },
-        {
-          "word": ",",
-          "start": 17.8,
-          "end": 18.0,
-          "t_dtw": -1,
-          "probability": 0.9779796600341797
-        }
-      ],
-      "temperature": 0.0,
-      "avg_logprob": -0.04584004357457161,
-      "no_speech_prob": 2.6184119761296643e-08
-    },
-    {
-      "id": 6,
-      "text": " of a community building a railroad overnight to save a",
-      "start": 18.0,
-      "end": 21.26,
-      "tokens": [
+        11,
         295,
         257,
         1768,
         2390,
         257,
-        30073,
-        13935,
-        281,
-        3155,
-        257
+        30073
       ],
       "words": [
         {
           "word": " of",
-          "start": 18.0,
-          "end": 18.2,
+          "start": 16.92,
+          "end": 16.92,
           "t_dtw": -1,
-          "probability": 0.8811177611351013
+          "probability": 0.9957822561264038
+        },
+        {
+          "word": " ambition",
+          "start": 16.94,
+          "end": 17.46,
+          "t_dtw": -1,
+          "probability": 0.9947514533996582
+        },
+        {
+          "word": ",",
+          "start": 17.46,
+          "end": 17.59,
+          "t_dtw": -1,
+          "probability": 0.9891643524169922
+        },
+        {
+          "word": " of",
+          "start": 17.59,
+          "end": 17.69,
+          "t_dtw": -1,
+          "probability": 0.9968882203102112
+        },
+        {
+          "word": " tragedy",
+          "start": 17.73,
+          "end": 18.12,
+          "t_dtw": -1,
+          "probability": 0.9991573095321655
+        },
+        {
+          "word": ",",
+          "start": 18.19,
+          "end": 18.31,
+          "t_dtw": -1,
+          "probability": 0.9550879597663879
+        },
+        {
+          "word": " of",
+          "start": 18.31,
+          "end": 18.43,
+          "t_dtw": -1,
+          "probability": 0.9924564361572266
         },
         {
           "word": " a",
-          "start": 18.2,
-          "end": 18.3,
+          "start": 18.44,
+          "end": 18.5,
           "t_dtw": -1,
-          "probability": 0.9935019016265869
+          "probability": 0.997614860534668
         },
         {
           "word": " community",
-          "start": 18.3,
-          "end": 19.19,
+          "start": 18.5,
+          "end": 19.1,
           "t_dtw": -1,
-          "probability": 0.9952087998390198
+          "probability": 0.9989553093910217
         },
         {
           "word": " building",
-          "start": 19.19,
-          "end": 20.0,
+          "start": 19.14,
+          "end": 19.63,
           "t_dtw": -1,
-          "probability": 0.9909281134605408
+          "probability": 0.9970594048500061
         },
         {
           "word": " a",
-          "start": 20.0,
-          "end": 20.01,
+          "start": 19.63,
+          "end": 19.69,
           "t_dtw": -1,
-          "probability": 0.972763180732727
+          "probability": 0.995523989200592
         },
         {
           "word": " railroad",
-          "start": 20.06,
-          "end": 20.44,
+          "start": 19.69,
+          "end": 20.22,
           "t_dtw": -1,
-          "probability": 0.9874451756477356
-        },
-        {
-          "word": " overnight",
-          "start": 20.44,
-          "end": 20.91,
-          "t_dtw": -1,
-          "probability": 0.9088429808616638
-        },
-        {
-          "word": " to",
-          "start": 20.91,
-          "end": 21.01,
-          "t_dtw": -1,
-          "probability": 0.9480856657028198
-        },
-        {
-          "word": " save",
-          "start": 21.03,
-          "end": 21.21,
-          "t_dtw": -1,
-          "probability": 0.9760416150093079
-        },
-        {
-          "word": " a",
-          "start": 21.21,
-          "end": 21.26,
-          "t_dtw": -1,
-          "probability": 0.9965156316757202
+          "probability": 0.9938923120498657
         }
       ],
       "temperature": 0.0,
-      "avg_logprob": -0.03638820722699165,
-      "no_speech_prob": 0.0
+      "avg_logprob": -0.007904847152531147,
+      "no_speech_prob": 6.475631266766868e-07
     },
     {
       "id": 7,
-      "text": " dying President, are far more extraordinary than any myth.",
-      "start": 21.26,
-      "end": 24.0,
+      "text": " overnight to save a dying president",
+      "start": 20.22,
+      "end": 22.32,
       "tokens": [
+        13935,
+        281,
+        3155,
+        257,
         8639,
-        3117,
-        11,
+        3868
+      ],
+      "words": [
+        {
+          "word": " overnight",
+          "start": 20.22,
+          "end": 20.82,
+          "t_dtw": -1,
+          "probability": 0.983272910118103
+        },
+        {
+          "word": " to",
+          "start": 20.82,
+          "end": 20.94,
+          "t_dtw": -1,
+          "probability": 0.9878822565078735
+        },
+        {
+          "word": " save",
+          "start": 20.95,
+          "end": 21.28,
+          "t_dtw": -1,
+          "probability": 0.9849134087562561
+        },
+        {
+          "word": " a",
+          "start": 21.28,
+          "end": 21.36,
+          "t_dtw": -1,
+          "probability": 0.9829466342926025
+        },
+        {
+          "word": " dying",
+          "start": 21.36,
+          "end": 21.67,
+          "t_dtw": -1,
+          "probability": 0.9770287871360779
+        },
+        {
+          "word": " president",
+          "start": 21.67,
+          "end": 22.32,
+          "t_dtw": -1,
+          "probability": 0.8424314260482788
+        }
+      ],
+      "temperature": 0.0,
+      "avg_logprob": -0.0365949347615242,
+      "no_speech_prob": 0.0
+    },
+    {
+      "id": 8,
+      "text": " are far more extraordinary than any myth. The story begins",
+      "start": 22.32,
+      "end": 25.580000000000002,
+      "tokens": [
         366,
         1400,
         544,
@@ -671,170 +681,177 @@
         813,
         604,
         9474,
-        13
+        13,
+        440,
+        1657,
+        7338
       ],
       "words": [
         {
-          "word": " dying",
-          "start": 21.26,
-          "end": 21.51,
-          "t_dtw": -1,
-          "probability": 0.995901882648468
-        },
-        {
-          "word": " President",
-          "start": 21.51,
-          "end": 22.0,
-          "t_dtw": -1,
-          "probability": 0.9428470134735107
-        },
-        {
-          "word": ",",
-          "start": 22.0,
-          "end": 22.1,
-          "t_dtw": -1,
-          "probability": 0.7700299620628357
-        },
-        {
           "word": " are",
-          "start": 22.1,
-          "end": 22.25,
+          "start": 22.44,
+          "end": 22.47,
           "t_dtw": -1,
-          "probability": 0.8490840196609497
+          "probability": 0.8360286355018616
         },
         {
           "word": " far",
-          "start": 22.25,
-          "end": 22.400000000000002,
+          "start": 22.5,
+          "end": 22.64,
           "t_dtw": -1,
-          "probability": 0.9988676905632019
+          "probability": 0.9994470477104187
         },
         {
           "word": " more",
-          "start": 22.45,
-          "end": 22.6,
+          "start": 22.64,
+          "end": 22.830000000000002,
           "t_dtw": -1,
-          "probability": 0.9984447956085205
+          "probability": 0.9997444748878479
         },
         {
           "word": " extraordinary",
-          "start": 22.6,
-          "end": 23.26,
+          "start": 22.85,
+          "end": 23.51,
           "t_dtw": -1,
-          "probability": 0.9845997095108032
+          "probability": 0.996483325958252
         },
         {
           "word": " than",
-          "start": 23.26,
-          "end": 23.46,
+          "start": 23.54,
+          "end": 23.76,
           "t_dtw": -1,
-          "probability": 0.9910150170326233
+          "probability": 0.9960101842880249
         },
         {
           "word": " any",
-          "start": 23.46,
-          "end": 23.61,
+          "start": 23.76,
+          "end": 23.84,
           "t_dtw": -1,
-          "probability": 0.9964548349380493
+          "probability": 0.9968501925468445
         },
         {
           "word": " myth",
-          "start": 23.61,
-          "end": 23.8,
+          "start": 23.91,
+          "end": 24.13,
           "t_dtw": -1,
-          "probability": 0.9906087517738342
+          "probability": 0.9948766827583313
         },
         {
           "word": ".",
-          "start": 23.81,
-          "end": 24.0,
+          "start": 24.13,
+          "end": 24.32,
           "t_dtw": -1,
-          "probability": 0.9956378936767578
-        }
-      ],
-      "temperature": 0.0,
-      "avg_logprob": -0.04437287524342537,
-      "no_speech_prob": 0.0
-    },
-    {
-      "id": 8,
-      "text": " The story begins with a chapel.",
-      "start": 24.0,
-      "end": 28.0,
-      "tokens": [
-        440,
-        1657,
-        7338,
-        365,
-        257,
-        42617,
-        13
-      ],
-      "words": [
+          "probability": 0.995561957359314
+        },
         {
           "word": " The",
-          "start": 24.12,
-          "end": 24.42,
+          "start": 24.32,
+          "end": 24.580000000000002,
           "t_dtw": -1,
-          "probability": 0.7604436278343201
+          "probability": 0.9401372075080872
         },
         {
           "word": " story",
-          "start": 24.42,
-          "end": 25.12,
+          "start": 24.66,
+          "end": 25.03,
           "t_dtw": -1,
-          "probability": 0.9947115778923035
+          "probability": 0.9992602467536926
         },
         {
           "word": " begins",
-          "start": 25.12,
-          "end": 25.94,
+          "start": 25.07,
+          "end": 25.5,
           "t_dtw": -1,
-          "probability": 0.9974892735481262
-        },
-        {
-          "word": " with",
-          "start": 26.34,
-          "end": 26.55,
-          "t_dtw": -1,
-          "probability": 0.9990543723106384
-        },
-        {
-          "word": " a",
-          "start": 26.55,
-          "end": 26.69,
-          "t_dtw": -1,
-          "probability": 0.9173786044120789
-        },
-        {
-          "word": " chapel",
-          "start": 26.69,
-          "end": 27.53,
-          "t_dtw": -1,
-          "probability": 0.9679935574531555
-        },
-        {
-          "word": ".",
-          "start": 27.54,
-          "end": 28.0,
-          "t_dtw": -1,
-          "probability": 0.992236852645874
+          "probability": 0.9988676905632019
         }
       ],
       "temperature": 0.0,
-      "avg_logprob": -0.051146745681762695,
-      "no_speech_prob": 2.6184119761296643e-08
+      "avg_logprob": -0.023978494107723236,
+      "no_speech_prob": 6.475631266766868e-07
     },
     {
       "id": 9,
-      "text": " In 1925, St. James Chapel on Ocean Avenue was on the verge",
-      "start": 28.0,
-      "end": 31.28,
+      "text": " with a chapel. In 1925,",
+      "start": 25.580000000000002,
+      "end": 29.2,
       "tokens": [
+        365,
+        257,
+        42617,
+        13,
         682,
         1294,
         6074,
-        11,
+        11
+      ],
+      "words": [
+        {
+          "word": " with",
+          "start": 25.580000000000002,
+          "end": 25.93,
+          "t_dtw": -1,
+          "probability": 0.9995880722999573
+        },
+        {
+          "word": " a",
+          "start": 25.94,
+          "end": 26.03,
+          "t_dtw": -1,
+          "probability": 0.9400009512901306
+        },
+        {
+          "word": " chapel",
+          "start": 26.03,
+          "end": 26.57,
+          "t_dtw": -1,
+          "probability": 0.9815340042114258
+        },
+        {
+          "word": ".",
+          "start": 26.57,
+          "end": 26.87,
+          "t_dtw": -1,
+          "probability": 0.9639420509338379
+        },
+        {
+          "word": " In",
+          "start": 26.87,
+          "end": 27.21,
+          "t_dtw": -1,
+          "probability": 0.58094322681427
+        },
+        {
+          "word": " 19",
+          "start": 27.21,
+          "end": 28.2,
+          "t_dtw": -1,
+          "probability": 0.9948605298995972
+        },
+        {
+          "word": "25",
+          "start": 28.2,
+          "end": 29.14,
+          "t_dtw": -1,
+          "probability": 0.9917770624160767
+        },
+        {
+          "word": ",",
+          "start": 29.2,
+          "end": 29.2,
+          "t_dtw": -1,
+          "probability": 0.7637184858322144
+        }
+      ],
+      "temperature": 0.0,
+      "avg_logprob": -0.1048574447631836,
+      "no_speech_prob": 0.0
+    },
+    {
+      "id": 10,
+      "text": " St. James Chapel on Ocean Avenue was on the verge of",
+      "start": 29.2,
+      "end": 31.62,
+      "tokens": [
         745,
         13,
         5678,
@@ -845,457 +862,365 @@
         390,
         322,
         264,
-        37164
+        37164,
+        295
       ],
       "words": [
         {
-          "word": " In",
-          "start": 28.11,
-          "end": 28.11,
-          "t_dtw": -1,
-          "probability": 0.5805267095565796
-        },
-        {
-          "word": " 19",
-          "start": 28.12,
-          "end": 28.43,
-          "t_dtw": -1,
-          "probability": 0.5101702213287354
-        },
-        {
-          "word": "25",
-          "start": 28.490000000000002,
-          "end": 28.79,
-          "t_dtw": -1,
-          "probability": 0.9043763875961304
-        },
-        {
-          "word": ",",
-          "start": 28.79,
-          "end": 28.89,
-          "t_dtw": -1,
-          "probability": 0.8174132108688354
-        },
-        {
           "word": " St",
-          "start": 28.990000000000002,
-          "end": 28.990000000000002,
+          "start": 29.310000000000002,
+          "end": 29.310000000000002,
           "t_dtw": -1,
-          "probability": 0.7542653679847717
+          "probability": 0.8172354698181152
         },
         {
           "word": ".",
-          "start": 29.03,
-          "end": 29.18,
+          "start": 29.32,
+          "end": 29.47,
           "t_dtw": -1,
-          "probability": 0.8268940448760986
+          "probability": 0.8474418520927429
         },
         {
           "word": " James",
-          "start": 29.18,
-          "end": 29.46,
+          "start": 29.47,
+          "end": 29.75,
           "t_dtw": -1,
-          "probability": 0.9972761869430542
+          "probability": 0.9978698492050171
         },
         {
           "word": " Chapel",
-          "start": 29.46,
-          "end": 29.8,
+          "start": 29.75,
+          "end": 30.080000000000002,
           "t_dtw": -1,
-          "probability": 0.8868046402931213
+          "probability": 0.8920551538467407
         },
         {
           "word": " on",
-          "start": 29.8,
-          "end": 29.91,
+          "start": 30.080000000000002,
+          "end": 30.09,
           "t_dtw": -1,
-          "probability": 0.7519799470901489
+          "probability": 0.7577101588249207
         },
         {
           "word": " Ocean",
-          "start": 29.91,
-          "end": 30.19,
+          "start": 30.19,
+          "end": 30.47,
           "t_dtw": -1,
-          "probability": 0.9098402857780457
+          "probability": 0.7444292902946472
         },
         {
           "word": " Avenue",
-          "start": 30.34,
-          "end": 30.53,
+          "start": 30.47,
+          "end": 30.71,
           "t_dtw": -1,
-          "probability": 0.9903423190116882
+          "probability": 0.9890181422233582
         },
         {
           "word": " was",
-          "start": 30.53,
-          "end": 30.7,
+          "start": 30.8,
+          "end": 30.96,
           "t_dtw": -1,
-          "probability": 0.9829241037368774
+          "probability": 0.9916124939918518
         },
         {
           "word": " on",
-          "start": 30.7,
-          "end": 30.810000000000002,
+          "start": 30.96,
+          "end": 31.060000000000002,
           "t_dtw": -1,
-          "probability": 0.9973599314689636
+          "probability": 0.9993517398834229
         },
         {
           "word": " the",
-          "start": 30.810000000000002,
-          "end": 30.98,
+          "start": 31.07,
+          "end": 31.23,
           "t_dtw": -1,
-          "probability": 0.9889228940010071
+          "probability": 0.9904254674911499
         },
         {
           "word": " verge",
-          "start": 30.98,
-          "end": 31.25,
+          "start": 31.51,
+          "end": 31.51,
           "t_dtw": -1,
-          "probability": 0.9967228174209595
-        }
-      ],
-      "temperature": 0.0,
-      "avg_logprob": -0.1585889458656311,
-      "no_speech_prob": 1.9423502806148463e-07
-    },
-    {
-      "id": 10,
-      "text": " of closing.",
-      "start": 31.28,
-      "end": 32.0,
-      "tokens": [
-        295,
-        10377,
-        13
-      ],
-      "words": [
+          "probability": 0.9979612231254578
+        },
         {
           "word": " of",
-          "start": 31.28,
-          "end": 31.37,
+          "start": 31.54,
+          "end": 31.62,
           "t_dtw": -1,
-          "probability": 0.9995042085647583
-        },
-        {
-          "word": " closing",
-          "start": 31.37,
-          "end": 31.76,
-          "t_dtw": -1,
-          "probability": 0.9862763285636902
-        },
-        {
-          "word": ".",
-          "start": 31.76,
-          "end": 32.0,
-          "t_dtw": -1,
-          "probability": 0.9859095215797424
+          "probability": 0.9993441104888916
         }
       ],
       "temperature": 0.0,
-      "avg_logprob": -0.007126331329345703,
-      "no_speech_prob": 0.0
+      "avg_logprob": -0.08374954760074615,
+      "no_speech_prob": 7.724868567038357e-08
     },
     {
       "id": 11,
-      "text": " A local benefactor saved it, and his attorney declared the",
-      "start": 32.0,
-      "end": 36.24,
+      "text": " closing. A local benefactor saved it and his",
+      "start": 31.62,
+      "end": 35.12,
       "tokens": [
+        10377,
+        13,
         316,
         2654,
         3070,
         15104,
         6624,
         309,
-        11,
         293,
-        702,
-        13469,
-        15489,
-        264
+        702
       ],
       "words": [
         {
-          "word": " A",
-          "start": 32.08,
-          "end": 32.08,
+          "word": " closing",
+          "start": 31.62,
+          "end": 32.01,
           "t_dtw": -1,
-          "probability": 0.9743006825447083
+          "probability": 0.9887361526489258
+        },
+        {
+          "word": ".",
+          "start": 32.01,
+          "end": 32.24,
+          "t_dtw": -1,
+          "probability": 0.9227027297019958
+        },
+        {
+          "word": " A",
+          "start": 32.24,
+          "end": 32.36,
+          "t_dtw": -1,
+          "probability": 0.678490936756134
         },
         {
           "word": " local",
-          "start": 32.14,
-          "end": 32.51,
+          "start": 32.36,
+          "end": 32.97,
           "t_dtw": -1,
-          "probability": 0.9988943338394165
+          "probability": 0.9900326132774353
         },
         {
           "word": " benef",
-          "start": 32.51,
-          "end": 32.89,
+          "start": 32.980000000000004,
+          "end": 33.6,
           "t_dtw": -1,
-          "probability": 0.9902026057243347
+          "probability": 0.983774721622467
         },
         {
           "word": "actor",
-          "start": 32.93,
-          "end": 33.32,
+          "start": 33.6,
+          "end": 34.230000000000004,
           "t_dtw": -1,
-          "probability": 0.9698841571807861
+          "probability": 0.9697121381759644
         },
         {
           "word": " saved",
-          "start": 33.39,
-          "end": 33.8,
+          "start": 34.24,
+          "end": 34.550000000000004,
           "t_dtw": -1,
-          "probability": 0.9851444959640503
+          "probability": 0.9332552552223206
         },
         {
           "word": " it",
-          "start": 33.8,
-          "end": 34.0,
+          "start": 34.56,
+          "end": 34.800000000000004,
           "t_dtw": -1,
-          "probability": 0.9987190961837769
-        },
-        {
-          "word": ",",
-          "start": 34.0,
-          "end": 34.15,
-          "t_dtw": -1,
-          "probability": 0.40951091051101685
+          "probability": 0.9105381369590759
         },
         {
           "word": " and",
-          "start": 34.34,
-          "end": 34.410000000000004,
+          "start": 34.9,
+          "end": 34.96,
           "t_dtw": -1,
-          "probability": 0.9526790976524353
+          "probability": 0.4009106457233429
         },
         {
           "word": " his",
-          "start": 34.410000000000004,
-          "end": 34.660000000000004,
+          "start": 34.96,
+          "end": 35.12,
           "t_dtw": -1,
-          "probability": 0.9899948239326477
-        },
-        {
-          "word": " attorney",
-          "start": 34.660000000000004,
-          "end": 35.31,
-          "t_dtw": -1,
-          "probability": 0.9843330979347229
-        },
-        {
-          "word": " declared",
-          "start": 35.32,
-          "end": 36.0,
-          "t_dtw": -1,
-          "probability": 0.9983286261558533
-        },
-        {
-          "word": " the",
-          "start": 36.0,
-          "end": 36.24,
-          "t_dtw": -1,
-          "probability": 0.8176533579826355
+          "probability": 0.5228641033172607
         }
       ],
       "temperature": 0.0,
-      "avg_logprob": -0.10449329763650894,
-      "no_speech_prob": 1.9423502806148463e-07
+      "avg_logprob": -0.20563983917236328,
+      "no_speech_prob": 0.0
     },
     {
       "id": 12,
-      "text": " chapel had been attended by six American Presidents.",
-      "start": 36.24,
-      "end": 40.0,
+      "text": " attorney declared the chapel had been attended by six",
+      "start": 35.12,
+      "end": 37.730000000000004,
       "tokens": [
+        13469,
+        15489,
+        264,
         42617,
         632,
         668,
         15990,
         538,
-        2309,
-        2665,
-        2718,
-        6026,
-        13
+        2309
       ],
       "words": [
         {
-          "word": " chapel",
-          "start": 36.24,
-          "end": 36.71,
+          "word": " attorney",
+          "start": 35.24,
+          "end": 35.550000000000004,
           "t_dtw": -1,
-          "probability": 0.9534626007080078
+          "probability": 0.9915236234664917
+        },
+        {
+          "word": " declared",
+          "start": 35.61,
+          "end": 36.01,
+          "t_dtw": -1,
+          "probability": 0.998233437538147
+        },
+        {
+          "word": " the",
+          "start": 36.050000000000004,
+          "end": 36.230000000000004,
+          "t_dtw": -1,
+          "probability": 0.8637194633483887
+        },
+        {
+          "word": " chapel",
+          "start": 36.230000000000004,
+          "end": 36.58,
+          "t_dtw": -1,
+          "probability": 0.9583287835121155
         },
         {
           "word": " had",
-          "start": 36.71,
-          "end": 36.94,
+          "start": 36.58,
+          "end": 36.75,
           "t_dtw": -1,
-          "probability": 0.9815976619720459
+          "probability": 0.9908487200737
         },
         {
           "word": " been",
-          "start": 36.95,
-          "end": 37.27,
+          "start": 36.75,
+          "end": 36.97,
           "t_dtw": -1,
-          "probability": 0.9865942597389221
+          "probability": 0.9968616366386414
         },
         {
           "word": " attended",
-          "start": 37.7,
-          "end": 37.9,
+          "start": 37.45,
+          "end": 37.45,
           "t_dtw": -1,
-          "probability": 0.9866187572479248
+          "probability": 0.9938032031059265
         },
         {
           "word": " by",
-          "start": 37.9,
-          "end": 38.01,
+          "start": 37.46,
+          "end": 37.56,
           "t_dtw": -1,
-          "probability": 0.99437016248703
+          "probability": 0.9994432330131531
         },
         {
           "word": " six",
-          "start": 38.06,
-          "end": 38.300000000000004,
+          "start": 37.56,
+          "end": 37.730000000000004,
           "t_dtw": -1,
-          "probability": 0.9784871935844421
-        },
-        {
-          "word": " American",
-          "start": 38.300000000000004,
-          "end": 38.93,
-          "t_dtw": -1,
-          "probability": 0.9938145875930786
-        },
-        {
-          "word": " Pres",
-          "start": 38.93,
-          "end": 39.25,
-          "t_dtw": -1,
-          "probability": 0.9952391982078552
-        },
-        {
-          "word": "idents",
-          "start": 39.25,
-          "end": 39.72,
-          "t_dtw": -1,
-          "probability": 0.9997082352638245
-        },
-        {
-          "word": ".",
-          "start": 39.72,
-          "end": 40.0,
-          "t_dtw": -1,
-          "probability": 0.9922558069229126
+          "probability": 0.9808864593505859
         }
       ],
       "temperature": 0.0,
-      "avg_logprob": -0.012693925760686398,
-      "no_speech_prob": 0.0
+      "avg_logprob": -0.026417838409543037,
+      "no_speech_prob": 7.724868567038357e-08
     },
     {
       "id": 13,
-      "text": " He called it the Westminster Abbey of America.",
-      "start": 40.0,
-      "end": 42.0,
+      "text": " American presidents. He called it the Westminster",
+      "start": 37.730000000000004,
+      "end": 40.96,
       "tokens": [
+        2665,
+        27611,
+        13,
         634,
         1219,
         309,
         264,
-        49714,
+        49714
+      ],
+      "words": [
+        {
+          "word": " American",
+          "start": 37.730000000000004,
+          "end": 38.19,
+          "t_dtw": -1,
+          "probability": 0.9962761998176575
+        },
+        {
+          "word": " presidents",
+          "start": 38.2,
+          "end": 38.78,
+          "t_dtw": -1,
+          "probability": 0.9923901557922363
+        },
+        {
+          "word": ".",
+          "start": 38.78,
+          "end": 39.04,
+          "t_dtw": -1,
+          "probability": 0.9643429517745972
+        },
+        {
+          "word": " He",
+          "start": 39.04,
+          "end": 39.26,
+          "t_dtw": -1,
+          "probability": 0.97504061460495
+        },
+        {
+          "word": " called",
+          "start": 39.26,
+          "end": 39.93,
+          "t_dtw": -1,
+          "probability": 0.9974246025085449
+        },
+        {
+          "word": " it",
+          "start": 39.93,
+          "end": 40.15,
+          "t_dtw": -1,
+          "probability": 0.9480133652687073
+        },
+        {
+          "word": " the",
+          "start": 40.160000000000004,
+          "end": 40.32,
+          "t_dtw": -1,
+          "probability": 0.8832984566688538
+        },
+        {
+          "word": " Westminster",
+          "start": 40.32,
+          "end": 40.96,
+          "t_dtw": -1,
+          "probability": 0.7408103346824646
+        }
+      ],
+      "temperature": 0.0,
+      "avg_logprob": -0.06144693121314049,
+      "no_speech_prob": 0.0
+    },
+    {
+      "id": 14,
+      "text": " Abbey of America. By 1930, a seventh name was added. The",
+      "start": 40.96,
+      "end": 45.69,
+      "tokens": [
         2847,
         13502,
         295,
         3374,
-        13
-      ],
-      "words": [
-        {
-          "word": " He",
-          "start": 40.09,
-          "end": 40.09,
-          "t_dtw": -1,
-          "probability": 0.9901383519172668
-        },
-        {
-          "word": " called",
-          "start": 40.12,
-          "end": 40.38,
-          "t_dtw": -1,
-          "probability": 0.9976719617843628
-        },
-        {
-          "word": " it",
-          "start": 40.38,
-          "end": 40.43,
-          "t_dtw": -1,
-          "probability": 0.9745274186134338
-        },
-        {
-          "word": " the",
-          "start": 40.49,
-          "end": 40.61,
-          "t_dtw": -1,
-          "probability": 0.9148658514022827
-        },
-        {
-          "word": " Westminster",
-          "start": 40.61,
-          "end": 41.13,
-          "t_dtw": -1,
-          "probability": 0.9913855791091919
-        },
-        {
-          "word": " Ab",
-          "start": 41.14,
-          "end": 41.2,
-          "t_dtw": -1,
-          "probability": 0.9166850447654724
-        },
-        {
-          "word": "bey",
-          "start": 41.230000000000004,
-          "end": 41.32,
-          "t_dtw": -1,
-          "probability": 0.9805628657341003
-        },
-        {
-          "word": " of",
-          "start": 41.4,
-          "end": 41.46,
-          "t_dtw": -1,
-          "probability": 0.9934753775596619
-        },
-        {
-          "word": " America",
-          "start": 41.46,
-          "end": 41.800000000000004,
-          "t_dtw": -1,
-          "probability": 0.9993021488189697
-        },
-        {
-          "word": ".",
-          "start": 41.800000000000004,
-          "end": 42.0,
-          "t_dtw": -1,
-          "probability": 0.9863383769989014
-        }
-      ],
-      "temperature": 0.0,
-      "avg_logprob": -0.023935751989483833,
-      "no_speech_prob": 1.9423502806148463e-07
-    },
-    {
-      "id": 14,
-      "text": " By 1930, a seventh name was added.",
-      "start": 42.0,
-      "end": 46.0,
-      "tokens": [
+        13,
         3146,
         22350,
         11,
@@ -1304,230 +1229,249 @@
         1315,
         390,
         3869,
-        13
+        13,
+        440
       ],
       "words": [
         {
-          "word": " By",
-          "start": 42.12,
-          "end": 42.2,
+          "word": " Ab",
+          "start": 41.08,
+          "end": 41.11,
           "t_dtw": -1,
-          "probability": 0.9897116422653198
+          "probability": 0.8228341341018677
         },
         {
-          "word": " 1930",
-          "start": 42.2,
-          "end": 43.42,
+          "word": "bey",
+          "start": 41.12,
+          "end": 41.36,
           "t_dtw": -1,
-          "probability": 0.9900949001312256
+          "probability": 0.9756060838699341
         },
         {
-          "word": ",",
-          "start": 43.42,
-          "end": 43.62,
+          "word": " of",
+          "start": 41.36,
+          "end": 41.52,
           "t_dtw": -1,
-          "probability": 0.8765316009521484
+          "probability": 0.9950873255729675
         },
         {
-          "word": " a",
-          "start": 43.62,
-          "end": 43.72,
+          "word": " America",
+          "start": 41.52,
+          "end": 42.08,
           "t_dtw": -1,
-          "probability": 0.9921838641166687
-        },
-        {
-          "word": " seventh",
-          "start": 43.72,
-          "end": 44.43,
-          "t_dtw": -1,
-          "probability": 0.914100170135498
-        },
-        {
-          "word": " name",
-          "start": 44.43,
-          "end": 44.84,
-          "t_dtw": -1,
-          "probability": 0.983359158039093
-        },
-        {
-          "word": " was",
-          "start": 44.84,
-          "end": 45.14,
-          "t_dtw": -1,
-          "probability": 0.997458815574646
-        },
-        {
-          "word": " added",
-          "start": 45.14,
-          "end": 45.64,
-          "t_dtw": -1,
-          "probability": 0.9990963339805603
+          "probability": 0.9994813203811646
         },
         {
           "word": ".",
-          "start": 45.65,
-          "end": 46.0,
+          "start": 42.08,
+          "end": 42.28,
           "t_dtw": -1,
-          "probability": 0.9673272967338562
+          "probability": 0.8863092064857483
+        },
+        {
+          "word": " By",
+          "start": 42.36,
+          "end": 42.47,
+          "t_dtw": -1,
+          "probability": 0.9975996017456055
+        },
+        {
+          "word": " 1930",
+          "start": 42.58,
+          "end": 43.45,
+          "t_dtw": -1,
+          "probability": 0.9773083925247192
+        },
+        {
+          "word": ",",
+          "start": 43.45,
+          "end": 43.61,
+          "t_dtw": -1,
+          "probability": 0.815081000328064
+        },
+        {
+          "word": " a",
+          "start": 43.61,
+          "end": 43.660000000000004,
+          "t_dtw": -1,
+          "probability": 0.9963445663452148
+        },
+        {
+          "word": " seventh",
+          "start": 43.71,
+          "end": 44.25,
+          "t_dtw": -1,
+          "probability": 0.9704818725585938
+        },
+        {
+          "word": " name",
+          "start": 44.25,
+          "end": 44.57,
+          "t_dtw": -1,
+          "probability": 0.9881837964057922
+        },
+        {
+          "word": " was",
+          "start": 44.57,
+          "end": 44.800000000000004,
+          "t_dtw": -1,
+          "probability": 0.9989705681800842
+        },
+        {
+          "word": " added",
+          "start": 44.81,
+          "end": 45.21,
+          "t_dtw": -1,
+          "probability": 0.999363124370575
+        },
+        {
+          "word": ".",
+          "start": 45.21,
+          "end": 45.45,
+          "t_dtw": -1,
+          "probability": 0.9014349579811096
+        },
+        {
+          "word": " The",
+          "start": 45.45,
+          "end": 45.69,
+          "t_dtw": -1,
+          "probability": 0.9891907572746277
         }
       ],
       "temperature": 0.0,
-      "avg_logprob": -0.030318832024931908,
-      "no_speech_prob": 1.9423502806148463e-07
+      "avg_logprob": -0.04916451871395111,
+      "no_speech_prob": 7.724868567038357e-08
     },
     {
       "id": 15,
-      "text": " The park that opened nearby was Chrison's seven Presidents",
-      "start": 46.0,
-      "end": 48.88,
+      "text": " park that opened nearby was",
+      "start": 45.69,
+      "end": 47.52,
       "tokens": [
-        440,
         3884,
         300,
         5625,
         11184,
-        390,
-        6688,
-        266,
-        311,
-        3407,
-        2718,
-        6026
+        390
       ],
       "words": [
         {
-          "word": " The",
-          "start": 46.12,
-          "end": 46.160000000000004,
-          "t_dtw": -1,
-          "probability": 0.912067711353302
-        },
-        {
           "word": " park",
-          "start": 46.17,
-          "end": 46.4,
+          "start": 45.69,
+          "end": 46.0,
           "t_dtw": -1,
-          "probability": 0.9501312971115112
+          "probability": 0.9913969039916992
         },
         {
           "word": " that",
-          "start": 46.4,
-          "end": 46.63,
+          "start": 46.01,
+          "end": 46.33,
           "t_dtw": -1,
-          "probability": 0.9927025437355042
+          "probability": 0.9973523020744324
         },
         {
           "word": " opened",
-          "start": 46.63,
-          "end": 46.89,
+          "start": 46.660000000000004,
+          "end": 46.81,
           "t_dtw": -1,
-          "probability": 0.9740275740623474
+          "probability": 0.9726110696792603
         },
         {
           "word": " nearby",
-          "start": 46.99,
-          "end": 47.32,
+          "start": 46.81,
+          "end": 47.300000000000004,
           "t_dtw": -1,
-          "probability": 0.9122295379638672
+          "probability": 0.9360969662666321
         },
         {
           "word": " was",
-          "start": 47.4,
-          "end": 47.5,
+          "start": 47.35,
+          "end": 47.51,
           "t_dtw": -1,
-          "probability": 0.9899684190750122
-        },
-        {
-          "word": " Chris",
-          "start": 47.5,
-          "end": 47.79,
-          "t_dtw": -1,
-          "probability": 0.23077161610126495
-        },
-        {
-          "word": "on",
-          "start": 47.79,
-          "end": 47.9,
-          "t_dtw": -1,
-          "probability": 0.35469427704811096
-        },
-        {
-          "word": "'s",
-          "start": 47.9,
-          "end": 48.01,
-          "t_dtw": -1,
-          "probability": 0.5869218707084656
-        },
-        {
-          "word": " seven",
-          "start": 48.300000000000004,
-          "end": 48.300000000000004,
-          "t_dtw": -1,
-          "probability": 0.7178468108177185
-        },
-        {
-          "word": " Pres",
-          "start": 48.34,
-          "end": 48.53,
-          "t_dtw": -1,
-          "probability": 0.9770399928092957
-        },
-        {
-          "word": "idents",
-          "start": 48.53,
-          "end": 48.88,
-          "t_dtw": -1,
-          "probability": 0.9995614290237427
+          "probability": 0.9772226214408875
         }
       ],
       "temperature": 0.0,
-      "avg_logprob": -0.3058030605316162,
-      "no_speech_prob": 1.9423502806148463e-07
+      "avg_logprob": -0.021356582641601562,
+      "no_speech_prob": 0.0
     },
     {
       "id": 16,
-      "text": " Ocean Front Park.",
-      "start": 48.88,
-      "end": 50.0,
+      "text": " Chris and seven presidents oceanfront parties.",
+      "start": 47.52,
+      "end": 50.02,
       "tokens": [
-        18101,
-        17348,
-        4964,
+        6688,
+        293,
+        3407,
+        27611,
+        7810,
+        11496,
+        8265,
         13
       ],
       "words": [
         {
-          "word": " Ocean",
-          "start": 48.88,
-          "end": 49.17,
+          "word": " Chris",
+          "start": 47.64,
+          "end": 47.85,
           "t_dtw": -1,
-          "probability": 0.9731269478797913
+          "probability": 0.42291492223739624
         },
         {
-          "word": " Front",
-          "start": 49.17,
-          "end": 49.46,
+          "word": " and",
+          "start": 47.85,
+          "end": 48.03,
           "t_dtw": -1,
-          "probability": 0.94606614112854
+          "probability": 0.6921897530555725
         },
         {
-          "word": " Park",
-          "start": 49.46,
-          "end": 49.69,
+          "word": " seven",
+          "start": 48.050000000000004,
+          "end": 48.370000000000005,
           "t_dtw": -1,
-          "probability": 0.9860506057739258
+          "probability": 0.6675898432731628
+        },
+        {
+          "word": " presidents",
+          "start": 48.370000000000005,
+          "end": 49.03,
+          "t_dtw": -1,
+          "probability": 0.9281339049339294
+        },
+        {
+          "word": " ocean",
+          "start": 49.13,
+          "end": 49.28,
+          "t_dtw": -1,
+          "probability": 0.5210442543029785
+        },
+        {
+          "word": "front",
+          "start": 49.28,
+          "end": 49.52,
+          "t_dtw": -1,
+          "probability": 0.8582738637924194
+        },
+        {
+          "word": " parties",
+          "start": 49.86,
+          "end": 50.02,
+          "t_dtw": -1,
+          "probability": 0.30423504114151
         },
         {
           "word": ".",
-          "start": 49.69,
-          "end": 50.0,
+          "start": 50.02,
+          "end": 50.02,
           "t_dtw": -1,
-          "probability": 0.9827404022216797
+          "probability": 0.8665576577186584
         }
       ],
       "temperature": 0.0,
-      "avg_logprob": -0.022828292101621628,
-      "no_speech_prob": 0.0
+      "avg_logprob": -0.38450735807418823,
+      "no_speech_prob": 1.1856274795718491e-05
     }
   ],
   "detected_language": "english",

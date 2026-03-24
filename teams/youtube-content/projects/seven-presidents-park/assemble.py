@@ -1003,5 +1003,97 @@ def main():
     print("=" * 60)
 
 
+def main_no_text():
+    """Build a clean video with no text overlays (for shorts extraction)."""
+    print("=" * 60)
+    print("Seven Presidents Park -- CLEAN VIDEO (no text overlays)")
+    print("=" * 60)
+
+    clean_segments = f"{ASSEMBLY_DIR}/segments-clean"
+    clean_output = f"{OUTPUT_DIR}/seven-presidents-clean.mp4"
+    os.makedirs(clean_segments, exist_ok=True)
+
+    # Step 0: Resolve fill durations
+    print("\n[Step 0] Resolving fill durations...")
+    resolve_fill_durations()
+
+    # Step 1: Build composite images (reuse existing)
+    print("\n[Step 1] Building composite images...")
+    generate_composite_portraits()
+    generate_composite_disputed()
+
+    # Step 2: Build segments WITHOUT text
+    print("\n[Step 2] Building clean video segments (no text)...")
+    segment_paths = []
+    for scene in SCENES:
+        out = f"{clean_segments}/scene-{scene['id']}.mp4"
+        if os.path.exists(out):
+            print(f"  Already exists: {out}")
+            segment_paths.append(out)
+            continue
+
+        img = f"{IMAGES}/{scene['image']}"
+        if not os.path.exists(img):
+            run(["ffmpeg", "-y", "-f", "lavfi",
+                 "-i", f"color=c=black:s={RESOLUTION}:d={scene['duration']}:r={FPS}",
+                 "-c:v", "libx264", "-pix_fmt", "yuv420p",
+                 "-r", str(FPS), out], f"Black placeholder for {scene['id']}")
+            segment_paths.append(out)
+            continue
+
+        duration = scene["duration"]
+        orientation = scene["orientation"]
+        if image_is_portrait(img):
+            orientation = "portrait"
+
+        # NO text filter -- that's the whole point
+        vf = build_video_filter(scene["motion"], orientation, None, duration)
+
+        run([
+            "ffmpeg", "-y",
+            "-loop", "1", "-i", img,
+            "-vf", vf,
+            "-t", str(duration),
+            "-c:v", "libx264", "-crf", "18", "-preset", "medium",
+            "-pix_fmt", "yuv420p", "-r", str(FPS),
+            out
+        ], f"Clean segment {scene['id']}")
+        segment_paths.append(out)
+
+    # Step 3: Concatenate
+    print("\n[Step 3] Concatenating clean segments...")
+    clean_video = f"{ASSEMBLY_DIR}/video-only-clean.mp4"
+    if not os.path.exists(clean_video):
+        concatenate_segments(segment_paths, clean_video)
+    else:
+        print(f"  Already exists: {clean_video}")
+
+    # Step 4: Reuse existing audio (already built)
+    final_audio = f"{ASSEMBLY_DIR}/final-audio.wav"
+    if not os.path.exists(final_audio):
+        print("\n[Step 4] Building audio...")
+        os.makedirs(f"{ASSEMBLY_DIR}/narration", exist_ok=True)
+        normalize_narration()
+        total_video_dur = sum(SEGMENT_DURATIONS.values())
+        narration_continuous = build_continuous_narration(SEGMENT_DURATIONS)
+        mix_audio_with_ambient(narration_continuous, total_video_dur, final_audio)
+    else:
+        print(f"\n[Step 4] Reusing existing audio: {final_audio}")
+
+    # Step 5: Final encode
+    print("\n[Step 5] Final encode (clean)...")
+    if not os.path.exists(clean_output):
+        final_encode(clean_video, final_audio, clean_output)
+    else:
+        print(f"  Already exists: {clean_output}")
+
+    size_mb = os.path.getsize(clean_output) / (1024 * 1024)
+    print(f"\n  Clean video: {clean_output} ({size_mb:.1f} MB)")
+    print("=" * 60)
+
+
 if __name__ == "__main__":
-    main()
+    if "--no-text" in sys.argv:
+        main_no_text()
+    else:
+        main()
