@@ -1,14 +1,14 @@
 {
   "task": "transcribe",
   "language": "english",
-  "duration": 51.96799850463867,
-  "text": " This beach is named after seven presidents. The real number\n may be four. Ulysses Grant came first.\n He held cabinet meetings on the porch and played poker with\n America's wealthiest men every Friday night.\n Then Garfield was shot. The bullet missed every vital organ\n. It was the infections that killed him.\n Volunteers laid 3,200 feet of track overnight by torchlight\n to bring a dying president to the sea.\n The Elbrin hotel sent sandwiches. Today, a small tea house\n still stands on the church grounds,\n built from those very railroad ties. The original red paint\n has faded to pink after 140 years of\n shore weather. Woodrow Wilson ran his entire campaign from\n a 52 room beach house. His slogan,\n he kept us out of war. Five months later, he asked Congress\n to declare war.\n",
+  "duration": 53.930686950683594,
+  "text": " This beach is named after seven presidents.\n The real number, maybe four.\n Ulysses Grant came first.\n He held cabinet meetings on the porch\n and played poker with America's wealthiest men\n every Friday night.\n Then Garfield was shot.\n The bullet missed every vital organ.\n It was the infections that killed him.\n Volunteers laid 3,200 feet of track overnight\n by torch light to bring a dying president to the sea.\n Today, a small tea house still stands on the church grounds\n,\n built from those very railroad ties.\n The original red paint has faded to pink\n after 140 years of shore weather.\n Woodrow Wilson ran his entire campaign\n from a 52 room beach house.\n His slogan, \"He kept us out of war.\"\n Five months later, he asked Congress\n to declare war on Germany.\n Three of the seven, almost certainly fiction.\n But the stories they left behind are real.\n",
   "segments": [
     {
       "id": 0,
-      "text": " This beach is named after seven presidents. The real number",
+      "text": " This beach is named after seven presidents.",
       "start": 0.0,
-      "end": 4.14,
+      "end": 2.64,
       "tokens": [
         639,
         7534,
@@ -17,104 +17,145 @@
         934,
         3407,
         27611,
-        13,
-        440,
-        957,
-        1230
+        13
       ],
       "words": [
         {
           "word": " This",
-          "start": 0.05,
-          "end": 0.26,
+          "start": 0.04,
+          "end": 0.27,
           "t_dtw": -1,
-          "probability": 0.24293582141399384
+          "probability": 0.9486427903175354
         },
         {
           "word": " beach",
-          "start": 0.37,
-          "end": 0.65,
+          "start": 0.27,
+          "end": 0.6,
           "t_dtw": -1,
-          "probability": 0.9385390877723694
+          "probability": 0.9377392530441284
         },
         {
           "word": " is",
-          "start": 0.65,
-          "end": 0.75,
+          "start": 0.6,
+          "end": 0.73,
           "t_dtw": -1,
-          "probability": 0.9655576944351196
+          "probability": 0.9848570227622986
         },
         {
           "word": " named",
-          "start": 0.8,
-          "end": 1.1400000000000001,
+          "start": 0.73,
+          "end": 1.06,
           "t_dtw": -1,
-          "probability": 0.9921801090240479
+          "probability": 0.996785581111908
         },
         {
           "word": " after",
-          "start": 1.1400000000000001,
-          "end": 1.51,
+          "start": 1.06,
+          "end": 1.34,
           "t_dtw": -1,
-          "probability": 0.9964624047279358
+          "probability": 0.9988333582878113
         },
         {
           "word": " seven",
-          "start": 1.51,
-          "end": 1.87,
+          "start": 1.3900000000000001,
+          "end": 1.72,
           "t_dtw": -1,
-          "probability": 0.9825829863548279
+          "probability": 0.8674903512001038
         },
         {
           "word": " presidents",
-          "start": 1.87,
-          "end": 2.54,
+          "start": 1.72,
+          "end": 1.99,
           "t_dtw": -1,
-          "probability": 0.9871137738227844
+          "probability": 0.9234633445739746
         },
         {
           "word": ".",
-          "start": 2.88,
-          "end": 2.88,
+          "start": 2.64,
+          "end": 2.64,
           "t_dtw": -1,
-          "probability": 0.9382097721099854
-        },
-        {
-          "word": " The",
-          "start": 3.08,
-          "end": 3.15,
-          "t_dtw": -1,
-          "probability": 0.9359862804412842
-        },
-        {
-          "word": " real",
-          "start": 3.15,
-          "end": 3.5100000000000002,
-          "t_dtw": -1,
-          "probability": 0.9939378499984741
-        },
-        {
-          "word": " number",
-          "start": 3.5100000000000002,
-          "end": 3.84,
-          "t_dtw": -1,
-          "probability": 0.9953834414482117
+          "probability": 0.8335098028182983
         }
       ],
       "temperature": 0.0,
-      "avg_logprob": -0.14133477210998535,
-      "no_speech_prob": 3.7114145357008965e-07
+      "avg_logprob": -0.05405368655920029,
+      "no_speech_prob": 1.92883271665778e-05
     },
     {
       "id": 1,
-      "text": " may be four. Ulysses Grant came first.",
-      "start": 4.14,
-      "end": 7.2,
+      "text": " The real number, maybe four.",
+      "start": 2.64,
+      "end": 5.04,
       "tokens": [
-        815,
-        312,
+        440,
+        957,
+        1230,
+        11,
+        1310,
         1451,
-        13,
+        13
+      ],
+      "words": [
+        {
+          "word": " The",
+          "start": 2.68,
+          "end": 2.79,
+          "t_dtw": -1,
+          "probability": 0.9950531721115112
+        },
+        {
+          "word": " real",
+          "start": 2.88,
+          "end": 3.14,
+          "t_dtw": -1,
+          "probability": 0.9941577315330505
+        },
+        {
+          "word": " number",
+          "start": 3.17,
+          "end": 3.59,
+          "t_dtw": -1,
+          "probability": 0.9970289468765259
+        },
+        {
+          "word": ",",
+          "start": 3.59,
+          "end": 3.74,
+          "t_dtw": -1,
+          "probability": 0.5608379244804382
+        },
+        {
+          "word": " maybe",
+          "start": 3.7600000000000002,
+          "end": 4.28,
+          "t_dtw": -1,
+          "probability": 0.937708854675293
+        },
+        {
+          "word": " four",
+          "start": 4.28,
+          "end": 4.6000000000000005,
+          "t_dtw": -1,
+          "probability": 0.9921762943267822
+        },
+        {
+          "word": ".",
+          "start": 4.72,
+          "end": 5.03,
+          "t_dtw": -1,
+          "probability": 0.9215384125709534
+        }
+      ],
+      "temperature": 0.0,
+      "avg_logprob": -0.09324979782104492,
+      "no_speech_prob": 1.92883271665778e-05
+    },
+    {
+      "id": 2,
+      "text": " Ulysses Grant came first.",
+      "start": 5.04,
+      "end": 7.16,
+      "tokens": [
         624,
         356,
         3810,
@@ -126,99 +167,71 @@
       ],
       "words": [
         {
-          "word": " may",
-          "start": 4.14,
-          "end": 4.3500000000000005,
-          "t_dtw": -1,
-          "probability": 0.9246265888214111
-        },
-        {
-          "word": " be",
-          "start": 4.38,
-          "end": 4.47,
-          "t_dtw": -1,
-          "probability": 0.9844475984573364
-        },
-        {
-          "word": " four",
-          "start": 4.61,
-          "end": 4.89,
-          "t_dtw": -1,
-          "probability": 0.9889002442359924
-        },
-        {
-          "word": ".",
-          "start": 5.28,
-          "end": 5.28,
-          "t_dtw": -1,
-          "probability": 0.9477276802062988
-        },
-        {
           "word": " U",
-          "start": 5.36,
-          "end": 5.36,
+          "start": 5.07,
+          "end": 5.12,
           "t_dtw": -1,
-          "probability": 0.6122655868530273
+          "probability": 0.7172145247459412
         },
         {
           "word": "ly",
-          "start": 5.39,
-          "end": 5.51,
+          "start": 5.12,
+          "end": 5.29,
           "t_dtw": -1,
-          "probability": 0.9974417090415955
+          "probability": 0.9484727382659912
         },
         {
           "word": "ss",
-          "start": 5.51,
-          "end": 5.64,
+          "start": 5.29,
+          "end": 5.46,
           "t_dtw": -1,
-          "probability": 0.9996681809425354
+          "probability": 0.9801860451698303
         },
         {
           "word": "es",
-          "start": 5.66,
-          "end": 5.8100000000000005,
+          "start": 5.46,
+          "end": 5.63,
           "t_dtw": -1,
-          "probability": 0.9996777176856995
+          "probability": 0.9955600500106812
         },
         {
           "word": " Grant",
-          "start": 5.8100000000000005,
-          "end": 6.23,
+          "start": 5.63,
+          "end": 6.07,
           "t_dtw": -1,
-          "probability": 0.9897512793540955
+          "probability": 0.9397983551025391
         },
         {
           "word": " came",
-          "start": 6.23,
-          "end": 6.48,
+          "start": 6.07,
+          "end": 6.38,
           "t_dtw": -1,
-          "probability": 0.8280366659164429
+          "probability": 0.9957100749015808
         },
         {
           "word": " first",
-          "start": 6.48,
-          "end": 6.97,
+          "start": 6.43,
+          "end": 6.7700000000000005,
           "t_dtw": -1,
-          "probability": 0.6600727438926697
+          "probability": 0.998600959777832
         },
         {
           "word": ".",
-          "start": 7.04,
-          "end": 7.2,
+          "start": 6.87,
+          "end": 7.03,
           "t_dtw": -1,
-          "probability": 0.9554486870765686
+          "probability": 0.9122800230979919
         }
       ],
       "temperature": 0.0,
-      "avg_logprob": -0.10097488760948181,
-      "no_speech_prob": 0.0
+      "avg_logprob": -0.0632602870464325,
+      "no_speech_prob": 1.92883271665778e-05
     },
     {
-      "id": 2,
-      "text": " He held cabinet meetings on the porch and played poker with",
-      "start": 7.2,
-      "end": 10.290000000000001,
+      "id": 3,
+      "text": " He held cabinet meetings on the porch",
+      "start": 7.16,
+      "end": 8.84,
       "tokens": [
         634,
         5167,
@@ -226,106 +239,154 @@
         8410,
         322,
         264,
-        35513,
-        293,
-        3737,
-        36863,
-        365
+        35513
       ],
       "words": [
         {
           "word": " He",
-          "start": 7.25,
-          "end": 7.32,
+          "start": 7.19,
+          "end": 7.26,
           "t_dtw": -1,
-          "probability": 0.9957100749015808
+          "probability": 0.9974626302719116
         },
         {
           "word": " held",
-          "start": 7.32,
+          "start": 7.26,
           "end": 7.46,
           "t_dtw": -1,
-          "probability": 0.9984943270683289
+          "probability": 0.9957860112190247
         },
         {
           "word": " cabinet",
-          "start": 7.57,
-          "end": 7.96,
+          "start": 7.46,
+          "end": 7.8100000000000005,
           "t_dtw": -1,
-          "probability": 0.9954745769500732
+          "probability": 0.9262628555297852
         },
         {
           "word": " meetings",
-          "start": 8.0,
-          "end": 8.46,
+          "start": 7.8100000000000005,
+          "end": 8.23,
           "t_dtw": -1,
-          "probability": 0.9993174076080322
+          "probability": 0.9990658164024353
         },
         {
           "word": " on",
-          "start": 8.46,
-          "end": 8.57,
+          "start": 8.25,
+          "end": 8.36,
           "t_dtw": -1,
-          "probability": 0.9964662194252014
+          "probability": 0.9863609671592712
         },
         {
           "word": " the",
-          "start": 8.58,
-          "end": 8.74,
+          "start": 8.36,
+          "end": 8.49,
           "t_dtw": -1,
-          "probability": 0.999172568321228
+          "probability": 0.9963103532791138
         },
         {
           "word": " porch",
-          "start": 8.82,
-          "end": 9.06,
+          "start": 8.55,
+          "end": 8.84,
           "t_dtw": -1,
-          "probability": 0.9993135929107666
-        },
-        {
-          "word": " and",
-          "start": 9.06,
-          "end": 9.24,
-          "t_dtw": -1,
-          "probability": 0.9789314866065979
-        },
-        {
-          "word": " played",
-          "start": 9.24,
-          "end": 9.58,
-          "t_dtw": -1,
-          "probability": 0.9954062700271606
-        },
-        {
-          "word": " poker",
-          "start": 9.620000000000001,
-          "end": 9.76,
-          "t_dtw": -1,
-          "probability": 0.9979631304740906
-        },
-        {
-          "word": " with",
-          "start": 9.790000000000001,
-          "end": 10.120000000000001,
-          "t_dtw": -1,
-          "probability": 0.9902290105819702
+          "probability": 0.998069703578949
         }
       ],
       "temperature": 0.0,
-      "avg_logprob": -0.0048940833657979965,
-      "no_speech_prob": 3.7114145357008965e-07
+      "avg_logprob": -0.012957096099853516,
+      "no_speech_prob": 1.92883271665778e-05
     },
     {
-      "id": 3,
-      "text": " America's wealthiest men every Friday night.",
-      "start": 10.290000000000001,
-      "end": 12.8,
+      "id": 4,
+      "text": " and played poker with America's wealthiest men",
+      "start": 8.84,
+      "end": 10.84,
       "tokens": [
+        293,
+        3737,
+        36863,
+        365,
         3374,
         311,
         7203,
         6495,
-        1706,
+        1706
+      ],
+      "words": [
+        {
+          "word": " and",
+          "start": 8.870000000000001,
+          "end": 8.98,
+          "t_dtw": -1,
+          "probability": 0.9993250370025635
+        },
+        {
+          "word": " played",
+          "start": 8.98,
+          "end": 9.27,
+          "t_dtw": -1,
+          "probability": 0.9956891536712646
+        },
+        {
+          "word": " poker",
+          "start": 9.27,
+          "end": 9.51,
+          "t_dtw": -1,
+          "probability": 0.979560911655426
+        },
+        {
+          "word": " with",
+          "start": 9.51,
+          "end": 9.67,
+          "t_dtw": -1,
+          "probability": 0.9959607720375061
+        },
+        {
+          "word": " America",
+          "start": 9.76,
+          "end": 10.040000000000001,
+          "t_dtw": -1,
+          "probability": 0.99370276927948
+        },
+        {
+          "word": "'s",
+          "start": 10.040000000000001,
+          "end": 10.17,
+          "t_dtw": -1,
+          "probability": 0.9995385408401489
+        },
+        {
+          "word": " wealth",
+          "start": 10.17,
+          "end": 10.450000000000001,
+          "t_dtw": -1,
+          "probability": 0.7986644506454468
+        },
+        {
+          "word": "iest",
+          "start": 10.450000000000001,
+          "end": 10.620000000000001,
+          "t_dtw": -1,
+          "probability": 0.9998950958251953
+        },
+        {
+          "word": " men",
+          "start": 10.700000000000001,
+          "end": 10.83,
+          "t_dtw": -1,
+          "probability": 0.9612687826156616
+        }
+      ],
+      "temperature": 0.0,
+      "avg_logprob": -0.030089283362030983,
+      "no_speech_prob": 1.92883271665778e-05
+    },
+    {
+      "id": 5,
+      "text": " every Friday night.",
+      "start": 10.84,
+      "end": 12.48,
+      "tokens": [
         633,
         6984,
         1818,
@@ -333,189 +394,174 @@
       ],
       "words": [
         {
-          "word": " America",
-          "start": 10.290000000000001,
-          "end": 10.56,
-          "t_dtw": -1,
-          "probability": 0.9952638745307922
-        },
-        {
-          "word": "'s",
-          "start": 10.56,
-          "end": 10.72,
-          "t_dtw": -1,
-          "probability": 0.9995499849319458
-        },
-        {
-          "word": " wealth",
-          "start": 10.72,
-          "end": 11.03,
-          "t_dtw": -1,
-          "probability": 0.9847368001937866
-        },
-        {
-          "word": "iest",
-          "start": 11.34,
-          "end": 11.44,
-          "t_dtw": -1,
-          "probability": 0.9998092651367188
-        },
-        {
-          "word": " men",
-          "start": 11.44,
-          "end": 11.67,
-          "t_dtw": -1,
-          "probability": 0.9399722814559937
-        },
-        {
           "word": " every",
-          "start": 11.81,
-          "end": 12.08,
+          "start": 10.88,
+          "end": 11.27,
           "t_dtw": -1,
-          "probability": 0.6609066724777222
+          "probability": 0.9963825941085815
         },
         {
           "word": " Friday",
-          "start": 12.08,
-          "end": 12.1,
+          "start": 11.27,
+          "end": 11.78,
           "t_dtw": -1,
-          "probability": 0.7251527309417725
+          "probability": 0.9909602403640747
         },
         {
           "word": " night",
-          "start": 12.59,
-          "end": 12.72,
+          "start": 11.78,
+          "end": 12.19,
           "t_dtw": -1,
-          "probability": 0.5594190955162048
+          "probability": 0.9987229108810425
         },
         {
           "word": ".",
-          "start": 12.72,
-          "end": 12.8,
+          "start": 12.24,
+          "end": 12.48,
           "t_dtw": -1,
-          "probability": 0.9799402356147766
+          "probability": 0.9830853343009949
         }
       ],
       "temperature": 0.0,
-      "avg_logprob": -0.1419309675693512,
-      "no_speech_prob": 0.0
+      "avg_logprob": -0.0062084197998046875,
+      "no_speech_prob": 1.92883271665778e-05
     },
     {
-      "id": 4,
-      "text": " Then Garfield was shot. The bullet missed every vital organ",
-      "start": 12.8,
-      "end": 17.17,
+      "id": 6,
+      "text": " Then Garfield was shot.",
+      "start": 12.48,
+      "end": 14.200000000000001,
       "tokens": [
         1396,
         7995,
         7610,
         390,
         3347,
-        13,
+        13
+      ],
+      "words": [
+        {
+          "word": " Then",
+          "start": 12.52,
+          "end": 12.790000000000001,
+          "t_dtw": -1,
+          "probability": 0.9788119792938232
+        },
+        {
+          "word": " Gar",
+          "start": 12.790000000000001,
+          "end": 13.02,
+          "t_dtw": -1,
+          "probability": 0.9904613494873047
+        },
+        {
+          "word": "field",
+          "start": 13.02,
+          "end": 13.41,
+          "t_dtw": -1,
+          "probability": 0.999046802520752
+        },
+        {
+          "word": " was",
+          "start": 13.41,
+          "end": 13.64,
+          "t_dtw": -1,
+          "probability": 0.9974969029426575
+        },
+        {
+          "word": " shot",
+          "start": 13.64,
+          "end": 13.950000000000001,
+          "t_dtw": -1,
+          "probability": 0.9942867159843445
+        },
+        {
+          "word": ".",
+          "start": 13.950000000000001,
+          "end": 14.200000000000001,
+          "t_dtw": -1,
+          "probability": 0.8452061414718628
+        }
+      ],
+      "temperature": 0.0,
+      "avg_logprob": -0.029766354709863663,
+      "no_speech_prob": 1.92883271665778e-05
+    },
+    {
+      "id": 7,
+      "text": " The bullet missed every vital organ.",
+      "start": 14.200000000000001,
+      "end": 16.6,
+      "tokens": [
         440,
         11632,
         6721,
         633,
         11707,
-        1798
+        1798,
+        13
       ],
       "words": [
         {
-          "word": " Then",
-          "start": 12.85,
-          "end": 13.06,
-          "t_dtw": -1,
-          "probability": 0.9894360899925232
-        },
-        {
-          "word": " Gar",
-          "start": 13.17,
-          "end": 13.39,
-          "t_dtw": -1,
-          "probability": 0.9982506036758423
-        },
-        {
-          "word": "field",
-          "start": 13.39,
-          "end": 13.81,
-          "t_dtw": -1,
-          "probability": 0.9993269443511963
-        },
-        {
-          "word": " was",
-          "start": 13.81,
-          "end": 14.06,
-          "t_dtw": -1,
-          "probability": 0.9990315437316895
-        },
-        {
-          "word": " shot",
-          "start": 14.06,
-          "end": 14.33,
-          "t_dtw": -1,
-          "probability": 0.9995423555374146
-        },
-        {
-          "word": ".",
-          "start": 14.42,
-          "end": 14.65,
-          "t_dtw": -1,
-          "probability": 0.96457839012146
-        },
-        {
           "word": " The",
-          "start": 14.65,
-          "end": 14.88,
+          "start": 14.24,
+          "end": 14.35,
           "t_dtw": -1,
-          "probability": 0.9886852502822876
+          "probability": 0.9970859885215759
         },
         {
           "word": " bullet",
-          "start": 14.9,
-          "end": 15.35,
+          "start": 14.44,
+          "end": 14.84,
           "t_dtw": -1,
-          "probability": 0.990954577922821
+          "probability": 0.8895202279090881
         },
         {
           "word": " missed",
-          "start": 15.88,
-          "end": 15.92,
+          "start": 14.84,
+          "end": 15.26,
           "t_dtw": -1,
-          "probability": 0.996819794178009
+          "probability": 0.9773699045181274
         },
         {
           "word": " every",
-          "start": 15.92,
-          "end": 16.34,
+          "start": 15.27,
+          "end": 15.610000000000001,
           "t_dtw": -1,
-          "probability": 0.9985857605934143
+          "probability": 0.9962647557258606
         },
         {
           "word": " vital",
-          "start": 16.34,
-          "end": 16.64,
+          "start": 15.620000000000001,
+          "end": 15.93,
           "t_dtw": -1,
-          "probability": 0.9984257817268372
+          "probability": 0.9819009900093079
         },
         {
           "word": " organ",
-          "start": 16.94,
-          "end": 17.17,
+          "start": 15.98,
+          "end": 16.19,
           "t_dtw": -1,
-          "probability": 0.9997940063476562
+          "probability": 0.9988143444061279
+        },
+        {
+          "word": ".",
+          "start": 16.32,
+          "end": 16.6,
+          "t_dtw": -1,
+          "probability": 0.9753233194351196
         }
       ],
       "temperature": 0.0,
-      "avg_logprob": -0.0064485869370400906,
-      "no_speech_prob": 3.7114145357008965e-07
+      "avg_logprob": -0.023882627487182617,
+      "no_speech_prob": 1.92883271665778e-05
     },
     {
-      "id": 5,
-      "text": ". It was the infections that killed him.",
-      "start": 17.17,
-      "end": 19.44,
+      "id": 8,
+      "text": " It was the infections that killed him.",
+      "start": 16.6,
+      "end": 19.0,
       "tokens": [
-        13,
         467,
         390,
         264,
@@ -527,78 +573,71 @@
       ],
       "words": [
         {
-          "word": ".",
-          "start": 17.17,
-          "end": 17.52,
-          "t_dtw": -1,
-          "probability": 0.9945142865180969
-        },
-        {
           "word": " It",
-          "start": 17.52,
-          "end": 17.64,
+          "start": 16.63,
+          "end": 16.740000000000002,
           "t_dtw": -1,
-          "probability": 0.8639435172080994
+          "probability": 0.9981325268745422
         },
         {
           "word": " was",
-          "start": 17.64,
-          "end": 17.7,
+          "start": 16.740000000000002,
+          "end": 16.94,
           "t_dtw": -1,
-          "probability": 0.9972153306007385
+          "probability": 0.9997406601905823
         },
         {
           "word": " the",
-          "start": 17.86,
-          "end": 18.03,
+          "start": 16.990000000000002,
+          "end": 17.16,
           "t_dtw": -1,
-          "probability": 0.9846729636192322
+          "probability": 0.9981934428215027
         },
         {
           "word": " infections",
-          "start": 18.19,
-          "end": 18.67,
+          "start": 17.16,
+          "end": 17.86,
           "t_dtw": -1,
-          "probability": 0.9903178215026855
+          "probability": 0.9759318232536316
         },
         {
           "word": " that",
-          "start": 18.73,
-          "end": 18.95,
+          "start": 17.86,
+          "end": 18.14,
           "t_dtw": -1,
-          "probability": 0.957963228225708
+          "probability": 0.9995423555374146
         },
         {
           "word": " killed",
-          "start": 18.97,
-          "end": 19.28,
+          "start": 18.14,
+          "end": 18.38,
           "t_dtw": -1,
-          "probability": 0.9557914137840271
+          "probability": 0.9959266185760498
         },
         {
           "word": " him",
-          "start": 19.28,
-          "end": 19.44,
+          "start": 18.45,
+          "end": 18.76,
           "t_dtw": -1,
-          "probability": 0.9769505262374878
+          "probability": 0.9994546175003052
         },
         {
           "word": ".",
-          "start": 19.44,
-          "end": 19.44,
+          "start": 18.76,
+          "end": 19.0,
           "t_dtw": -1,
-          "probability": 0.9859697222709656
+          "probability": 0.9980449676513672
         }
       ],
       "temperature": 0.0,
-      "avg_logprob": -0.030532265082001686,
-      "no_speech_prob": 0.0
+      "avg_logprob": -0.0039268070831894875,
+      "no_speech_prob": 1.92883271665778e-05
     },
     {
-      "id": 6,
-      "text": " Volunteers laid 3,200 feet of track overnight by torchlight",
-      "start": 19.44,
-      "end": 24.5,
+      "id": 9,
+      "text": " Volunteers laid 3,200 feet of track overnight",
+      "start": 19.0,
+      "end": 22.0,
       "tokens": [
         46698,
         433,
@@ -609,114 +648,93 @@
         3521,
         295,
         2837,
-        13935,
-        538,
-        27822,
-        2764
+        13935
       ],
       "words": [
         {
           "word": " Volunte",
-          "start": 19.490000000000002,
-          "end": 20.02,
+          "start": 19.04,
+          "end": 19.39,
           "t_dtw": -1,
-          "probability": 0.9871900081634521
+          "probability": 0.9473807215690613
         },
         {
           "word": "ers",
-          "start": 20.02,
-          "end": 20.27,
+          "start": 19.39,
+          "end": 19.55,
           "t_dtw": -1,
-          "probability": 0.9946888089179993
+          "probability": 0.9936553835868835
         },
         {
           "word": " laid",
-          "start": 20.27,
-          "end": 20.6,
+          "start": 19.55,
+          "end": 19.77,
           "t_dtw": -1,
-          "probability": 0.9944005012512207
+          "probability": 0.9897607564926147
         },
         {
           "word": " 3",
-          "start": 20.6,
-          "end": 20.85,
+          "start": 19.77,
+          "end": 19.93,
           "t_dtw": -1,
-          "probability": 0.948928713798523
+          "probability": 0.9497109651565552
         },
         {
           "word": ",",
-          "start": 20.85,
-          "end": 20.98,
+          "start": 19.93,
+          "end": 20.04,
           "t_dtw": -1,
-          "probability": 0.9890058636665344
+          "probability": 0.7830010056495667
         },
         {
           "word": "200",
-          "start": 21.06,
-          "end": 21.76,
+          "start": 20.04,
+          "end": 20.54,
           "t_dtw": -1,
-          "probability": 0.9965707659721375
+          "probability": 0.9959436655044556
         },
         {
           "word": " feet",
-          "start": 21.76,
-          "end": 22.0,
+          "start": 20.54,
+          "end": 20.73,
           "t_dtw": -1,
-          "probability": 0.9944801926612854
+          "probability": 0.989806056022644
         },
         {
           "word": " of",
-          "start": 22.25,
-          "end": 22.25,
+          "start": 20.87,
+          "end": 20.95,
           "t_dtw": -1,
-          "probability": 0.9934715628623962
+          "probability": 0.9791368842124939
         },
         {
           "word": " track",
-          "start": 22.53,
-          "end": 22.67,
+          "start": 20.95,
+          "end": 21.32,
           "t_dtw": -1,
-          "probability": 0.9991267919540405
+          "probability": 0.9972857236862183
         },
         {
           "word": " overnight",
-          "start": 22.67,
-          "end": 23.27,
+          "start": 21.69,
+          "end": 22.0,
           "t_dtw": -1,
-          "probability": 0.9939075112342834
-        },
-        {
-          "word": " by",
-          "start": 23.580000000000002,
-          "end": 23.580000000000002,
-          "t_dtw": -1,
-          "probability": 0.928164005279541
-        },
-        {
-          "word": " torch",
-          "start": 23.580000000000002,
-          "end": 23.91,
-          "t_dtw": -1,
-          "probability": 0.9964548349380493
-        },
-        {
-          "word": "light",
-          "start": 24.05,
-          "end": 24.330000000000002,
-          "t_dtw": -1,
-          "probability": 0.9920817017555237
+          "probability": 0.9496892094612122
         }
       ],
       "temperature": 0.0,
-      "avg_logprob": -0.015066366642713547,
-      "no_speech_prob": 3.7114145357008965e-07
+      "avg_logprob": -0.04151482880115509,
+      "no_speech_prob": 1.92883271665778e-05
     },
     {
-      "id": 7,
-      "text": " to bring a dying president to the sea.",
-      "start": 24.5,
-      "end": 26.400000000000002,
+      "id": 10,
+      "text": " by torch light to bring a dying president to the sea.",
+      "start": 22.0,
+      "end": 25.0,
       "tokens": [
+        538,
+        27822,
+        1442,
         281,
         1565,
         257,
@@ -729,272 +747,229 @@
       ],
       "words": [
         {
-          "word": " to",
-          "start": 24.5,
-          "end": 24.59,
+          "word": " by",
+          "start": 22.04,
+          "end": 22.150000000000002,
           "t_dtw": -1,
-          "probability": 0.9360184073448181
+          "probability": 0.9995652437210083
+        },
+        {
+          "word": " torch",
+          "start": 22.240000000000002,
+          "end": 22.55,
+          "t_dtw": -1,
+          "probability": 0.8486096858978271
+        },
+        {
+          "word": " light",
+          "start": 22.55,
+          "end": 22.96,
+          "t_dtw": -1,
+          "probability": 0.5149915814399719
+        },
+        {
+          "word": " to",
+          "start": 22.96,
+          "end": 23.080000000000002,
+          "t_dtw": -1,
+          "probability": 0.8015479445457458
         },
         {
           "word": " bring",
-          "start": 24.830000000000002,
-          "end": 24.88,
+          "start": 23.080000000000002,
+          "end": 23.34,
           "t_dtw": -1,
-          "probability": 0.9897720813751221
+          "probability": 0.9990200996398926
         },
         {
           "word": " a",
-          "start": 24.88,
-          "end": 25.04,
+          "start": 23.400000000000002,
+          "end": 23.44,
           "t_dtw": -1,
-          "probability": 0.9773680567741394
+          "probability": 0.996587872505188
         },
         {
           "word": " dying",
-          "start": 25.04,
-          "end": 25.3,
+          "start": 23.44,
+          "end": 23.73,
           "t_dtw": -1,
-          "probability": 0.9778211116790771
+          "probability": 0.9907088875770569
         },
         {
           "word": " president",
-          "start": 25.37,
-          "end": 25.92,
+          "start": 23.73,
+          "end": 23.990000000000002,
           "t_dtw": -1,
-          "probability": 0.9504847526550293
+          "probability": 0.9196596145629883
         },
         {
           "word": " to",
-          "start": 25.92,
-          "end": 25.93,
+          "start": 24.240000000000002,
+          "end": 24.41,
           "t_dtw": -1,
-          "probability": 0.9018373489379883
+          "probability": 0.9987419247627258
         },
         {
           "word": " the",
-          "start": 26.04,
-          "end": 26.080000000000002,
+          "start": 24.41,
+          "end": 24.59,
           "t_dtw": -1,
-          "probability": 0.9065974354743958
+          "probability": 0.998631477355957
         },
         {
           "word": " sea",
-          "start": 26.080000000000002,
-          "end": 26.19,
+          "start": 24.69,
+          "end": 24.76,
           "t_dtw": -1,
-          "probability": 0.9027701616287231
+          "probability": 0.9925984144210815
         },
         {
           "word": ".",
-          "start": 26.23,
-          "end": 26.400000000000002,
+          "start": 24.77,
+          "end": 25.0,
           "t_dtw": -1,
-          "probability": 0.9886022806167603
+          "probability": 0.9992106556892395
         }
       ],
       "temperature": 0.0,
-      "avg_logprob": -0.048763275146484375,
-      "no_speech_prob": 0.0
+      "avg_logprob": -0.08905674517154694,
+      "no_speech_prob": 1.92883271665778e-05
     },
     {
-      "id": 8,
-      "text": " The Elbrin hotel sent sandwiches. Today, a small tea house",
-      "start": 26.96,
-      "end": 31.57,
+      "id": 11,
+      "text": " Today, a small tea house still stands on the church grounds",
+      "start": 25.0,
+      "end": 29.68,
       "tokens": [
-        440,
-        2699,
-        1443,
-        259,
-        7622,
-        2279,
-        29022,
-        13,
         2692,
         11,
         257,
         1359,
         5817,
-        1782
-      ],
-      "words": [
-        {
-          "word": " The",
-          "start": 27.01,
-          "end": 27.22,
-          "t_dtw": -1,
-          "probability": 0.9935170412063599
-        },
-        {
-          "word": " El",
-          "start": 27.22,
-          "end": 27.39,
-          "t_dtw": -1,
-          "probability": 0.9892114996910095
-        },
-        {
-          "word": "br",
-          "start": 27.39,
-          "end": 27.560000000000002,
-          "t_dtw": -1,
-          "probability": 0.991064190864563
-        },
-        {
-          "word": "in",
-          "start": 27.560000000000002,
-          "end": 27.71,
-          "t_dtw": -1,
-          "probability": 0.9924072027206421
-        },
-        {
-          "word": " hotel",
-          "start": 27.76,
-          "end": 28.16,
-          "t_dtw": -1,
-          "probability": 0.7877345681190491
-        },
-        {
-          "word": " sent",
-          "start": 28.16,
-          "end": 28.490000000000002,
-          "t_dtw": -1,
-          "probability": 0.9832916259765625
-        },
-        {
-          "word": " sandwiches",
-          "start": 28.580000000000002,
-          "end": 29.32,
-          "t_dtw": -1,
-          "probability": 0.9958791136741638
-        },
-        {
-          "word": ".",
-          "start": 29.37,
-          "end": 29.52,
-          "t_dtw": -1,
-          "probability": 0.9852591156959534
-        },
-        {
-          "word": " Today",
-          "start": 30.04,
-          "end": 30.07,
-          "t_dtw": -1,
-          "probability": 0.9934033751487732
-        },
-        {
-          "word": ",",
-          "start": 30.07,
-          "end": 30.240000000000002,
-          "t_dtw": -1,
-          "probability": 0.61956787109375
-        },
-        {
-          "word": " a",
-          "start": 30.240000000000002,
-          "end": 30.32,
-          "t_dtw": -1,
-          "probability": 0.9851689338684082
-        },
-        {
-          "word": " small",
-          "start": 30.32,
-          "end": 30.75,
-          "t_dtw": -1,
-          "probability": 0.99826580286026
-        },
-        {
-          "word": " tea",
-          "start": 30.75,
-          "end": 30.810000000000002,
-          "t_dtw": -1,
-          "probability": 0.702629029750824
-        },
-        {
-          "word": " house",
-          "start": 31.1,
-          "end": 31.44,
-          "t_dtw": -1,
-          "probability": 0.9744828343391418
-        }
-      ],
-      "temperature": 0.0,
-      "avg_logprob": -0.07927843928337097,
-      "no_speech_prob": 1.6657907053740928e-07
-    },
-    {
-      "id": 9,
-      "text": " still stands on the church grounds,",
-      "start": 31.57,
-      "end": 33.6,
-      "tokens": [
+        1782,
         920,
         7382,
         322,
         264,
         4128,
-        19196,
+        19196
+      ],
+      "words": [
+        {
+          "word": " Today",
+          "start": 25.04,
+          "end": 25.61,
+          "t_dtw": -1,
+          "probability": 0.9960139989852905
+        },
+        {
+          "word": ",",
+          "start": 25.61,
+          "end": 25.830000000000002,
+          "t_dtw": -1,
+          "probability": 0.8092873096466064
+        },
+        {
+          "word": " a",
+          "start": 25.92,
+          "end": 25.96,
+          "t_dtw": -1,
+          "probability": 0.9939947128295898
+        },
+        {
+          "word": " small",
+          "start": 25.97,
+          "end": 26.560000000000002,
+          "t_dtw": -1,
+          "probability": 0.9983648061752319
+        },
+        {
+          "word": " tea",
+          "start": 26.57,
+          "end": 26.78,
+          "t_dtw": -1,
+          "probability": 0.4707089960575104
+        },
+        {
+          "word": " house",
+          "start": 26.85,
+          "end": 27.59,
+          "t_dtw": -1,
+          "probability": 0.965565025806427
+        },
+        {
+          "word": " still",
+          "start": 27.69,
+          "end": 27.92,
+          "t_dtw": -1,
+          "probability": 0.9832578897476196
+        },
+        {
+          "word": " stands",
+          "start": 27.92,
+          "end": 28.3,
+          "t_dtw": -1,
+          "probability": 0.9970251321792603
+        },
+        {
+          "word": " on",
+          "start": 28.3,
+          "end": 28.36,
+          "t_dtw": -1,
+          "probability": 0.8936116695404053
+        },
+        {
+          "word": " the",
+          "start": 28.47,
+          "end": 28.580000000000002,
+          "t_dtw": -1,
+          "probability": 0.9958277940750122
+        },
+        {
+          "word": " church",
+          "start": 28.77,
+          "end": 29.14,
+          "t_dtw": -1,
+          "probability": 0.986678957939148
+        },
+        {
+          "word": " grounds",
+          "start": 29.14,
+          "end": 29.38,
+          "t_dtw": -1,
+          "probability": 0.9874621629714966
+        }
+      ],
+      "temperature": 0.0,
+      "avg_logprob": -0.09786399453878403,
+      "no_speech_prob": 1.92883271665778e-05
+    },
+    {
+      "id": 12,
+      "text": ",",
+      "start": 29.68,
+      "end": 29.68,
+      "tokens": [
         11
       ],
       "words": [
         {
-          "word": " still",
-          "start": 31.57,
-          "end": 31.810000000000002,
-          "t_dtw": -1,
-          "probability": 0.9616245627403259
-        },
-        {
-          "word": " stands",
-          "start": 31.810000000000002,
-          "end": 31.86,
-          "t_dtw": -1,
-          "probability": 0.9952866435050964
-        },
-        {
-          "word": " on",
-          "start": 32.24,
-          "end": 32.24,
-          "t_dtw": -1,
-          "probability": 0.9866582751274109
-        },
-        {
-          "word": " the",
-          "start": 32.35,
-          "end": 32.4,
-          "t_dtw": -1,
-          "probability": 0.9753009676933289
-        },
-        {
-          "word": " church",
-          "start": 32.4,
-          "end": 32.72,
-          "t_dtw": -1,
-          "probability": 0.9352171421051025
-        },
-        {
-          "word": " grounds",
-          "start": 32.72,
-          "end": 33.6,
-          "t_dtw": -1,
-          "probability": 0.9236148595809937
-        },
-        {
           "word": ",",
-          "start": 33.6,
-          "end": 33.6,
+          "start": 29.68,
+          "end": 29.68,
           "t_dtw": -1,
-          "probability": 0.43471482396125793
+          "probability": 0.5132656693458557
         }
       ],
       "temperature": 0.0,
-      "avg_logprob": -0.13272476196289062,
+      "avg_logprob": -0.3334808349609375,
       "no_speech_prob": 0.0
     },
     {
-      "id": 10,
-      "text": " built from those very railroad ties. The original red paint",
-      "start": 33.6,
-      "end": 37.25,
+      "id": 13,
+      "text": " built from those very railroad ties.",
+      "start": 29.68,
+      "end": 32.480000000000004,
       "tokens": [
         3094,
         490,
@@ -1002,371 +977,454 @@
         588,
         30073,
         14039,
-        13,
-        440,
-        3380,
-        2182,
-        4225
+        13
       ],
       "words": [
         {
           "word": " built",
-          "start": 33.65,
-          "end": 33.86,
+          "start": 29.72,
+          "end": 30.1,
           "t_dtw": -1,
-          "probability": 0.9969985485076904
+          "probability": 0.9985019564628601
         },
         {
           "word": " from",
-          "start": 33.97,
-          "end": 34.11,
+          "start": 30.1,
+          "end": 30.43,
           "t_dtw": -1,
-          "probability": 0.9964585900306702
+          "probability": 0.9933465123176575
         },
         {
           "word": " those",
-          "start": 34.17,
-          "end": 34.44,
+          "start": 30.43,
+          "end": 30.85,
           "t_dtw": -1,
-          "probability": 0.9900401830673218
+          "probability": 0.9931267499923706
         },
         {
           "word": " very",
-          "start": 34.44,
-          "end": 34.68,
+          "start": 30.85,
+          "end": 31.18,
           "t_dtw": -1,
-          "probability": 0.9833666682243347
+          "probability": 0.988425076007843
         },
         {
           "word": " railroad",
-          "start": 34.68,
-          "end": 35.13,
+          "start": 31.18,
+          "end": 31.46,
           "t_dtw": -1,
-          "probability": 0.9770530462265015
+          "probability": 0.9617878198623657
         },
         {
           "word": " ties",
-          "start": 35.22,
-          "end": 35.4,
+          "start": 31.8,
+          "end": 32.17,
           "t_dtw": -1,
-          "probability": 0.9654545783996582
+          "probability": 0.9410611391067505
         },
         {
           "word": ".",
-          "start": 35.4,
-          "end": 35.6,
+          "start": 32.37,
+          "end": 32.480000000000004,
           "t_dtw": -1,
-          "probability": 0.9947798848152161
-        },
-        {
-          "word": " The",
-          "start": 35.6,
-          "end": 35.86,
-          "t_dtw": -1,
-          "probability": 0.9571194648742676
-        },
-        {
-          "word": " original",
-          "start": 35.86,
-          "end": 36.160000000000004,
-          "t_dtw": -1,
-          "probability": 0.9959836006164551
-        },
-        {
-          "word": " red",
-          "start": 36.69,
-          "end": 36.83,
-          "t_dtw": -1,
-          "probability": 0.9789445400238037
-        },
-        {
-          "word": " paint",
-          "start": 36.83,
-          "end": 37.25,
-          "t_dtw": -1,
-          "probability": 0.9968045949935913
+          "probability": 0.9976605176925659
         }
       ],
       "temperature": 0.0,
-      "avg_logprob": -0.01538848876953125,
-      "no_speech_prob": 1.6657907053740928e-07
+      "avg_logprob": -0.014307234436273575,
+      "no_speech_prob": 3.211973762518028e-07
     },
     {
-      "id": 11,
-      "text": " has faded to pink after 140 years of",
-      "start": 37.25,
-      "end": 40.4,
+      "id": 14,
+      "text": " The original red paint has faded to pink",
+      "start": 32.480000000000004,
+      "end": 34.56,
       "tokens": [
+        440,
+        3380,
+        2182,
+        4225,
         575,
         36352,
         281,
-        7022,
-        934,
-        21548,
-        924,
-        295
+        7022
       ],
       "words": [
         {
-          "word": " has",
-          "start": 37.25,
-          "end": 37.44,
+          "word": " The",
+          "start": 32.52,
+          "end": 32.63,
           "t_dtw": -1,
-          "probability": 0.9750108122825623
+          "probability": 0.9987305402755737
+        },
+        {
+          "word": " original",
+          "start": 32.72,
+          "end": 33.12,
+          "t_dtw": -1,
+          "probability": 0.9949924349784851
+        },
+        {
+          "word": " red",
+          "start": 33.12,
+          "end": 33.29,
+          "t_dtw": -1,
+          "probability": 0.9860374331474304
+        },
+        {
+          "word": " paint",
+          "start": 33.29,
+          "end": 33.58,
+          "t_dtw": -1,
+          "probability": 0.9956378936767578
+        },
+        {
+          "word": " has",
+          "start": 33.6,
+          "end": 33.77,
+          "t_dtw": -1,
+          "probability": 0.9411024451255798
         },
         {
           "word": " faded",
-          "start": 37.74,
-          "end": 38.0,
+          "start": 33.77,
+          "end": 34.08,
           "t_dtw": -1,
-          "probability": 0.8863852620124817
+          "probability": 0.9740777015686035
         },
         {
           "word": " to",
-          "start": 38.0,
-          "end": 38.08,
+          "start": 34.08,
+          "end": 34.230000000000004,
           "t_dtw": -1,
-          "probability": 0.983359158039093
+          "probability": 0.9740517139434814
         },
         {
           "word": " pink",
-          "start": 38.21,
-          "end": 38.49,
+          "start": 34.230000000000004,
+          "end": 34.47,
           "t_dtw": -1,
-          "probability": 0.9684404730796814
-        },
-        {
-          "word": " after",
-          "start": 38.99,
-          "end": 39.04,
-          "t_dtw": -1,
-          "probability": 0.8954953551292419
-        },
-        {
-          "word": " 140",
-          "start": 39.04,
-          "end": 40.0,
-          "t_dtw": -1,
-          "probability": 0.6822139620780945
-        },
-        {
-          "word": " years",
-          "start": 40.0,
-          "end": 40.24,
-          "t_dtw": -1,
-          "probability": 0.7350621223449707
-        },
-        {
-          "word": " of",
-          "start": 40.24,
-          "end": 40.35,
-          "t_dtw": -1,
-          "probability": 0.6407437920570374
+          "probability": 0.985608696937561
         }
       ],
       "temperature": 0.0,
-      "avg_logprob": -0.1600528359413147,
-      "no_speech_prob": 0.0
+      "avg_logprob": -0.016941918060183525,
+      "no_speech_prob": 3.211973762518028e-07
     },
     {
-      "id": 12,
-      "text": " shore weather. Woodrow Wilson ran his entire campaign from",
-      "start": 40.4,
-      "end": 44.04,
+      "id": 15,
+      "text": " after 140 years of shore weather.",
+      "start": 34.56,
+      "end": 37.72,
       "tokens": [
+        934,
+        21548,
+        924,
+        295,
         17805,
         5503,
-        13,
+        13
+      ],
+      "words": [
+        {
+          "word": " after",
+          "start": 34.6,
+          "end": 34.99,
+          "t_dtw": -1,
+          "probability": 0.9994508624076843
+        },
+        {
+          "word": " 140",
+          "start": 34.99,
+          "end": 35.77,
+          "t_dtw": -1,
+          "probability": 0.8628171682357788
+        },
+        {
+          "word": " years",
+          "start": 35.77,
+          "end": 36.2,
+          "t_dtw": -1,
+          "probability": 0.9981629848480225
+        },
+        {
+          "word": " of",
+          "start": 36.2,
+          "end": 36.34,
+          "t_dtw": -1,
+          "probability": 0.9978127479553223
+        },
+        {
+          "word": " shore",
+          "start": 36.39,
+          "end": 36.550000000000004,
+          "t_dtw": -1,
+          "probability": 0.9419482946395874
+        },
+        {
+          "word": " weather",
+          "start": 37.24,
+          "end": 37.410000000000004,
+          "t_dtw": -1,
+          "probability": 0.76039719581604
+        },
+        {
+          "word": ".",
+          "start": 37.410000000000004,
+          "end": 37.72,
+          "t_dtw": -1,
+          "probability": 0.9976262450218201
+        }
+      ],
+      "temperature": 0.0,
+      "avg_logprob": -0.061028242111206055,
+      "no_speech_prob": 3.211973762518028e-07
+    },
+    {
+      "id": 16,
+      "text": " Woodrow Wilson ran his entire campaign",
+      "start": 37.72,
+      "end": 39.800000000000004,
+      "tokens": [
         11558,
         1892,
         15388,
         5872,
         702,
         2302,
-        5129,
-        490
+        5129
       ],
       "words": [
         {
-          "word": " shore",
-          "start": 40.45,
-          "end": 40.660000000000004,
-          "t_dtw": -1,
-          "probability": 0.8338660001754761
-        },
-        {
-          "word": " weather",
-          "start": 40.77,
-          "end": 41.24,
-          "t_dtw": -1,
-          "probability": 0.8933185338973999
-        },
-        {
-          "word": ".",
-          "start": 41.24,
-          "end": 41.45,
-          "t_dtw": -1,
-          "probability": 0.9865716695785522
-        },
-        {
           "word": " Wood",
-          "start": 41.45,
-          "end": 41.7,
+          "start": 37.76,
+          "end": 37.97,
           "t_dtw": -1,
-          "probability": 0.9995785355567932
+          "probability": 0.9844269752502441
         },
         {
           "word": "row",
-          "start": 41.77,
-          "end": 41.93,
+          "start": 37.97,
+          "end": 38.15,
           "t_dtw": -1,
-          "probability": 0.9986409544944763
+          "probability": 0.9887182712554932
         },
         {
           "word": " Wilson",
-          "start": 42.02,
-          "end": 42.32,
+          "start": 38.15,
+          "end": 38.52,
           "t_dtw": -1,
-          "probability": 0.9977099895477295
+          "probability": 0.9949449896812439
         },
         {
           "word": " ran",
-          "start": 42.38,
-          "end": 42.57,
+          "start": 38.52,
+          "end": 38.7,
           "t_dtw": -1,
-          "probability": 0.9969680905342102
+          "probability": 0.9987381100654602
         },
         {
           "word": " his",
-          "start": 42.57,
-          "end": 42.76,
+          "start": 38.7,
+          "end": 38.88,
           "t_dtw": -1,
-          "probability": 0.9962685704231262
+          "probability": 0.9969642758369446
         },
         {
           "word": " entire",
-          "start": 42.77,
-          "end": 42.96,
+          "start": 38.88,
+          "end": 39.25,
           "t_dtw": -1,
-          "probability": 0.9992030262947083
+          "probability": 0.999580442905426
         },
         {
           "word": " campaign",
-          "start": 43.49,
-          "end": 43.76,
+          "start": 39.25,
+          "end": 39.5,
           "t_dtw": -1,
-          "probability": 0.9985209703445435
-        },
-        {
-          "word": " from",
-          "start": 43.76,
-          "end": 44.04,
-          "t_dtw": -1,
-          "probability": 0.9967437386512756
+          "probability": 0.9935852885246277
         }
       ],
       "temperature": 0.0,
-      "avg_logprob": -0.029491078108549118,
-      "no_speech_prob": 1.6657907053740928e-07
+      "avg_logprob": -0.0054084062576293945,
+      "no_speech_prob": 3.211973762518028e-07
     },
     {
-      "id": 13,
-      "text": " a 52 room beach house. His slogan,",
-      "start": 44.04,
-      "end": 47.28,
+      "id": 17,
+      "text": " from a 52 room beach house.",
+      "start": 39.800000000000004,
+      "end": 41.92,
       "tokens": [
+        490,
         257,
         18079,
         1808,
         7534,
         1782,
-        13,
-        2812,
-        33052,
-        11
+        13
       ],
       "words": [
         {
-          "word": " a",
-          "start": 44.04,
-          "end": 44.11,
+          "word": " from",
+          "start": 39.84,
+          "end": 40.1,
           "t_dtw": -1,
-          "probability": 0.9992526173591614
+          "probability": 0.9986124038696289
+        },
+        {
+          "word": " a",
+          "start": 40.1,
+          "end": 40.14,
+          "t_dtw": -1,
+          "probability": 0.999058187007904
         },
         {
           "word": " 52",
-          "start": 44.11,
-          "end": 44.24,
+          "start": 40.18,
+          "end": 40.62,
           "t_dtw": -1,
-          "probability": 0.9885985255241394
+          "probability": 0.9749197363853455
         },
         {
           "word": " room",
-          "start": 44.54,
-          "end": 44.81,
+          "start": 40.62,
+          "end": 40.9,
           "t_dtw": -1,
-          "probability": 0.9935094714164734
+          "probability": 0.5860090851783752
         },
         {
           "word": " beach",
-          "start": 44.81,
-          "end": 45.15,
+          "start": 40.92,
+          "end": 41.29,
           "t_dtw": -1,
-          "probability": 0.9965726733207703
+          "probability": 0.981137216091156
         },
         {
           "word": " house",
-          "start": 45.15,
-          "end": 45.300000000000004,
+          "start": 41.29,
+          "end": 41.56,
           "t_dtw": -1,
-          "probability": 0.9956986904144287
+          "probability": 0.9522467255592346
         },
         {
           "word": ".",
-          "start": 45.76,
-          "end": 45.76,
+          "start": 41.65,
+          "end": 41.84,
           "t_dtw": -1,
-          "probability": 0.9891228675842285
-        },
-        {
-          "word": " His",
-          "start": 45.79,
-          "end": 46.550000000000004,
-          "t_dtw": -1,
-          "probability": 0.6733303070068359
-        },
-        {
-          "word": " slogan",
-          "start": 46.57,
-          "end": 47.28,
-          "t_dtw": -1,
-          "probability": 0.9786962270736694
-        },
-        {
-          "word": ",",
-          "start": 47.28,
-          "end": 47.28,
-          "t_dtw": -1,
-          "probability": 0.9248911738395691
+          "probability": 0.9348015785217285
         }
       ],
       "temperature": 0.0,
-      "avg_logprob": -0.053253937512636185,
-      "no_speech_prob": 0.0
+      "avg_logprob": -0.08719325065612793,
+      "no_speech_prob": 3.211973762518028e-07
     },
     {
-      "id": 14,
-      "text": " he kept us out of war. Five months later, he asked Congress",
-      "start": 47.28,
-      "end": 50.93,
+      "id": 18,
+      "text": " His slogan, \"He kept us out of war.\"",
+      "start": 41.92,
+      "end": 45.12,
       "tokens": [
-        415,
+        2812,
+        33052,
+        11,
+        503,
+        5205,
         4305,
         505,
         484,
         295,
         1516,
-        13,
+        889
+      ],
+      "words": [
+        {
+          "word": " His",
+          "start": 41.96,
+          "end": 42.18,
+          "t_dtw": -1,
+          "probability": 0.99104905128479
+        },
+        {
+          "word": " slogan",
+          "start": 42.18,
+          "end": 42.7,
+          "t_dtw": -1,
+          "probability": 0.9915047287940979
+        },
+        {
+          "word": ",",
+          "start": 42.7,
+          "end": 42.88,
+          "t_dtw": -1,
+          "probability": 0.8707593679428101
+        },
+        {
+          "word": " \"",
+          "start": 42.88,
+          "end": 42.980000000000004,
+          "t_dtw": -1,
+          "probability": 0.5915747880935669
+        },
+        {
+          "word": "He",
+          "start": 42.980000000000004,
+          "end": 43.19,
+          "t_dtw": -1,
+          "probability": 0.9714449048042297
+        },
+        {
+          "word": " kept",
+          "start": 43.19,
+          "end": 43.61,
+          "t_dtw": -1,
+          "probability": 0.9562518000602722
+        },
+        {
+          "word": " us",
+          "start": 43.61,
+          "end": 43.81,
+          "t_dtw": -1,
+          "probability": 0.9990086555480957
+        },
+        {
+          "word": " out",
+          "start": 43.81,
+          "end": 44.13,
+          "t_dtw": -1,
+          "probability": 0.999340295791626
+        },
+        {
+          "word": " of",
+          "start": 44.13,
+          "end": 44.34,
+          "t_dtw": -1,
+          "probability": 0.9993174076080322
+        },
+        {
+          "word": " war",
+          "start": 44.6,
+          "end": 44.67,
+          "t_dtw": -1,
+          "probability": 0.9955695271492004
+        },
+        {
+          "word": ".\"",
+          "start": 44.67,
+          "end": 45.11,
+          "t_dtw": -1,
+          "probability": 0.9526172876358032
+        }
+      ],
+      "temperature": 0.0,
+      "avg_logprob": -0.06749176979064941,
+      "no_speech_prob": 3.211973762518028e-07
+    },
+    {
+      "id": 19,
+      "text": " Five months later, he asked Congress",
+      "start": 45.12,
+      "end": 46.76,
+      "tokens": [
         9436,
         2493,
         1780,
@@ -1377,157 +1435,294 @@
       ],
       "words": [
         {
-          "word": " he",
-          "start": 47.33,
-          "end": 47.42,
-          "t_dtw": -1,
-          "probability": 0.8070737719535828
-        },
-        {
-          "word": " kept",
-          "start": 47.42,
-          "end": 47.71,
-          "t_dtw": -1,
-          "probability": 0.9969186782836914
-        },
-        {
-          "word": " us",
-          "start": 47.71,
-          "end": 47.79,
-          "t_dtw": -1,
-          "probability": 0.9986504912376404
-        },
-        {
-          "word": " out",
-          "start": 47.85,
-          "end": 48.03,
-          "t_dtw": -1,
-          "probability": 0.9993135929107666
-        },
-        {
-          "word": " of",
-          "start": 48.08,
-          "end": 48.21,
-          "t_dtw": -1,
-          "probability": 0.9995499849319458
-        },
-        {
-          "word": " war",
-          "start": 48.21,
-          "end": 48.42,
-          "t_dtw": -1,
-          "probability": 0.9964510202407837
-        },
-        {
-          "word": ".",
-          "start": 48.42,
-          "end": 48.58,
-          "t_dtw": -1,
-          "probability": 0.9789202809333801
-        },
-        {
           "word": " Five",
-          "start": 48.660000000000004,
-          "end": 48.93,
+          "start": 45.160000000000004,
+          "end": 45.27,
           "t_dtw": -1,
-          "probability": 0.9895191192626953
+          "probability": 0.976736307144165
         },
         {
           "word": " months",
-          "start": 48.93,
-          "end": 49.36,
+          "start": 45.36,
+          "end": 45.6,
           "t_dtw": -1,
-          "probability": 0.9985895752906799
+          "probability": 0.9987229108810425
         },
         {
           "word": " later",
-          "start": 49.36,
-          "end": 49.660000000000004,
+          "start": 45.6,
+          "end": 45.84,
           "t_dtw": -1,
-          "probability": 0.9996529221534729
+          "probability": 0.9996033310890198
         },
         {
           "word": ",",
-          "start": 49.71,
-          "end": 49.84,
+          "start": 45.84,
+          "end": 45.95,
           "t_dtw": -1,
-          "probability": 0.9087198972702026
+          "probability": 0.7244006991386414
         },
         {
           "word": " he",
-          "start": 50.0,
-          "end": 50.0,
+          "start": 45.96,
+          "end": 46.06,
           "t_dtw": -1,
-          "probability": 0.993926465511322
+          "probability": 0.9537663459777832
         },
         {
           "word": " asked",
-          "start": 50.36,
-          "end": 50.36,
+          "start": 46.06,
+          "end": 46.32,
           "t_dtw": -1,
-          "probability": 0.9944460391998291
+          "probability": 0.9965536594390869
         },
         {
           "word": " Congress",
-          "start": 50.370000000000005,
-          "end": 50.93,
+          "start": 46.32,
+          "end": 46.76,
           "t_dtw": -1,
-          "probability": 0.9940420985221863
+          "probability": 0.9769188761711121
         }
       ],
       "temperature": 0.0,
-      "avg_logprob": -0.026458876207470894,
-      "no_speech_prob": 1.6657907053740928e-07
+      "avg_logprob": -0.05272054672241211,
+      "no_speech_prob": 3.211973762518028e-07
     },
     {
-      "id": 15,
-      "text": " to declare war.",
-      "start": 50.93,
-      "end": 51.92,
+      "id": 20,
+      "text": " to declare war on Germany.",
+      "start": 46.76,
+      "end": 48.68,
       "tokens": [
         281,
         19710,
         1516,
+        322,
+        7244,
         13
       ],
       "words": [
         {
           "word": " to",
-          "start": 50.93,
-          "end": 51.08,
+          "start": 46.800000000000004,
+          "end": 46.910000000000004,
           "t_dtw": -1,
-          "probability": 0.998482882976532
+          "probability": 0.9992602467536926
         },
         {
           "word": " declare",
-          "start": 51.08,
-          "end": 51.68,
+          "start": 47.0,
+          "end": 47.47,
           "t_dtw": -1,
-          "probability": 0.9974055886268616
+          "probability": 0.9872926473617554
         },
         {
           "word": " war",
-          "start": 51.68,
-          "end": 51.92,
+          "start": 47.47,
+          "end": 47.71,
           "t_dtw": -1,
-          "probability": 0.9358898401260376
+          "probability": 0.9937331080436707
+        },
+        {
+          "word": " on",
+          "start": 47.71,
+          "end": 47.86,
+          "t_dtw": -1,
+          "probability": 0.9989553093910217
+        },
+        {
+          "word": " Germany",
+          "start": 47.88,
+          "end": 48.410000000000004,
+          "t_dtw": -1,
+          "probability": 0.9981096982955933
         },
         {
           "word": ".",
-          "start": 51.92,
-          "end": 51.92,
+          "start": 48.410000000000004,
+          "end": 48.67,
           "t_dtw": -1,
-          "probability": 0.41096630692481995
+          "probability": 0.9738622307777405
         }
       ],
       "temperature": 0.0,
-      "avg_logprob": -0.19192352890968323,
-      "no_speech_prob": 0.0
+      "avg_logprob": -0.007034029345959425,
+      "no_speech_prob": 3.211973762518028e-07
+    },
+    {
+      "id": 21,
+      "text": " Three of the seven, almost certainly fiction.",
+      "start": 48.68,
+      "end": 51.6,
+      "tokens": [
+        6244,
+        295,
+        264,
+        3407,
+        11,
+        1920,
+        3297,
+        13266,
+        13
+      ],
+      "words": [
+        {
+          "word": " Three",
+          "start": 48.72,
+          "end": 49.02,
+          "t_dtw": -1,
+          "probability": 0.9870986938476562
+        },
+        {
+          "word": " of",
+          "start": 49.06,
+          "end": 49.17,
+          "t_dtw": -1,
+          "probability": 0.9986733794212341
+        },
+        {
+          "word": " the",
+          "start": 49.17,
+          "end": 49.38,
+          "t_dtw": -1,
+          "probability": 0.9978470206260681
+        },
+        {
+          "word": " seven",
+          "start": 49.38,
+          "end": 49.71,
+          "t_dtw": -1,
+          "probability": 0.9875431656837463
+        },
+        {
+          "word": ",",
+          "start": 49.730000000000004,
+          "end": 49.88,
+          "t_dtw": -1,
+          "probability": 0.6133315563201904
+        },
+        {
+          "word": " almost",
+          "start": 49.88,
+          "end": 50.33,
+          "t_dtw": -1,
+          "probability": 0.9684644937515259
+        },
+        {
+          "word": " certainly",
+          "start": 50.33,
+          "end": 50.660000000000004,
+          "t_dtw": -1,
+          "probability": 0.9969757199287415
+        },
+        {
+          "word": " fiction",
+          "start": 51.370000000000005,
+          "end": 51.6,
+          "t_dtw": -1,
+          "probability": 0.9805441498756409
+        },
+        {
+          "word": ".",
+          "start": 51.6,
+          "end": 51.6,
+          "t_dtw": -1,
+          "probability": 0.6168299317359924
+        }
+      ],
+      "temperature": 0.0,
+      "avg_logprob": -0.10557346045970917,
+      "no_speech_prob": 3.211973762518028e-07
+    },
+    {
+      "id": 22,
+      "text": " But the stories they left behind are real.",
+      "start": 51.6,
+      "end": 53.76,
+      "tokens": [
+        583,
+        264,
+        3676,
+        436,
+        1411,
+        2261,
+        366,
+        957,
+        13
+      ],
+      "words": [
+        {
+          "word": " But",
+          "start": 51.64,
+          "end": 51.75,
+          "t_dtw": -1,
+          "probability": 0.9965042471885681
+        },
+        {
+          "word": " the",
+          "start": 51.84,
+          "end": 51.93,
+          "t_dtw": -1,
+          "probability": 0.9937482476234436
+        },
+        {
+          "word": " stories",
+          "start": 51.94,
+          "end": 52.33,
+          "t_dtw": -1,
+          "probability": 0.9984028935432434
+        },
+        {
+          "word": " they",
+          "start": 52.33,
+          "end": 52.56,
+          "t_dtw": -1,
+          "probability": 0.9917902946472168
+        },
+        {
+          "word": " left",
+          "start": 52.57,
+          "end": 52.800000000000004,
+          "t_dtw": -1,
+          "probability": 0.9990772604942322
+        },
+        {
+          "word": " behind",
+          "start": 52.800000000000004,
+          "end": 53.15,
+          "t_dtw": -1,
+          "probability": 0.9995842576026917
+        },
+        {
+          "word": " are",
+          "start": 53.15,
+          "end": 53.32,
+          "t_dtw": -1,
+          "probability": 0.9921687245368958
+        },
+        {
+          "word": " real",
+          "start": 53.32,
+          "end": 53.54,
+          "t_dtw": -1,
+          "probability": 0.9985666871070862
+        },
+        {
+          "word": ".",
+          "start": 53.54,
+          "end": 53.76,
+          "t_dtw": -1,
+          "probability": 0.9924677610397339
+        }
+      ],
+      "temperature": 0.0,
+      "avg_logprob": -0.0037811279762536287,
+      "no_speech_prob": 3.211973762518028e-07
     }
   ],
   "detected_language": "english",
-  "detected_language_probability": 0.9997488260269165,
+  "detected_language_probability": 0.9997473359107971,
   "language_probabilities": {
-    "en": 0.9997488260269165
+    "en": 0.9997473359107971
   }
 }

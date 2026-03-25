@@ -5,6 +5,7 @@ file '/Users/nickd/Workspaces/AgentArchitect/teams/youtube-content/projects/seve
 file '/Users/nickd/Workspaces/AgentArchitect/teams/youtube-content/projects/seven-presidents-park/shorts/trailer/scene-05.mp4'
 file '/Users/nickd/Workspaces/AgentArchitect/teams/youtube-content/projects/seven-presidents-park/shorts/trailer/scene-06.mp4'
 file '/Users/nickd/Workspaces/AgentArchitect/teams/youtube-content/projects/seven-presidents-park/shorts/trailer/scene-07.mp4'
+file '/Users/nickd/Workspaces/AgentArchitect/teams/youtube-content/projects/seven-presidents-park/shorts/trailer/scene-07b.mp4'
 file '/Users/nickd/Workspaces/AgentArchitect/teams/youtube-content/projects/seven-presidents-park/shorts/trailer/scene-08.mp4'
 file '/Users/nickd/Workspaces/AgentArchitect/teams/youtube-content/projects/seven-presidents-park/shorts/trailer/scene-09.mp4'
 file '/Users/nickd/Workspaces/AgentArchitect/teams/youtube-content/projects/seven-presidents-park/shorts/trailer/scene-10.mp4'

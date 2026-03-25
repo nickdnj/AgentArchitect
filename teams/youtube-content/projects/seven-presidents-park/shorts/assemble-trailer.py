@@ -47,7 +47,7 @@ NARRATION_TEXT = (
     "Then Garfield was shot. The bullet missed every vital organ. "
     "It was the infections that killed him. "
     "Volunteers laid thirty-two hundred feet of track overnight, by torchlight, "
-    "to bring a dying president to the sea. The Elberon Hotel sent sandwiches. "
+    "to bring a dying president to the sea. "
     "Today, a small tea house still stands on the church grounds, "
     "built from those very railroad ties. The original red paint has faded to pink after a hundred and forty years of shore weather. "
     "Woodrow Wilson ran his entire campaign from a fifty-two room beach house. "
@@ -62,17 +62,31 @@ NARRATION_TEXT = (
 # ---------------------------------------------------------------------------
 
 SCENES = [
-    {"id": "01", "image": "nick-park-opening.jpg",              "duration": 7,  "motion": "gentle-zoom",  "orientation": "landscape"},
+    # 0-6s: Hook
+    {"id": "01", "image": "nick-park-opening.jpg",              "duration": 6,  "motion": "gentle-zoom",  "orientation": "landscape"},
+    # 6-9s: Grant
     {"id": "02", "image": "grant-portrait-brady.jpg",           "duration": 3,  "motion": "gentle-zoom",  "orientation": "portrait"},
-    {"id": "03", "image": "grant-cottage-harpers-weekly.jpg",   "duration": 4,  "motion": "ken-burns-pan", "orientation": "landscape"},
+    # 9-12s: Grant poker on the porch (AI)
+    {"id": "03", "image": "ai-scene-3b2.png",                   "duration": 3,  "motion": "ken-burns-pan", "orientation": "landscape"},
+    # 12-15s: Garfield
     {"id": "04", "image": "garfield-portrait.jpg",              "duration": 3,  "motion": "gentle-zoom",  "orientation": "portrait"},
+    # 15-19s: Assassination
     {"id": "05", "image": "garfield-assassination-engraving.jpg","duration": 4,  "motion": "ken-burns-zoom","orientation": "landscape"},
-    {"id": "06", "image": "railroad-track-laying-leslies.jpg",  "duration": 6,  "motion": "ken-burns-pan", "orientation": "landscape"},
-    {"id": "07", "image": "nick-teahouse-exterior.jpg",         "duration": 4,  "motion": "gentle-zoom",  "orientation": "landscape"},
-    {"id": "08", "image": "nick-teahouse-interior.jpg",         "duration": 3,  "motion": "ken-burns-zoom","orientation": "portrait"},
+    # 19-24s: Railroad by torchlight
+    {"id": "06", "image": "railroad-track-laying-leslies.jpg",  "duration": 5,  "motion": "ken-burns-pan", "orientation": "landscape"},
+    # 24-30s: Tea house exterior (pink paint)
+    {"id": "07", "image": "nick-teahouse-exterior.jpg",         "duration": 6,  "motion": "gentle-zoom",  "orientation": "landscape"},
+    # 30-35s: Tea house detail (ivy side)
+    {"id": "07b","image": "nick-teahouse-detail.jpg",           "duration": 5,  "motion": "ken-burns-pan", "orientation": "landscape"},
+    # 35-41s: Tea house interior (railroad tie walls)
+    {"id": "08", "image": "nick-teahouse-interior.jpg",         "duration": 6,  "motion": "ken-burns-zoom","orientation": "portrait"},
+    # 41-44s: Wilson
     {"id": "09", "image": "wilson-portrait.jpg",                "duration": 3,  "motion": "gentle-zoom",  "orientation": "portrait"},
-    {"id": "10", "image": "wilson-notification-shadow-lawn.jpg","duration": 7,  "motion": "ken-burns-pan", "orientation": "landscape"},
-    {"id": "11", "image": "hayes-portrait-brady.jpg",           "duration": 4,  "motion": "gentle-zoom",  "orientation": "portrait"},
+    # 44-49s: Shadow Lawn
+    {"id": "10", "image": "wilson-notification-shadow-lawn.jpg","duration": 5,  "motion": "ken-burns-pan", "orientation": "landscape"},
+    # 49-52s: Disputed
+    {"id": "11", "image": "hayes-portrait-brady.jpg",           "duration": 3,  "motion": "gentle-zoom",  "orientation": "portrait"},
+    # 52-56s: CTA
     {"id": "12", "image": "nick-park-beach.jpg",                "duration": 4,  "motion": "gentle-zoom",  "orientation": "landscape"},
 ]
 
@@ -115,17 +129,27 @@ def tts():
         print(f"  SKIP: {out} already exists")
         return
 
-    kokoro_url = "http://localhost:8880/v1/audio/speech"
-    print(f"  Sending to Kokoro TTS...")
+    # Use OpenAI TTS-1-HD with "onyx" voice to match the full documentary
+    openai_url = "https://api.openai.com/v1/audio/speech"
+    api_key = os.environ.get("OPENAI_API_KEY")
+    if not api_key:
+        print("  ERROR: OPENAI_API_KEY not set")
+        sys.exit(1)
+
+    print(f"  Sending to OpenAI TTS-1-HD (voice: onyx)...")
     try:
         response = requests.post(
-            kokoro_url,
+            openai_url,
+            headers={
+                "Authorization": f"Bearer {api_key}",
+                "Content-Type": "application/json",
+            },
             json={
-                "model": "kokoro",
+                "model": "tts-1-hd",
+                "voice": "onyx",
                 "input": NARRATION_TEXT,
-                "voice": "af_heart",
                 "response_format": "wav",
-                "speed": 0.95,
+                "speed": 1.0,
             },
             timeout=120,
         )
@@ -134,7 +158,7 @@ def tts():
             f.write(response.content)
         print(f"  Saved: {out} ({len(response.content) / 1024:.0f} KB)")
     except requests.exceptions.ConnectionError:
-        print("  ERROR: Cannot connect to Kokoro TTS at localhost:8880")
+        print("  ERROR: Cannot connect to OpenAI API")
         sys.exit(1)
     except Exception as e:
         print(f"  ERROR: {e}")
@@ -146,61 +170,43 @@ def tts():
 # ---------------------------------------------------------------------------
 
 def build_vertical_filter(motion, orientation, duration, img_file):
-    """Build FFmpeg filter for 9:16 vertical output."""
+    """Build FFmpeg filter for 9:16 vertical output.
+
+    All images are pre-cropped to 9:16 aspect ratio before zoompan
+    to prevent stretching. The approach:
+    1. Scale height to 7680 (keeping aspect ratio)
+    2. Center-crop width to 4320 (= 7680 * 9/16) → exact 9:16
+    3. Apply zoompan with output 1080x1920
+    """
     d_frames = int(FPS * duration)
 
-    # Auto-detect portrait
-    if image_is_portrait(img_file):
-        orientation = "portrait"
+    # Universal pre-crop to 9:16 at high resolution for zoom headroom
+    precrop = "scale=-1:7680,crop=4320:7680:(iw-4320)/2:0"
 
-    if orientation == "portrait":
-        # Portrait images: scale width to 1080, pad/crop to fill 1920 height
-        if motion == "gentle-zoom":
-            return (
-                f"scale=4320:-1,"
-                f"zoompan=z='min(zoom+0.0001,1.03)'"
-                f":x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)'"
-                f":d={d_frames}:s={W}x{H}:fps={FPS}"
-            )
-        elif motion == "ken-burns-zoom":
-            return (
-                f"scale=4320:-1,"
-                f"zoompan=z='min(zoom+0.0005,1.15)'"
-                f":x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)'"
-                f":d={d_frames}:s={W}x{H}:fps={FPS}"
-            )
-        else:
-            return f"scale={W}:-1,pad={W}:{H}:0:(oh-ih)/2:black"
-
+    if motion == "gentle-zoom":
+        return (
+            f"{precrop},"
+            f"zoompan=z='min(zoom+0.0001,1.03)'"
+            f":x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)'"
+            f":d={d_frames}:s={W}x{H}:fps={FPS}"
+        )
+    elif motion == "ken-burns-zoom":
+        return (
+            f"{precrop},"
+            f"zoompan=z='min(zoom+0.0005,1.15)'"
+            f":x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)'"
+            f":d={d_frames}:s={W}x{H}:fps={FPS}"
+        )
+    elif motion == "ken-burns-pan":
+        return (
+            f"{precrop},"
+            f"zoompan=z='1.1'"
+            f":x='if(eq(on,1),0,x+2)'"
+            f":y='ih/2-(ih/zoom/2)'"
+            f":d={d_frames}:s={W}x{H}:fps={FPS}"
+        )
     else:
-        # Landscape images: scale height to fill, center-crop width
-        if motion == "gentle-zoom":
-            return (
-                f"scale=-1:7680,"
-                f"zoompan=z='min(zoom+0.0001,1.03)'"
-                f":x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)'"
-                f":d={d_frames}:s={W}x{H}:fps={FPS}"
-            )
-        elif motion == "ken-burns-zoom":
-            return (
-                f"scale=-1:7680,"
-                f"zoompan=z='min(zoom+0.0005,1.15)'"
-                f":x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)'"
-                f":d={d_frames}:s={W}x{H}:fps={FPS}"
-            )
-        elif motion == "ken-burns-pan":
-            return (
-                f"scale=-1:7680,"
-                f"zoompan=z='1.1'"
-                f":x='if(eq(on,1),0,x+2)'"
-                f":y='ih/2-(ih/zoom/2)'"
-                f":d={d_frames}:s={W}x{H}:fps={FPS}"
-            )
-        else:
-            return (
-                f"scale=-1:{H}:force_original_aspect_ratio=increase,"
-                f"crop={W}:{H}:(iw-{W})/2:0"
-            )
+        return f"{precrop},scale={W}:{H}"
 
 
 def scenes():
@@ -323,19 +329,19 @@ def overlay():
         f":x=(w-text_w)/2:y=320"
         f":enable='between(t\\,3.5\\,7)',"
 
-        # Wilson slogan (37-42s)
+        # Wilson slogan (44-48s — during Shadow Lawn)
         f"drawtext=text='{wilson1}'"
         f":fontfile='{FONT}':fontsize=36"
         f":fontcolor=yellow:borderw=4:bordercolor=black"
         f":x=(w-text_w)/2:y=h/2-50"
-        f":enable='between(t\\,37\\,42)',"
+        f":enable='between(t\\,44\\,48)',"
 
-        # Wilson war (42-44s)
+        # Wilson war (48-49s)
         f"drawtext=text='{wilson2}'"
         f":fontfile='{FONT}':fontsize=36"
         f":fontcolor=white:borderw=4:bordercolor=black"
         f":x=(w-text_w)/2:y=h/2+20"
-        f":enable='between(t\\,42\\,44)',"
+        f":enable='between(t\\,48\\,49)',"
 
         # CTA (last 4s)
         f"drawtext=text='{cta}'"
