@@ -43,3 +43,4 @@ outputs/
 
 # Generated data (FTS5 database)
 data/
+.gstack/
