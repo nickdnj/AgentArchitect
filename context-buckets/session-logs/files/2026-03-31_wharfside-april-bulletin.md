@@ -41,14 +41,31 @@ Built the April 2026 Monthly Bulletin for Wharfside Manor from scratch. Conducte
 - `reports/april-bulletin-research_2026-03-31_working.md` — email research (from background agent)
 - `reports/wharfside-april-bulletin_2026-03-31_working.md` — email research (from background agent)
 
+## Updates — Kathy's Feedback (same day)
+
+Kathy replied same day with feedback. Changes incorporated into v0.1:
+
+- **Insulation legal opinion REMOVED** — holding for Hubert Cutolo's final verbiage
+- **HO-6 updated** — added: dec pages must be provided to management annually, association must be named as additionally insured
+- **DCA Re-inspection added** — April 14 & 15, notifications going out to affected units
+- **Marina meeting** — changed to April 13 or 14 (same window as board meeting, not April 9)
+- **$200K savings confirmed** by Kathy
+- **Pool break** — not finalized, Ben from Alta Aquatics working on split-shift solution
+- **Move-in/move-out** — resolution should be filed by next week
+- Review questions trimmed to 4 remaining (meeting date, boiler update, insulation verbiage, anything else)
+- Reply-all draft created on thread (draft ID: r3361517431612469880) with updated PDF
+
+**Gmail tip:** Nick had trouble seeing threaded draft replies. Fixed by turning off Gmail Conversation View (Settings → General → Conversation view off).
+
 ## Open Items
 
-- [ ] Board/management review of draft — feedback requested by end of week
-- [ ] 7 review questions need answers (meeting date, insurance $, boiler update, pool break, bike stickers, move-in deposit, anything else)
-- [ ] Incorporate feedback and remove review questions section
-- [ ] Add back Upcoming Board Meeting section with confirmed date
+- [ ] Finalize plumbing/boiler section after tonight's Falcon meeting
+- [ ] Get insulation legal opinion verbiage from Hubert via Kathy
+- [ ] Confirm board meeting date — April 13 or 14
+- [ ] Marina update — are docks on track for June? Need timeline for bulletin
+- [ ] Remove review questions section and add back confirmed meeting date
 - [ ] Final PDF generation and distribution to community
 
 ## Context for Next Session
 
-The April 2026 bulletin draft v0.1 is complete and has been sent to the board and Kathy Vanecek for review as a Gmail draft with PDF attached. The HTML source is the working file — the PDF is generated from it via Chrome headless. When feedback comes back, update the HTML, regenerate the PDF, remove the review questions section, add back the confirmed meeting date, and distribute. The March bulletin at the same output path is the format reference.
+Draft v0.1 has been updated with Kathy's feedback and a reply-all draft is ready on the thread (Gmail thread ID: 19d43d1df61422a5). Still waiting on: (1) boiler section update after tonight's Falcon meeting, (2) Hubert's insulation legal opinion wording, (3) confirmed board meeting date, (4) marina timeline update (docks ready June?). Once those come in, update the HTML, regenerate PDF (Chrome headless: `--no-pdf-header-footer`), remove the review questions section, and distribute. The two-column print CSS is already set up.
