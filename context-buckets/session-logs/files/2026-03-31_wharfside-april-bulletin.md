@@ -57,15 +57,23 @@ Kathy replied same day with feedback. Changes incorporated into v0.1:
 
 **Gmail tip:** Nick had trouble seeing threaded draft replies. Fixed by turning off Gmail Conversation View (Settings → General → Conversation view off).
 
+## Updates — Giuseppe's Feedback (same day, 1:53 PM)
+
+Giuseppe replied: "Remove all Board Sensitive Materials, NOT for distribution." Also corrected that **Mike Serhat is VP**, not Thomas Bopp.
+
+Changes made:
+- **Removed** entire review questions section — replaced with resident-facing "Upcoming Board Meeting" section
+- **Board roster corrected:** Mike Serhat → VP, Thomas Bopp → Trustees
+- Reply-all draft created on thread (draft ID: r4006014951865857634) with clean PDF
+
 ## Open Items
 
 - [ ] Finalize plumbing/boiler section after tonight's Falcon meeting
 - [ ] Get insulation legal opinion verbiage from Hubert via Kathy
 - [ ] Confirm board meeting date — April 13 or 14
 - [ ] Marina update — are docks on track for June? Need timeline for bulletin
-- [ ] Remove review questions section and add back confirmed meeting date
 - [ ] Final PDF generation and distribution to community
 
 ## Context for Next Session
 
-Draft v0.1 has been updated with Kathy's feedback and a reply-all draft is ready on the thread (Gmail thread ID: 19d43d1df61422a5). Still waiting on: (1) boiler section update after tonight's Falcon meeting, (2) Hubert's insulation legal opinion wording, (3) confirmed board meeting date, (4) marina timeline update (docks ready June?). Once those come in, update the HTML, regenerate PDF (Chrome headless: `--no-pdf-header-footer`), remove the review questions section, and distribute. The two-column print CSS is already set up.
+Draft v0.1 is now clean of all board-sensitive material and ready for resident distribution pending final updates. Gmail thread ID: 19d43d1df61422a5. Latest draft (reply to Giuseppe) has the clean PDF attached. Still waiting on: (1) boiler section update after tonight's Falcon meeting, (2) Hubert's insulation legal opinion wording, (3) confirmed board meeting date, (4) marina timeline (docks ready June?). To finalize: update the HTML source, regenerate PDF via Chrome headless (`--no-pdf-header-footer` flag), and distribute. Board roster is now: Giuseppe (President), Mike Serhat (VP), Nick DeMarco (Secretary), Linda Masessa (Treasurer), Trustees: Thomas Bopp, Anthony D'Anna, Timmy Mucaj, Gary Passenti.
