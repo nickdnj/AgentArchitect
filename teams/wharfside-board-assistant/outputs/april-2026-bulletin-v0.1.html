@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    body { font-family: 'Georgia', serif; max-width: 680px; margin: 0 auto; padding: 20px; color: #2c3e50; line-height: 1.7; background: white; }
+
+    /* Clean Masthead - Logo left, Title RIGHT-ALIGNED */
+    .masthead { padding: 15px 0 20px 0; margin-bottom: 25px; border-bottom: 3px solid #1a3a5c; }
+    .masthead-title { font-size: 28px; color: #1a3a5c; margin: 0; font-weight: normal; letter-spacing: 1px; }
+    .masthead-subtitle { font-size: 13px; color: #c9a227; margin: 6px 0 0 0; letter-spacing: 2px; text-transform: uppercase; font-family: Arial, sans-serif; font-weight: bold; }
+    .masthead-location { font-size: 13px; color: #7f8c8d; margin: 4px 0 0 0; font-style: italic; }
+
+    h2 { font-size: 18px; color: #1a3a5c; margin: 20px 0 12px 0; padding-bottom: 6px; border-bottom: 1px solid #ddd; font-weight: normal; }
+    p { margin: 0 0 12px 0; }
+
+    /* Contacts Box */
+    .contacts-box { background: #fdf6e3; padding: 16px 18px; margin: 18px 0; border-radius: 6px; }
+    .contacts-grid { width: 100%; border-collapse: collapse; }
+    .contacts-grid td { padding: 6px 10px; vertical-align: top; width: 50%; }
+    .contact-label { font-size: 12px; color: #7f8c8d; text-transform: uppercase; letter-spacing: 0.5px; margin: 0; }
+    .contact-number { font-size: 15px; font-weight: bold; color: #1a3a5c; margin: 2px 0 0 0; }
+
+    /* Content Boxes */
+    .highlight { background: #f8f9fa; padding: 14px 18px; margin: 14px 0; border-left: 3px solid #1a3a5c; }
+    .maintenance-box { background: #f0f7f4; padding: 14px 18px; margin: 14px 0; border-left: 3px solid #1abc9c; }
+    .alert-box { background: #fff5f5; padding: 14px 18px; margin: 14px 0; border-left: 3px solid #c53030; }
+    .info-box { background: #f0f4f8; padding: 14px 18px; margin: 14px 0; border-left: 3px solid #3182ce; }
+    .success-box { background: #f0fff4; padding: 14px 18px; margin: 14px 0; border-left: 3px solid #38a169; }
+    .marina-box { background: #f0f4f8; padding: 14px 18px; margin: 14px 0; border-left: 4px solid #c9a227; }
+    .pool-info { background: #e8f4f8; padding: 16px 20px; margin: 16px 0; border-radius: 6px; text-align: center; }
+    .divider { text-align: center; margin: 25px 0; color: #c9a227; letter-spacing: 8px; }
+    .new-badge { background: #1abc9c; color: white; font-size: 11px; padding: 2px 8px; border-radius: 3px; font-family: Arial, sans-serif; vertical-align: middle; margin-left: 8px; }
+    .milestone-badge { background: #c9a227; color: white; font-size: 11px; padding: 2px 8px; border-radius: 3px; font-family: Arial, sans-serif; vertical-align: middle; margin-left: 8px; }
+
+    /* Board Members Grid */
+    .board-grid { width: 100%; border-collapse: collapse; margin: 12px 0; }
+    .board-grid td { padding: 4px 8px; vertical-align: top; }
+    .board-role { font-size: 12px; color: #7f8c8d; text-transform: uppercase; }
+    .board-name { font-weight: bold; color: #1a3a5c; }
+
+    /* Footer */
+    .footer { text-align: center; margin-top: 35px; padding-top: 25px; border-top: 3px solid #1a3a5c; }
+    strong { color: #1a3a5c; }
+    ul { margin: 8px 0; padding-left: 20px; }
+    li { margin-bottom: 6px; }
+
+    /* Print styles - two-column newsletter layout */
+    @media print {
+      body { padding: 0 15px; margin: 0 auto; font-size: 11.5px; line-height: 1.45; max-width: 100%; }
+      .masthead { padding: 8px 0 10px 0; margin-bottom: 10px; }
+      .masthead-title { font-size: 24px; }
+      .masthead-subtitle { font-size: 12px; margin: 3px 0 0 0; }
+      .masthead-location { font-size: 11px; }
+      h2 { font-size: 14px; margin: 10px 0 5px 0; padding-bottom: 3px; }
+      p { margin: 0 0 5px 0; }
+      .contacts-box { padding: 8px 10px; margin: 8px 0; }
+      .contacts-grid td { padding: 3px 5px; }
+      .contact-label { font-size: 9px; }
+      .contact-number { font-size: 12px; }
+      .highlight, .maintenance-box, .alert-box, .info-box, .success-box, .marina-box { padding: 7px 10px; margin: 5px 0; }
+      .pool-info { padding: 8px 12px; margin: 6px 0; }
+      .divider { display: none; }
+      ul { margin: 3px 0; padding-left: 16px; }
+      li { margin-bottom: 2px; }
+      .board-grid td { padding: 2px 6px; }
+      .footer { margin-top: 12px; padding-top: 10px; }
+      .new-badge, .milestone-badge { font-size: 9px; padding: 1px 5px; }
+      img { width: 150px !important; }
+      /* Two-column flow after masthead and contacts */
+      .two-col { column-count: 2; column-gap: 24px; column-rule: 1px solid #ddd; }
+      .two-col > * { break-inside: avoid; }
+      .two-col h2 { break-after: avoid; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Masthead -->
+  <div class="masthead">
+    <table cellpadding="0" cellspacing="0" border="0" width="100%">
+      <tr>
+        <td width="200" valign="middle">
+          <img src="https://raw.githubusercontent.com/nickdnj/wharfside-assets/master/Wharfside_Logo_Cropped.png" alt="Wharfside Manor" style="width:180px;height:auto;">
+        </td>
+        <td valign="middle" style="text-align: right;">
+          <div class="masthead-title">Monthly Bulletin</div>
+          <div class="masthead-subtitle">April 2026</div>
+          <div class="masthead-location">Wharfside Manor &bull; Monmouth Beach, NJ</div>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Opening -->
+  <p>Dear Neighbors,</p>
+  <p>Spring has officially arrived at Wharfside Manor, and with it comes a season of exciting progress and community renewal. March was an exceptionally busy month for your Board &mdash; bid reviews with engineers, important governance decisions, and significant planning work for pool season and major infrastructure projects. We have a lot of good news to share.</p>
+  <p>Please read on for updates on our major projects, an important board roster change, upcoming community events, and reminders as we head into warmer weather.</p>
+
+  <!-- Contacts Box -->
+  <div class="contacts-box">
+    <p style="margin: 0 0 10px 0; font-weight: bold; color: #1a3a5c; font-size: 15px;">Know Who to Call</p>
+    <table class="contacts-grid">
+      <tr>
+        <td>
+          <p class="contact-label">Emergency</p>
+          <p class="contact-number">9-1-1</p>
+        </td>
+        <td>
+          <p class="contact-label">Property Management (ECI)</p>
+          <p class="contact-number">732-970-6886</p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p class="contact-label">Alexander Plumbing (Urgent)</p>
+          <p class="contact-number">732-422-2424</p>
+        </td>
+        <td>
+          <p class="contact-label">Non-Emergency Maintenance</p>
+          <p class="contact-number">ECI Work Order System</p>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <p class="divider">&bull; &bull; &bull;</p>
+
+  <div class="two-col">
+
+  <!-- BOARD ROSTER CHANGE -->
+  <h2>Board of Trustees Update</h2>
+  <p>The Board has an important roster change to share this month. <strong>Taryn Frost has resigned from the Board</strong> following the sale of her home. Taryn served with dedication and professionalism, and we are deeply grateful for her contributions to our community. As Taryn noted in her farewell: <em>&ldquo;The time and dedication you all put into the selfless role of the board is thankless to some, but after my short time seeing behind the scenes, it is truly remarkable.&rdquo;</em> We wish Taryn and her husband Dino all the best.</p>
+  <div class="success-box">
+    <p style="margin: 0 0 6px 0;"><strong>Welcome Linda Masessa &mdash; New Treasurer</strong></p>
+    <p style="margin: 0;">The Board unanimously appointed <strong>Linda Masessa as Treasurer</strong> in a board vote conducted March 10&ndash;12. Linda is a former Board member and CPA with decades of financial oversight experience. We are delighted to welcome her back and confident in the steady hands she brings to this role.</p>
+  </div>
+
+  <p class="divider">&bull; &bull; &bull;</p>
+
+  <!-- POWER WASHING - ACTION REQUIRED -->
+  <h2>Power Washing &mdash; Action Required</h2>
+  <p>All buildings, patios, and balconies will be <strong>power and soft washed on Saturday, April 11 and Sunday, April 12.</strong> Buildings 1&ndash;4 will be washed on Saturday, and Buildings 5&ndash;8 on Sunday.</p>
+  <div class="alert-box">
+    <p style="margin: 0 0 8px 0;"><strong>What You Must Do Before Your Building's Day:</strong></p>
+    <ul style="margin: 0;">
+      <li><strong>Close ALL windows and balcony doors</strong> during the work.</li>
+      <li><strong>Remove ALL items from your patio or balcony</strong> before work begins. This includes furniture, planters, grills, decorations &mdash; everything.</li>
+      <li>The vendor will <strong>NOT clean balconies or patios with items left on them</strong> and will <strong>NOT be responsible for damage</strong> to any items left behind.</li>
+      <li>The contractor will <strong>NOT return</strong> to complete any balconies or patios that were not cleared.</li>
+      <li>If you have <strong>renters</strong>, it is <strong>your responsibility</strong> to inform them of these requirements.</li>
+    </ul>
+  </div>
+  <p>Please plan ahead and have your balcony or patio completely cleared the evening before your building's scheduled day. This ensures the work can be completed efficiently and protects your belongings.</p>
+
+  <p class="divider">&bull; &bull; &bull;</p>
+
+  <!-- BIKE ROOM & STORAGE CLEANUP -->
+  <h2>Bike Room &amp; Storage Area Cleanup &mdash; Action Required</h2>
+  <p>All personal items improperly stored in bike rooms and open storage areas must be removed by mid-April. Personal belongings may only be kept inside your unit or in your designated storage cubby.</p>
+  <div class="alert-box">
+    <p style="margin: 0;"><strong>Items left behind after the deadline will be discarded with no exceptions.</strong> Please take the time now to retrieve anything you have stored in these areas.</p>
+  </div>
+  <p>A new bike identification sticker program is also in development &mdash; details will be shared when the program is ready to launch.</p>
+
+  <p class="divider">&bull; &bull; &bull;</p>
+
+  <!-- BOILER / HEATING INFRASTRUCTURE -->
+  <h2>Heating Infrastructure Upgrade</h2>
+  <p>The community-wide boiler and piping replacement project continues to advance. Our engineering firm has completed a full review of all contractor bids, and the Board is actively evaluating proposals. This is a multi-phase project to modernize heating systems across all eight buildings &mdash; one of the most significant infrastructure investments in Wharfside Manor's history.</p>
+  <p>The Board is committed to making a well-informed decision and will communicate next steps as they are determined.</p>
+
+  <p class="divider">&bull; &bull; &bull;</p>
+
+  <!-- WINTER STORM RECOVERY -->
+  <h2>Winter Storm Recovery &mdash; Ongoing</h2>
+  <p>Work related to the February winter events continues. ECI and our contractors have been making steady progress across affected units and crawlspaces throughout March, including insulation removal, antimicrobial treatment, and emergency plumbing repairs.</p>
+  <p>The Board has obtained legal guidance clarifying responsibility for crawlspace and pipe-related damage. In general, <strong>crawl space insulation is a common element</strong> maintained by the Association, while <strong>pipes exclusively serving an individual unit</strong> are the unit owner's responsibility. If you have questions about your specific situation, please contact ECI.</p>
+  <p>If you have an outstanding issue related to the winter storms that has not yet been addressed, please submit a work order through ECI.</p>
+
+  <p class="divider">&bull; &bull; &bull;</p>
+
+  <!-- POOL SEASON 2026 -->
+  <h2>Pool Season 2026 <span class="new-badge">Updates</span></h2>
+  <p>We have exciting news for pool season! The Board has made several important decisions to improve your pool experience this summer.</p>
+
+  <div class="success-box">
+    <p style="margin: 0 0 6px 0;"><strong>New Pool Company: Alta Aquatics</strong></p>
+    <p style="margin: 0;">The Board unanimously approved Alta Aquatics as our new pool management company. They are a local company &mdash; just five miles away &mdash; with excellent references from other condominium communities in the area. We expect a more responsive and community-focused pool operation this season.</p>
+  </div>
+
+  <p>Mark your calendars &mdash; pool season is just around the corner!</p>
+  <div class="pool-info">
+    <p style="margin: 0; font-size: 15px; color: #1a3a5c;"><strong>Mark Your Calendars!</strong></p>
+    <p style="margin: 8px 0 4px 0; font-size: 17px;"><strong>Opens:</strong> May 23 &nbsp;&nbsp;|&nbsp;&nbsp; <strong>Closes:</strong> September 8</p>
+    <p style="margin: 0; color: #7f8c8d;"><strong>Daily Hours:</strong> 10:00 AM &ndash; 7:00 PM</p>
+    <p style="margin: 8px 0 0 0; font-size: 13px; color: #1a3a5c;"><strong>Weekends only:</strong> May 23 &ndash; June 19 &nbsp;&nbsp;|&nbsp;&nbsp; <strong>Open daily:</strong> June 20 &ndash; September 8</p>
+  </div>
+
+  <p class="divider">&bull; &bull; &bull;</p>
+
+  <!-- MARINA -->
+  <h2>Marina Restoration Project</h2>
+  <p>The Marina project continues to advance. With <strong>DEP Land Use Approval</strong> in hand, construction planning is ongoing and the Board is meeting with engineers and contractors to finalize the next phase.</p>
+  <div class="marina-box">
+    <p style="margin: 0;">This has been years in the making, and we are excited to see the project moving forward. We will continue to share updates as the project progresses.</p>
+  </div>
+
+  <p class="divider">&bull; &bull; &bull;</p>
+
+  <!-- INSURANCE -->
+  <h2>2026&ndash;2027 Insurance Renewal <span class="milestone-badge">Milestone</span></h2>
+  <p>We are pleased to announce that the Association has completed its insurance renewal for the 2026&ndash;2027 policy year &mdash; and the results are outstanding.</p>
+  <div class="success-box">
+    <p style="margin: 0 0 6px 0;"><strong>Approximately $200,000 in Annual Savings</strong></p>
+    <p style="margin: 0;">After a thorough review of our options, the Board voted unanimously to switch the Association's insurance to <strong>World Insurance</strong>, resulting in approximately <strong>$200,000 in savings</strong> compared to the prior year's premium &mdash; with equivalent coverage from A/A+ rated carriers. We commend Property Manager Kathy Vanecek for her diligent work in securing these savings on behalf of the community.</p>
+  </div>
+  <p>New insurance certificates have been posted on the <strong>owner portal</strong> and distributed via email. If you need a copy for your mortgage lender or records, please log in to the portal or contact ECI.</p>
+  <div class="info-box">
+    <p style="margin: 0 0 6px 0;"><strong>Reminder: HO-6 Insurance Requirement</strong></p>
+    <p style="margin: 0;">All unit owners are required to carry a Condominium Unit Owner's Policy (HO-6) with coverage sufficient to address the Association's <strong>$50,000 deductible.</strong> The winter pipe events were a stark reminder of how critical this coverage is. If your policy has lapsed or you are uncertain about your coverage level, please contact your insurance agent right away.</p>
+  </div>
+
+  <p class="divider">&bull; &bull; &bull;</p>
+
+  <!-- FOB ACCESS EXPANSION -->
+  <h2>Fob Access System Expanding <span class="new-badge">New</span></h2>
+  <p>The Board is expanding our fob access system to additional common areas. This is the <strong>same fob system successfully used at the pool last summer.</strong> We are now updating the fob readers for the <strong>laundry rooms and Gym</strong>, bringing consistent security and access control across all shared amenities.</p>
+  <div class="alert-box">
+    <p style="margin: 0 0 6px 0;"><strong>Fob Registration Required</strong></p>
+    <p style="margin: 0;">All fobs must be registered as part of the <strong>Wharfside Census.</strong> If your fob does not work at any of the new readers, please contact ECI at <strong>732-970-6886</strong> to ensure your census information is up to date.</p>
+  </div>
+  <div class="info-box">
+    <p style="margin: 0 0 6px 0;"><strong>Temporary Laundry Room Access Disruption</strong></p>
+    <p style="margin: 0;">While the new fob readers are being installed, there may be <strong>temporary interruptions to laundry room access.</strong> We apologize for any inconvenience and thank you for your patience as we work through this transition.</p>
+  </div>
+
+  <p class="divider">&bull; &bull; &bull;</p>
+
+  <!-- MAINTENANCE AT A GLANCE -->
+  <h2>Maintenance at a Glance</h2>
+  <div class="maintenance-box">
+    <p style="margin: 0;">
+      <strong>March:</strong> 20 new requests<br>
+      <strong>Currently Open:</strong> 154 work orders across the community
+    </p>
+  </div>
+  <p style="font-size: 14px;">Top categories: doors, outdoor deck and patio repairs, hard floors, and mold/mildew remediation. With spring underway, ECI and our vendors are focused on working through the backlog while preparing the property for the warm-weather season. If you have a non-urgent maintenance request, please submit it through the ECI work order system.</p>
+
+  <p class="divider">&bull; &bull; &bull;</p>
+
+  <!-- REVIEW QUESTIONS - BOARD/MANAGEMENT ONLY -->
+  <h2 style="color: #c53030; border-bottom-color: #c53030;">Questions for Board &amp; Management Review</h2>
+  <div class="alert-box">
+    <p style="margin: 0 0 6px 0;"><strong>Please review and respond before publishing:</strong></p>
+    <ol style="margin: 0; padding-left: 20px;">
+      <li style="margin-bottom: 8px;"><strong>Monthly Board Meeting Date:</strong> April 13 or 14 &mdash; which date is confirmed?</li>
+      <li style="margin-bottom: 8px;"><strong>Insurance Savings:</strong> Bulletin states ~$200K savings vs. prior year. Confirm this is accurate.</li>
+      <li style="margin-bottom: 8px;"><strong>Boiler/Piping:</strong> Any update from tonight's Falcon Engineering meeting to include?</li>
+      <li style="margin-bottom: 8px;"><strong>Pool Daily Break:</strong> Is the 2:00&ndash;2:30 PM break policy finalized? Should it be added back?</li>
+      <li style="margin-bottom: 8px;"><strong>Bike Sticker Program:</strong> Ready to share details (sticker counts per unit, $50 extra) or just tease?</li>
+      <li style="margin-bottom: 8px;"><strong>Move-In/Move-Out Deposit:</strong> Ready to announce the $500 amount, or hold?</li>
+      <li style="margin-bottom: 8px;"><strong>Anything to add or remove?</strong></li>
+    </ol>
+  </div>
+
+  <p class="divider">&bull; &bull; &bull;</p>
+
+  <!-- COMMUNITY REMINDERS -->
+  <h2>Community Reminders</h2>
+
+  <p><strong>Power Washing &mdash; April 11 &amp; 12:</strong> As detailed above, all items must be removed from balconies and patios before your building's scheduled day. Windows and doors must be closed. This applies to owners and renters alike.</p>
+
+  <p><strong>HO-6 Insurance:</strong> All unit owners are required to carry a Condominium Unit Owner's Policy (HO-6) with coverage sufficient to address the Association's $50,000 deductible. If you are unsure about your coverage, contact your insurance agent now.</p>
+
+  <p><strong>Common Area Storage:</strong> Personal belongings must be kept in your assigned storage area only. Hallways, stairwells, and common areas must remain clear at all times for fire safety and emergency egress. The Board will continue to remove unauthorized items found in common areas.</p>
+
+  <p><strong>Pet Policy:</strong> Pets must be on a leash at all times. Pets are not permitted on the grass, in flower beds, or in common areas. Please clean up after your pets promptly.</p>
+
+  <p><strong>Parking:</strong> All vehicles must display a valid parking permit and be parked in the designated space shown on your permit. Visitor parking is limited &mdash; please use designated visitor spaces only.</p>
+
+  <p><strong>Contacting the Board:</strong> Please direct all questions, maintenance requests, and concerns to ECI at <strong>732-970-6886</strong> or through the ECI work order system. Board members are volunteers and appreciate your understanding in routing inquiries through management.</p>
+
+  <p><strong>Move-In / Move-Out Policy:</strong> The move-in/move-out deposit resolution is being finalized. Full details will be communicated to residents when complete.</p>
+
+  <p class="divider">&bull; &bull; &bull;</p>
+
+  <!-- BOARD OF TRUSTEES -->
+  <h2>Your Board of Trustees</h2>
+  <table class="board-grid">
+    <tr>
+      <td width="50%">
+        <span class="board-role">President</span><br>
+        <span class="board-name">Giuseppe Gencarelli</span>
+      </td>
+      <td width="50%">
+        <span class="board-role">Vice President</span><br>
+        <span class="board-name">Thomas Bopp</span>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <span class="board-role">Secretary</span><br>
+        <span class="board-name">Nick DeMarco</span>
+      </td>
+      <td>
+        <span class="board-role">Treasurer</span><br>
+        <span class="board-name">Linda Masessa</span>
+      </td>
+    </tr>
+  </table>
+  <p style="margin-top: 10px;"><strong>Trustees:</strong> Anthony D'Anna, Timmy Mucaj, Gary Passenti, Mike Serhat</p>
+
+  </div><!-- end two-col -->
+
+  <p class="divider">&bull; &bull; &bull;</p>
+
+  <!-- Closing -->
+  <p>April brings warmer days, new beginnings, and a community with a lot of exciting things underway. From the boiler project to a fresh pool season to ongoing storm recovery work, your Board and management team are working hard on your behalf every day. We are grateful for your patience, your cooperation, and your community spirit.</p>
+  <p><strong>Wishing everyone a wonderful April &mdash; and enjoy the spring weather!</strong></p>
+
+  <div class="footer">
+    <p style="margin: 0;"><strong>Warmly,</strong></p>
+    <p style="margin: 5px 0;"><strong>Wharfside Manor Board of Trustees and Management</strong></p>
+    <p style="font-size: 13px; color: #7f8c8d; margin: 8px 0 0 0;">Wharfside Manor Condominium Association, Inc. &bull; Monmouth Beach, NJ</p>
+  </div>
+
+</body>
+</html>
