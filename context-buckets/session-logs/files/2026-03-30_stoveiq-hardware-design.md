@@ -59,17 +59,32 @@ Major hardware design session for StoveIQ. Ordered development hardware from Ada
 - OpenSCAD 2021.01 (`/Applications/OpenSCAD-2021.01.app/`)
 - Freerouting v2.1.0 (JAR in repo)
 
+### Placement Optimizer (added late session)
+- Built custom simulated annealing placement optimizer: `pcb/optimize_placement.py`
+- Uses `kiutils` (pip, pure Python) to parse/write KiCad PCB files
+- Netlist defined manually from schematic (board has no net assignments since it was created from scratch)
+- Cost function: wirelength (HPWL) + boundary + keep-out + overlap + zone + thermal penalties
+- Results on 10K iterations: total cost 8,792 → 1,750 (80% reduction), overlaps 7→1, keep-out violations 4→0
+- Tunable: `python3 optimize_placement.py --iterations 20000 --temp 200 --cooling 0.9990`
+- Full pipeline: optimize_placement.py → replace_and_reroute.py → kicad-cli pcb drc
+
+### Design Review Document
+- Generated Word doc with embedded images via python-docx
+- Script: `hardware/generate_design_review.py` → `StoveIQ_Design_Review_v0.1.docx` (945KB)
+- 8 embedded images: schematic, PCB fab drawing, PCB layout, 3× 3D board renders, 2× enclosure renders
+- Also created Google Doc version (less formatted): https://docs.google.com/document/d/14NDAa_LedX2d8CG7FUVb4PVQ-w-uPTl2rSIBOR2cvEY/edit
+
 ## Open Items
 
 - [ ] Hardware delivery from Adafruit (MLX90640 + ESP32-S3, USPS Ground ~5 days)
 - [ ] Sensor validation — gate decision for the whole project
 - [ ] Complete schematic wiring (nets need F8 sync to PCB)
 - [ ] Full autoroute with net connectivity
+- [ ] Tune placement optimizer (increase overlap penalty to eliminate last overlap)
 - [ ] Iterate enclosure model after physical PCB validation
 - [ ] 3D print prototype enclosure
 - [ ] Order silicon IR windows for testing
-- [ ] Word doc: further refinements to images/formatting as needed
 
 ## Context for Next Session
 
-Hardware is ordered and en route. The full EDA toolchain is installed and working: KiCad 10 for schematic/PCB, Freerouting for autorouting, OpenSCAD for enclosure. All 26 components are placed on the PCB via Python scripting. The design review Word document is generated programmatically and can be regenerated with `python3 generate_design_review.py`. The next real-world step is receiving the hardware and running the sensor validation protocol — that's the gate decision. After validation passes, the custom PCB goes to JLCPCB and the enclosure gets 3D printed.
+Hardware is ordered and en route. The full EDA toolchain is installed and working: KiCad 10 for schematic/PCB, Freerouting for autorouting, OpenSCAD for enclosure. All 26 components are placed on the PCB via Python scripting with simulated annealing optimization. The placement optimizer reduced total cost by 80% and eliminated all keep-out violations. The design review Word document is generated programmatically with `python3 generate_design_review.py`. The next real-world step is receiving the hardware and running the sensor validation protocol — that's the gate decision. After validation passes, the custom PCB goes to JLCPCB and the enclosure gets 3D printed.
