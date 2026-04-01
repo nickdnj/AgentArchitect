@@ -40,12 +40,35 @@ If you have access to the `Agent` tool (with subagent_type="general-purpose"), r
 | YouTube, video, shorts, content, channel, upload | Read `AgentArchitect/cowork/skills/youtube-content/SKILL.md` and follow its orchestration instructions |
 | Build agent, create team, manage agents, modify agent, bucket, sync | Read `AgentArchitect/cowork/skills/architect/SKILL.md` and follow its instructions |
 
+### Project Context Detection (runs BEFORE team routing)
+
+When the user's request mentions a specific project, product, or ongoing initiative — automatically load its context from memory before routing to a team. This ensures continuity across sessions.
+
+**Step 1: Scan MEMORY.md** (already loaded in conversation context)
+- Check if the user's request keyword-matches any `## Section` heading or key terms (project names, repo names, product names)
+- Common matches: "StoveIQ", "TagSmart", "Batter Up", "Bahr's", "Monmouth Beach", "Seven Presidents", "Vistter", "gatekeeper", etc.
+
+**Step 2: If match found**
+- Read the detail memory file (the linked `.md` file from MEMORY.md) at `~/.claude/projects/-Users-nickd-Workspaces-AgentArchitect/memory/<file>.md`
+- Briefly confirm: "Loading context for [Project Name]..." (one line, not a wall of text)
+- Then proceed to team routing as normal
+
+**Step 3: If no match**
+- The request is either a new initiative or a quick question — proceed directly to team routing
+- Quick questions (lookups, emails, one-off tasks) don't need project context
+
+**Do NOT:**
+- Ask "is this a new project?" for every request — only when it's clearly a substantial new initiative that should be tracked
+- Load project context for general questions like "check my email" or "what's the weather"
+- Load multiple project contexts at once — pick the best match
+
 ### Routing Rules
-1. Match on keywords in the user's request
-2. If ambiguous, ask which team they want
-3. If clearly about agent/team management, use the Architect
-4. **ALWAYS invoke the team orchestrator** — never call specialist subagents directly. The orchestrator will delegate to the right specialist(s) in their own forked context
-5. The only exception is when the user explicitly invokes a specialist skill by name (e.g., `/archivist`)
+1. **Run Project Context Detection** (above) to load relevant project memory
+2. Match on keywords in the user's request to select a team
+3. If ambiguous, ask which team they want
+4. If clearly about agent/team management, use the Architect
+5. **ALWAYS invoke the team orchestrator** — never call specialist subagents directly. The orchestrator will delegate to the right specialist(s) in their own forked context
+6. The only exception is when the user explicitly invokes a specialist skill by name (e.g., `/archivist`)
 
 ## Getting Started (Agent Management)
 
