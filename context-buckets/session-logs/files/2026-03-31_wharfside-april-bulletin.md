@@ -68,12 +68,45 @@ Changes made:
 
 ## Open Items
 
-- [ ] Finalize plumbing/boiler section after tonight's Falcon meeting
+- [x] Finalize plumbing/boiler section after tonight's Falcon meeting
 - [ ] Get insulation legal opinion verbiage from Hubert via Kathy
-- [ ] Confirm board meeting date — April 13 or 14
+- [x] Confirm board meeting date — April 13 or 14 → REMOVED from bulletin (internal meeting, not open)
 - [ ] Marina update — are docks on track for June? Need timeline for bulletin
 - [ ] Final PDF generation and distribution to community
+- [ ] Pool break policy — Ben from Alta Aquatics working on solution
+- [ ] Move-in/move-out resolution — Kathy expects next week
+
+## Updates — Thomas Bopp Feedback (2026-04-01)
+
+Thomas replied Mar 31 8:15 PM with feedback, plus a follow-up at 8:19 PM:
+
+1. **Board Meeting type** — asked if it's an open meeting vs special meeting. Kathy confirmed (Apr 1) it is NOT an open meeting. **Resolution:** Removed entire board meeting section from bulletin.
+2. **DCA Inspection** — suggested "watch your mailbox" language + inform renters. **Resolution:** Added alert box with non-resident owner and renter warnings.
+3. **HO-6 & Census refresh** — asked if we should push to refresh census data given turnover, fobs, parking, bike stickers. **Resolution:** Nick decided census is a separate management activity for April, not bulletin content. HO-6 reminder already in bulletin.
+4. **Election ballots** — since we lead with Taryn's departure, remind people we still need ~20 more votes. **Resolution:** Added "Board Election Update" section — 97 needed, ~20 more to go, ballots on owner portal.
+
+## Updates — Kathy Vanecek (2026-04-01 morning)
+
+- April meeting is NOT open — needs to be scheduled, maybe after new furniture
+- Marina meeting rescheduled from 9th to 13th or 14th; board meeting also 13th or 14th
+- Kathy out of town April 16–25 (working but no night meetings)
+
+## Updates — Boiler/Falcon (2026-04-01 via Nick)
+
+Board met with Falcon Engineering on March 31. Reviewed three bids. Decision: **extend bid period 30 days** to readjust schedule (some bidders may have declined due to scheduling conflicts) and solicit additional proposals. Board will reconvene after extended period.
+
+## v0.2 Changes Made (2026-04-01)
+
+1. **Removed** board meeting section entirely (internal, not open)
+2. **DCA Inspection** — added "Watch Your Mailbox" alert box with non-resident owner and renter warnings
+3. **Heating Infrastructure** — updated to reflect Falcon meeting, 30-day bid extension
+4. **Board Election** — added ballot reminder section (~20 more needed, portal link)
+
+## Artifacts Created (v0.2)
+
+- `teams/wharfside-board-assistant/outputs/april-2026-bulletin-v0.2.pdf` — 3-page two-column PDF
+- Gmail draft reply on thread (draft ID: r7517799932652682858) with v0.2 PDF attached
 
 ## Context for Next Session
 
-Draft v0.1 is now clean of all board-sensitive material and ready for resident distribution pending final updates. Gmail thread ID: 19d43d1df61422a5. Latest draft (reply to Giuseppe) has the clean PDF attached. Still waiting on: (1) boiler section update after tonight's Falcon meeting, (2) Hubert's insulation legal opinion wording, (3) confirmed board meeting date, (4) marina timeline (docks ready June?). To finalize: update the HTML source, regenerate PDF via Chrome headless (`--no-pdf-header-footer` flag), and distribute. Board roster is now: Giuseppe (President), Mike Serhat (VP), Nick DeMarco (Secretary), Linda Masessa (Treasurer), Trustees: Thomas Bopp, Anthony D'Anna, Timmy Mucaj, Gary Passenti.
+Draft v0.2 is on the email thread (draft ID: r7517799932652682858) for board review. Gmail thread ID: 19d43d1df61422a5. Still waiting on: (1) Hubert's insulation legal opinion wording via Kathy, (2) pool break policy from Ben/Alta Aquatics, (3) move-in/move-out resolution from Kathy. Nick may also want to add marina timeline details if available. To finalize: update HTML source if more changes come in, regenerate PDF via `Google Chrome --headless --no-pdf-header-footer --print-to-pdf=...`, and distribute to community.
