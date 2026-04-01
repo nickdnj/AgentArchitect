@@ -74,9 +74,26 @@ Major hardware design session for StoveIQ. Ordered development hardware from Ada
 - 8 embedded images: schematic, PCB fab drawing, PCB layout, 3× 3D board renders, 2× enclosure renders
 - Also created Google Doc version (less formatted): https://docs.google.com/document/d/14NDAa_LedX2d8CG7FUVb4PVQ-w-uPTl2rSIBOR2cvEY/edit
 
+### Real MLX90640 Firmware (2026-04-01)
+- Implemented real I2C sensor driver in `sensor.c` (replaced TODO stubs)
+- I2C on GPIO1 (SDA) / GPIO2 (SCL) at 400kHz, MLX90640 at 0x33
+- Full init: EEPROM dump → parameter extraction → refresh rate → ADC resolution → prime read
+- Full read: GetFrameData → Vdd compensation → Ta compensation → CalculateTo (768 pixels)
+- Created ESP-IDF I2C bridge: `lib/MLX90640/MLX90640_I2C_Driver.c/.h`
+- Created MLX90640 API header: `lib/MLX90640/MLX90640_API.h` (implementation via PlatformIO lib_deps)
+- Created standalone validation test: `src/sensor_validation.c`
+  - 4Hz continuous read, CSV output on serial
+  - ON/OFF state machine with debounce (50°C on, 30°C off, 6 frame debounce)
+  - ASCII thermal heatmap every 30 seconds
+  - Transition counter toward 100-cycle target
+  - Summary with pass/fail statistics
+- New PlatformIO env: `[env:validate]` — flash with `pio run -e validate -t upload`
+- Updated buzzer GPIO from 18 to 39 (matching schematic pin assignment)
+- USPS tracking: hardware left Metro NY hub 4:56 AM Apr 1, expected delivery Apr 3
+
 ## Open Items
 
-- [ ] Hardware delivery from Adafruit (MLX90640 + ESP32-S3, USPS Ground ~5 days)
+- [ ] Hardware delivery — USPS tracking 9400140106246009252735, expected Friday April 3
 - [ ] Sensor validation — gate decision for the whole project
 - [ ] Complete schematic wiring (nets need F8 sync to PCB)
 - [ ] Full autoroute with net connectivity
