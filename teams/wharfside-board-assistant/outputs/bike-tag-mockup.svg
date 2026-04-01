@@ -1,0 +1,297 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 920" width="820" height="920">
+  <!-- Background -->
+  <rect width="820" height="920" fill="white"/>
+
+  <!-- Page Title -->
+  <text x="410" y="35" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#222">Wharfside Manor Condominium Association</text>
+  <text x="410" y="58" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#555">Bicycle Registration Tag — Vendor Specification Sheet</text>
+  <line x1="40" y1="70" x2="780" y2="70" stroke="#ccc" stroke-width="1"/>
+
+  <!-- ============================================ -->
+  <!-- LEFT COLUMN: Sticker Mockup -->
+  <!-- ============================================ -->
+
+  <!-- Section header -->
+  <text x="175" y="100" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#444">STICKER MOCKUP (4x scale)</text>
+
+  <!-- THE STICKER — tight crop, no internal whitespace -->
+  <!-- Actual: 33mm x 42mm. At 4x: 132px x 168px -->
+  <!-- Centered at x=175: starts at 109 -->
+  <rect x="109" y="115" width="132" height="168" rx="8" ry="8" fill="#7B2D8E" stroke="#6A2579" stroke-width="1.5"/>
+
+  <!-- WMCA -->
+  <text x="175" y="145" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="white" letter-spacing="3">WMCA</text>
+
+  <!-- QR Code white background -->
+  <rect x="125" y="152" width="100" height="100" rx="2" ry="2" fill="white"/>
+
+  <!-- QR finder patterns -->
+  <rect x="130" y="157" width="22" height="22" fill="black"/>
+  <rect x="133" y="160" width="16" height="16" fill="white"/>
+  <rect x="136" y="163" width="10" height="10" fill="black"/>
+
+  <rect x="198" y="157" width="22" height="22" fill="black"/>
+  <rect x="201" y="160" width="16" height="16" fill="white"/>
+  <rect x="204" y="163" width="10" height="10" fill="black"/>
+
+  <rect x="130" y="225" width="22" height="22" fill="black"/>
+  <rect x="133" y="228" width="16" height="16" fill="white"/>
+  <rect x="136" y="231" width="10" height="10" fill="black"/>
+
+  <!-- QR data modules (representative) -->
+  <rect x="156" y="157" width="3" height="3" fill="black"/>
+  <rect x="163" y="157" width="3" height="3" fill="black"/>
+  <rect x="170" y="157" width="3" height="3" fill="black"/>
+  <rect x="177" y="157" width="3" height="3" fill="black"/>
+  <rect x="184" y="157" width="3" height="3" fill="black"/>
+  <rect x="191" y="157" width="3" height="3" fill="black"/>
+
+  <rect x="156" y="163" width="3" height="3" fill="black"/>
+  <rect x="166" y="163" width="3" height="3" fill="black"/>
+  <rect x="176" y="163" width="3" height="3" fill="black"/>
+  <rect x="190" y="163" width="3" height="3" fill="black"/>
+
+  <rect x="156" y="169" width="3" height="3" fill="black"/>
+  <rect x="163" y="169" width="3" height="3" fill="black"/>
+  <rect x="173" y="169" width="3" height="3" fill="black"/>
+  <rect x="186" y="169" width="3" height="3" fill="black"/>
+
+  <rect x="160" y="175" width="3" height="3" fill="black"/>
+  <rect x="170" y="175" width="3" height="3" fill="black"/>
+  <rect x="180" y="175" width="3" height="3" fill="black"/>
+  <rect x="193" y="175" width="3" height="3" fill="black"/>
+
+  <rect x="130" y="183" width="3" height="3" fill="black"/>
+  <rect x="137" y="183" width="3" height="3" fill="black"/>
+  <rect x="147" y="183" width="3" height="3" fill="black"/>
+  <rect x="157" y="183" width="3" height="3" fill="black"/>
+  <rect x="170" y="183" width="3" height="3" fill="black"/>
+  <rect x="180" y="183" width="3" height="3" fill="black"/>
+  <rect x="193" y="183" width="3" height="3" fill="black"/>
+  <rect x="207" y="183" width="3" height="3" fill="black"/>
+  <rect x="214" y="183" width="3" height="3" fill="black"/>
+
+  <rect x="130" y="190" width="3" height="3" fill="black"/>
+  <rect x="140" y="190" width="3" height="3" fill="black"/>
+  <rect x="153" y="190" width="3" height="3" fill="black"/>
+  <rect x="166" y="190" width="3" height="3" fill="black"/>
+  <rect x="180" y="190" width="3" height="3" fill="black"/>
+  <rect x="197" y="190" width="3" height="3" fill="black"/>
+  <rect x="210" y="190" width="3" height="3" fill="black"/>
+
+  <rect x="130" y="197" width="3" height="3" fill="black"/>
+  <rect x="143" y="197" width="3" height="3" fill="black"/>
+  <rect x="160" y="197" width="3" height="3" fill="black"/>
+  <rect x="173" y="197" width="3" height="3" fill="black"/>
+  <rect x="186" y="197" width="3" height="3" fill="black"/>
+  <rect x="203" y="197" width="3" height="3" fill="black"/>
+  <rect x="214" y="197" width="3" height="3" fill="black"/>
+
+  <rect x="130" y="204" width="3" height="3" fill="black"/>
+  <rect x="137" y="204" width="3" height="3" fill="black"/>
+  <rect x="150" y="204" width="3" height="3" fill="black"/>
+  <rect x="163" y="204" width="3" height="3" fill="black"/>
+  <rect x="176" y="204" width="3" height="3" fill="black"/>
+  <rect x="193" y="204" width="3" height="3" fill="black"/>
+  <rect x="207" y="204" width="3" height="3" fill="black"/>
+
+  <rect x="130" y="211" width="3" height="3" fill="black"/>
+  <rect x="147" y="211" width="3" height="3" fill="black"/>
+  <rect x="157" y="211" width="3" height="3" fill="black"/>
+  <rect x="170" y="211" width="3" height="3" fill="black"/>
+  <rect x="183" y="211" width="3" height="3" fill="black"/>
+  <rect x="200" y="211" width="3" height="3" fill="black"/>
+  <rect x="214" y="211" width="3" height="3" fill="black"/>
+
+  <rect x="130" y="218" width="3" height="3" fill="black"/>
+  <rect x="143" y="218" width="3" height="3" fill="black"/>
+  <rect x="156" y="218" width="3" height="3" fill="black"/>
+  <rect x="170" y="218" width="3" height="3" fill="black"/>
+  <rect x="186" y="218" width="3" height="3" fill="black"/>
+  <rect x="200" y="218" width="3" height="3" fill="black"/>
+  <rect x="214" y="218" width="3" height="3" fill="black"/>
+
+  <!-- Bottom-right QR data -->
+  <rect x="156" y="225" width="3" height="3" fill="black"/>
+  <rect x="170" y="225" width="3" height="3" fill="black"/>
+  <rect x="186" y="225" width="3" height="3" fill="black"/>
+  <rect x="200" y="225" width="3" height="3" fill="black"/>
+  <rect x="214" y="225" width="3" height="3" fill="black"/>
+
+  <rect x="160" y="232" width="3" height="3" fill="black"/>
+  <rect x="173" y="232" width="3" height="3" fill="black"/>
+  <rect x="190" y="232" width="3" height="3" fill="black"/>
+  <rect x="207" y="232" width="3" height="3" fill="black"/>
+
+  <rect x="156" y="239" width="3" height="3" fill="black"/>
+  <rect x="166" y="239" width="3" height="3" fill="black"/>
+  <rect x="180" y="239" width="3" height="3" fill="black"/>
+  <rect x="193" y="239" width="3" height="3" fill="black"/>
+  <rect x="207" y="239" width="3" height="3" fill="black"/>
+  <rect x="214" y="239" width="3" height="3" fill="black"/>
+
+  <rect x="160" y="245" width="3" height="3" fill="black"/>
+  <rect x="173" y="245" width="3" height="3" fill="black"/>
+  <rect x="186" y="245" width="3" height="3" fill="black"/>
+  <rect x="200" y="245" width="3" height="3" fill="black"/>
+
+  <!-- Tag number -->
+  <text x="175" y="268" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="white" letter-spacing="3">0001</text>
+
+  <!-- Footer -->
+  <text x="175" y="280" text-anchor="middle" font-family="Arial, sans-serif" font-size="6" fill="white" opacity="0.45" letter-spacing="1.5">REGISTERED BICYCLE</text>
+
+  <!-- Dimension callouts around sticker -->
+  <!-- Width -->
+  <line x1="109" y1="296" x2="241" y2="296" stroke="#999" stroke-width="0.7" stroke-dasharray="3,2"/>
+  <line x1="109" y1="288" x2="109" y2="302" stroke="#999" stroke-width="0.7"/>
+  <line x1="241" y1="288" x2="241" y2="302" stroke="#999" stroke-width="0.7"/>
+  <text x="175" y="312" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#666">33mm (1.3")</text>
+
+  <!-- Height -->
+  <line x1="252" y1="115" x2="252" y2="283" stroke="#999" stroke-width="0.7" stroke-dasharray="3,2"/>
+  <line x1="246" y1="115" x2="258" y2="115" stroke="#999" stroke-width="0.7"/>
+  <line x1="246" y1="283" x2="258" y2="283" stroke="#999" stroke-width="0.7"/>
+  <text x="272" y="202" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#666" transform="rotate(90, 272, 202)">42mm (1.65")</text>
+
+  <!-- Placement diagrams -->
+  <text x="175" y="345" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#444">PLACEMENT: SEAT TUBE (UPPER THIRD)</text>
+
+  <!-- Diamond Frame -->
+  <g transform="translate(60, 360)">
+    <text x="55" y="0" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#666">Diamond Frame</text>
+    <line x1="15" y1="15" x2="80" y2="15" stroke="#555" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="80" y1="15" x2="70" y2="60" stroke="#555" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="15" y1="15" x2="70" y2="60" stroke="#555" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="80" y1="15" x2="95" y2="60" stroke="#555" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="70" y1="60" x2="95" y2="60" stroke="#555" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="73" y1="7" x2="87" y2="7" stroke="#555" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="80" y1="7" x2="80" y2="15" stroke="#555" stroke-width="1.5"/>
+    <line x1="8" y1="7" x2="22" y2="7" stroke="#555" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="15" y1="7" x2="15" y2="15" stroke="#555" stroke-width="1.5"/>
+    <rect x="76" y="22" width="6" height="11" rx="1" fill="#7B2D8E" stroke="#6A2579" stroke-width="0.4"/>
+    <line x1="84" y1="28" x2="98" y2="28" stroke="#7B2D8E" stroke-width="0.7"/>
+    <text x="100" y="31" font-family="Arial, sans-serif" font-size="7" fill="#7B2D8E" font-weight="bold">TAG</text>
+  </g>
+
+  <!-- Step-Through Frame -->
+  <g transform="translate(190, 360)">
+    <text x="55" y="0" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#666">Step-Through</text>
+    <line x1="15" y1="28" x2="45" y2="50" stroke="#555" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="45" y1="50" x2="70" y2="60" stroke="#555" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="80" y1="15" x2="70" y2="60" stroke="#555" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="80" y1="15" x2="95" y2="60" stroke="#555" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="70" y1="60" x2="95" y2="60" stroke="#555" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="73" y1="7" x2="87" y2="7" stroke="#555" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="80" y1="7" x2="80" y2="15" stroke="#555" stroke-width="1.5"/>
+    <line x1="8" y1="20" x2="22" y2="20" stroke="#555" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="15" y1="20" x2="15" y2="28" stroke="#555" stroke-width="1.5"/>
+    <rect x="76" y="22" width="6" height="11" rx="1" fill="#7B2D8E" stroke="#6A2579" stroke-width="0.4"/>
+    <line x1="84" y1="28" x2="98" y2="28" stroke="#7B2D8E" stroke-width="0.7"/>
+    <text x="100" y="31" font-family="Arial, sans-serif" font-size="7" fill="#7B2D8E" font-weight="bold">TAG</text>
+  </g>
+
+  <!-- ============================================ -->
+  <!-- RIGHT COLUMN: Vendor Specifications -->
+  <!-- ============================================ -->
+  <line x1="340" y1="85" x2="340" y2="430" stroke="#ddd" stroke-width="1"/>
+
+  <!-- DIMENSIONS -->
+  <text x="360" y="100" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#333">DIMENSIONS</text>
+  <text x="360" y="116" font-family="Arial, sans-serif" font-size="10" fill="#555">Finished size: 33mm W x 42mm H (1.3" x 1.65")</text>
+  <text x="360" y="130" font-family="Arial, sans-serif" font-size="10" fill="#555">Shape: Rounded rectangle, 3mm corner radius</text>
+  <text x="360" y="144" font-family="Arial, sans-serif" font-size="10" fill="#555">Die-cut individual stickers on release liner</text>
+
+  <!-- COLOR -->
+  <text x="360" y="168" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#333">COLOR</text>
+  <rect x="360" y="175" width="14" height="14" rx="2" fill="#7B2D8E"/>
+  <text x="380" y="187" font-family="Arial, sans-serif" font-size="10" fill="#555">Background: PMS 2685 C (#7B2D8E)</text>
+  <rect x="360" y="193" width="14" height="14" rx="2" fill="white" stroke="#ccc" stroke-width="0.5"/>
+  <text x="380" y="205" font-family="Arial, sans-serif" font-size="10" fill="#555">Text / QR bg: White</text>
+  <rect x="360" y="211" width="14" height="14" rx="2" fill="black"/>
+  <text x="380" y="223" font-family="Arial, sans-serif" font-size="10" fill="#555">QR modules: Black on white field</text>
+
+  <!-- QR CODE SPEC -->
+  <text x="360" y="248" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#333">QR CODE SPECIFICATION</text>
+  <text x="360" y="264" font-family="Arial, sans-serif" font-size="10" fill="#555">QR code size: 25mm x 25mm centered on sticker</text>
+  <text x="360" y="278" font-family="Arial, sans-serif" font-size="10" fill="#555">Error correction: Level H (30% recovery)</text>
+  <text x="360" y="292" font-family="Arial, sans-serif" font-size="10" fill="#555">Quiet zone: minimum 4 modules white border</text>
+  <text x="360" y="306" font-family="Arial, sans-serif" font-size="10" fill="#555">Minimum print resolution: 720 DPI</text>
+  <text x="360" y="326" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#333">Encoded data format (plain text):</text>
+  <rect x="360" y="332" width="220" height="22" rx="3" fill="#f5f5f5" stroke="#ddd" stroke-width="0.5"/>
+  <text x="470" y="347" text-anchor="middle" font-family="monospace" font-size="12" font-weight="bold" fill="#333">WM-BK-NNNN</text>
+  <text x="360" y="368" font-family="Arial, sans-serif" font-size="9" fill="#777">WM = Wharfside Manor (fixed prefix)</text>
+  <text x="360" y="380" font-family="Arial, sans-serif" font-size="9" fill="#777">BK = Bike tag type identifier (fixed)</text>
+  <text x="360" y="392" font-family="Arial, sans-serif" font-size="9" fill="#777">NNNN = Sequential tag number, zero-padded</text>
+  <text x="360" y="404" font-family="Arial, sans-serif" font-size="9" fill="#777">Example: Tag #1 = "WM-BK-0001", Tag #42 = "WM-BK-0042"</text>
+  <text x="360" y="420" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#c00">Each sticker gets a UNIQUE QR code with its tag number.</text>
+
+  <!-- ============================================ -->
+  <!-- FULL WIDTH: Material Spec -->
+  <!-- ============================================ -->
+  <line x1="40" y1="445" x2="780" y2="445" stroke="#ccc" stroke-width="1"/>
+  <text x="410" y="470" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#333">MATERIAL SPECIFICATION</text>
+
+  <!-- Table header -->
+  <rect x="40" y="480" width="740" height="22" fill="#f0f0f0"/>
+  <text x="55" y="495" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#333">Component</text>
+  <text x="200" y="495" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#333">Specification</text>
+  <text x="560" y="495" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#333">Reference Product</text>
+
+  <!-- Substrate -->
+  <line x1="40" y1="502" x2="780" y2="502" stroke="#e0e0e0" stroke-width="0.5"/>
+  <text x="55" y="518" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#444">Substrate</text>
+  <text x="200" y="518" font-family="Arial, sans-serif" font-size="10" fill="#555">Cast vinyl, 2 mil, white gloss face</text>
+  <text x="560" y="518" font-family="Arial, sans-serif" font-size="9" fill="#777">Avery MPI 1005 / 3M 180C</text>
+  <text x="200" y="532" font-family="Arial, sans-serif" font-size="9" fill="#888">Cast vinyl required — conforms to curved bike tubes, no shrink/crack</text>
+
+  <!-- Laminate -->
+  <line x1="40" y1="540" x2="780" y2="540" stroke="#e0e0e0" stroke-width="0.5"/>
+  <text x="55" y="556" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#444">Overlaminate</text>
+  <text x="200" y="556" font-family="Arial, sans-serif" font-size="10" fill="#555">Matte polyester, 1-1.5 mil, UV inhibitors</text>
+  <text x="560" y="556" font-family="Arial, sans-serif" font-size="9" fill="#777">Avery DOL 1080 / 3M 8519</text>
+  <text x="200" y="570" font-family="Arial, sans-serif" font-size="9" fill="#888">MATTE required — gloss causes glare that prevents QR scanning in sunlight</text>
+
+  <!-- Adhesive -->
+  <line x1="40" y1="578" x2="780" y2="578" stroke="#e0e0e0" stroke-width="0.5"/>
+  <text x="55" y="594" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#444">Adhesive</text>
+  <text x="200" y="594" font-family="Arial, sans-serif" font-size="10" fill="#555">Removable pressure-sensitive acrylic, medium-high tack</text>
+  <text x="560" y="594" font-family="Arial, sans-serif" font-size="9" fill="#777">Avery RS series / 3M R3500</text>
+  <text x="200" y="608" font-family="Arial, sans-serif" font-size="9" fill="#888">Removable — must not damage paint/clear coat on carbon fiber or aluminum frames</text>
+
+  <!-- Print -->
+  <line x1="40" y1="616" x2="780" y2="616" stroke="#e0e0e0" stroke-width="0.5"/>
+  <text x="55" y="632" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#444">Print Method</text>
+  <text x="200" y="632" font-family="Arial, sans-serif" font-size="10" fill="#555">Digital eco-solvent or UV inkjet, 720 DPI min</text>
+  <text x="200" y="646" font-family="Arial, sans-serif" font-size="9" fill="#888">Flood white base + purple + separate white text pass. PMS 2685 C match.</text>
+
+  <!-- Durability -->
+  <line x1="40" y1="654" x2="780" y2="654" stroke="#e0e0e0" stroke-width="0.5"/>
+  <text x="55" y="670" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#444">Durability</text>
+  <text x="200" y="670" font-family="Arial, sans-serif" font-size="10" fill="#555">3-5 year outdoor life, salt air / UV / rain rated</text>
+  <text x="200" y="684" font-family="Arial, sans-serif" font-size="9" fill="#888">Coastal environment (oceanfront NJ). QR must remain scannable after exposure.</text>
+
+  <!-- Quantity -->
+  <line x1="40" y1="692" x2="780" y2="692" stroke="#e0e0e0" stroke-width="0.5"/>
+  <text x="55" y="708" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#444">Quantity</text>
+  <text x="200" y="708" font-family="Arial, sans-serif" font-size="10" fill="#555">Initial run: 200 stickers (BK-0001 through BK-0200)</text>
+  <text x="200" y="722" font-family="Arial, sans-serif" font-size="9" fill="#888">Each sticker has a unique QR code — this is NOT a single-design repeat run.</text>
+
+  <line x1="40" y1="735" x2="780" y2="735" stroke="#e0e0e0" stroke-width="0.5"/>
+
+  <!-- ============================================ -->
+  <!-- NOTES -->
+  <!-- ============================================ -->
+  <text x="55" y="760" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#333">IMPORTANT NOTES</text>
+
+  <text x="55" y="780" font-family="Arial, sans-serif" font-size="10" fill="#555">1. Each sticker requires a UNIQUE QR code encoding "WM-BK-NNNN" where NNNN increments (0001, 0002, ... 0200).</text>
+  <text x="55" y="796" font-family="Arial, sans-serif" font-size="10" fill="#555">2. The human-readable tag number below the QR code must match the number encoded in the QR.</text>
+  <text x="55" y="812" font-family="Arial, sans-serif" font-size="10" fill="#555">3. QR codes must be tested for scannability AFTER lamination. Provide test sheet before full production.</text>
+  <text x="55" y="828" font-family="Arial, sans-serif" font-size="10" fill="#555">4. Matte laminate is mandatory — gloss laminate will cause scanning failures in outdoor sunlight.</text>
+  <text x="55" y="844" font-family="Arial, sans-serif" font-size="10" fill="#555">5. Application surface: bicycle frame tubes (aluminum, steel, carbon fiber, painted). Prep: IPA wipe.</text>
+  <text x="55" y="860" font-family="Arial, sans-serif" font-size="10" fill="#555">6. Do NOT substitute calendered vinyl — it will not conform to curved tube surfaces and will edge-lift.</text>
+
+  <!-- Footer -->
+  <line x1="40" y1="880" x2="780" y2="880" stroke="#ccc" stroke-width="1"/>
+  <text x="410" y="900" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" fill="#999">Wharfside Manor Condominium Association — Monmouth Beach, NJ — 2026</text>
+</svg>
