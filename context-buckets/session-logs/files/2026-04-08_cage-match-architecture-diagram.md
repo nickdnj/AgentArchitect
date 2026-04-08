@@ -45,6 +45,45 @@ Ordered the Jetson Orin Nano Super ($249, arrives Apr 9) and Arducam Day/Night I
 - [ ] Talk to brother once proof of concept works
 - [ ] Write ESP32 firmware for LED targets (Phase 2, after CV proven)
 
+## Updates — Apr 8 (continued session)
+
+### Production Code Build (all 6 tasks completed)
+1. **CV Pipeline** (`cage-match/src/camera/cv_pipeline.py`) — BallDetector + TrajectoryAnalyzer with CUDA/CPU MOG2 fallback
+2. **Jetson Camera Driver** (`cage-match/src/camera/jetson_tracker.py`) — Production BallTracker with GStreamer CSI pipeline for IMX477
+3. **Calibration UI** (`cage-match/static/calibrate.html`) — Click-to-define target zones, saves to config/zones.json
+4. **Production Mode** wired in main.py — `CAGE_MATCH_MODE=production` imports JetsonBallTracker
+5. **Game Over Polish** — Stats breakdown (zones hit, max streak, best pitch), score recap on name entry
+6. **Sound Effects** — 3 Mixkit (bat_crack, crowd_roar, crowd_ooh) + 9 ElevenLabs Kirt voice clips (home_run, triple, double, foul_ball, perfect_game, new_high_score, game_over, batter_up, step_up)
+
+### Business Plan Updates
+- Regenerated Word doc with: new architecture diagram, new dusk exterior render, real game screenshots (attract + in-game), new batter POV render
+- All committed to cage-match repo (8ae944a) and AgentArchitect repo (f2ebec1)
+
+### CV Ball Detection Prototype
+- Tested 3 versions (v1-v3) on YouTube batting cage video
+- Background subtraction works but 30fps side-angle video is too different from our 120fps behind-batter setup
+- Saved as starting point for real camera testing
+
+### GStack
+- Upgraded to v0.16.0.0, auto-upgrade enabled
+
 ## Context for Next Session
 
-Hardware architecture diagram is DONE and saved as the official reference. The Jetson and camera are ordered and arriving Apr 8-9. The next engineering milestone is plugging the IMX477 into the Jetson, running OpenCV, and proving ball zone detection with a real ball. The proof of concept only needs camera + Jetson — no LED targets, no ESP32, no cage modifications. The user wants to prove CV ball tracking works before talking to his brother about converting a cage.
+All production code is built and committed. Hardware architecture diagram is the official reference. Business plan has real screenshots. The cage-match repo has everything ready for plug-and-play when the Jetson arrives (Apr 9).
+
+**Immediate next steps when hardware arrives:**
+1. Flash JetPack on Jetson Orin Nano Super
+2. Run `CAGE_MATCH_MODE=production python3 main.py` — camera driver should connect
+3. Test ball detection with tennis ball at home
+4. Use `/calibrate` page to define real target zones from camera feed
+
+**Reviews to run in next session (fresh context):**
+- `/plan-eng-review` on cage-match codebase (architecture review)
+- `/qa http://localhost:8080` (browser QA of game app)
+- `/review` (code review of recent commits)
+
+**Other open items:**
+- File provisional patent ($320) before showing system publicly
+- Talk to brother once proof of concept works
+- Write ESP32 firmware for LED targets (Phase 2)
+- Download better sound effects from Pixabay/Freesound if current ones aren't good enough
