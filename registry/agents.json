@@ -386,6 +386,14 @@
       "teams": ["hardware-dev"],
       "created": "2026-04-09",
       "status": "active"
+    },
+    {
+      "id": "improver",
+      "name": "Agent Improver",
+      "folder": "agents/improver",
+      "teams": [],
+      "created": "2026-04-09",
+      "status": "active"
     }
   ]
 }

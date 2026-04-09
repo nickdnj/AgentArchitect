@@ -152,5 +152,22 @@
     "handoff_protocol": "stage-based",
     "output_sharing": "summarized",
     "notification_email": "nickd@demarconet.com"
+  },
+
+  "feedback_loop": {
+    "enabled": true,
+    "agents": ["software-developer"],
+    "feedback_path": "agents/{agent_id}/feedback.jsonl",
+    "improver_agent": "improver",
+    "min_entries_before_improve": 3,
+    "rubric": {
+      "software-developer": [
+        "Did the code require user corrections?",
+        "Were there linting/type errors?",
+        "Did the user ask for changes after delivery?",
+        "Were there missing edge cases?",
+        "Did the agent follow established patterns?"
+      ]
+    }
   }
 }
