@@ -49,31 +49,31 @@ Everything else is off-the-shelf. These are the only PCBs we design.
 
 Each cage has two weatherproof enclosures.
 
-### Box 1: Batter End Box
+### Brain Box (Batter End — Jetson + Camera combined)
 
-Mounted outside the cage, next to the door. This is the brain.
+Mounted outside the cage, next to the door. Single enclosure houses compute + camera. Aims down the cage.
 
 | Item | Cost |
 |---|---|
-| NEMA 4X enclosure (14x11x5, IP65) | $44 |
+| Custom enclosure (IP65, optical window, tilt mount) | $55 |
 | Jetson Orin Nano Super (dev kit) | $249 |
 | CM-BI-01 (custom board) | $22 |
 | NVMe SSD 500GB | $42 |
 | 19V power supply | $14 |
 | Cooling fan (80mm, IP54) | $9 |
-| **Box 1 subtotal** | **$380** |
+| Arducam Day/Night IMX477 + 2.8mm CS lens | $76 |
+| **Brain Box subtotal** | **$467** |
 
-**Also mounted at batter end (outside the box):**
+**Also at batter end (outside the box):**
 
 | Item | Cost |
 |---|---|
-| Camera (Arducam IMX477 + lens + housing + CSI cable + mount) | $131 |
 | Speakers (outdoor pair, powered) | $68 |
 | Token signal cable (shielded, to token machine) | $10 |
 | Display — tablet | $120 |
 | Display — OR outdoor TV + mount | $950 |
-| **Batter end peripherals (with tablet)** | **$329** |
-| **Batter end peripherals (with TV)** | **$1,159** |
+| **Batter end peripherals (with tablet)** | **$198** |
+| **Batter end peripherals (with TV)** | **$1,028** |
 
 ---
 
@@ -114,13 +114,13 @@ Mounted near the pitching machine house. Controls the LED targets.
 
 | Component | Tablet Display | Outdoor TV |
 |---|---|---|
-| Box 1 (Batter End — Jetson + CM-BI-01) | $380 | $380 |
-| Batter end peripherals | $329 | $1,159 |
-| Box 2 (Machine End — CM-TC-01 + PSUs) | $93 | $93 |
-| Machine end peripherals (LED targets) | $272 | $272 |
+| Brain Box (Jetson + camera + CM-BI-01) | $467 | $467 |
+| Batter end peripherals (speakers, display, token cable) | $198 | $1,028 |
+| Target Controller Box (CM-TC-01 + PSUs) | $93 | $93 |
+| Machine end peripherals (5 LED target zones) | $272 | $272 |
 | Cable run + infrastructure | $125 | $125 |
 | Assembly labor (10 hrs) | $305 | $305 |
-| **ONE CAGE TOTAL** | **$1,504** | **$2,334** |
+| **ONE CAGE TOTAL** | **$1,460** | **$2,290** |
 
 ---
 
@@ -167,21 +167,21 @@ Total = (N × per-cage cost) + $1,012 hub
 
 | Cages | Cage Cost | Hub | Total | Per-Cage Effective |
 |---|---|---|---|---|
-| 1 | $1,504 | $1,012 | **$2,516** | $2,516 |
-| 3 | $4,512 | $1,012 | **$5,524** | $1,841 |
-| 9 (one venue) | $13,536 | $1,012 | **$14,548** | $1,616 |
-| 18 (two venues) | $27,072 | $2,024 | **$29,096** | $1,616 |
-| 50 | $75,200 | $6,067 | **$81,267** | $1,625 |
+| 1 | $1,460 | $1,012 | **$2,472** | $2,472 |
+| 3 | $4,380 | $1,012 | **$5,392** | $1,797 |
+| 9 (one venue) | $13,140 | $1,012 | **$14,152** | $1,572 |
+| 18 (two venues) | $26,280 | $2,024 | **$28,304** | $1,572 |
+| 50 | $73,000 | $6,067 | **$79,067** | $1,581 |
 
 ### Outdoor TV
 
 | Cages | Cage Cost | Hub | Total | Per-Cage Effective |
 |---|---|---|---|---|
-| 1 | $2,334 | $1,012 | **$3,346** | $3,346 |
-| 3 | $7,002 | $1,012 | **$8,014** | $2,671 |
-| 9 (one venue) | $21,006 | $1,012 | **$22,018** | $2,446 |
-| 18 (two venues) | $42,012 | $2,024 | **$44,036** | $2,446 |
-| 50 | $116,700 | $6,067 | **$122,767** | $2,455 |
+| 1 | $2,290 | $1,012 | **$3,302** | $3,302 |
+| 3 | $6,870 | $1,012 | **$7,882** | $2,627 |
+| 9 (one venue) | $20,610 | $1,012 | **$21,622** | $2,402 |
+| 18 (two venues) | $41,220 | $2,024 | **$43,244** | $2,402 |
+| 50 | $114,500 | $6,067 | **$120,567** | $2,411 |
 
 ---
 
@@ -205,12 +205,12 @@ Total = (N × per-cage cost) + $1,012 hub
 |---|---|---|---|
 | **CM-TC-01** (Target Controller board) | $29 | $29 | **$29** |
 | **CM-BI-01** (Batter Interface board) | $22 | $22 | **$22** |
-| **Box 1** (Batter End — Jetson + CM-BI-01 + SSD + PSU + enclosure) | $380 | $380 | **$380** |
-| **Box 2** (Machine End — CM-TC-01 + PSUs + enclosure) | $93 | $93 | **$93** |
-| **Our product per cage** (Box 1 + Box 2) | **$473** | **$473** | **$473** |
-| Peripherals + install (camera, LEDs, speakers, display, cabling, labor) | $1,031 | $1,861 | — |
-| **One cage total** | **$1,504** | **$2,334** | — |
-| **One venue (9 cages + hub)** | **$14,548** | **$22,018** | — |
+| **Brain Box** (Jetson + camera + CM-BI-01 + SSD + PSU + custom enclosure) | $467 | $467 | **$467** |
+| **Target Controller Box** (CM-TC-01 + PSUs + enclosure) | $93 | $93 | **$93** |
+| **Our product per cage** (Brain Box + Target Controller Box) | **$560** | **$560** | **$560** |
+| Peripherals + install (LEDs, speakers, display, cabling, labor) | $900 | $1,730 | — |
+| **One cage total** | **$1,460** | **$2,290** | — |
+| **One venue (9 cages + hub)** | **$14,152** | **$21,622** | — |
 | **NRE (one-time)** | $14,500–$22,500 | $14,500–$22,500 | — |
 
-The "product" — what we actually design, manufacture, and own the IP for — is **$473 per cage**. Two boxes, two custom boards, plus off-the-shelf compute. Everything else is installation materials and peripherals.
+The "product" — what we design, manufacture, and own the IP for — is **$560 per cage**. Two boxes: the Brain Box (compute + camera) and the Target Controller Box. The camera is part of our product because it's a specified, sourced assembly (specific sensor, connector, lens, day/night version) — not something an installer picks off the shelf.
