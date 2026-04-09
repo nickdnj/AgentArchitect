@@ -7,6 +7,11 @@
 
   "members": [
     {
+      "agent_id": "systems-engineer",
+      "role": "Systems engineering manager - ConOps, requirements decomposition, system architecture, interface specs, V&V planning, cross-discipline integration with software-project team",
+      "context_override": null
+    },
+    {
       "agent_id": "pcb-designer",
       "role": "Schematic and PCB layout engineer - circuit design, component selection, KiCad layout, gerber generation",
       "context_override": null
@@ -37,9 +42,15 @@
     "description": "Hardware development flow from requirements through production-ready design",
     "stages": [
       {
-        "name": "Requirements",
-        "agents": ["firmware-engineer"],
-        "outputs": ["Pin mapping", "Interface specification", "Hardware requirements"]
+        "name": "Systems Engineering",
+        "agents": ["systems-engineer"],
+        "outputs": ["ConOps", "System requirements", "System architecture", "Interface specifications", "V&V plan", "Traceability matrix"]
+      },
+      {
+        "name": "Requirements Allocation",
+        "agents": ["systems-engineer"],
+        "inputs": ["System requirements", "System architecture"],
+        "outputs": ["Electronics requirements", "Mechanical requirements", "Firmware requirements", "Software requirements", "Pin mapping", "Interface specification"]
       },
       {
         "name": "Design",
@@ -96,6 +107,19 @@
     "mode": "thin-orchestrator",
     "execution": { "model": "opus", "max_turns": 50 },
     "routing": {
+      "new-product": ["systems-engineer"],
+      "conops": ["systems-engineer"],
+      "requirements": ["systems-engineer"],
+      "architecture": ["systems-engineer"],
+      "interface": ["systems-engineer"],
+      "integration": ["systems-engineer"],
+      "trade-study": ["systems-engineer"],
+      "v-model": ["systems-engineer"],
+      "verification": ["systems-engineer"],
+      "validation": ["systems-engineer"],
+      "systems-engineering": ["systems-engineer"],
+      "risk": ["systems-engineer"],
+      "change-impact": ["systems-engineer"],
       "schematic": ["pcb-designer"],
       "pcb": ["pcb-designer"],
       "layout": ["pcb-designer"],
@@ -125,7 +149,7 @@
       "certification": ["dfm-test-engineer"],
       "general": ["pcb-designer"]
     },
-    "delegation_strategy": "Route hardware tasks to the appropriate specialist. For new products, start with firmware-engineer for pin mapping and hardware requirements, then fan out to pcb-designer and mcad-engineer in parallel. Supply chain follows design. DFM is the final gate. For cross-team requests involving application software, coordinate with the software-project team via briefings.",
+    "delegation_strategy": "Route hardware tasks to the appropriate specialist. For new product initiatives, start with systems-engineer for ConOps, requirements decomposition, system architecture, and interface specs. Systems-engineer then allocates requirements to specialists. For detailed design, fan out to pcb-designer and mcad-engineer in parallel, with firmware-engineer for pin mapping. Supply chain follows design. DFM is the final gate. Systems-engineer coordinates cross-team integration with software-project team for HW/SW products. For focused tasks on existing designs (e.g., 'update the schematic'), route directly to the specialist.",
     "session_summary": {
       "enabled": true,
       "output_path": "context-buckets/session-logs/files/"

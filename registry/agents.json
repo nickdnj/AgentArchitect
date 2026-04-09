@@ -340,6 +340,14 @@
       "status": "active"
     },
     {
+      "id": "systems-engineer",
+      "name": "Systems Engineering Manager",
+      "folder": "agents/systems-engineer",
+      "teams": ["hardware-dev"],
+      "created": "2026-04-09",
+      "status": "active"
+    },
+    {
       "id": "pcb-designer",
       "name": "PCB Designer",
       "folder": "agents/pcb-designer",
