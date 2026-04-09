@@ -1,0 +1,165 @@
+{
+  "id": "hardware-dev",
+  "name": "Hardware Development Team",
+  "description": "Hardware product development team covering schematic/PCB design, mechanical engineering, firmware, supply chain, and manufacturing readiness",
+  "version": "1.0",
+  "created": "2026-04-09",
+
+  "members": [
+    {
+      "agent_id": "pcb-designer",
+      "role": "Schematic and PCB layout engineer - circuit design, component selection, KiCad layout, gerber generation",
+      "context_override": null
+    },
+    {
+      "agent_id": "mcad-engineer",
+      "role": "Mechanical design engineer - enclosures, mounting, thermal management, FreeCAD modeling",
+      "context_override": null
+    },
+    {
+      "agent_id": "firmware-engineer",
+      "role": "Firmware engineer - ESP32/Jetson embedded software, drivers, HAL, OTA updates",
+      "context_override": null
+    },
+    {
+      "agent_id": "supply-chain-manager",
+      "role": "Supply chain manager - BOM costing, component sourcing, CM coordination, availability tracking",
+      "context_override": null
+    },
+    {
+      "agent_id": "dfm-test-engineer",
+      "role": "DFM & test engineer - manufacturing review, test fixtures, production validation, compliance prep",
+      "context_override": null
+    }
+  ],
+
+  "workflow": {
+    "description": "Hardware development flow from requirements through production-ready design",
+    "stages": [
+      {
+        "name": "Requirements",
+        "agents": ["firmware-engineer"],
+        "outputs": ["Pin mapping", "Interface specification", "Hardware requirements"]
+      },
+      {
+        "name": "Design",
+        "agents": ["pcb-designer", "mcad-engineer"],
+        "parallel": true,
+        "inputs": ["Hardware requirements", "Pin mapping"],
+        "outputs": ["Schematic", "PCB layout", "Gerbers", "Enclosure STEP", "Board STEP"]
+      },
+      {
+        "name": "Sourcing",
+        "agents": ["supply-chain-manager"],
+        "inputs": ["Electronic BOM", "Mechanical BOM"],
+        "outputs": ["Costed BOM", "CM quotes", "Risk assessment"]
+      },
+      {
+        "name": "Implementation",
+        "agents": ["firmware-engineer"],
+        "inputs": ["Final schematic", "Pin mapping"],
+        "outputs": ["Firmware binary", "Test procedures", "Flash instructions"]
+      },
+      {
+        "name": "Validation",
+        "agents": ["dfm-test-engineer"],
+        "inputs": ["Gerbers", "Enclosure design", "Firmware test mode", "CM capabilities"],
+        "outputs": ["DFM report", "Test strategy", "Test fixture spec", "Compliance checklist"]
+      }
+    ]
+  },
+
+  "shared_context": {
+    "buckets": ["hardware-projects"],
+    "outputs_folder": "teams/hardware-dev/outputs"
+  },
+
+  "project_output": {
+    "base_path": "~/Workspaces",
+    "structure": "{project_name}/hardware/",
+    "subfolders": [
+      "docs/requirements",
+      "docs/schematic",
+      "docs/mechanical",
+      "docs/firmware",
+      "docs/bom",
+      "docs/manufacturing",
+      "docs/compliance"
+    ]
+  },
+
+  "mcp_servers": [
+    "github"
+  ],
+
+  "orchestration": {
+    "mode": "thin-orchestrator",
+    "execution": { "model": "opus", "max_turns": 50 },
+    "routing": {
+      "schematic": ["pcb-designer"],
+      "pcb": ["pcb-designer"],
+      "layout": ["pcb-designer"],
+      "kicad": ["pcb-designer"],
+      "circuit": ["pcb-designer"],
+      "enclosure": ["mcad-engineer"],
+      "mechanical": ["mcad-engineer"],
+      "mounting": ["mcad-engineer"],
+      "cad": ["mcad-engineer"],
+      "3d-print": ["mcad-engineer"],
+      "firmware": ["firmware-engineer"],
+      "embedded": ["firmware-engineer"],
+      "esp32": ["firmware-engineer"],
+      "jetson": ["firmware-engineer"],
+      "driver": ["firmware-engineer"],
+      "ota": ["firmware-engineer"],
+      "bom": ["supply-chain-manager"],
+      "sourcing": ["supply-chain-manager"],
+      "cost": ["supply-chain-manager"],
+      "component": ["supply-chain-manager"],
+      "manufacturer": ["supply-chain-manager"],
+      "dfm": ["dfm-test-engineer"],
+      "manufacturing": ["dfm-test-engineer"],
+      "test": ["dfm-test-engineer"],
+      "compliance": ["dfm-test-engineer"],
+      "fcc": ["dfm-test-engineer"],
+      "certification": ["dfm-test-engineer"],
+      "general": ["pcb-designer"]
+    },
+    "delegation_strategy": "Route hardware tasks to the appropriate specialist. For new products, start with firmware-engineer for pin mapping and hardware requirements, then fan out to pcb-designer and mcad-engineer in parallel. Supply chain follows design. DFM is the final gate. For cross-team requests involving application software, coordinate with the software-project team via briefings.",
+    "session_summary": {
+      "enabled": true,
+      "output_path": "context-buckets/session-logs/files/"
+    }
+  },
+
+  "cross_team_collaboration": {
+    "software-project": {
+      "description": "Hardware-software integration for products with both custom hardware and application software",
+      "shared_buckets": ["hardware-projects"],
+      "interfaces": [
+        {
+          "from": "firmware-engineer",
+          "to": "software-developer",
+          "protocol": "API contract (WebSocket, MQTT, serial protocol specs)"
+        },
+        {
+          "from": "pcb-designer",
+          "to": "software-architecture",
+          "protocol": "Hardware requirements and interface definitions"
+        },
+        {
+          "from": "supply-chain-manager",
+          "to": "product-requirements",
+          "protocol": "Cost data for business case and pricing"
+        }
+      ]
+    }
+  },
+
+  "collaboration_rules": {
+    "coordination_mode": "orchestrated",
+    "handoff_protocol": "stage-based",
+    "output_sharing": "summarized",
+    "notification_email": "nickd@demarconet.com"
+  }
+}

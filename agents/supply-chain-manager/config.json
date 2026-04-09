@@ -1,0 +1,69 @@
+{
+  "id": "supply-chain-manager",
+  "name": "Supply Chain Manager",
+  "description": "BOM management, component sourcing, cost modeling, and contract manufacturer coordination",
+  "version": "1.0",
+
+  "agent_type": "specialist",
+
+  "execution": {
+    "context": "fork",
+    "max_turns": 25,
+    "model": "sonnet"
+  },
+
+  "expertise": {
+    "domains": [
+      "supply-chain",
+      "procurement",
+      "bom-management",
+      "cost-engineering"
+    ],
+    "capabilities": [
+      "component-sourcing",
+      "bom-costing",
+      "second-source-identification",
+      "cm-quoting",
+      "lead-time-analysis",
+      "lifecycle-monitoring",
+      "cost-modeling",
+      "vendor-management"
+    ]
+  },
+
+  "mcp_servers": [],
+
+  "context_buckets": {
+    "assigned": ["hardware-projects"],
+    "access_level": "read-write"
+  },
+
+  "output": {
+    "folder": "outputs/",
+    "formats": ["markdown", "csv"]
+  },
+
+  "collaboration": {
+    "can_request_from": [
+      "pcb-designer",
+      "mcad-engineer"
+    ],
+    "provides_to": [
+      "pcb-designer",
+      "dfm-test-engineer",
+      "product-requirements"
+    ],
+    "handoff_format": "structured-summary"
+  },
+
+  "workflow_position": {
+    "stage": "Planning",
+    "order": 3,
+    "parallel_with": []
+  },
+
+  "trigger": {
+    "type": "on-demand",
+    "description": "Invoked when BOM data is available for sourcing and cost analysis"
+  }
+}

@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "last_updated": "2026-02-15",
+  "last_updated": "2026-04-09",
   "agents": [
     {
       "id": "monthly-bulletin",
@@ -337,6 +337,46 @@
       "folder": "agents/social-distributor",
       "teams": ["youtube-content"],
       "created": "2026-03-21",
+      "status": "active"
+    },
+    {
+      "id": "pcb-designer",
+      "name": "PCB Designer",
+      "folder": "agents/pcb-designer",
+      "teams": ["hardware-dev"],
+      "created": "2026-04-09",
+      "status": "active"
+    },
+    {
+      "id": "mcad-engineer",
+      "name": "MCAD Engineer",
+      "folder": "agents/mcad-engineer",
+      "teams": ["hardware-dev"],
+      "created": "2026-04-09",
+      "status": "active"
+    },
+    {
+      "id": "firmware-engineer",
+      "name": "Firmware Engineer",
+      "folder": "agents/firmware-engineer",
+      "teams": ["hardware-dev"],
+      "created": "2026-04-09",
+      "status": "active"
+    },
+    {
+      "id": "supply-chain-manager",
+      "name": "Supply Chain Manager",
+      "folder": "agents/supply-chain-manager",
+      "teams": ["hardware-dev"],
+      "created": "2026-04-09",
+      "status": "active"
+    },
+    {
+      "id": "dfm-test-engineer",
+      "name": "DFM & Test Engineer",
+      "folder": "agents/dfm-test-engineer",
+      "teams": ["hardware-dev"],
+      "created": "2026-04-09",
       "status": "active"
     }
   ]

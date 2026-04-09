@@ -1,0 +1,75 @@
+{
+  "id": "firmware-engineer",
+  "name": "Firmware Engineer",
+  "description": "Embedded software engineer for ESP32 (PlatformIO) and Jetson (JetPack) firmware development",
+  "version": "1.0",
+
+  "agent_type": "specialist",
+
+  "execution": {
+    "context": "fork",
+    "max_turns": 40,
+    "model": "opus"
+  },
+
+  "expertise": {
+    "domains": [
+      "embedded-systems",
+      "firmware-development",
+      "real-time-systems",
+      "iot"
+    ],
+    "capabilities": [
+      "esp32-development",
+      "jetson-development",
+      "platformio",
+      "esp-idf",
+      "driver-development",
+      "hardware-abstraction",
+      "ota-updates",
+      "communication-protocols",
+      "real-time-control",
+      "c-cpp-programming",
+      "python-embedded"
+    ]
+  },
+
+  "mcp_servers": [
+    "github"
+  ],
+
+  "context_buckets": {
+    "assigned": ["hardware-projects"],
+    "access_level": "read-write"
+  },
+
+  "output": {
+    "folder": "outputs/",
+    "formats": ["code", "markdown"]
+  },
+
+  "collaboration": {
+    "can_request_from": [
+      "pcb-designer",
+      "product-requirements",
+      "software-architecture"
+    ],
+    "provides_to": [
+      "pcb-designer",
+      "software-developer",
+      "dfm-test-engineer"
+    ],
+    "handoff_format": "structured-summary"
+  },
+
+  "workflow_position": {
+    "stage": "Implementation",
+    "order": 3,
+    "parallel_with": ["pcb-designer", "mcad-engineer"]
+  },
+
+  "trigger": {
+    "type": "on-demand",
+    "description": "Invoked when hardware interfaces are defined and firmware development can begin"
+  }
+}

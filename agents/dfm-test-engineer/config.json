@@ -1,0 +1,72 @@
+{
+  "id": "dfm-test-engineer",
+  "name": "DFM & Test Engineer",
+  "description": "Design-for-manufacturing review, production test design, and compliance preparation for hardware products",
+  "version": "1.0",
+
+  "agent_type": "specialist",
+
+  "execution": {
+    "context": "fork",
+    "max_turns": 25,
+    "model": "sonnet"
+  },
+
+  "expertise": {
+    "domains": [
+      "manufacturing-engineering",
+      "test-engineering",
+      "quality-assurance",
+      "regulatory-compliance"
+    ],
+    "capabilities": [
+      "dfm-review",
+      "dfa-review",
+      "test-fixture-design",
+      "production-test-procedures",
+      "fcc-compliance",
+      "ul-certification",
+      "ce-marking",
+      "rohs-compliance",
+      "yield-optimization",
+      "first-article-inspection"
+    ]
+  },
+
+  "mcp_servers": [],
+
+  "context_buckets": {
+    "assigned": ["hardware-projects"],
+    "access_level": "read-write"
+  },
+
+  "output": {
+    "folder": "outputs/",
+    "formats": ["markdown", "csv"]
+  },
+
+  "collaboration": {
+    "can_request_from": [
+      "pcb-designer",
+      "mcad-engineer",
+      "firmware-engineer",
+      "supply-chain-manager"
+    ],
+    "provides_to": [
+      "pcb-designer",
+      "supply-chain-manager"
+    ],
+    "handoff_format": "structured-summary"
+  },
+
+  "workflow_position": {
+    "stage": "Validation",
+    "order": 4,
+    "parallel_with": []
+  },
+
+  "trigger": {
+    "type": "on-demand",
+    "description": "Invoked when design files are ready for manufacturing review"
+  }
+}

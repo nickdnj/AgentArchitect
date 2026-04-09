@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "last_updated": "2026-02-15",
+  "last_updated": "2026-04-09",
   "teams": [
     {
       "id": "wharfside-board-assistant",
@@ -40,6 +40,14 @@
       "folder": "teams/youtube-content",
       "member_count": 5,
       "created": "2026-02-11",
+      "status": "active"
+    },
+    {
+      "id": "hardware-dev",
+      "name": "Hardware Development Team",
+      "folder": "teams/hardware-dev",
+      "member_count": 5,
+      "created": "2026-04-09",
       "status": "active"
     }
   ]

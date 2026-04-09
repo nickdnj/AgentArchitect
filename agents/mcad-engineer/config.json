@@ -1,0 +1,70 @@
+{
+  "id": "mcad-engineer",
+  "name": "MCAD Engineer",
+  "description": "Mechanical design engineer using FreeCAD for enclosures, mounting systems, and mechanical assemblies",
+  "version": "1.0",
+
+  "agent_type": "specialist",
+
+  "execution": {
+    "context": "fork",
+    "max_turns": 25,
+    "model": "sonnet"
+  },
+
+  "expertise": {
+    "domains": [
+      "mechanical-design",
+      "enclosure-engineering",
+      "thermal-management",
+      "manufacturing"
+    ],
+    "capabilities": [
+      "freecad-modeling",
+      "enclosure-design",
+      "ip-rating-compliance",
+      "thermal-analysis",
+      "3d-printing",
+      "injection-mold-design",
+      "step-export",
+      "drawing-generation",
+      "assembly-design"
+    ]
+  },
+
+  "mcp_servers": [],
+
+  "context_buckets": {
+    "assigned": ["hardware-projects"],
+    "access_level": "read-write"
+  },
+
+  "output": {
+    "folder": "outputs/",
+    "formats": ["markdown", "step", "stl"]
+  },
+
+  "collaboration": {
+    "can_request_from": [
+      "pcb-designer",
+      "firmware-engineer"
+    ],
+    "provides_to": [
+      "pcb-designer",
+      "dfm-test-engineer",
+      "supply-chain-manager"
+    ],
+    "handoff_format": "structured-summary"
+  },
+
+  "workflow_position": {
+    "stage": "Design",
+    "order": 2,
+    "parallel_with": ["pcb-designer"]
+  },
+
+  "trigger": {
+    "type": "on-demand",
+    "description": "Invoked when PCB dimensions are available and enclosure design can begin"
+  }
+}

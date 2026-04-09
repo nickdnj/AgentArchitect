@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "last_updated": "2026-02-13",
+  "last_updated": "2026-04-09",
   "buckets": [
     {
       "id": "wharfside-docs",
@@ -54,6 +54,15 @@
       "content_type": "mixed",
       "assigned_to": ["personal-assistant", "youtube-creator"],
       "created": "2026-02-09",
+      "status": "active"
+    },
+    {
+      "id": "hardware-projects",
+      "name": "Hardware Projects",
+      "folder": "context-buckets/hardware-projects",
+      "content_type": "mixed",
+      "assigned_to": ["hardware-dev", "software-project"],
+      "created": "2026-04-09",
       "status": "active"
     }
   ]

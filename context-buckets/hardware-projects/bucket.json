@@ -1,0 +1,41 @@
+{
+  "id": "hardware-projects",
+  "name": "Hardware Projects",
+  "description": "Shared context for hardware product development — specs, BOMs, schematics, architecture diagrams, and pinout documents. Accessible by both hardware-dev and software-project teams for cross-team collaboration.",
+  "version": "1.0",
+  "created": "2026-04-09",
+
+  "content_type": "mixed",
+
+  "sources": [
+    {
+      "type": "local",
+      "path": "files/",
+      "file_types": ["md", "csv", "json", "pdf", "png"]
+    }
+  ],
+
+  "access_control": {
+    "default_level": "read-write",
+    "allowed_agents": [],
+    "allowed_teams": ["hardware-dev", "software-project"]
+  },
+
+  "seed_documents": {
+    "description": "Initial documents to populate from existing Cage Match project",
+    "sources": [
+      {
+        "name": "Cage Match BOM",
+        "original_path": "teams/youtube-content/projects/batter-up-history/output/cage_game_bom.md"
+      },
+      {
+        "name": "Cage Match Architecture",
+        "original_path": "cage-match/static/cage_architecture.png"
+      },
+      {
+        "name": "Cage Match Hardware Stack",
+        "description": "Jetson Orin Nano + IMX477 + ESP32 + WS2812B + optocoupler — extracted from project memory"
+      }
+    ]
+  }
+}

@@ -99,7 +99,7 @@
   },
 
   "shared_context": {
-    "buckets": [],
+    "buckets": ["hardware-projects"],
     "outputs_folder": "teams/software-project/outputs"
   },
 

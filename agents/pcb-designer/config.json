@@ -1,0 +1,73 @@
+{
+  "id": "pcb-designer",
+  "name": "PCB Designer",
+  "description": "Schematic and PCB layout engineer using KiCad for production-ready circuit board design",
+  "version": "1.0",
+
+  "agent_type": "specialist",
+
+  "execution": {
+    "context": "fork",
+    "max_turns": 30,
+    "model": "opus"
+  },
+
+  "expertise": {
+    "domains": [
+      "electronic-design",
+      "pcb-layout",
+      "schematic-capture",
+      "signal-integrity"
+    ],
+    "capabilities": [
+      "kicad-design",
+      "schematic-capture",
+      "pcb-layout-routing",
+      "design-rule-checks",
+      "gerber-generation",
+      "bom-generation",
+      "3d-step-export",
+      "component-selection",
+      "impedance-control",
+      "thermal-management"
+    ]
+  },
+
+  "mcp_servers": [],
+
+  "context_buckets": {
+    "assigned": ["hardware-projects"],
+    "access_level": "read-write"
+  },
+
+  "output": {
+    "folder": "outputs/",
+    "formats": ["markdown", "csv", "code"]
+  },
+
+  "collaboration": {
+    "can_request_from": [
+      "firmware-engineer",
+      "mcad-engineer",
+      "supply-chain-manager"
+    ],
+    "provides_to": [
+      "mcad-engineer",
+      "supply-chain-manager",
+      "dfm-test-engineer",
+      "firmware-engineer"
+    ],
+    "handoff_format": "structured-summary"
+  },
+
+  "workflow_position": {
+    "stage": "Design",
+    "order": 2,
+    "parallel_with": ["mcad-engineer"]
+  },
+
+  "trigger": {
+    "type": "on-demand",
+    "description": "Invoked when hardware requirements are defined and ready for circuit design"
+  }
+}
