@@ -53,6 +53,7 @@ Portrait orientation (taller than wide)
 **Shape:** Rounded rectangle (3mm corner radius)
 **Material:** Vinyl with UV-resistant laminate (outdoor-rated, waterproof)
 **Adhesive:** Permanent acrylic (bonds to metal, carbon fiber, painted surfaces)
+**Tamper-evident:** Yes — destructible/eggshell vinyl that fragments on removal (non-transferable)
 
 **Why this size:**
 - 25mm QR code is the centerpiece — large enough for reliable scanning even with wear
@@ -197,16 +198,18 @@ WM-BK-0001
 - 1-bedroom units: up to 2 bikes
 - 2-bedroom units: up to 3 bikes
 
-**Estimated initial run:** 200 stickers (BK-0001 through BK-0200)
+**Estimated initial run:** 500 stickers (BK-0001 through BK-0500)
 - 116 units × ~2 bikes average = ~230 potential bikes
-- Not all owners have bikes, so 200 covers initial demand with room
+- 500 provides ample supply for initial registration + replacements over time
+- Per Thomas Bopp's recommendation (April 2026)
 
 ## 8. Production Specifications
 
 ### Material
-- **Substrate:** White vinyl (3.4 mil / 86 micron)
+- **Substrate:** White **destructible / tamper-evident vinyl** (eggshell type, 3.4 mil / 86 micron)
 - **Finish:** Matte UV laminate overlay (prevents glare that could interfere with QR scanning)
 - **Adhesive:** Permanent acrylic, rated for outdoor use
+- **Tamper-evident:** Sticker must fragment on removal — cannot be peeled off intact and transferred to another bike. This is a **mandatory** requirement.
 - **Expected life:** 3-5 years outdoor exposure
 
 ### Print Method
