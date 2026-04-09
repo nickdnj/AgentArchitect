@@ -41,4 +41,12 @@ Create schematic, PCB, and MCAD designs for the Cage Match gamified batting cage
 - **Total per-cage hardware**: ~$3,061
 - **50-cage production**: ~$153,050
 - **Key design decision**: Split ESP32 controller and Mean Well PSU into separate enclosures (CM-ESP-001 + CM-PWR-001) for thermal management, serviceability, and code compliance
-- **Next step**: Open KiCad schematic, run ERC, update PCB, place components, route, generate gerbers
+
+## Schematic Wiring (continued session)
+- KiCad S-expression format does NOT support `;;` comments — caused parse error, stripped all comments
+- Built `wire_schematic.py` script that computes all pin positions from component placement + symbol definitions
+- Generates 360 wiring elements: power symbols, net labels, wire stubs (7.62mm), no-connect markers
+- Uses net labels for inter-block connections (e.g., GPIO16 ↔ U4 ch1, TOKEN_IN ↔ GPIO34, EN ↔ auto-reset)
+- Power symbols (+5V, +3V3, GND) placed at all power pins with wire stubs
+- Script is re-runnable: restore schematic from git, strip comments, run script
+- **Next step**: Open schematic in KiCad, run ERC, fix any unconnected pins, then Update PCB from Schematic
