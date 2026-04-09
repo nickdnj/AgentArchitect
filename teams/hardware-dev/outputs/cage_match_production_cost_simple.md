@@ -201,11 +201,16 @@ Total = (N × per-cage cost) + $1,012 hub
 
 ## Summary
 
-| | |
-|---|---|
-| **Custom boards to design** | 2 (CM-TC-01 + CM-BI-01) |
-| **Board cost** | $29 + $22 = **$51 per cage** |
-| **One cage (tablet)** | **$1,504** |
-| **One cage (outdoor TV)** | **$2,334** |
-| **One venue (9 cages + hub)** | **$14,548** (tablet) / **$22,018** (TV) |
-| **NRE (one-time)** | **$14,500–$22,500** |
+| What We Build | Tablet Config | Outdoor TV Config | Our Product Cost |
+|---|---|---|---|
+| **CM-TC-01** (Target Controller board) | $29 | $29 | **$29** |
+| **CM-BI-01** (Batter Interface board) | $22 | $22 | **$22** |
+| **Box 1** (Batter End — Jetson + CM-BI-01 + SSD + PSU + enclosure) | $380 | $380 | **$380** |
+| **Box 2** (Machine End — CM-TC-01 + PSUs + enclosure) | $93 | $93 | **$93** |
+| **Our product per cage** (Box 1 + Box 2) | **$473** | **$473** | **$473** |
+| Peripherals + install (camera, LEDs, speakers, display, cabling, labor) | $1,031 | $1,861 | — |
+| **One cage total** | **$1,504** | **$2,334** | — |
+| **One venue (9 cages + hub)** | **$14,548** | **$22,018** | — |
+| **NRE (one-time)** | $14,500–$22,500 | $14,500–$22,500 | — |
+
+The "product" — what we actually design, manufacture, and own the IP for — is **$473 per cage**. Two boxes, two custom boards, plus off-the-shelf compute. Everything else is installation materials and peripherals.
