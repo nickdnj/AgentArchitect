@@ -725,6 +725,7 @@ function generateTeamOrchestratorSkill(teamConfig, allAgents) {
   }
 
   // Add feedback loop instructions
+  // Schema is defined in agents/_templates/feedback-schema.json (single source of truth)
   const feedbackLoop = teamConfig.feedback_loop || {};
   if (feedbackLoop.enabled && feedbackLoop.agents?.length > 0) {
     for (const agentId of feedbackLoop.agents) {
@@ -734,13 +735,17 @@ function generateTeamOrchestratorSkill(teamConfig, allAgents) {
       const rubric = feedbackLoop.rubric?.[agentId] || [];
       const improverName = allAgents[feedbackLoop.improver_agent]?.name || feedbackLoop.improver_agent || 'Agent Improver';
 
+      if (rubric.length === 0) {
+        console.warn(`Warning: Agent "${agentId}" is in feedback_loop.agents but has no rubric defined in feedback_loop.rubric. Feedback quality will be lower without evaluation criteria.`);
+      }
+
       lines.push(`## Post-Task Feedback Capture (MANDATORY for ${agentId})`);
       lines.push('');
       lines.push(`After the **${agentName}** specialist returns a result, you MUST capture structured feedback before responding to the user. This feeds the self-improvement loop.`);
       lines.push('');
       lines.push(`**Append a JSON line to:** \`${feedbackPath}\``);
       lines.push('');
-      lines.push('**Schema:**');
+      lines.push('**Schema** (see `agents/_templates/feedback-schema.json` for full definition):');
       lines.push('```json');
       lines.push('{');
       lines.push('  "schema_v": 1,');
@@ -771,12 +776,16 @@ function generateTeamOrchestratorSkill(teamConfig, allAgents) {
       lines.push('');
       lines.push('If you can\'t assess quality (e.g., the task was a quick lookup, not implementation), set outcome to "success" and note "what_worked": "Quick task, no implementation to evaluate".');
       lines.push('');
-      lines.push(`**Trigger the Improver:** After logging feedback, check the entry count:`);
+      lines.push(`**Trigger the Improver:** After logging feedback, check if enough new entries have accumulated since the last improvement cycle:`);
       lines.push('```bash');
-      lines.push(`wc -l < ${feedbackPath} 2>/dev/null || echo 0`);
+      lines.push(`LAST_IMPROVE=$(grep -n '"task":"improver-approved"\\|"task":"improver-rejected"' ${feedbackPath} 2>/dev/null | tail -1 | cut -d: -f1)`);
+      lines.push(`TOTAL=$(wc -l < ${feedbackPath} 2>/dev/null | tr -d ' ')`);
+      lines.push(`TOTAL=\${TOTAL:-0}`);
+      lines.push(`if [ -z "$LAST_IMPROVE" ]; then SINCE_IMPROVE=$TOTAL; else SINCE_IMPROVE=$((TOTAL - LAST_IMPROVE)); fi`);
+      lines.push(`echo "Total: $TOTAL, Since last improve: $SINCE_IMPROVE"`);
       lines.push('```');
-      lines.push(`If count >= ${minEntries} AND the last improvement was ${minEntries}+ entries ago (or never), mention to the user:`);
-      lines.push(`"The ${agentId} agent has {N} feedback entries. Run the Improver to see if there are improvement suggestions? (yes/no)"`);
+      lines.push(`If \`SINCE_IMPROVE >= ${minEntries}\`, mention to the user:`);
+      lines.push(`"The ${agentId} agent has {SINCE_IMPROVE} new feedback entries since the last improvement cycle. Run the Improver to see if there are improvement suggestions? (yes/no)"`);
       lines.push('');
       lines.push(`If yes, invoke: \`Task(subagent_type="${improverName}", prompt="Read agents/${agentId}/SKILL.md and agents/${agentId}/feedback.jsonl. Analyze patterns and propose improvements. Write your proposed changes to agents/${agentId}/SKILL.md.proposed. Then show the diff.")\``);
       lines.push('');

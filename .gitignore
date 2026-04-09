@@ -38,6 +38,10 @@ agents/*/reports/
 agents/*/outputs/
 teams/*/outputs/
 
+# Self-improvement loop (ephemeral data, not versioned)
+agents/*/feedback.jsonl
+agents/*/*.proposed
+
 # Top-level outputs
 outputs/
 

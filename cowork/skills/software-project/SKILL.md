@@ -141,6 +141,55 @@ For each specialist delegation, follow this pattern:
   - Inputs: PRD, Architecture Doc
   - Outputs: Risk Assessment, Compliance Checklist, Policy Drafts
 
+## Post-Task Feedback Capture (MANDATORY for software-developer)
+
+After the **Software Developer** specialist returns a result, you MUST capture structured feedback before responding to the user. This feeds the self-improvement loop.
+
+**Append a JSON line to:** `AgentArchitect/agents/software-developer/feedback.jsonl`
+
+**Schema** (see `agents/_templates/feedback-schema.json` for full definition):
+```json
+{
+  "schema_v": 1,
+  "ts": "ISO-8601 timestamp",
+  "agent": "software-developer",
+  "task": "brief description of what was asked",
+  "outcome": "success | partial | failure",
+  "what_worked": "specific behaviors that went well",
+  "what_struggled": "specific behaviors that were problematic",
+  "duration_s": 0
+}
+```
+
+**Evaluation rubric — answer these for every task:**
+1. Did the code require user corrections?
+2. Were there linting/type errors?
+3. Did the user ask for changes after delivery?
+4. Were there missing edge cases?
+5. Did the agent follow established patterns?
+
+**Quality rules:**
+- BAD feedback: `"what_struggled": "Had some issues"` — teaches nothing
+- GOOD feedback: `"what_struggled": "Generated raw SQL instead of using the ORM. Had to rewrite 3 queries."` — specific, actionable
+- BAD: `"what_worked": "Did a good job"` — generic
+- GOOD: `"what_worked": "Correctly split component into container/presentational pattern without being asked"` — names the behavior
+
+If you can't assess quality (e.g., the task was a quick lookup, not implementation), set outcome to "success" and note "what_worked": "Quick task, no implementation to evaluate".
+
+**Trigger the Improver:** After logging feedback, check if enough new entries have accumulated since the last improvement cycle:
+```bash
+LAST_IMPROVE=$(grep -n '"task":"improver-approved"\|"task":"improver-rejected"' AgentArchitect/agents/software-developer/feedback.jsonl 2>/dev/null | tail -1 | cut -d: -f1)
+TOTAL=$(wc -l < AgentArchitect/agents/software-developer/feedback.jsonl 2>/dev/null | tr -d ' ')
+TOTAL=${TOTAL:-0}
+if [ -z "$LAST_IMPROVE" ]; then SINCE_IMPROVE=$TOTAL; else SINCE_IMPROVE=$((TOTAL - LAST_IMPROVE)); fi
+echo "Total: $TOTAL, Since last improve: $SINCE_IMPROVE"
+```
+If `SINCE_IMPROVE >= 3`, mention to the user:
+"The software-developer agent has {SINCE_IMPROVE} new feedback entries since the last improvement cycle. Run the Improver to see if there are improvement suggestions? (yes/no)"
+
+If yes, read `AgentArchitect/agents/improver/SKILL.md` and invoke via:
+`Agent(subagent_type="general-purpose", prompt="[Improver SKILL.md content] + Read agents/software-developer/SKILL.md and agents/software-developer/feedback.jsonl. Analyze patterns and propose improvements. Write your proposed changes to agents/software-developer/SKILL.md.proposed. Then show the diff.")`
+
 ## Session Summary (MANDATORY)
 
 **ALWAYS write a session log after EVERY interaction**, not just complex ones.
@@ -192,6 +241,11 @@ In Cowork, MCP tools are available natively (no CLI wrappers needed).
 - form_input — set form values
 - get_page_text — extract text from page
 - tabs_context_mcp — get tab group context
+
+## Shared Context
+
+- `AgentArchitect/context-buckets/hardware-projects/`
+- **Outputs:** `AgentArchitect/teams/software-project/outputs/`
 
 ## User Request
 

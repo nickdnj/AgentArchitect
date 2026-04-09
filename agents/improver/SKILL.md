@@ -19,6 +19,7 @@ These rules govern the Improver itself and must never be changed:
 - Always preserve the human review step — never auto-apply changes
 - Always provide rationale for every proposed change
 - Minimum 3 feedback entries required before proposing any changes
+- Propose at most 3 changes per run. Never modify more than 20% of the file in a single proposal. If you identify more than 3 improvements, prioritize by frequency in feedback and defer the rest to a future run.
 
 ## Workflow
 
@@ -33,28 +34,26 @@ Read the target agent's current SKILL.md in full. Understand:
 
 ### 2. Read the Feedback Log
 
-Read `agents/<agent-id>/feedback.jsonl`. Each entry has this schema (v1):
+Read `agents/<agent-id>/feedback.jsonl`. The schema is defined in `agents/_templates/feedback-schema.json` (single source of truth). Each JSONL line contains:
 
-```json
-{
-  "schema_v": 1,
-  "ts": "ISO-8601 timestamp",
-  "agent": "agent-id",
-  "task": "description of what was asked",
-  "outcome": "success | partial | failure",
-  "what_worked": "specific behaviors that went well",
-  "what_struggled": "specific behaviors that were problematic",
-  "duration_s": 180,
-  "user_edits": "(optional) what the user changed after the agent finished",
-  "improver_rejection": "(optional) why a prior improvement proposal was rejected"
-}
-```
+- **Required:** `schema_v`, `ts`, `agent`, `task`, `outcome` (success/partial/failure)
+- **Optional:** `what_worked`, `what_struggled`, `duration_s`, `user_edits`, `improver_rejection`
+- **Special tasks:** `improver-approved` (logged when a proposal is applied), `improver-rejected` (logged when rejected)
+
+If a line is malformed JSON, skip it and continue — do not fail the entire analysis over one bad entry.
 
 **Feedback window:** Read all entries since the last approved SKILL.md change, with a floor of 20 entries. If total exceeds 50 entries, use only the most recent 50.
 
-### 3. Analyze Patterns
+### 3. Classify and Analyze Patterns
 
-Look for:
+**Before proposing any SKILL.md change, classify each failure:**
+
+- **(a) Generic skill gap** — the agent lacks a general capability that would apply across any project. Example: "never includes error handling in API routes." **Fix: edit SKILL.md.**
+- **(b) Project context gap** — the agent lacked project-specific information that should have been in the task prompt, context bucket, or PRD. Example: "didn't know this project uses PostgreSQL instead of MySQL." **Fix: recommend updating the context bucket or providing better task context. Do NOT add project-specific rules to SKILL.md.**
+
+Only propose SKILL.md changes for generic skill gaps (type a). For project context gaps (type b), note them in your analysis but recommend context improvements instead.
+
+**Then look for patterns:**
 - **Repeated struggles:** The same type of failure appearing in 2+ entries (e.g., "forgot CSRF tokens" across multiple tasks)
 - **Consistent strengths:** Behaviors that consistently work well — these should be preserved and possibly emphasized
 - **User corrections:** When `user_edits` is present, what did the user change? This is the strongest signal.
@@ -97,10 +96,10 @@ Based on feedback from {earliest_ts} to {latest_ts}
 
 ### 6. Present the Diff
 
-Run `diff` between the current and proposed SKILL.md and present the output to the user:
+Run `git diff` between the current and proposed SKILL.md and present the output to the user:
 
 ```bash
-diff -u agents/<agent-id>/SKILL.md agents/<agent-id>/SKILL.md.proposed
+git diff --no-index agents/<agent-id>/SKILL.md agents/<agent-id>/SKILL.md.proposed
 ```
 
 Summarize the changes in plain language:
