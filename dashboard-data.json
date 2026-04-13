@@ -1,0 +1,1128 @@
+{
+  "generated_at": "2026-04-11",
+  "version": "1.0",
+  "teams": [
+    {
+      "id": "wharfside-board-assistant",
+      "name": "Wharfside Board Assistant Team",
+      "description": "Assists Wharfside Manor Condominium Association board members with bulletins, proposals, presentations, research, document management, and official community communications",
+      "skill_alias": "wharfside",
+      "created": "2026-01-19",
+      "status": "active",
+      "members": [
+        { "agent_id": "monthly-bulletin", "role": "Newsletter creator - mines board email and generates monthly community bulletin" },
+        { "agent_id": "proposal-review", "role": "Vendor analyst - reviews and compares proposals from vendors" },
+        { "agent_id": "presentation", "role": "Presentation creator - builds PowerPoint decks for board meetings" },
+        { "agent_id": "email-research", "role": "Research specialist - searches email archives for topic information" },
+        { "agent_id": "archivist", "role": "Document keeper - maintains and retrieves governing documents" },
+        { "agent_id": "pdf-scribe", "role": "PDF specialist - extracts and transcribes PDF content into searchable Markdown" },
+        { "agent_id": "rag-search", "role": "Semantic search service - queries vector databases for governing document retrieval" },
+        { "agent_id": "board-comms", "role": "Communications drafter - writes official board notices, policy explainers, crisis updates, and owner letters" }
+      ],
+      "orchestration": {
+        "mode": "thin-orchestrator",
+        "model": "opus",
+        "routing": {
+          "document-search": ["archivist"],
+          "email-research": ["email-research"],
+          "newsletter": ["monthly-bulletin"],
+          "vendor-proposal": ["proposal-review"],
+          "presentation": ["presentation"],
+          "pdf-processing": ["pdf-scribe"],
+          "semantic-search": ["rag-search"],
+          "community-communication": ["board-comms"],
+          "owner-notice": ["board-comms"],
+          "crisis-communication": ["board-comms"],
+          "insurance": ["board-comms", "archivist"],
+          "policy-explainer": ["board-comms", "archivist"],
+          "draft-review": ["board-comms"],
+          "general": ["archivist", "email-research"]
+        }
+      },
+      "collaboration_rules": {
+        "coordination_mode": "orchestrated",
+        "handoff_protocol": "task-delegation",
+        "output_sharing": "summarized",
+        "notification_email": "nickd@wharfsidemb.com"
+      }
+    },
+    {
+      "id": "software-project",
+      "name": "Software Project Team",
+      "description": "Full-stack product development team covering requirements, architecture, UX, development planning, QA, marketing, sales, and legal",
+      "skill_alias": "software-project",
+      "created": "2026-01-19",
+      "status": "active",
+      "members": [
+        { "agent_id": "product-requirements", "role": "Product manager - gathers requirements and creates PRDs" },
+        { "agent_id": "software-architecture", "role": "Technical architect - designs system architecture from PRD" },
+        { "agent_id": "ux-design", "role": "UX designer - creates user flows, wireframes, and interaction specs" },
+        { "agent_id": "dev-planning", "role": "Dev lead - breaks work into epics, stories, and GitHub issues" },
+        { "agent_id": "qa-strategy", "role": "QA lead - defines testing approach, test plans, and quality gates" },
+        { "agent_id": "marketing", "role": "Marketing strategist - positioning, messaging, and go-to-market plans" },
+        { "agent_id": "sales", "role": "Sales strategist - playbooks, pricing, and sales enablement" },
+        { "agent_id": "legal", "role": "Legal advisor - risk assessment, compliance, and policy drafting" },
+        { "agent_id": "software-developer", "role": "Full-stack developer - implements features based on requirements, architecture, and UX specs" }
+      ],
+      "orchestration": {
+        "mode": "thin-orchestrator",
+        "model": "opus",
+        "routing": {
+          "requirements": ["product-requirements"],
+          "architecture": ["software-architecture"],
+          "ux-design": ["ux-design"],
+          "dev-planning": ["dev-planning"],
+          "qa": ["qa-strategy"],
+          "marketing": ["marketing"],
+          "sales": ["sales"],
+          "legal": ["legal"],
+          "implementation": ["software-developer"],
+          "general": ["product-requirements"]
+        }
+      },
+      "collaboration_rules": {
+        "coordination_mode": "orchestrated",
+        "handoff_protocol": "stage-based",
+        "output_sharing": "summarized",
+        "notification_email": "nickd@demarconet.com"
+      }
+    },
+    {
+      "id": "altium-solutions",
+      "name": "Altium Solutions Team",
+      "description": "End-to-end customer lifecycle team for Altium sales and solutions, accelerating every phase: Lead -> Qualification -> Technical Sales -> Business Sales -> Deployment -> Support -> Expansion",
+      "skill_alias": "altium",
+      "created": "2026-01-27",
+      "status": "active",
+      "members": [
+        { "agent_id": "account-researcher", "role": "Researches prospects and accounts, producing comprehensive account briefs" },
+        { "agent_id": "qualification-analyst", "role": "Assesses technical and business fit, produces MEDDPICC qualification scorecards" },
+        { "agent_id": "solution-architect", "role": "Designs technical solutions, creates demo scripts and competitive differentiation" },
+        { "agent_id": "value-engineer", "role": "Builds ROI models, TCO analyses, and business case presentations" },
+        { "agent_id": "competitive-intel", "role": "Monitors competitors, creates battle cards, handles objection responses" },
+        { "agent_id": "proposal-writer", "role": "Creates compelling proposals and RFP responses" },
+        { "agent_id": "deal-strategist", "role": "Navigates complex deals through close with strategy and negotiation guidance" },
+        { "agent_id": "deployment-manager", "role": "Orchestrates enterprise deployments across all technical domains" },
+        { "agent_id": "ecad-specialist", "role": "Altium Designer and Enterprise Server deployment expert" },
+        { "agent_id": "migration-specialist", "role": "Design data migration from legacy EDA tools (Cadence, Mentor, EAGLE, KiCad)" },
+        { "agent_id": "mcad-specialist", "role": "MCAD integration expert for SolidWorks, Creo, Inventor CoDesigner deployments" },
+        { "agent_id": "plm-specialist", "role": "PLM integration for Windchill, Teamcenter, Arena, Oracle Agile" },
+        { "agent_id": "erp-supplychain-specialist", "role": "ERP and supply chain integration for SAP, Oracle, Octopart, SiliconExpert" },
+        { "agent_id": "infrastructure-specialist", "role": "IT infrastructure for Windows Server, LDAP/SSO, network security, disaster recovery" },
+        { "agent_id": "customer-support", "role": "Ongoing support, training enablement, health monitoring, and expansion identification" },
+        { "agent_id": "presentation", "role": "Creates professional Altium-branded presentations using the corporate template with 42 layouts" }
+      ],
+      "orchestration": {
+        "mode": "thin-orchestrator",
+        "model": "opus",
+        "routing": {
+          "account-research": ["account-researcher"],
+          "qualification": ["qualification-analyst"],
+          "solution-design": ["solution-architect"],
+          "roi-business-case": ["value-engineer"],
+          "competitive": ["competitive-intel"],
+          "proposal": ["proposal-writer"],
+          "deal-strategy": ["deal-strategist"],
+          "deployment": ["deployment-manager"],
+          "ecad": ["ecad-specialist"],
+          "migration": ["migration-specialist"],
+          "mcad": ["mcad-specialist"],
+          "plm": ["plm-specialist"],
+          "erp-supply": ["erp-supplychain-specialist"],
+          "infrastructure": ["infrastructure-specialist"],
+          "support": ["customer-support"],
+          "presentation": ["presentation"],
+          "general": ["account-researcher", "qualification-analyst"]
+        }
+      },
+      "collaboration_rules": {
+        "coordination_mode": "orchestrated",
+        "handoff_protocol": "stage-based",
+        "output_sharing": "structured-summary",
+        "notification_email": "nickd@demarconet.com"
+      }
+    },
+    {
+      "id": "personal-assistant",
+      "name": "Personal Assistant Team",
+      "description": "Nick's personal assistant team led by Max. Handles research with persistent caching, email management, document creation, knowledge management, and task tracking.",
+      "skill_alias": "max",
+      "created": "2026-02-01",
+      "status": "active",
+      "members": [
+        { "agent_id": "personal-assistant", "role": "Primary personal assistant - handles all requests, manages research cache and personal notes" }
+      ],
+      "orchestration": {
+        "mode": "thin-orchestrator",
+        "model": "opus",
+        "routing": {
+          "web-research": ["web-research"],
+          "browser-tasks": ["chrome-browser"],
+          "document-search": ["rag-search"],
+          "pdf-work": ["pdf-scribe"],
+          "general": ["web-research"]
+        }
+      },
+      "collaboration_rules": {
+        "coordination_mode": "orchestrated",
+        "handoff_protocol": "task-delegation",
+        "output_sharing": "full",
+        "notification_email": "nickd@demarconet.com"
+      }
+    },
+    {
+      "id": "youtube-content",
+      "name": "YouTube Content Team",
+      "description": "Video production and multi-platform short-form content strategy.",
+      "skill_alias": "youtube-content",
+      "created": "2026-02-11",
+      "status": "active",
+      "members": [
+        { "agent_id": "video-script-writer", "role": "Research, outline, narration script, and storyboard creation" },
+        { "agent_id": "video-asset-generator", "role": "AI image generation, TTS narration, background music production" },
+        { "agent_id": "video-assembler", "role": "FFmpeg video assembly with multiple visual styles, transitions, encoding" },
+        { "agent_id": "video-publisher", "role": "Metadata/SEO, thumbnails, YouTube upload, final delivery" },
+        { "agent_id": "short-form-video", "role": "Shorts/Reels/TikTok extraction and posting strategy" },
+        { "agent_id": "social-distributor", "role": "Social media launch campaigns - community research, launch calendar, platform-specific posts" }
+      ],
+      "orchestration": {
+        "mode": "thin-orchestrator",
+        "model": "opus",
+        "routing": {
+          "script-outline": ["video-script-writer"],
+          "storyboard-review": ["video-script-writer"],
+          "audio-production": ["video-asset-generator"],
+          "visual-production": ["video-asset-generator"],
+          "video-assembly": ["video-assembler"],
+          "metadata-upload": ["video-publisher"],
+          "shorts-reels": ["short-form-video"],
+          "social-launch": ["social-distributor"],
+          "social-promotion": ["social-distributor"],
+          "full-video": ["video-script-writer", "video-asset-generator", "video-assembler", "video-publisher"],
+          "full-launch": ["video-script-writer", "video-asset-generator", "video-assembler", "video-publisher", "social-distributor"],
+          "general": ["video-script-writer"]
+        }
+      },
+      "collaboration_rules": {
+        "coordination_mode": "orchestrated",
+        "handoff_protocol": "sequential-delegation",
+        "output_sharing": "full",
+        "notification_email": "nickd@demarconet.com"
+      }
+    },
+    {
+      "id": "hardware-dev",
+      "name": "Hardware Development Team",
+      "description": "Hardware product development team covering schematic/PCB design, mechanical engineering, firmware, supply chain, and manufacturing readiness",
+      "skill_alias": "hardware-dev",
+      "created": "2026-04-09",
+      "status": "active",
+      "members": [
+        { "agent_id": "systems-engineer", "role": "Systems engineering manager - ConOps, requirements decomposition, system architecture, interface specs, V&V planning" },
+        { "agent_id": "pcb-designer", "role": "Schematic and PCB layout engineer - circuit design, component selection, KiCad layout, gerber generation" },
+        { "agent_id": "mcad-engineer", "role": "Mechanical design engineer - enclosures, mounting, thermal management, FreeCAD modeling" },
+        { "agent_id": "firmware-engineer", "role": "Firmware engineer - ESP32/Jetson embedded software, drivers, HAL, OTA updates" },
+        { "agent_id": "supply-chain-manager", "role": "Supply chain manager - BOM costing, component sourcing, CM coordination, availability tracking" },
+        { "agent_id": "dfm-test-engineer", "role": "DFM & test engineer - manufacturing review, test fixtures, production validation, compliance prep" }
+      ],
+      "orchestration": {
+        "mode": "thin-orchestrator",
+        "model": "opus",
+        "routing": {
+          "new-product": ["systems-engineer"],
+          "conops": ["systems-engineer"],
+          "requirements": ["systems-engineer"],
+          "architecture": ["systems-engineer"],
+          "interface": ["systems-engineer"],
+          "integration": ["systems-engineer"],
+          "trade-study": ["systems-engineer"],
+          "schematic": ["pcb-designer"],
+          "pcb": ["pcb-designer"],
+          "layout": ["pcb-designer"],
+          "kicad": ["pcb-designer"],
+          "circuit": ["pcb-designer"],
+          "enclosure": ["mcad-engineer"],
+          "mechanical": ["mcad-engineer"],
+          "mounting": ["mcad-engineer"],
+          "cad": ["mcad-engineer"],
+          "3d-print": ["mcad-engineer"],
+          "firmware": ["firmware-engineer"],
+          "embedded": ["firmware-engineer"],
+          "esp32": ["firmware-engineer"],
+          "jetson": ["firmware-engineer"],
+          "driver": ["firmware-engineer"],
+          "bom": ["supply-chain-manager"],
+          "sourcing": ["supply-chain-manager"],
+          "cost": ["supply-chain-manager"],
+          "component": ["supply-chain-manager"],
+          "dfm": ["dfm-test-engineer"],
+          "manufacturing": ["dfm-test-engineer"],
+          "test": ["dfm-test-engineer"],
+          "compliance": ["dfm-test-engineer"],
+          "fcc": ["dfm-test-engineer"],
+          "general": ["pcb-designer"]
+        }
+      },
+      "collaboration_rules": {
+        "coordination_mode": "orchestrated",
+        "handoff_protocol": "stage-based",
+        "output_sharing": "summarized",
+        "notification_email": "nickd@demarconet.com"
+      }
+    }
+  ],
+  "agents": [
+    {
+      "id": "monthly-bulletin",
+      "name": "Monthly Bulletin",
+      "description": "Generates monthly community bulletin for Wharfside Manor as HTML email with nautical theme",
+      "agent_type": "specialist",
+      "execution": { "model": "sonnet", "context": "fork", "max_turns": 25 },
+      "expertise": {
+        "domains": ["community communications", "newsletter creation", "content curation"],
+        "capabilities": ["email mining", "content organization", "HTML email generation", "work order analysis"]
+      },
+      "mcp_servers": ["gmail"],
+      "teams": ["wharfside-board-assistant"],
+      "purpose": "This agent generates the monthly community bulletin for Wharfside Manor Condominium Association. The bulletin keeps residents informed about community projects, governance updates, seasonal reminders, and important announcements.",
+      "status": "active",
+      "created": "2026-01-19"
+    },
+    {
+      "id": "proposal-review",
+      "name": "Proposal Review",
+      "description": "Analyzes vendor proposals and delivers structured assessments via email",
+      "agent_type": "specialist",
+      "execution": { "model": "sonnet", "context": "fork", "max_turns": 20 },
+      "expertise": {
+        "domains": ["vendor analysis", "contract review", "risk assessment"],
+        "capabilities": ["proposal extraction", "comparative analysis", "cost evaluation", "recommendation generation"]
+      },
+      "mcp_servers": ["gmail"],
+      "teams": ["wharfside-board-assistant"],
+      "purpose": "This agent reviews vendor proposals for Wharfside Manor Condominium Association, providing comprehensive analysis to support informed decision-making. The agent extracts key information, identifies potential concerns, and delivers structured summaries via email.",
+      "status": "active",
+      "created": "2026-01-19"
+    },
+    {
+      "id": "presentation",
+      "name": "Presentation",
+      "description": "Creates professional PowerPoint presentations using branded templates for Wharfside Manor and Altium. Supports multiple template systems with automatic template selection based on topic and audience.",
+      "agent_type": "specialist",
+      "execution": { "model": "sonnet", "context": "fork", "max_turns": 25 },
+      "expertise": {
+        "domains": ["presentation design", "visual communication", "board reporting", "sales presentations", "customer briefings"],
+        "capabilities": ["slide creation", "template application", "content structuring", "brand compliance", "multi-template support"]
+      },
+      "mcp_servers": ["powerpoint", "openai-image"],
+      "teams": ["wharfside-board-assistant", "altium-solutions"],
+      "purpose": "This agent creates professional PowerPoint presentations using branded templates and the PowerPoint MCP server. It supports multiple template systems: Wharfside Manor (board meetings, community updates), Altium (sales presentations, customer decks), and YouTube Storyboard (visual review decks). The agent automatically selects the correct template based on the topic and audience.",
+      "status": "active",
+      "created": "2026-01-19"
+    },
+    {
+      "id": "email-research",
+      "name": "Email Research",
+      "description": "Mines Gmail for topic-specific information and generates structured research reports",
+      "agent_type": "specialist",
+      "execution": { "model": "sonnet", "context": "fork", "max_turns": 20 },
+      "expertise": {
+        "domains": ["email analysis", "research synthesis", "information retrieval"],
+        "capabilities": ["multi-account search", "thread analysis", "timeline construction", "stakeholder identification"]
+      },
+      "mcp_servers": ["gmail", "gmail-personal", "voicemode", "pdfscribe"],
+      "teams": ["wharfside-board-assistant"],
+      "purpose": "The Email Research Agent mines Gmail for emails on a specific topic and generates a structured research report. This report serves as an input to other agents (like Presentation) or as the basis for composing follow-up emails.",
+      "status": "active",
+      "created": "2026-01-19"
+    },
+    {
+      "id": "archivist",
+      "name": "Archivist",
+      "description": "Maintains and retrieves governing documents, meeting minutes, and historical records for Wharfside Manor with RAG-powered semantic search",
+      "agent_type": "specialist",
+      "execution": { "model": "sonnet", "context": "fork", "max_turns": 20 },
+      "expertise": {
+        "domains": ["document management", "information retrieval", "policy research", "web portal integration", "PDF transcription", "semantic search", "RAG"],
+        "capabilities": ["semantic document search", "context provision", "policy lookup", "historical research", "portal document sync", "scanned PDF transcription", "batch PDF processing", "RAG query", "vector database search"]
+      },
+      "mcp_servers": ["google-docs", "pdfscribe"],
+      "teams": ["wharfside-board-assistant"],
+      "purpose": "The Archivist is the knowledge keeper for Wharfside Manor Condominium Association. This agent retrieves governing documents, meeting minutes, budgets, and historical records using semantic search via the RAG vector database. Other agents request information from the Archivist when they need background context, policy details, or historical reference.",
+      "status": "active",
+      "created": "2026-01-19"
+    },
+    {
+      "id": "product-requirements",
+      "name": "Product Requirements",
+      "description": "Builds comprehensive Product Requirements Documents through interactive conversation",
+      "agent_type": "specialist",
+      "execution": { "model": "opus", "context": "fork", "max_turns": 30 },
+      "expertise": {
+        "domains": ["product management", "requirements engineering", "user stories"],
+        "capabilities": ["requirements gathering", "PRD creation", "user story writing", "scope definition", "stakeholder interviews"]
+      },
+      "mcp_servers": ["google-docs", "gmail-personal"],
+      "teams": ["software-project"],
+      "purpose": "The Product Requirements Agent helps develop comprehensive Product Requirements Documents (PRDs) for software projects through interactive conversation. It guides users through requirements gathering, organizes information into a structured specification, and produces a complete PRD ready for development.",
+      "status": "active",
+      "created": "2026-01-19"
+    },
+    {
+      "id": "software-architecture",
+      "name": "Software Architecture",
+      "description": "Designs technical architectures for software systems based on product requirements",
+      "agent_type": "specialist",
+      "execution": { "model": "opus", "context": "fork", "max_turns": 30 },
+      "expertise": {
+        "domains": ["system design", "cloud architecture", "API design", "data modeling"],
+        "capabilities": ["architecture design", "component diagrams", "data modeling", "API specification", "infrastructure planning", "ADR documentation"]
+      },
+      "mcp_servers": ["google-docs", "gmail-personal", "firebase", "google-cloud"],
+      "teams": ["software-project"],
+      "purpose": "The Software Architecture Agent designs technical architectures for software systems based on product requirements. It produces comprehensive architecture documentation including system design, component diagrams, data models, API specifications, and infrastructure requirements.",
+      "status": "active",
+      "created": "2026-01-19"
+    },
+    {
+      "id": "ux-design",
+      "name": "UX Design",
+      "description": "Creates user experience specifications, wireframe descriptions, and interaction designs",
+      "agent_type": "specialist",
+      "execution": { "model": "sonnet", "context": "fork", "max_turns": 25 },
+      "expertise": {
+        "domains": ["user experience", "interaction design", "information architecture", "accessibility"],
+        "capabilities": ["user flow mapping", "wireframe specification", "component library design", "interaction patterns", "accessibility compliance", "responsive design"]
+      },
+      "mcp_servers": ["google-docs", "gmail-personal"],
+      "teams": ["software-project"],
+      "purpose": "The UX Design Agent creates user experience specifications, wireframes descriptions, and interaction designs based on product requirements and technical architecture. It produces comprehensive UX documentation including user flows, wireframe specifications, component libraries, and accessibility guidelines.",
+      "status": "active",
+      "created": "2026-01-19"
+    },
+    {
+      "id": "dev-planning",
+      "name": "Dev Planning",
+      "description": "Converts requirements and designs into actionable development tasks and GitHub issues",
+      "agent_type": "specialist",
+      "execution": { "model": "sonnet", "context": "fork", "max_turns": 25 },
+      "expertise": {
+        "domains": ["project management", "agile planning", "task decomposition", "sprint planning"],
+        "capabilities": ["epic breakdown", "user story writing", "task decomposition", "estimation", "dependency mapping", "sprint planning", "GitHub issue creation"]
+      },
+      "mcp_servers": ["google-docs", "gmail-personal", "github"],
+      "teams": ["software-project"],
+      "purpose": "The Dev Planning Agent converts product requirements, architecture designs, and UX specifications into actionable development tasks. It produces epic breakdowns, user stories, task decomposition, sprint plans, and GitHub issues ready for development teams.",
+      "status": "active",
+      "created": "2026-01-19"
+    },
+    {
+      "id": "qa-strategy",
+      "name": "QA Strategy",
+      "description": "Defines comprehensive testing approaches, test plans, and quality gates",
+      "agent_type": "specialist",
+      "execution": { "model": "sonnet", "context": "fork", "max_turns": 20 },
+      "expertise": {
+        "domains": ["quality assurance", "test planning", "test automation", "performance testing"],
+        "capabilities": ["test strategy development", "test case specification", "quality gate definition", "performance test planning", "security test planning", "accessibility testing", "automation strategy"]
+      },
+      "mcp_servers": ["google-docs", "gmail-personal", "github"],
+      "teams": ["software-project"],
+      "purpose": "The QA Strategy Agent defines comprehensive testing approaches for software projects. It produces test plans, test case specifications, quality gates, and QA requirements that ensure software quality throughout the development lifecycle.",
+      "status": "active",
+      "created": "2026-01-19"
+    },
+    {
+      "id": "marketing",
+      "name": "Marketing",
+      "description": "Develops product positioning, messaging frameworks, and go-to-market strategies",
+      "agent_type": "specialist",
+      "execution": { "model": "sonnet", "context": "fork", "max_turns": 25 },
+      "expertise": {
+        "domains": ["product marketing", "positioning", "go-to-market", "content strategy"],
+        "capabilities": ["competitive analysis", "positioning development", "messaging frameworks", "launch planning", "content strategy", "channel planning"]
+      },
+      "mcp_servers": ["google-docs", "gmail-personal"],
+      "teams": ["software-project"],
+      "purpose": "The Marketing Agent develops product positioning, messaging frameworks, and go-to-market strategies for software products. It produces comprehensive marketing documentation including competitive positioning, messaging guides, launch plans, and content strategies.",
+      "status": "active",
+      "created": "2026-01-19"
+    },
+    {
+      "id": "sales",
+      "name": "Sales",
+      "description": "Develops sales strategies, playbooks, pricing, and enablement materials",
+      "agent_type": "specialist",
+      "execution": { "model": "sonnet", "context": "fork", "max_turns": 25 },
+      "expertise": {
+        "domains": ["sales strategy", "pricing", "sales enablement", "competitive selling"],
+        "capabilities": ["sales playbook creation", "pricing strategy", "competitive battle cards", "objection handling", "demo scripting", "sales collateral", "email templates"]
+      },
+      "mcp_servers": ["google-docs", "gmail-personal"],
+      "teams": ["software-project"],
+      "purpose": "The Sales Agent develops sales strategies, materials, and enablement content for software products. It produces sales playbooks, pitch decks, objection handling guides, competitive battle cards, and pricing strategies to help close deals.",
+      "status": "active",
+      "created": "2026-01-19"
+    },
+    {
+      "id": "legal",
+      "name": "Legal",
+      "description": "Reviews products for legal risks, compliance requirements, and drafts legal documents",
+      "agent_type": "specialist",
+      "execution": { "model": "sonnet", "context": "fork", "max_turns": 20 },
+      "expertise": {
+        "domains": ["legal compliance", "privacy law", "contract law", "intellectual property"],
+        "capabilities": ["risk assessment", "compliance review", "privacy policy drafting", "terms of service drafting", "contract review", "regulatory analysis", "IP review"]
+      },
+      "mcp_servers": ["google-docs", "gmail-personal"],
+      "teams": ["software-project"],
+      "purpose": "The Legal Agent reviews software products and documentation for legal risks, compliance requirements, and contract issues. It produces risk assessments, compliance checklists, policy recommendations, and drafts legal documents like terms of service and privacy policies.",
+      "status": "active",
+      "created": "2026-01-19"
+    },
+    {
+      "id": "software-developer",
+      "name": "Software Developer",
+      "description": "Full-stack developer that implements features based on requirements, architecture, and UX specifications",
+      "agent_type": "specialist",
+      "execution": { "model": "opus", "context": "fork", "max_turns": 50 },
+      "expertise": {
+        "domains": ["software-development", "full-stack", "implementation"],
+        "capabilities": ["frontend-development", "backend-development", "database-design", "api-development", "code-review", "pull-request-creation", "git-workflow"]
+      },
+      "mcp_servers": ["github"],
+      "teams": ["software-project"],
+      "purpose": "You are a full-stack software developer responsible for implementing features and fixes based on project requirements, architecture specifications, and UX designs. You transform planning artifacts (PRDs, architecture docs, UX specs, and GitHub issues) into working, well-structured code.",
+      "status": "active",
+      "created": "2026-01-20"
+    },
+    {
+      "id": "pdf-scribe",
+      "name": "PDFScribe",
+      "description": "Extracts and transcribes PDF content into detailed Markdown with optional RAG ingestion for semantic search",
+      "agent_type": "specialist",
+      "execution": { "model": "haiku", "context": "fork", "max_turns": 15 },
+      "expertise": {
+        "domains": ["document-processing", "ocr", "content-extraction", "transcription", "rag", "semantic-search"],
+        "capabilities": ["PDF text extraction", "Image-based PDF transcription", "Visual content description", "Table to HTML conversion", "Multi-source PDF retrieval", "Intelligent caching with checksum validation", "RAG ingestion", "Semantic search across indexed documents"]
+      },
+      "mcp_servers": ["pdfscribe", "gmail", "gmail-personal"],
+      "teams": ["wharfside-board-assistant"],
+      "purpose": "PDFScribe is a specialized content extraction agent that transforms PDF documents into detailed, structured Markdown with optional semantic search indexing. Whether dealing with native text PDFs or scanned image-based documents, PDFScribe ensures no information is lost by extracting both textual content and visual elements with detailed descriptions.",
+      "status": "active",
+      "created": "2026-01-20"
+    },
+    {
+      "id": "web-research",
+      "name": "Web Research",
+      "description": "Researches products and local services to find best-value options with reviews from authoritative sources",
+      "agent_type": "specialist",
+      "execution": { "model": "sonnet", "context": "fork", "max_turns": 15 },
+      "expertise": {
+        "domains": ["consumer product research", "local service evaluation", "review aggregation", "price/value analysis"],
+        "capabilities": ["web search", "review source discovery", "multi-source synthesis", "value scoring", "local search", "email report delivery"]
+      },
+      "mcp_servers": ["gmail-personal"],
+      "teams": [],
+      "purpose": "You are a web research specialist focused on finding the best-value products and local services. You aggregate reviews from authoritative sources, analyze pricing, and deliver actionable recommendations that balance quality, reputation, and cost.",
+      "status": "active",
+      "created": "2026-01-21"
+    },
+    {
+      "id": "account-researcher",
+      "name": "Account Researcher",
+      "description": "Researches prospects and accounts before engagement, producing comprehensive account briefs with company overview, tech stack, industry context, recent news, and key stakeholders",
+      "agent_type": "specialist",
+      "execution": { "model": "sonnet", "context": "fork", "max_turns": 20 },
+      "expertise": {
+        "domains": ["account research", "prospect intelligence", "technology stack analysis", "stakeholder mapping", "sales enablement"],
+        "capabilities": ["web research", "LinkedIn analysis", "company profiling", "news monitoring", "stakeholder identification"]
+      },
+      "mcp_servers": ["gmail", "google-drive"],
+      "teams": ["altium-solutions"],
+      "purpose": "You are an account research specialist focused on preparing comprehensive prospect and account intelligence before sales engagement. You gather company overviews, technology stack insights, industry context, recent news, and key stakeholder information to arm the sales team with the knowledge they need for effective outreach.",
+      "status": "active",
+      "created": "2026-01-27"
+    },
+    {
+      "id": "qualification-analyst",
+      "name": "Qualification Analyst",
+      "description": "Assesses technical and business fit against Altium's ICP, producing MEDDPICC qualification scorecards with recommended next steps and red flag identification",
+      "agent_type": "specialist",
+      "execution": { "model": "sonnet", "context": "fork", "max_turns": 20 },
+      "expertise": {
+        "domains": ["sales qualification", "MEDDPICC methodology", "ICP alignment", "deal assessment", "sales process optimization"],
+        "capabilities": ["qualification scoring", "red flag identification", "next step recommendations", "handoff preparation", "pipeline analysis"]
+      },
+      "mcp_servers": ["gmail", "google-docs"],
+      "teams": ["altium-solutions"],
+      "purpose": "You are a qualification specialist focused on assessing technical and business fit against Altium's Ideal Customer Profile (ICP). You analyze account briefs and discovery call notes to produce qualification scorecards, identify red flags, and recommend next steps in the sales process.",
+      "status": "active",
+      "created": "2026-01-27"
+    },
+    {
+      "id": "solution-architect",
+      "name": "Solution Architect",
+      "description": "Designs technical solutions mapped to customer requirements, creates customized demo scripts, and develops competitive differentiation points for Altium products",
+      "agent_type": "specialist",
+      "execution": { "model": "opus", "context": "fork", "max_turns": 30 },
+      "expertise": {
+        "domains": ["PCB design software", "Altium product portfolio", "technical solution design", "competitive analysis", "systems integration"],
+        "capabilities": ["requirements mapping", "solution configuration", "demo script creation", "competitive positioning", "integration architecture"]
+      },
+      "mcp_servers": ["google-docs", "powerpoint"],
+      "teams": ["altium-solutions"],
+      "purpose": "You are a technical solution architect specializing in Altium's product portfolio. You design solutions mapped to customer requirements, create demo scripts tailored to their use cases, and develop competitive differentiation points that highlight Altium's advantages.",
+      "status": "active",
+      "created": "2026-01-27"
+    },
+    {
+      "id": "value-engineer",
+      "name": "Value Engineer",
+      "description": "Builds ROI models, TCO analyses, and business case presentations that quantify the financial value of Altium investments",
+      "agent_type": "specialist",
+      "execution": { "model": "sonnet", "context": "fork", "max_turns": 25 },
+      "expertise": {
+        "domains": ["ROI analysis", "TCO modeling", "business case development", "value quantification", "financial justification"],
+        "capabilities": ["financial modeling", "cost-benefit analysis", "executive presentation", "sensitivity analysis", "payback calculation"]
+      },
+      "mcp_servers": ["google-docs", "powerpoint", "google-drive"],
+      "teams": ["altium-solutions"],
+      "purpose": "You are a value engineering specialist focused on building compelling business cases for Altium investments. You create ROI models, TCO analyses, and business case presentations that quantify the value Altium delivers to customers.",
+      "status": "active",
+      "created": "2026-01-27"
+    },
+    {
+      "id": "competitive-intel",
+      "name": "Competitive Intelligence",
+      "description": "Monitors competitors and provides positioning guidance through battle cards, objection handling, and win/loss analysis for Cadence, Mentor/Siemens, KiCad, and other EDA competitors",
+      "agent_type": "specialist",
+      "execution": { "model": "sonnet", "context": "fork", "max_turns": 20 },
+      "expertise": {
+        "domains": ["competitive analysis", "EDA market intelligence", "sales enablement", "objection handling", "win/loss analysis"],
+        "capabilities": ["battle card development", "competitor monitoring", "positioning strategy", "objection response creation", "pattern analysis"]
+      },
+      "mcp_servers": ["google-docs"],
+      "teams": ["altium-solutions"],
+      "purpose": "You are a competitive intelligence specialist focused on monitoring Altium's competitors and providing positioning guidance for sales engagements. You create battle cards, handle objections, and perform win/loss analysis to continuously improve competitive positioning.",
+      "status": "active",
+      "created": "2026-01-27"
+    },
+    {
+      "id": "proposal-writer",
+      "name": "Proposal Writer",
+      "description": "Creates compelling proposals and RFP responses that synthesize technical solutions, business value, and competitive positioning into polished, persuasive documents",
+      "agent_type": "specialist",
+      "execution": { "model": "opus", "context": "fork", "max_turns": 30 },
+      "expertise": {
+        "domains": ["proposal writing", "RFP response", "business communication", "sales documentation", "executive communication"],
+        "capabilities": ["document synthesis", "persuasive writing", "executive summary creation", "compliance matrix development", "professional formatting"]
+      },
+      "mcp_servers": ["google-docs", "powerpoint", "gmail"],
+      "teams": ["altium-solutions"],
+      "purpose": "You are a proposal specialist focused on creating compelling proposals and RFP responses that synthesize technical solutions, business value, and competitive positioning into polished, persuasive documents. Your goal is to produce proposals that clearly articulate why Altium is the right choice.",
+      "status": "active",
+      "created": "2026-01-27"
+    },
+    {
+      "id": "deal-strategist",
+      "name": "Deal Strategist",
+      "description": "Navigates complex deals through close with deal strategy memos, stakeholder mapping, negotiation playbooks, and Salesforce-ready update notes",
+      "agent_type": "specialist",
+      "execution": { "model": "sonnet", "context": "fork", "max_turns": 25 },
+      "expertise": {
+        "domains": ["deal strategy", "negotiation", "stakeholder management", "close planning", "pipeline management"],
+        "capabilities": ["strategic analysis", "political mapping", "negotiation preparation", "close plan development", "CRM documentation"]
+      },
+      "mcp_servers": ["gmail", "google-docs"],
+      "teams": ["altium-solutions"],
+      "purpose": "You are a deal strategy specialist focused on navigating complex deals through to close. You develop deal strategies, negotiation playbooks, and close plans while generating CRM-ready notes for pipeline management.",
+      "status": "active",
+      "created": "2026-01-27"
+    },
+    {
+      "id": "deployment-manager",
+      "name": "Deployment Manager",
+      "description": "Orchestrates enterprise Altium deployments across all technical domains, coordinating specialists, managing customer communication, and ensuring successful go-lives",
+      "agent_type": "specialist",
+      "execution": { "model": "sonnet", "context": "fork", "max_turns": 25 },
+      "expertise": {
+        "domains": ["project management", "enterprise deployment", "technical program management", "stakeholder communication", "risk management"],
+        "capabilities": ["deployment planning", "resource coordination", "status reporting", "risk mitigation", "go-live management"]
+      },
+      "mcp_servers": ["gmail", "google-docs"],
+      "teams": ["altium-solutions"],
+      "purpose": "You are a deployment orchestration specialist who manages enterprise Altium implementations across all technical domains. You coordinate domain specialists, manage customer communication, track risks, and ensure successful go-lives.",
+      "status": "active",
+      "created": "2026-01-27"
+    },
+    {
+      "id": "ecad-specialist",
+      "name": "ECAD Specialist",
+      "description": "Altium Designer and Enterprise Server deployment expert handling installation, configuration, workspace management, user administration, and design standards",
+      "agent_type": "specialist",
+      "execution": { "model": "sonnet", "context": "fork", "max_turns": 20 },
+      "expertise": {
+        "domains": ["Altium Designer", "Altium 365", "Enterprise Server", "ECAD administration", "design standards"],
+        "capabilities": ["server deployment", "client installation", "workspace configuration", "user management", "licensing configuration"]
+      },
+      "mcp_servers": ["google-docs"],
+      "teams": ["altium-solutions"],
+      "purpose": "You are an Altium Designer and Enterprise Server deployment expert. You handle all aspects of the core ECAD platform setup including installation, configuration, workspace management, user administration, and design standards.",
+      "status": "active",
+      "created": "2026-01-27"
+    },
+    {
+      "id": "migration-specialist",
+      "name": "Migration Specialist",
+      "description": "Design data migration expert specializing in converting legacy EDA tool data (Cadence, Mentor, EAGLE, KiCad) to Altium format including library conversion and validation",
+      "agent_type": "specialist",
+      "execution": { "model": "sonnet", "context": "fork", "max_turns": 20 },
+      "expertise": {
+        "domains": ["EDA tool migration", "Cadence conversion", "Mentor conversion", "EAGLE conversion", "KiCad conversion", "library migration"],
+        "capabilities": ["migration assessment", "library conversion", "design conversion", "data validation", "netlist comparison"]
+      },
+      "mcp_servers": ["google-docs"],
+      "teams": ["altium-solutions"],
+      "purpose": "You are a design data migration expert specializing in converting legacy EDA tool data to Altium format. You handle migrations from Cadence, Mentor, EAGLE, KiCad, and other platforms, including component library conversion and design validation.",
+      "status": "active",
+      "created": "2026-01-27"
+    },
+    {
+      "id": "mcad-specialist",
+      "name": "MCAD Specialist",
+      "description": "MCAD integration expert specializing in CoDesigner deployments for SolidWorks, Creo, Inventor, Fusion 360, and NX to enable ECAD-MCAD collaboration",
+      "agent_type": "specialist",
+      "execution": { "model": "sonnet", "context": "fork", "max_turns": 20 },
+      "expertise": {
+        "domains": ["ECAD-MCAD collaboration", "SolidWorks integration", "PTC Creo integration", "Autodesk Inventor integration", "Siemens NX integration", "CoDesigner configuration"],
+        "capabilities": ["CoDesigner deployment", "workflow design", "3D model synchronization", "conflict resolution", "mechanical team training"]
+      },
+      "mcp_servers": ["google-docs"],
+      "teams": ["altium-solutions"],
+      "purpose": "You are an MCAD integration expert specializing in ECAD-MCAD collaboration workflows. You configure and deploy Altium's CoDesigner integrations with SolidWorks, PTC Creo, Autodesk Inventor, Fusion 360, and Siemens NX.",
+      "status": "active",
+      "created": "2026-01-27"
+    },
+    {
+      "id": "plm-specialist",
+      "name": "PLM Specialist",
+      "description": "PLM integration expert for Windchill, Teamcenter, Arena, and Oracle Agile, configuring data mapping, BOM publishing, lifecycle management, and ECO workflows",
+      "agent_type": "specialist",
+      "execution": { "model": "sonnet", "context": "fork", "max_turns": 20 },
+      "expertise": {
+        "domains": ["PLM integration", "PTC Windchill", "Siemens Teamcenter", "Arena PLM", "Oracle Agile", "ECO workflow"],
+        "capabilities": ["connector deployment", "data mapping", "BOM integration", "lifecycle synchronization", "change management integration"]
+      },
+      "mcp_servers": ["google-docs"],
+      "teams": ["altium-solutions"],
+      "purpose": "You are a PLM integration expert specializing in connecting Altium with enterprise Product Lifecycle Management systems. You configure integrations with Windchill, Teamcenter, Arena, and Oracle Agile to enable design data management, revision control, and ECO workflows.",
+      "status": "active",
+      "created": "2026-01-27"
+    },
+    {
+      "id": "erp-supplychain-specialist",
+      "name": "ERP & Supply Chain Specialist",
+      "description": "ERP and supply chain integration expert for SAP, Oracle, Octopart, and SiliconExpert, enabling BOM synchronization, component intelligence, and procurement workflows",
+      "agent_type": "specialist",
+      "execution": { "model": "sonnet", "context": "fork", "max_turns": 20 },
+      "expertise": {
+        "domains": ["ERP integration", "SAP connectivity", "Oracle integration", "Octopart", "SiliconExpert", "supply chain management"],
+        "capabilities": ["ERP connector deployment", "BOM synchronization", "component intelligence", "procurement workflow", "compliance integration"]
+      },
+      "mcp_servers": ["google-docs"],
+      "teams": ["altium-solutions"],
+      "purpose": "You are an ERP and supply chain integration expert specializing in connecting Altium with enterprise resource planning systems and component sourcing platforms. You configure integrations with SAP, Oracle, and supply chain tools like Octopart and SiliconExpert.",
+      "status": "active",
+      "created": "2026-01-27"
+    },
+    {
+      "id": "infrastructure-specialist",
+      "name": "Infrastructure Specialist",
+      "description": "IT infrastructure expert for Windows Server deployment, LDAP/Active Directory integration, SSO configuration, network security, and disaster recovery for Altium enterprise deployments",
+      "agent_type": "specialist",
+      "execution": { "model": "sonnet", "context": "fork", "max_turns": 20 },
+      "expertise": {
+        "domains": ["Windows Server", "Active Directory", "LDAP integration", "SSO configuration", "network security", "disaster recovery"],
+        "capabilities": ["server deployment", "authentication setup", "firewall configuration", "SSL/TLS management", "backup planning", "IT documentation"]
+      },
+      "mcp_servers": ["google-docs"],
+      "teams": ["altium-solutions"],
+      "purpose": "You are an IT infrastructure expert specializing in the server, network, and security requirements for Altium enterprise deployments. You handle Windows Server deployment, LDAP/Active Directory integration, SSO configuration, and IT security requirements.",
+      "status": "active",
+      "created": "2026-01-27"
+    },
+    {
+      "id": "customer-support",
+      "name": "Customer Support",
+      "description": "Ongoing customer support specialist for training enablement, health monitoring, support coordination, and expansion opportunity identification",
+      "agent_type": "specialist",
+      "execution": { "model": "sonnet", "context": "fork", "max_turns": 25 },
+      "expertise": {
+        "domains": ["customer success", "training enablement", "health monitoring", "support management", "account expansion"],
+        "capabilities": ["training development", "health scoring", "support coordination", "expansion identification", "renewal management"]
+      },
+      "mcp_servers": ["gmail", "google-docs"],
+      "teams": ["altium-solutions"],
+      "purpose": "You are an ongoing customer support specialist focused on post-deployment support, training enablement, health monitoring, and expansion opportunity identification. You ensure customers realize ongoing value from their Altium investment.",
+      "status": "active",
+      "created": "2026-01-27"
+    },
+    {
+      "id": "rag-search",
+      "name": "RAG Search",
+      "description": "Semantic search service agent that queries vector databases for other agents. Handles keyword mapping and multi-query strategies.",
+      "agent_type": "utility",
+      "execution": { "model": "haiku", "context": "fork", "max_turns": 10 },
+      "expertise": {
+        "domains": ["semantic search", "vector database", "information retrieval", "RAG"],
+        "capabilities": ["semantic document search", "keyword mapping", "multi-query search", "result ranking"]
+      },
+      "mcp_servers": [],
+      "teams": ["wharfside-board-assistant"],
+      "purpose": "RAG Search is a specialized service agent that performs semantic searches against vector databases. Other agents (Archivist, PDFScribe, etc.) delegate search requests to this agent when they need to find documents by meaning rather than exact keywords. It centralizes RAG search to ensure searches are performed correctly every time.",
+      "status": "active",
+      "created": "2026-01-28"
+    },
+    {
+      "id": "personal-assistant",
+      "name": "Max - Personal Assistant",
+      "description": "Nick's personal assistant with persistent research caching, email management, document creation, and knowledge management.",
+      "agent_type": "orchestrator",
+      "execution": { "model": "opus", "context": "inline", "max_turns": 50 },
+      "expertise": {
+        "domains": ["research", "email-management", "document-creation", "knowledge-management", "task-tracking", "information-retrieval"],
+        "capabilities": ["web-research-with-caching", "email-search-and-drafting", "google-docs-creation", "google-drive-search", "to-do-management", "project-tracking", "research-report-generation", "cross-reference-cached-research"]
+      },
+      "mcp_servers": ["gmail", "gmail-personal", "google-drive", "google-docs", "voicemode", "pdfscribe", "gtasks", "apple-mcp", "apple-contacts", "openai-image"],
+      "teams": ["personal-assistant"],
+      "purpose": "You are Max, Nick's personal assistant. You're sharp, organized, and you never forget. You keep things moving, cut through noise, and always have the context from past conversations at your fingertips. Your philosophy: remember everything, summarize first and go deep on request, be proactive, and stay organized.",
+      "status": "active",
+      "created": "2026-02-01"
+    },
+    {
+      "id": "chrome-browser",
+      "name": "Chrome Browser",
+      "description": "Browser automation service agent that handles all Chrome MCP tasks for other agents.",
+      "agent_type": "utility",
+      "execution": { "model": "sonnet", "context": "fork", "max_turns": 15 },
+      "expertise": {
+        "domains": ["browser-automation", "web-scraping", "form-filling", "screenshot-capture"],
+        "capabilities": ["page-navigation", "form-automation", "data-extraction", "screenshot-capture", "file-upload-download", "multi-page-workflows"]
+      },
+      "mcp_servers": ["chrome"],
+      "teams": [],
+      "purpose": "Chrome Browser is a specialized service agent that performs browser automation tasks for other agents. By centralizing all Chrome MCP operations in a dedicated agent, we prevent Chrome's 25+ tool definitions from bloating other agents' context windows and ensure browser automation is performed consistently.",
+      "status": "active",
+      "created": "2026-02-11"
+    },
+    {
+      "id": "short-form-video",
+      "name": "Short-Form Video Strategy",
+      "description": "Extracts viral moments from long-form videos and creates YouTube Shorts, Instagram Reels, and TikToks with vertical formatting, CTAs, and strategic posting cadence.",
+      "agent_type": "specialist",
+      "execution": { "model": "sonnet", "context": "fork", "max_turns": 30 },
+      "expertise": {
+        "domains": ["youtube-shorts", "instagram-reels", "tiktok", "vertical-video-production", "viral-content-strategy", "content-repurposing"],
+        "capabilities": ["moment-extraction", "vertical-video-cropping", "text-overlay-design", "cta-placement", "ffmpeg-editing", "multi-platform-upload", "posting-schedule-management", "performance-tracking", "whisper-transcription", "dynamic-pop-subtitles"]
+      },
+      "mcp_servers": ["video-editor", "voicemode", "openai-image", "google-docs", "gmail-personal"],
+      "teams": ["youtube-content"],
+      "purpose": "Short-Form Video Strategy extracts viral moments from long-form videos and transforms them into vertical short-form content for YouTube Shorts, Instagram Reels, and TikTok. It manages the full lifecycle: moment identification, vertical cropping, text overlays, CTA placement, multi-platform upload, and posting strategy.",
+      "status": "active",
+      "created": "2026-02-11"
+    },
+    {
+      "id": "video-script-writer",
+      "name": "Video Script Writer",
+      "description": "Researches topics, creates video outlines, writes narration scripts, and designs storyboards for YouTube video production.",
+      "agent_type": "specialist",
+      "execution": { "model": "opus", "context": "fork", "max_turns": 30 },
+      "expertise": {
+        "domains": ["content-research", "script-writing", "storyboard-design", "video-planning", "youtube-content-strategy"],
+        "capabilities": ["topic-research", "video-outline-creation", "narration-script-writing", "storyboard-design", "timing-estimation", "scene-planning", "source-material-analysis", "pdf-content-extraction"]
+      },
+      "mcp_servers": ["pdfscribe", "google-docs", "powerpoint"],
+      "teams": ["youtube-content"],
+      "purpose": "Video Script Writer handles the planning and writing phases of YouTube video production. It takes a topic brief, researches the subject, creates a chapter-structured outline, writes a word-for-word narration script organized by chapters, designs a detailed storyboard, and generates a PowerPoint storyboard deck for human review.",
+      "status": "active",
+      "created": "2026-02-13"
+    },
+    {
+      "id": "video-asset-generator",
+      "name": "Video Asset Generator",
+      "description": "Generates visual assets (AI images), narration audio (TTS), and background music for YouTube video production.",
+      "agent_type": "specialist",
+      "execution": { "model": "sonnet", "context": "fork", "max_turns": 40 },
+      "expertise": {
+        "domains": ["ai-image-generation", "text-to-speech", "audio-production", "visual-asset-creation"],
+        "capabilities": ["dalle3-image-generation", "gpt-image-generation", "tts-narration-generation", "kokoro-tts-fallback", "ambient-music-generation", "image-processing", "audio-normalization", "user-photo-processing"]
+      },
+      "mcp_servers": ["openai-image", "voicemode", "video-editor"],
+      "teams": ["youtube-content"],
+      "purpose": "Video Asset Generator produces all visual and audio assets needed for YouTube video assembly. Working from a storyboard document, it generates AI images, narration audio via TTS, and background music. Each asset is saved to the project folder with consistent naming for the Video Assembler to consume.",
+      "status": "active",
+      "created": "2026-02-13"
+    },
+    {
+      "id": "video-assembler",
+      "name": "Video Assembler",
+      "description": "Assembles video segments from images and audio using FFmpeg with multiple visual styles (Ken Burns, gentle zoom, static, pillarbox), transitions, text overlays, and final encoding.",
+      "agent_type": "specialist",
+      "execution": { "model": "sonnet", "context": "fork", "max_turns": 40 },
+      "expertise": {
+        "domains": ["video-editing", "ffmpeg", "motion-graphics", "video-encoding"],
+        "capabilities": ["ken-burns-effects", "gentle-zoom-effects", "static-display", "portrait-pillarboxing", "image-orientation-detection", "video-segment-creation", "text-overlay-rendering", "crossfade-transitions", "audio-video-mixing", "video-concatenation", "youtube-optimized-encoding"]
+      },
+      "mcp_servers": ["video-editor"],
+      "teams": ["youtube-content"],
+      "purpose": "Video Assembler takes generated assets (images, narration audio, music) and a storyboard, then produces a polished YouTube-ready MP4 video using FFmpeg. It supports multiple visual styles -- Ken Burns pan/zoom, gentle zoom, static display, and pillarboxed portrait images -- plus text overlays, transitions, audio mixing, and final encoding.",
+      "status": "active",
+      "created": "2026-02-13"
+    },
+    {
+      "id": "video-publisher",
+      "name": "Video Publisher",
+      "description": "Generates YouTube metadata, thumbnails, uploads videos via browser automation, and delivers final packages.",
+      "agent_type": "specialist",
+      "execution": { "model": "sonnet", "context": "fork", "max_turns": 25 },
+      "expertise": {
+        "domains": ["youtube-seo", "metadata-optimization", "thumbnail-design", "youtube-upload", "video-delivery"],
+        "capabilities": ["youtube-metadata-generation", "keyword-research", "thumbnail-creation", "youtube-studio-upload", "video-quality-verification", "description-optimization", "tag-strategy"]
+      },
+      "mcp_servers": ["openai-image", "gmail-personal"],
+      "teams": ["youtube-content"],
+      "purpose": "Video Publisher handles the final stages of YouTube video production: generating optimized metadata (title, description, tags), creating thumbnails, uploading the video to YouTube via the YouTube Data API, and delivering the final package.",
+      "status": "active",
+      "created": "2026-02-13"
+    },
+    {
+      "id": "board-comms",
+      "name": "Board Communications",
+      "description": "Drafts official board communications -- notices, policy explainers, crisis updates, and owner letters -- by synthesizing governing document research and email context into clear, properly-cited messages",
+      "agent_type": "specialist",
+      "execution": { "model": "sonnet", "context": "fork", "max_turns": 25 },
+      "expertise": {
+        "domains": ["community communications", "board correspondence", "policy explanation", "crisis communications", "insurance and governing document interpretation"],
+        "capabilities": ["drafting owner notices and letters", "synthesizing governing document research into plain language", "balancing legal accuracy with accessible tone", "combining multiple source drafts into unified communications", "citing Master Deed, Resolutions, and By-Laws accurately"]
+      },
+      "mcp_servers": ["gmail-personal"],
+      "teams": ["wharfside-board-assistant"],
+      "purpose": "You draft official communications from the Wharfside Manor Condominium Association Board of Trustees to unit owners. Your role is to take research from the Archivist and Email Research and synthesize them into clear, accurate, balanced communications. You are NOT a rubber stamp -- when a board member drafts a message, you review it against the governing documents and flag what's accurate, what's missing, and what could be improved.",
+      "status": "active",
+      "created": "2026-02-15"
+    },
+    {
+      "id": "social-distributor",
+      "name": "Social Distributor",
+      "description": "Plans and executes social media launch campaigns for each published video -- pre-premiere buzz, launch day posts, and follow-up across YouTube Community, Facebook groups, Reddit, Instagram, and TikTok.",
+      "agent_type": "specialist",
+      "execution": { "model": "sonnet", "context": "fork", "max_turns": 30 },
+      "expertise": {
+        "domains": ["social-media-marketing", "community-engagement", "hyper-local-promotion", "youtube-premieres", "content-distribution", "audience-growth"],
+        "capabilities": ["platform-specific-copywriting", "community-targeting", "premiere-scheduling", "teaser-content-creation", "facebook-group-strategy", "reddit-community-engagement", "instagram-caption-writing", "email-campaign-drafting", "launch-calendar-creation", "post-performance-tracking"]
+      },
+      "mcp_servers": ["chrome", "gmail-personal"],
+      "teams": ["youtube-content"],
+      "purpose": "Social Distributor plans and executes social media launch campaigns for each video published under the Vistter brand. It handles the full lifecycle from pre-premiere buzz through launch day posts to follow-up engagement, targeting hyper-local communities relevant to each video's subject.",
+      "status": "active",
+      "created": "2026-03-21"
+    },
+    {
+      "id": "systems-engineer",
+      "name": "Systems Engineering Manager",
+      "description": "Systems engineering manager coordinating electronics, mechanical, and software disciplines through V-model lifecycle management, requirements decomposition, interface specification, and cross-team integration",
+      "agent_type": "specialist",
+      "execution": { "model": "opus", "context": "fork", "max_turns": 40 },
+      "expertise": {
+        "domains": ["systems-engineering", "requirements-management", "system-architecture", "interface-management", "verification-validation", "integration-planning", "trade-studies", "risk-management", "change-management", "v-model", "cross-discipline-coordination"],
+        "capabilities": ["Concept of Operations development", "Requirements decomposition", "System architecture definition", "Interface specification", "Verification and validation planning", "Traceability matrix creation", "Trade study execution", "Change impact analysis", "Risk and assumption tracking", "Integration planning", "Design review gate management", "Cross-team coordination"]
+      },
+      "mcp_servers": ["github"],
+      "teams": ["hardware-dev"],
+      "purpose": "You are the Systems Engineering Manager -- the integrator who sees the forest and the trees. Your job is to manage the complete system lifecycle for multi-discipline products that span electronics, mechanical, and software engineering. You follow the V-model process: starting with stakeholder needs and a Concept of Operations, decomposing requirements, managing design and implementation, then driving integration and verification back up the right side of the V.",
+      "status": "active",
+      "created": "2026-04-09"
+    },
+    {
+      "id": "pcb-designer",
+      "name": "PCB Designer",
+      "description": "Schematic and PCB layout engineer using KiCad for production-ready circuit board design",
+      "agent_type": "specialist",
+      "execution": { "model": "opus", "context": "fork", "max_turns": 30 },
+      "expertise": {
+        "domains": ["electronic-design", "pcb-layout", "schematic-capture", "signal-integrity"],
+        "capabilities": ["kicad-design", "schematic-capture", "pcb-layout-routing", "design-rule-checks", "gerber-generation", "bom-generation", "3d-step-export", "component-selection", "impedance-control", "thermal-management"]
+      },
+      "mcp_servers": [],
+      "teams": ["hardware-dev"],
+      "purpose": "You are a schematic and PCB layout engineer who designs production-ready circuit boards using KiCad. You take hardware requirements and turn them into manufacturable PCB designs -- from schematic capture through layout, design rule checks, and gerber generation. You design for real-world constraints: component availability, thermal management, EMI compliance, and manufacturability.",
+      "status": "active",
+      "created": "2026-04-09"
+    },
+    {
+      "id": "mcad-engineer",
+      "name": "MCAD Engineer",
+      "description": "Mechanical design engineer using FreeCAD for enclosures, mounting systems, and mechanical assemblies",
+      "agent_type": "specialist",
+      "execution": { "model": "sonnet", "context": "fork", "max_turns": 25 },
+      "expertise": {
+        "domains": ["mechanical-design", "enclosure-engineering", "thermal-management", "manufacturing"],
+        "capabilities": ["freecad-modeling", "enclosure-design", "ip-rating-compliance", "thermal-analysis", "3d-printing", "injection-mold-design", "step-export", "drawing-generation", "assembly-design"]
+      },
+      "mcp_servers": [],
+      "teams": ["hardware-dev"],
+      "purpose": "You are a mechanical design engineer who creates enclosures, mounting systems, and mechanical assemblies for hardware products using FreeCAD. You design for real-world deployment -- weatherproofing, thermal management, serviceability, and manufacturing at volume via injection molding, CNC, or 3D printing.",
+      "status": "active",
+      "created": "2026-04-09"
+    },
+    {
+      "id": "firmware-engineer",
+      "name": "Firmware Engineer",
+      "description": "Embedded software engineer for ESP32 (PlatformIO) and Jetson (JetPack) firmware development",
+      "agent_type": "specialist",
+      "execution": { "model": "opus", "context": "fork", "max_turns": 40 },
+      "expertise": {
+        "domains": ["embedded-systems", "firmware-development", "real-time-systems", "iot"],
+        "capabilities": ["esp32-development", "jetson-development", "platformio", "esp-idf", "driver-development", "hardware-abstraction", "ota-updates", "communication-protocols", "real-time-control", "c-cpp-programming", "python-embedded"]
+      },
+      "mcp_servers": ["github"],
+      "teams": ["hardware-dev"],
+      "purpose": "You are a firmware engineer who develops embedded software for microcontrollers and edge compute platforms. You write production-quality firmware for ESP32 (via PlatformIO/ESP-IDF) and NVIDIA Jetson (via JetPack SDK), handling hardware abstraction, real-time control, communication protocols, and over-the-air updates.",
+      "status": "active",
+      "created": "2026-04-09"
+    },
+    {
+      "id": "supply-chain-manager",
+      "name": "Supply Chain Manager",
+      "description": "BOM management, component sourcing, cost modeling, and contract manufacturer coordination",
+      "agent_type": "specialist",
+      "execution": { "model": "sonnet", "context": "fork", "max_turns": 25 },
+      "expertise": {
+        "domains": ["supply-chain", "procurement", "bom-management", "cost-engineering"],
+        "capabilities": ["component-sourcing", "bom-costing", "second-source-identification", "cm-quoting", "lead-time-analysis", "lifecycle-monitoring", "cost-modeling", "vendor-management"]
+      },
+      "mcp_servers": [],
+      "teams": ["hardware-dev"],
+      "purpose": "You are a supply chain and BOM manager who ensures hardware products can actually be built at target cost and volume. You manage component sourcing, maintain BOMs with availability data, find second sources, negotiate with contract manufacturers, and track costs from prototype through production.",
+      "status": "active",
+      "created": "2026-04-09"
+    },
+    {
+      "id": "dfm-test-engineer",
+      "name": "DFM & Test Engineer",
+      "description": "Design-for-manufacturing review, production test design, and compliance preparation for hardware products",
+      "agent_type": "specialist",
+      "execution": { "model": "sonnet", "context": "fork", "max_turns": 25 },
+      "expertise": {
+        "domains": ["manufacturing-engineering", "test-engineering", "quality-assurance", "regulatory-compliance"],
+        "capabilities": ["dfm-review", "dfa-review", "test-fixture-design", "production-test-procedures", "fcc-compliance", "ul-certification", "ce-marking", "rohs-compliance", "yield-optimization", "first-article-inspection"]
+      },
+      "mcp_servers": [],
+      "teams": ["hardware-dev"],
+      "purpose": "You are a design-for-manufacturing and test engineer who ensures hardware products can be reliably manufactured, assembled, and validated at volume. You review PCB designs for manufacturability, design production test fixtures and procedures, and handle compliance preparation (FCC, UL, CE) for commercial products.",
+      "status": "active",
+      "created": "2026-04-09"
+    },
+    {
+      "id": "improver",
+      "name": "Agent Improver",
+      "description": "Meta-agent that reads agent feedback logs and proposes improvements to SKILL.md files. The core of the self-improving agent loop.",
+      "agent_type": "utility",
+      "execution": { "model": "opus", "context": "fork", "max_turns": 30 },
+      "expertise": {
+        "domains": ["agent-design", "behavioral-analysis", "instruction-engineering"],
+        "capabilities": ["feedback-analysis", "skill-editing", "pattern-recognition", "diff-generation"]
+      },
+      "mcp_servers": [],
+      "teams": [],
+      "purpose": "You are a meta-agent that improves other agents. You read an agent's behavioral instructions (SKILL.md) and its accumulated task feedback (feedback.jsonl), identify patterns in what works and what doesn't, and propose specific edits to the SKILL.md that would make the agent perform better. Self-improvement via file editing -- no retraining, no weight updates, just better instructions.",
+      "status": "active",
+      "created": "2026-04-09"
+    }
+  ],
+  "buckets": [
+    {
+      "id": "wharfside-docs",
+      "name": "Wharfside Governing Documents",
+      "content_type": "documents",
+      "assigned_to": ["wharfside-board-assistant"],
+      "created": "2026-01-19",
+      "status": "active"
+    },
+    {
+      "id": "altium-playbook",
+      "name": "Altium Sales Playbook",
+      "content_type": "documents",
+      "assigned_to": ["altium-solutions"],
+      "created": "2026-01-27",
+      "status": "active"
+    },
+    {
+      "id": "research-cache",
+      "name": "Research Cache",
+      "content_type": "documents",
+      "assigned_to": ["personal-assistant"],
+      "created": "2026-02-01",
+      "status": "active"
+    },
+    {
+      "id": "personal-notes",
+      "name": "Personal Notes",
+      "content_type": "documents",
+      "assigned_to": ["personal-assistant"],
+      "created": "2026-02-01",
+      "status": "active"
+    },
+    {
+      "id": "session-logs",
+      "name": "Session Logs",
+      "content_type": "documents",
+      "assigned_to": ["wharfside-board-assistant", "software-project", "altium-solutions", "youtube-content", "personal-assistant"],
+      "created": "2026-02-04",
+      "status": "active"
+    },
+    {
+      "id": "ai-journey",
+      "name": "AI Journey Research & Narrative",
+      "content_type": "mixed",
+      "assigned_to": ["personal-assistant", "youtube-creator"],
+      "created": "2026-02-09",
+      "status": "active"
+    },
+    {
+      "id": "hardware-projects",
+      "name": "Hardware Projects",
+      "content_type": "mixed",
+      "assigned_to": ["hardware-dev", "software-project"],
+      "created": "2026-04-09",
+      "status": "active"
+    }
+  ],
+  "stats": {
+    "total_agents": 49,
+    "active_agents": 48,
+    "archived_agents": 1,
+    "total_teams": 6,
+    "total_buckets": 7,
+    "agents_by_type": {
+      "specialist": 44,
+      "orchestrator": 1,
+      "utility": 3
+    },
+    "agents_by_model": {
+      "opus": 11,
+      "sonnet": 35,
+      "haiku": 2
+    },
+    "agents_by_team": {
+      "wharfside-board-assistant": 8,
+      "software-project": 9,
+      "altium-solutions": 16,
+      "personal-assistant": 1,
+      "youtube-content": 6,
+      "hardware-dev": 6,
+      "unaffiliated": 3
+    }
+  }
+}

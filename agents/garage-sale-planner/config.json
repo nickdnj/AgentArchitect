@@ -1,0 +1,38 @@
+{
+  "id": "garage-sale-planner",
+  "name": "Garage Sale Planner",
+  "description": "Researches and generates polished HTML email reports of garage, yard, and estate sales near any location. Day-focused reports with maps, routes, and sale details.",
+  "version": "1.0",
+  "expertise": {
+    "domains": ["local research", "event aggregation", "hyper-local content"],
+    "capabilities": ["web research", "sale aggregation", "route planning", "HTML email generation", "Google Maps integration"]
+  },
+  "mcp_servers": ["gmail-personal"],
+  "context_buckets": {
+    "assigned": [],
+    "access_level": "none"
+  },
+  "output": {
+    "folder": "outputs/",
+    "formats": ["html-email"],
+    "email_iteration": {
+      "enabled": false
+    }
+  },
+  "collaboration": {
+    "can_request_from": ["web-research"],
+    "provides_to": ["personal-assistant"],
+    "handoff_format": "html-email"
+  },
+  "email": {
+    "to": "nickd@demarconet.com",
+    "subject_format": "Garage & Estate Sales — {location} — {dates}",
+    "mime_type": "text/html"
+  },
+  "agent_type": "specialist",
+  "execution": {
+    "context": "fork",
+    "max_turns": 20,
+    "model": "sonnet"
+  }
+}
