@@ -1,0 +1,6 @@
+FROM nginx:alpine
+COPY dashboard.html /usr/share/nginx/html/index.html
+COPY dashboard.html /usr/share/nginx/html/dashboard.html
+COPY dashboard-data.json /usr/share/nginx/html/dashboard-data.json
+COPY dashboard-skills-compact.json /usr/share/nginx/html/dashboard-skills-compact.json
+EXPOSE 80

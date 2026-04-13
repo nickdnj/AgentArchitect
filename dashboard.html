@@ -230,6 +230,23 @@ a:hover{text-decoration:underline}
 .status-wip{background:var(--cyan-dim);color:var(--cyan)}
 .status-none{background:var(--bg-card);color:var(--text-muted)}
 
+/* ─── Project Detail Cards ─── */
+.project-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-bottom:16px;transition:var(--transition)}
+.project-card:hover{border-color:var(--border-accent)}
+.project-card .project-header{display:flex;align-items:flex-start;gap:16px;margin-bottom:16px}
+.project-card .project-icon{font-size:32px;flex-shrink:0;width:48px;height:48px;display:flex;align-items:center;justify-content:center;background:var(--bg-surface);border-radius:12px}
+.project-card .project-title{flex:1}
+.project-card .project-title h3{font-size:18px;font-weight:700;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.project-card .project-title p{font-size:13px;color:var(--text-dim);margin-top:4px;line-height:1.5}
+.project-card .project-agents{margin-top:16px}
+.project-card .project-agents-title{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);font-weight:600;margin-bottom:8px}
+.project-card .agent-chips{display:flex;flex-wrap:wrap;gap:6px}
+.agent-chip{display:flex;align-items:center;gap:6px;padding:5px 12px;border-radius:20px;background:var(--bg-surface);border:1px solid var(--border);font-size:12px;color:var(--text-dim);cursor:pointer;transition:var(--transition)}
+.agent-chip:hover{border-color:var(--accent);color:var(--text);background:var(--accent-glow)}
+.agent-chip .chip-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.project-card .project-meta{display:flex;gap:16px;flex-wrap:wrap;margin-top:12px;padding-top:12px;border-top:1px solid var(--border)}
+.project-card .project-meta .meta-item{font-size:12px;color:var(--text-muted);display:flex;align-items:center;gap:6px}
+
 /* ─── Timeline ─── */
 .timeline{position:relative;padding-left:24px;border-left:2px solid var(--border)}
 .timeline-item{position:relative;padding-bottom:24px;padding-left:20px}
@@ -303,6 +320,10 @@ a:hover{text-decoration:underline}
         <div class="nav-item active" data-page="overview">
           <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="5" height="5" rx="1"/><rect x="9" y="2" width="5" height="5" rx="1"/><rect x="2" y="9" width="5" height="5" rx="1"/><rect x="9" y="9" width="5" height="5" rx="1"/></svg>
           Dashboard
+        </div>
+        <div class="nav-item" data-page="projects">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h12v10H2zM5 1v4M11 1v4M2 7h12"/></svg>
+          Projects <span class="count" id="project-count"></span>
         </div>
         <div class="nav-item" data-page="analytics">
           <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 14h12M4 10v4M8 6v8M12 2v12"/></svg>
@@ -380,6 +401,23 @@ a:hover{text-decoration:underline}
       <div class="chart-container">
         <div class="timeline" id="timeline"></div>
       </div>
+    </div>
+
+    <!-- ─── Projects Page ─── -->
+    <div class="page" id="page-projects">
+      <div class="page-header">
+        <h2>Projects</h2>
+        <p>Every project built with Agent Architect — who built it, which agents contributed, and current status.</p>
+      </div>
+      <div class="search-bar">
+        <input class="search-input" id="project-search" placeholder="Search projects...">
+        <button class="filter-btn active" data-pfilter="all">All</button>
+        <button class="filter-btn" data-pfilter="live">Live</button>
+        <button class="filter-btn" data-pfilter="wip">In Progress</button>
+        <button class="filter-btn" data-pfilter="complete">Complete</button>
+        <button class="filter-btn" data-pfilter="draft">Draft</button>
+      </div>
+      <div id="projects-list"></div>
     </div>
 
     <!-- ─── Team Detail Page ─── -->
@@ -600,7 +638,124 @@ const DATA = {
     total_agents:48, total_teams:6, total_buckets:7,
     by_type:{specialist:44,orchestrator:1,utility:3},
     by_model:{opus:11,sonnet:35,haiku:2}
-  }
+  },
+
+  // ─── Projects with agent attribution ───
+  projects: [
+    // Hardware Dev
+    {id:"stoveiq",name:"StoveIQ",icon:"&#127859;",status:"live",
+     team:"hardware-dev",description:"Open-source cooking coach on ESP32. Thermal recipes, burner calibration, sim mode, 6 recipes. Web app at stoveiq.local.",
+     agents:["systems-engineer","pcb-designer","firmware-engineer","supply-chain-manager","software-developer"],
+     url:"stoveiq.local",started:"2026-03",tags:["ESP32","hardware","IoT","open-source"]},
+    {id:"cage-match",name:"Cage Match",icon:"&#129354;",status:"wip",
+     team:"hardware-dev",description:"Gamified batting cage for Batter Up. Computer vision pitch detection, ESP32 firmware, MQTT integration, PCB Rev 1.1 with W5500 Ethernet.",
+     agents:["systems-engineer","pcb-designer","firmware-engineer","mcad-engineer","supply-chain-manager","dfm-test-engineer","software-developer"],
+     started:"2026-03",tags:["ESP32","Jetson","CV","hardware","PCB"]},
+    {id:"fob-reader",name:"Fob Reader",icon:"&#128273;",status:"complete",
+     team:"hardware-dev",description:"Arduino Pro Micro + Wiegand reader that converts RFID fob scans to USB HID keyboard input for TagSmart asset management.",
+     agents:["firmware-engineer","pcb-designer"],
+     started:"2026-02",tags:["Arduino","RFID","USB HID"]},
+
+    // Software Project
+    {id:"tagsmart-v2",name:"TagSmart v2",icon:"&#127991;",status:"live",
+     team:"software-project",description:"Asset management PWA. Docker on mini PC. Live at tagsmart.vistter.com.",
+     agents:["product-requirements","software-architecture","ux-design","software-developer","dev-planning"],
+     url:"tagsmart.vistter.com",started:"2026-01",tags:["PWA","Docker","asset management"]},
+    {id:"local-ai-gatekeeper",name:"Local AI Gatekeeper",icon:"&#129302;",status:"wip",
+     team:"software-project",description:"Telegram + Ollama bot. Phase 0.2.3 complete with 166 tests. Next: Phase 0.3 Home Assistant integration.",
+     agents:["software-architecture","software-developer","qa-strategy"],
+     started:"2026-02",tags:["Telegram","Ollama","AI","bot"]},
+    {id:"vistterstream",name:"VistterStream",icon:"&#127909;",status:"live",
+     team:"software-project",description:"Streaming platform + ShortForge shorts pipeline. Docker on mini PC. Uvicorn request limit outage fixed.",
+     agents:["software-architecture","software-developer"],
+     url:"vistterstream",started:"2026-01",tags:["streaming","Docker","Python"]},
+    {id:"batterup-website",name:"Batter Up Website",icon:"&#9918;",status:"live",
+     team:"software-project",description:"Static HTML + Tailwind + Firestore site for the Batter Up batting cage business. Live at batterupli.com.",
+     agents:["software-developer","ux-design","marketing"],
+     url:"batterupli.com",started:"2026-01",tags:["Firebase","Tailwind","static site"]},
+    {id:"self-improving-agents",name:"Self-Improving Agents",icon:"&#129504;",status:"complete",
+     team:"software-project",description:"Learning Loop MVP — agents analyze feedback and rewrite their own SKILL.md instructions. Eng review done, 11 tests, blast radius constraints.",
+     agents:["software-architecture","software-developer","qa-strategy","improver"],
+     started:"2026-04",tags:["meta-agent","self-improvement","testing"]},
+    {id:"vistter-brand",name:"Vistter Brand",icon:"&#127912;",status:"wip",
+     team:"software-project",description:"Brand infrastructure for the Vistter content platform. Next: deploy website, rebrand YouTube channel.",
+     agents:["marketing","ux-design","software-developer"],
+     started:"2026-02",tags:["branding","website"]},
+    {id:"cold-plan",name:"Cold Plan",icon:"&#128138;",status:"live",
+     team:"software-project",description:"Generic OTC drug recipes for brand-name cold meds. 4 kits, Amazon affiliate, GA4 analytics. Adults only.",
+     agents:["software-developer","ux-design","legal","marketing"],
+     url:"cold-plan-app.web.app",started:"2026-04",tags:["Firebase","PWA","health","affiliate"]},
+
+    // YouTube Content
+    {id:"bahrs-landing",name:"Bahr's Landing Documentary",icon:"&#127961;",status:"draft",
+     team:"youtube-content",description:"9-minute documentary about the historic Bahr's Landing restaurant. Draft v2 ready. Next: re-record narration, upload.",
+     agents:["video-script-writer","video-asset-generator","video-assembler","video-publisher"],
+     started:"2026-02",tags:["documentary","history","local"]},
+    {id:"batter-up-history",name:"Batter Up History",icon:"&#9918;",status:"complete",
+     team:"youtube-content",description:"V10 uploaded unlisted. Removed Simoncic per family request. Waiting: family review + photo permissions to make public.",
+     agents:["video-script-writer","video-asset-generator","video-assembler","video-publisher"],
+     started:"2026-02",tags:["documentary","history","local"]},
+    {id:"monmouth-beach",name:"Monmouth Beach Documentary",icon:"&#127965;",status:"live",
+     team:"youtube-content",description:"Full documentary live on Vistter channel. Main video + shorts published. Monitoring performance.",
+     agents:["video-script-writer","video-asset-generator","video-assembler","video-publisher","short-form-video","social-distributor"],
+     started:"2026-02",tags:["documentary","history","shorts","social"]},
+    {id:"seven-presidents",name:"Seven Presidents Park",icon:"&#127796;",status:"live",
+     team:"youtube-content",description:"V5 approved. Trailer short built. Premiered Sat Mar 29.",
+     agents:["video-script-writer","video-asset-generator","video-assembler","video-publisher","short-form-video"],
+     started:"2026-03",tags:["documentary","history","premiere"]},
+    {id:"massapequa-history",name:"Massapequa History",icon:"&#127960;",status:"complete",
+     team:"youtube-content",description:"10:37 documentary, assembly complete. Never published. Next: apply review feedback, swap in user photos, re-assemble.",
+     agents:["video-script-writer","video-asset-generator","video-assembler"],
+     started:"2026-03",tags:["documentary","history","Long Island"]},
+    {id:"jersey-shore-sharks",name:"Jersey Shore Sharks 1916",icon:"&#129416;",status:"wip",
+     team:"youtube-content",description:"Documentary about the 1916 Jersey Shore shark attacks. Assembly v2 in progress.",
+     agents:["video-script-writer","video-asset-generator","video-assembler"],
+     started:"2026-04",tags:["documentary","history","sharks"]},
+
+    // Wharfside Board Assistant
+    {id:"wharfside-bulletins",name:"Monthly Bulletins",icon:"&#128240;",status:"live",
+     team:"wharfside-board-assistant",description:"Ongoing monthly community newsletter for Wharfside Manor residents. HTML email with nautical theme.",
+     agents:["monthly-bulletin","email-research"],
+     started:"2026-01",tags:["newsletter","email","recurring"]},
+    {id:"wharfside-comms",name:"Board Communications",icon:"&#9993;",status:"live",
+     team:"wharfside-board-assistant",description:"Official board notices, policy explainers, crisis updates, and owner letters. Synthesized from governing documents.",
+     agents:["board-comms","archivist","email-research"],
+     started:"2026-02",tags:["board","communications","policy"]},
+    {id:"wharfside-archive",name:"Governing Doc Archive",icon:"&#128218;",status:"live",
+     team:"wharfside-board-assistant",description:"RAG-powered semantic search over governing documents, meeting minutes, budgets, and historical records.",
+     agents:["archivist","pdf-scribe","rag-search"],
+     started:"2026-01",tags:["RAG","semantic search","documents"]},
+    {id:"wharfside-proposals",name:"Vendor Proposal Reviews",icon:"&#128196;",status:"live",
+     team:"wharfside-board-assistant",description:"Structured analysis and comparison of vendor proposals for board decision-making.",
+     agents:["proposal-review","email-research","presentation"],
+     started:"2026-01",tags:["vendor","analysis","board"]},
+
+    // Personal Assistant
+    {id:"max-email",name:"Email Management",icon:"&#9993;",status:"live",
+     team:"personal-assistant",description:"Ongoing email search, drafting, research reports, and inbox management across personal and board accounts.",
+     agents:["personal-assistant"],
+     started:"2026-02",tags:["email","ongoing"]},
+    {id:"max-research",name:"Research & Caching",icon:"&#128270;",status:"live",
+     team:"personal-assistant",description:"Web research with persistent caching. Product research, local services, financial lookups.",
+     agents:["personal-assistant","web-research"],
+     started:"2026-02",tags:["research","caching","web"]},
+
+    // Altium Solutions
+    {id:"altium-toolkit",name:"Altium Sales Toolkit",icon:"&#128188;",status:"live",
+     team:"altium-solutions",description:"Enterprise sales enablement platform — account research, qualification scorecards, solution design, proposals, competitive intel, and deployment management.",
+     agents:["account-researcher","qualification-analyst","solution-architect","value-engineer","competitive-intel","proposal-writer","deal-strategist","deployment-manager","ecad-specialist","migration-specialist","mcad-specialist","plm-specialist","erp-supplychain-specialist","infrastructure-specialist","customer-support","presentation"],
+     started:"2026-01",tags:["sales","enterprise","EDA"]},
+
+    // Cross-team / System
+    {id:"cloud-rag",name:"Cloud RAG Shared Brain",icon:"&#9729;",status:"live",
+     team:"wharfside-board-assistant",description:"Cloud SQL pgvector with 109 docs/816 chunks. Dual-backend (postgres/sqlite). REST API on Cloud Run.",
+     agents:["archivist","rag-search","pdf-scribe"],
+     started:"2026-01",tags:["RAG","Cloud SQL","pgvector","API"]},
+    {id:"agent-dashboard",name:"Agent Architect Dashboard",icon:"&#9670;",status:"live",
+     team:null,description:"This dashboard — showcasing all teams, agents, org charts, bios, tools, SKILL.md viewer, project participation, and analytics.",
+     agents:[],
+     started:"2026-04",tags:["dashboard","meta","visualization"]}
+  ]
 };
 
 // ═══════════════════════════════════════════════════
@@ -1040,6 +1195,81 @@ function renderAllAgents(filter, search){
 }
 
 // ═══════════════════════════════════════════════════
+// RENDER: Projects
+// ═══════════════════════════════════════════════════
+function renderProjects(statusFilter, search){
+  statusFilter = statusFilter || 'all';
+  search = (search||'').toLowerCase();
+
+  let projects = DATA.projects.filter(p => {
+    if(statusFilter !== 'all' && p.status !== statusFilter) return false;
+    if(search){
+      const haystack = [p.name, p.description, ...(p.tags||[]), p.team||''].join(' ').toLowerCase();
+      return haystack.includes(search);
+    }
+    return true;
+  });
+
+  if(projects.length === 0){
+    document.getElementById('projects-list').innerHTML = '<div class="empty-state"><div class="empty-icon">&#128269;</div><p>No projects match your filters</p></div>';
+    return;
+  }
+
+  // Sort: live first, then wip, then complete, then draft
+  const statusOrder = {live:0, wip:1, draft:2, complete:3, none:4};
+  projects.sort((a,b) => (statusOrder[a.status]||4) - (statusOrder[b.status]||4));
+
+  let html = projects.map(p => {
+    const team = p.team ? getTeam(p.team) : null;
+    const teamColor = p.team ? (TEAM_COLORS[p.team]||'var(--accent)') : 'var(--text-muted)';
+    const teamName = team ? team.name : 'System';
+
+    const statusLabel = {live:'LIVE',wip:'IN PROGRESS',draft:'DRAFT',complete:'COMPLETE',none:'READY'}[p.status]||p.status;
+
+    // Build agent chips
+    const agentChips = p.agents.map(aid => {
+      const ag = getAgent(aid);
+      if(!ag) return '';
+      return `<span class="agent-chip" onclick="event.stopPropagation();navigate('agent-detail','${aid}')">
+        <span class="chip-dot" style="background:${teamColor}"></span>${ag.name}
+      </span>`;
+    }).join('');
+
+    return `
+    <div class="project-card">
+      <div class="project-header">
+        <div class="project-icon">${p.icon}</div>
+        <div class="project-title">
+          <h3>
+            ${p.name}
+            <span class="proj-status status-${p.status}">${statusLabel}</span>
+          </h3>
+          <p>${p.description}</p>
+        </div>
+      </div>
+
+      ${p.agents.length ? `
+      <div class="project-agents">
+        <div class="project-agents-title">Built by ${p.agents.length} Agent${p.agents.length>1?'s':''}</div>
+        <div class="agent-chips">${agentChips}</div>
+      </div>` : ''}
+
+      <div class="project-meta">
+        <div class="meta-item">
+          <span style="display:inline-block;width:8px;height:8px;border-radius:3px;background:${teamColor}"></span>
+          <strong style="color:var(--text)">${teamName}</strong>
+        </div>
+        ${p.started ? `<div class="meta-item">Started <strong style="color:var(--text)">${p.started}</strong></div>` : ''}
+        ${p.url ? `<div class="meta-item">URL: <strong style="color:var(--accent-light)">${p.url}</strong></div>` : ''}
+        ${(p.tags||[]).length ? `<div class="meta-item" style="gap:4px">${p.tags.map(t=>`<span style="font-size:10px;padding:1px 7px;border-radius:3px;background:var(--bg-surface);color:var(--text-muted)">${t}</span>`).join('')}</div>` : ''}
+      </div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('projects-list').innerHTML = html;
+}
+
+// ═══════════════════════════════════════════════════
 // RENDER: Analytics
 // ═══════════════════════════════════════════════════
 function renderAnalytics(){
@@ -1203,14 +1433,27 @@ document.querySelectorAll('.nav-item[data-page]').forEach(item=>{
 
 // Agent search & filter
 document.getElementById('agent-search').addEventListener('input',e=>{
-  const activeFilter = document.querySelector('.filter-btn.active')?.dataset.filter||'all';
+  const activeFilter = document.querySelector('.filter-btn[data-filter].active')?.dataset.filter||'all';
   renderAllAgents(activeFilter, e.target.value);
 });
-document.querySelectorAll('.filter-btn').forEach(btn=>{
+document.querySelectorAll('.filter-btn[data-filter]').forEach(btn=>{
   btn.addEventListener('click',()=>{
-    document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.filter-btn[data-filter]').forEach(b=>b.classList.remove('active'));
     btn.classList.add('active');
     renderAllAgents(btn.dataset.filter, document.getElementById('agent-search').value);
+  });
+});
+
+// Project search & filter
+document.getElementById('project-search').addEventListener('input',e=>{
+  const activeFilter = document.querySelector('.filter-btn[data-pfilter].active')?.dataset.pfilter||'all';
+  renderProjects(activeFilter, e.target.value);
+});
+document.querySelectorAll('.filter-btn[data-pfilter]').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.filter-btn[data-pfilter]').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    renderProjects(btn.dataset.pfilter, document.getElementById('project-search').value);
   });
 });
 
@@ -1226,8 +1469,10 @@ window.addEventListener('popstate',()=>{
 // ═══════════════════════════════════════════════════
 renderSidebar();
 renderOverview();
+renderProjects();
 renderAllAgents();
 renderAnalytics();
+document.getElementById('project-count').textContent = DATA.projects.length;
 
 // Load SKILL.md data asynchronously
 fetch('dashboard-skills-compact.json')

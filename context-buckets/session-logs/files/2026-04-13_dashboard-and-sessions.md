@@ -31,20 +31,37 @@ Built a comprehensive single-page dashboard for the Agent Architect system that 
 - Tags stored in `~/.claude/session-tags.json`
 - Slash command: `/sessions` skill at `.claude/skills/sessions/SKILL.md`
 
+### Docker Deployment
+- `Dockerfile.dashboard` - nginx:alpine image
+- Running as `agent-architect-dashboard` container on port 8787 with `--restart always`
+- Volume-mounted to repo files (not baked in) so changes are live
+- URL: http://localhost:8787
+
+### Auto-Refresh Pipeline
+- `scripts/refresh-dashboard.py` - Regenerates dashboard-data.json + dashboard-skills-compact.json from source agents/teams
+- Hooked into `scripts/generate-agents.js` — runs automatically after `/sync-agents`
+- Flow: `/sync-agents` -> generate-agents.js -> refresh-dashboard.py -> Docker serves updated files
+
+### Projects Page (in progress)
+- Top-level Projects view added to sidebar navigation
+- 26 projects with full agent attribution (which agents built each project)
+- Searchable/filterable by status (live/wip/complete/draft)
+- Each project card shows: description, contributing agents as clickable chips, team, start date, URL, tags
+- **Bug**: Projects page rendering has a browser cache issue — DATA object not loading on hard refresh. Needs debugging in next session.
+
 ## Technical Notes
 
 - Dashboard loads SKILL.md data from external JSON file (too large to inline at 523KB)
-- Requires local HTTP server for SKILL.md viewer: `python3 -m http.server 8787` then visit `localhost:8787/dashboard.html`
-- Without server, dashboard still works for overview/analytics/teams/cards — just SKILL.md panel shows placeholder
+- Docker container at http://localhost:8787 with volume mounts to live repo files
 - MCP tool inventory is built from a static mapping of server -> operations, combined with each agent's configured MCP servers
+- Agent detail shows: purpose, domains, capabilities, full tool inventory (core + MCP grouped by server), and collapsible SKILL.md viewer
 
 ## Open Items
 
-- [ ] Consider deploying dashboard to a persistent URL (Firebase, Vercel, etc.)
-- [ ] Add session history view to the dashboard itself
-- [ ] Dashboard data files need regeneration when agents are added/modified
-- [ ] Could add a `/refresh-dashboard` skill to auto-regenerate data files
+- [ ] Debug Projects page rendering — DATA object not available on hard cache refresh, works on soft navigate
+- [ ] Consider session history view in the dashboard
+- [ ] Add a `/refresh-dashboard` skill for manual regeneration
 
 ## Context for Next Session
 
-The dashboard is complete and functional at `dashboard.html`. It reads `dashboard-data.json` for team/agent metadata and `dashboard-skills-compact.json` for SKILL.md content. The session browser is a standalone Python script at `scripts/sessions.py` with a `/sessions` skill. Both are tested and working.
+The dashboard is running in Docker at http://localhost:8787 with auto-restart. The Projects page HTML, CSS, JS, and data are all in place (26 projects with agent attribution), but there's a rendering bug where the page sometimes shows empty on a hard browser refresh — likely nginx caching or a JS load order issue. The auto-refresh pipeline works: `/sync-agents` regenerates the data files, and the Docker volume mounts serve them live. The session browser (`scripts/sessions.py`, `/sessions`) is fully working.

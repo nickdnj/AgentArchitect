@@ -1107,6 +1107,15 @@ function main() {
   console.log('\nGenerated files:');
   console.log('  Agents: .claude/agents/');
   console.log('  Skills: .claude/skills/');
+
+  // Refresh dashboard data
+  try {
+    const { execSync } = require('child_process');
+    console.log('\nRefreshing dashboard data...');
+    execSync('python3 scripts/refresh-dashboard.py', { cwd: path.join(__dirname, '..'), stdio: 'inherit' });
+  } catch (e) {
+    console.log('  [WARN] Dashboard refresh failed (non-fatal):', e.message);
+  }
   console.log('');
 
   // Exit with error code if there were errors
