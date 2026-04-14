@@ -37,9 +37,15 @@ Nick acquired a DJI Mini 4K drone and needed first-flight coaching. Conducted co
 - [ ] Take the TRUST test (free, online, required before flying)
 - [ ] Download B4UFLY app for airspace checks
 - [ ] Download DJI Fly app, create account, activate drone, update firmware
-- [ ] Purchase microSD card if not included (U3/V30 minimum)
+- [ ] Purchase a U3/V30 microSD card (e.g. SanDisk Extreme 64GB, ~$10-12) — existing Micro Center 32GB card is Class 10/U1, too slow for 4K
 - [ ] First flight at an open field
+
+## Updates
+
+### 2026-04-14 — SD Card Check
+
+Nick's existing microSD is a Micro Center 32GB microSDHC (Class 10 / U1). Only rated for 10 MB/s sustained write — the Mini 4K needs U3/V30 (30 MB/s) for 4K recording. Card is fine for a practice hover flight but will cause dropped frames or recording errors at 4K. Recommended: SanDisk Extreme 64GB (U3/V30/A2).
 
 ## Context for Next Session
 
-Nick has the DJI Mini 4K in hand and was about to head out for his maiden flight after cleaning the house. He has the cheat sheet on his phone via email. Future drone-related conversations may involve flight footage for YouTube videos (he's an active video producer on the Vistter channel).
+Nick has the DJI Mini 4K in hand and was about to head out for his maiden flight. He has the cheat sheet on his phone via email (light theme version). His current microSD card (Micro Center 32GB, U1) is too slow for 4K — OK for a test flight but needs a U3/V30 card for real recording. Future drone-related conversations may involve flight footage for YouTube videos (he's an active video producer on the Vistter channel).
