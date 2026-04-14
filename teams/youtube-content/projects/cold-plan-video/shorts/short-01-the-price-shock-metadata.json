@@ -1,0 +1,45 @@
+{
+  "id": "short-01",
+  "slug": "the-price-shock",
+  "description": "Hero short \u2014 the $12 vs $0.47 thesis in 45s. Leads with the price split, proves FDA equivalence, bookend close.",
+  "source_video": "/Users/nickd/Workspaces/AgentArchitect/teams/youtube-content/projects/cold-plan-video/output/cold-plan-final-v3.mp4",
+  "source_segments": [
+    {
+      "start": 0,
+      "duration": 24
+    },
+    {
+      "start": 74,
+      "duration": 19
+    },
+    {
+      "start": 418,
+      "duration": 5
+    }
+  ],
+  "duration_seconds": 48.0,
+  "hook_text": "$12 vs $0.47. Same medicine.",
+  "cta_text": "Full breakdown \u2014 link in bio",
+  "created_date": "2026-04-13",
+  "platforms": {
+    "youtube": {
+      "title": "",
+      "description": "",
+      "status": "ready",
+      "upload_date": null,
+      "url": null
+    },
+    "instagram": {
+      "caption": "",
+      "status": "ready",
+      "upload_date": null,
+      "url": null
+    },
+    "tiktok": {
+      "caption": "",
+      "status": "ready",
+      "upload_date": null,
+      "url": null
+    }
+  }
+}

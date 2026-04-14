@@ -1,0 +1,332 @@
+{
+  "id": "cold-plan-video",
+  "title": "NyQuil Costs $12. These 3 Pills Cost $0.47.",
+  "topic": "Consumer advocacy expose revealing that every brand-name cold medicine is just a combination of generic single-symptom drugs at a massive markup, promoting the free Cold Plan web app",
+  "video_type": "documentary",
+  "created": "2026-04-13",
+  "last_updated": "2026-04-13T14:05",
+  "status": "published",
+  "phases": {
+    "setup": {
+      "status": "complete"
+    },
+    "research": {
+      "status": "complete"
+    },
+    "scripting": {
+      "status": "complete"
+    },
+    "storyboard": {
+      "status": "complete"
+    },
+    "storyboard_pptx": {
+      "status": "complete"
+    },
+    "storyboard_review": {
+      "status": "pending"
+    },
+    "audio": {
+      "status": "complete",
+      "voice": "onyx",
+      "model": "tts-1-hd",
+      "format": "mp3",
+      "speed": 1.0,
+      "completed": "2026-04-13",
+      "total_narration_seconds": 392.04,
+      "total_narration_display": "6:32",
+      "scene_durations": {
+        "scene_02": 17.38,
+        "scene_03": 21.82,
+        "scene_04": 26.21,
+        "scene_05": 17.45,
+        "scene_06": 17.74,
+        "scene_07": 23.11,
+        "scene_08": 20.38,
+        "scene_09": 18.7,
+        "scene_10": 23.81,
+        "scene_11": 20.33,
+        "scene_12": 15.19,
+        "scene_13": 21.53,
+        "scene_14": 18.14,
+        "scene_15": 18.55,
+        "scene_16": 19.68,
+        "scene_17": 18.34,
+        "scene_18": 27.91,
+        "scene_19": 9.46,
+        "scene_20": 18.02,
+        "scene_21": 14.33,
+        "scene_22": 3.98
+      },
+      "music": {
+        "file": "assets/audio/music/ambient-pad.mp3",
+        "duration_seconds": 721,
+        "mean_volume_db": -12.0,
+        "max_volume_db": -2.8,
+        "mix_volume": 0.15
+      }
+    },
+    "audio_review": {
+      "status": "pending"
+    },
+    "visuals": {
+      "status": "complete",
+      "completed": "2026-04-13",
+      "images": [
+        "assets/images/scene_01.png",
+        "assets/images/scene_02.png",
+        "assets/images/scene_03.png",
+        "assets/images/scene_04.png",
+        "assets/images/scene_05.png",
+        "assets/images/scene_06.png",
+        "assets/images/scene_07.png",
+        "assets/images/scene_08.png",
+        "assets/images/scene_09.png",
+        "assets/images/scene_10.png",
+        "assets/images/scene_11.png",
+        "assets/images/scene_12.png",
+        "assets/images/scene_13.png",
+        "assets/images/scene_14.png",
+        "assets/images/scene_15.png",
+        "assets/images/scene_16.png",
+        "assets/images/scene_17.png",
+        "assets/images/scene_18.png",
+        "assets/images/scene_19.png",
+        "assets/images/scene_20.png",
+        "assets/images/scene_21.png",
+        "assets/images/scene_22.png",
+        "assets/images/scene_23.png"
+      ],
+      "thumbnails": [
+        "assets/thumbnails/thumbnail.png"
+      ],
+      "model": "gpt-image-1",
+      "size": "1536x1024",
+      "quality": "high",
+      "style": "falore-warm-illustrated"
+    },
+    "assembly": {
+      "status": "complete",
+      "completed": "2026-04-13T13:52",
+      "version": "v3-gpt-image-1-fresh",
+      "output_file": "output/cold-plan-final.mp4",
+      "duration_seconds": 418.2,
+      "duration_display": "6:58",
+      "file_size_mb": 216.1,
+      "audio_mean_volume": "-20.3 dB",
+      "audio_max_volume": "-3.5 dB",
+      "scenes_assembled": 23,
+      "images_used": "gpt-image-1 (1536x1024 landscape, all 23 fresh regenerated 13:24-13:44)",
+      "audio_reused": true,
+      "assembly_script": "assemble_v2.py",
+      "notes": "Full reassembly from fresh gpt-image-1 images. All 23 segments regenerated. Audio (final-audio.wav, narration+music) reused unchanged.",
+      "encoding": {
+        "codec": "libx264",
+        "preset": "slow",
+        "crf": 18,
+        "fps": 30,
+        "resolution": "1920x1080",
+        "audio_codec": "aac",
+        "audio_bitrate": "192k",
+        "movflags": "+faststart"
+      }
+    },
+    "metadata": {
+      "status": "complete",
+      "completed": "2026-04-13",
+      "output_file": "output/metadata.json"
+    },
+    "upload": {
+      "status": "complete",
+      "completed": "2026-04-13",
+      "youtube_video_id": "ZxknYxKfDMg",
+      "youtube_url": "https://www.youtube.com/watch?v=ZxknYxKfDMg",
+      "visibility": "public",
+      "channel": "Vistter",
+      "thumbnail_set": true
+    },
+    "review": {
+      "status": "complete"
+    }
+  },
+  "settings": {
+    "target_length_minutes": 7,
+    "resolution": "1920x1080",
+    "fps": 30,
+    "narration_voice": "onyx",
+    "narration_model": "tts-1-hd",
+    "background_music": true,
+    "music_volume": 0.15,
+    "default_visual_style": "ken-burns-zoom",
+    "visual_art_style": "falore-style warm illustrated, hand-drawn sketch with warm colors, editorial illustration",
+    "text_overlay_style": "karaoke highlight on key words",
+    "publish_to_youtube": true,
+    "youtube_visibility": "public"
+  },
+  "segments": [
+    {
+      "id": 1,
+      "title": "The Hook",
+      "time": "0:00-0:45",
+      "scenes": [
+        "1",
+        "2",
+        "3"
+      ]
+    },
+    {
+      "id": 2,
+      "title": "The Reveal",
+      "time": "0:45-1:50",
+      "scenes": [
+        "4",
+        "5",
+        "6"
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Brand Breakdowns",
+      "time": "1:50-4:10",
+      "scenes": [
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12"
+      ]
+    },
+    {
+      "id": 4,
+      "title": "The Founder Story",
+      "time": "4:10-5:10",
+      "scenes": [
+        "13",
+        "14",
+        "15"
+      ]
+    },
+    {
+      "id": 5,
+      "title": "The App",
+      "time": "5:10-6:15",
+      "scenes": [
+        "16",
+        "17",
+        "18",
+        "19"
+      ]
+    },
+    {
+      "id": 6,
+      "title": "The Close",
+      "time": "6:15-6:55",
+      "scenes": [
+        "20",
+        "21",
+        "22",
+        "23"
+      ]
+    }
+  ],
+  "script_stats": {
+    "total_words": 1020,
+    "estimated_runtime_seconds": 415,
+    "estimated_runtime_display": "6:55",
+    "total_scenes": 23,
+    "total_chapters": 6,
+    "narrated_scenes": 22,
+    "ai_generated_images": 23,
+    "user_provided_images": 0
+  },
+  "product": {
+    "name": "Cold Plan",
+    "url": "https://cold-plan-app.web.app",
+    "amazon_tag": "coldplanapp-20",
+    "features": [
+      "symptom planner",
+      "brand medicine lookup",
+      "curated kits",
+      "shopping lists"
+    ],
+    "kits": [
+      "Home",
+      "Travel",
+      "College",
+      "Office"
+    ],
+    "brand_products_count": 20
+  },
+  "brand_breakdowns": [
+    {
+      "brand": "NyQuil Cold & Flu",
+      "generics": [
+        "Acetaminophen 325mg",
+        "DXM 15mg",
+        "Diphenhydramine 25mg"
+      ],
+      "pills": 3,
+      "generic_cost": "$0.12",
+      "brand_cost": "$12-15"
+    },
+    {
+      "brand": "DayQuil Cold & Flu",
+      "generics": [
+        "Acetaminophen 325mg",
+        "Phenylephrine 10mg",
+        "DXM 15mg"
+      ],
+      "pills": 3,
+      "generic_cost": "$0.19",
+      "brand_cost": "$12-15"
+    },
+    {
+      "brand": "Advil Cold & Sinus",
+      "generics": [
+        "Ibuprofen 200mg",
+        "Pseudoephedrine 30mg"
+      ],
+      "pills": 2,
+      "generic_cost": "$0.12",
+      "brand_cost": "$10-14"
+    },
+    {
+      "brand": "Theraflu Nighttime",
+      "generics": [
+        "Acetaminophen 650mg",
+        "Phenylephrine 10mg",
+        "Diphenhydramine 25mg"
+      ],
+      "pills": 3,
+      "generic_cost": "$0.23",
+      "brand_cost": "$10-12"
+    },
+    {
+      "brand": "Advil PM",
+      "generics": [
+        "Ibuprofen 200mg",
+        "Diphenhydramine 25mg"
+      ],
+      "pills": 2,
+      "generic_cost": "$0.05",
+      "brand_cost": "$10-14"
+    }
+  ],
+  "revision_history": [
+    {
+      "version": "v1",
+      "date": "2026-04-13",
+      "changes": "Initial outline. 22 scenes across 6 chapters."
+    },
+    {
+      "version": "v2",
+      "date": "2026-04-13",
+      "changes": "Full script, storyboard, and PowerPoint deck. 23 scenes across 6 chapters. ~6:55 runtime. Added Pseudoephedrine aside scene. Detailed AI image prompts for all 23 scenes. Price data verified against Cold Plan app source code."
+    },
+    {
+      "version": "v3",
+      "date": "2026-04-13",
+      "changes": "Full reassembly from fresh gpt-image-1 images (all 23 regenerated 13:24-13:44). All segments rebuilt. Audio track reused unchanged. Final output: 6:58, 216 MB."
+    }
+  ]
+}

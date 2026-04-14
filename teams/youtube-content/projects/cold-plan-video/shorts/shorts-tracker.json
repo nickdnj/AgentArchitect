@@ -1,0 +1,127 @@
+{
+  "project": "cold-plan-video",
+  "source_video": "/Users/nickd/Workspaces/AgentArchitect/teams/youtube-content/projects/cold-plan-video/output/cold-plan-final-v3.mp4",
+  "full_video_url": "https://www.youtube.com/watch?v=ZxknYxKfDMg",
+  "app_url": "https://cold-plan-app.web.app",
+  "amazon_tag": "coldplanapp-20",
+  "full_video_publish_date": "2026-04-13",
+  "total_shorts": 5,
+  "pinned_comment": "Free app: cold-plan-app.web.app — build your own cold medicine kit for pennies.",
+  "shorts": [
+    {
+      "id": "short-01",
+      "slug": "the-price-shock",
+      "file": "short-01-the-price-shock.mp4",
+      "thumbnail": "short-01-the-price-shock-thumb.jpg",
+      "duration_seconds": 48.0,
+      "hook": "$12 vs $0.47. Same medicine.",
+      "cta": "Full breakdown in the main video",
+      "strategy": "Hero short. Leads with price split, proves FDA equivalence, bookend close. Post Day 1 on all platforms.",
+      "platform_titles": {
+        "youtube": "NyQuil costs $12. These 3 pills cost $0.47. #Shorts",
+        "instagram": "NyQuil costs $12. Three generic pills cost $0.47. Same medicine. Same FDA-required ingredients. Full breakdown link in bio. #ConsumerAdvocacy #LifeHack #SaveMoney #GenericMeds #ColdMedicine #Reels",
+        "tiktok": "The cold medicine industry has been running this on us for decades #ColdMedicine #SaveMoney #LifeHack #ConsumerAdvocacy #GenericDrugs"
+      },
+      "schedule": {
+        "youtube": "Day 1",
+        "instagram": "Day 1",
+        "tiktok": "Day 1"
+      },
+      "youtube": {"status": "ready", "url": null, "upload_date": null},
+      "instagram": {"status": "ready", "url": null, "upload_date": null},
+      "tiktok": {"status": "ready", "url": null, "upload_date": null}
+    },
+    {
+      "id": "short-02",
+      "slug": "advil-pm-5-cents",
+      "file": "short-02-advil-pm-5-cents.mp4",
+      "thumbnail": "short-02-advil-pm-5-cents-thumb.jpg",
+      "duration_seconds": 41.0,
+      "hook": "Advil PM is 5 cents of medicine.",
+      "cta": "Free app at cold-plan-app.web.app",
+      "strategy": "Most shocking single stat. Advil PM = $0.05 vs $14. Instant outrage, complete story.",
+      "platform_titles": {
+        "youtube": "Advil PM is literally 5 cents of medicine. They charge $14. #Shorts",
+        "instagram": "Advil PM = ibuprofen + Benadryl. Two of the cheapest generic drugs you can buy. Five cents per dose. They charge $14. Full breakdown link in bio. #ConsumerAdvocacy #DrugPrices #SaveMoney #AdvilPM #Reels",
+        "tiktok": "Advil PM costs 5 cents to make. They charge $14 #ConsumerAdvocacy #DrugPrices #LifeHack #SaveMoney #GenericMeds"
+      },
+      "schedule": {
+        "youtube": "Day 2",
+        "instagram": "Day 3",
+        "tiktok": "Day 2"
+      },
+      "youtube": {"status": "ready", "url": null, "upload_date": null},
+      "instagram": {"status": "ready", "url": null, "upload_date": null},
+      "tiktok": {"status": "ready", "url": null, "upload_date": null}
+    },
+    {
+      "id": "short-03",
+      "slug": "combo-meal-trick",
+      "file": "short-03-combo-meal-trick.mp4",
+      "thumbnail": "short-03-combo-meal-trick-thumb.jpg",
+      "duration_seconds": 46.0,
+      "hook": "Cold medicine runs the combo meal trick.",
+      "cta": "Full video on my channel",
+      "strategy": "Best for TikTok/Reels. Teaches the entire business model with one concrete analogy. Highly shareable.",
+      "platform_titles": {
+        "youtube": "The combo meal trick hiding in your cold medicine #Shorts",
+        "instagram": "They're running the fast food combo meal trick on your medicine cabinet. Full breakdown link in bio. #LifeHack #ConsumerAdvocacy #ColdMedicine #SaveMoney #Reels",
+        "tiktok": "The combo meal trick hiding in your medicine cabinet #LifeHack #ColdMedicine #ConsumerAdvocacy #FoodForThought"
+      },
+      "schedule": {
+        "youtube": "Day 3",
+        "instagram": "Day 5",
+        "tiktok": "Day 4"
+      },
+      "youtube": {"status": "ready", "url": null, "upload_date": null},
+      "instagram": {"status": "ready", "url": null, "upload_date": null},
+      "tiktok": {"status": "ready", "url": null, "upload_date": null}
+    },
+    {
+      "id": "short-04",
+      "slug": "nyquil-3-pills",
+      "file": "short-04-nyquil-3-pills.mp4",
+      "thumbnail": "short-04-nyquil-3-pills-thumb.jpg",
+      "duration_seconds": 58.0,
+      "hook": "Let me open a NyQuil capsule.",
+      "cta": "5 more brands broken down in the full video",
+      "strategy": "Best visual short. Price shock setup -> capsule reveal -> full recipe card. 58s after trim.",
+      "platform_titles": {
+        "youtube": "I opened a NyQuil capsule. Here's what's actually inside. #Shorts",
+        "instagram": "A NyQuil LiquiCap is just three generic drugs in a gelatin shell. Full breakdown of 5 brands in the main video — link in bio. #NyQuil #ColdMedicine #ConsumerAdvocacy #SaveMoney #Reels",
+        "tiktok": "What's actually inside a NyQuil capsule #NyQuil #ColdMedicine #ConsumerAdvocacy #DrugFacts #GenericMeds"
+      },
+      "schedule": {
+        "youtube": "Day 4",
+        "instagram": "Day 10",
+        "tiktok": "Day 7"
+      },
+      "youtube": {"status": "ready", "url": null, "upload_date": null},
+      "instagram": {"status": "ready", "url": null, "upload_date": null},
+      "tiktok": {"status": "ready", "url": null, "upload_date": null}
+    },
+    {
+      "id": "short-05",
+      "slug": "road-warrior-secret",
+      "file": "short-05-road-warrior-secret.mp4",
+      "thumbnail": "short-05-road-warrior-secret-thumb.jpg",
+      "duration_seconds": 59.0,
+      "hook": "1.3M miles taught me this hack.",
+      "cta": "Free app at cold-plan-app.web.app",
+      "strategy": "Emotional founder story. Hits frequent travelers and business travelers — different audience from price-shock shorts.",
+      "platform_titles": {
+        "youtube": "1.3 million miles taught me to never buy cold medicine full price #Shorts",
+        "instagram": "30 years of business travel. 1.3 million miles. And the one thing I always packed that saved me hundreds. Free app link in bio. #TravelHack #BusinessTravel #LifeHack #SaveMoney #Reels",
+        "tiktok": "What 1.3M miles of business travel taught me about cold medicine #TravelHack #BusinessTravel #LifeHack #ColdMedicine"
+      },
+      "schedule": {
+        "youtube": "Day 5",
+        "instagram": "Day 14",
+        "tiktok": "Day 14"
+      },
+      "youtube": {"status": "ready", "url": null, "upload_date": null},
+      "instagram": {"status": "ready", "url": null, "upload_date": null},
+      "tiktok": {"status": "ready", "url": null, "upload_date": null}
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "id": "short-03",
+  "slug": "combo-meal-trick",
+  "description": "The combo meal business model analogy \u2014 most teachable concept, great for TikTok.",
+  "source_video": "/Users/nickd/Workspaces/AgentArchitect/teams/youtube-content/projects/cold-plan-video/output/cold-plan-final-v3.mp4",
+  "source_segments": [
+    {
+      "start": 47,
+      "duration": 27
+    },
+    {
+      "start": 93,
+      "duration": 19
+    }
+  ],
+  "duration_seconds": 46.0,
+  "hook_text": "Cold medicine runs the combo meal trick.",
+  "cta_text": "Full video on my channel",
+  "created_date": "2026-04-13",
+  "platforms": {
+    "youtube": {
+      "title": "",
+      "description": "",
+      "status": "ready",
+      "upload_date": null,
+      "url": null
+    },
+    "instagram": {
+      "caption": "",
+      "status": "ready",
+      "upload_date": null,
+      "url": null
+    },
+    "tiktok": {
+      "caption": "",
+      "status": "ready",
+      "upload_date": null,
+      "url": null
+    }
+  }
+}

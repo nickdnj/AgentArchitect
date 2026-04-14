@@ -1,0 +1,45 @@
+{
+  "id": "short-04",
+  "slug": "nyquil-3-pills",
+  "description": "NyQuil recipe card: open the capsule, reveal 3 cheap generics. Best visual sequence.",
+  "source_video": "/Users/nickd/Workspaces/AgentArchitect/teams/youtube-content/projects/cold-plan-video/output/cold-plan-final-v3.mp4",
+  "source_segments": [
+    {
+      "start": 5,
+      "duration": 19
+    },
+    {
+      "start": 74,
+      "duration": 19
+    },
+    {
+      "start": 112,
+      "duration": 25
+    }
+  ],
+  "duration_seconds": 63.0,
+  "hook_text": "Let me open a NyQuil capsule.",
+  "cta_text": "5 more brands broken down in the full video",
+  "created_date": "2026-04-13",
+  "platforms": {
+    "youtube": {
+      "title": "",
+      "description": "",
+      "status": "ready",
+      "upload_date": null,
+      "url": null
+    },
+    "instagram": {
+      "caption": "",
+      "status": "ready",
+      "upload_date": null,
+      "url": null
+    },
+    "tiktok": {
+      "caption": "",
+      "status": "ready",
+      "upload_date": null,
+      "url": null
+    }
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "id": "short-02",
+  "slug": "advil-pm-5-cents",
+  "description": "Most shocking single stat: Advil PM = 2 pills = $0.05. They charge $14.",
+  "source_video": "/Users/nickd/Workspaces/AgentArchitect/teams/youtube-content/projects/cold-plan-video/output/cold-plan-final-v3.mp4",
+  "source_segments": [
+    {
+      "start": 228,
+      "duration": 17
+    },
+    {
+      "start": 93,
+      "duration": 19
+    },
+    {
+      "start": 418,
+      "duration": 5
+    }
+  ],
+  "duration_seconds": 41.0,
+  "hook_text": "Advil PM is 5 cents of medicine.",
+  "cta_text": "Free app at cold-plan-app.web.app",
+  "created_date": "2026-04-13",
+  "platforms": {
+    "youtube": {
+      "title": "",
+      "description": "",
+      "status": "ready",
+      "upload_date": null,
+      "url": null
+    },
+    "instagram": {
+      "caption": "",
+      "status": "ready",
+      "upload_date": null,
+      "url": null
+    },
+    "tiktok": {
+      "caption": "",
+      "status": "ready",
+      "upload_date": null,
+      "url": null
+    }
+  }
+}
