@@ -1,0 +1,62 @@
+{
+  "upload_schedule": "Every other day, May 1-7 2026 at 10:00 AM ET",
+  "channel": "Vistter",
+  "playlist": "What's REALLY In Your Cold Medicine?",
+  "playlist_id": "PLczUtMV4pOLFkPgP_W9Khd9IiGktaOaes",
+  "series": "The Stuff Nobody Tells You",
+  "upload_status": "partial — hit YouTube daily upload limit on Apr 14. s5-3 and s5-4 need upload.",
+  "shorts": [
+    {
+      "id": "s5-1-double-dose",
+      "file": "s5-1-double-dose/output/s5-1-double-dose-final.mp4",
+      "publish_date": "2026-05-01T10:00:00-04:00",
+      "title": "You might be double-dosing right now \u26a0\ufe0f",
+      "description": "If you take NyQuil AND Tylenol, you're taking Tylenol TWICE.\n\nNyQuil already has acetaminophen (Tylenol) in it. So does DayQuil. So does Theraflu.\n\nToo much acetaminophen is the #1 cause of liver failure in the US.\n\nThis is why you need to know what's actually in your cold medicine.\n\n\ud83d\udd17 cold-plan-app.web.app\nFree. No login. No ads. No data collected.\n\n#doubledosing #coldmedicine #tylenol #nyquil #acetaminophen #liverfailure #pharmacy #otc #healthcare #drugsafety",
+      "tags": ["double dosing", "cold medicine", "Tylenol", "NyQuil", "acetaminophen", "liver failure", "drug safety", "pharmacy", "OTC", "cold plan", "drug interactions"],
+      "visibility": "public",
+      "upload_status": "scheduled",
+      "video_id": "d_rgRXl0HUQ",
+      "url": "https://www.youtube.com/shorts/d_rgRXl0HUQ",
+      "playlist_added": true
+    },
+    {
+      "id": "s5-2-pm-scam",
+      "file": "s5-2-pm-scam/output/s5-2-pm-scam-final.mp4",
+      "publish_date": "2026-05-03T10:00:00-04:00",
+      "title": "The PM scam: every PM medicine is the same trick \ud83d\udca4",
+      "description": "Advil PM = Advil + Benadryl\nTylenol PM = Tylenol + Benadryl\nAleve PM = Aleve + Benadryl\n\nThe word \"PM\" literally means they added one Benadryl and doubled the price.\n\nAdvil PM: $12\nRegular Advil + generic Benadryl: $7 (and way more pills)\n\n\ud83d\udd17 cold-plan-app.web.app\nFree. No login. No ads. No data collected.\n\n#pmscam #advilpm #tylenolpm #benadryl #coldmedicine #generics #savemoney #pharmacy #otc #healthcare",
+      "tags": ["PM scam", "Advil PM", "Tylenol PM", "Aleve PM", "Benadryl", "cold medicine", "generic drugs", "save money", "pharmacy", "OTC", "cold plan"],
+      "visibility": "public",
+      "upload_status": "scheduled",
+      "video_id": "BdZG9150IRM",
+      "url": "https://www.youtube.com/shorts/BdZG9150IRM",
+      "playlist_added": true
+    },
+    {
+      "id": "s5-3-one-pill-diff",
+      "file": "s5-3-one-pill-diff/output/s5-3-one-pill-diff-final.mp4",
+      "publish_date": "2026-05-05T10:00:00-04:00",
+      "title": "DayQuil and NyQuil differ by ONE pill \ud83d\udc8a",
+      "description": "DayQuil and NyQuil are the same recipe. The only difference? NyQuil adds one Benadryl to make you sleepy.\n\nDay vs night = one pill.\n\nBuy generic DayQuil ingredients. At bedtime, add a Benadryl. Congratulations \u2014 you just made NyQuil.\n\n\ud83d\udd17 cold-plan-app.web.app\nFree. No login. No ads. No data collected.\n\n#dayquil #nyquil #onepill #coldmedicine #generics #savemoney #pharmacy #lifehack #otc #healthcare",
+      "tags": ["DayQuil", "NyQuil", "one pill difference", "Benadryl", "cold medicine", "generic drugs", "save money", "pharmacy", "OTC", "cold plan", "day vs night"],
+      "visibility": "public",
+      "upload_status": "pending — upload limit hit Apr 14",
+      "video_id": null,
+      "url": null,
+      "playlist_added": false
+    },
+    {
+      "id": "s5-4-twenty-dollar-cabinet",
+      "file": "s5-4-twenty-dollar-cabinet/output/s5-4-twenty-dollar-cabinet-final.mp4",
+      "publish_date": "2026-05-07T10:00:00-04:00",
+      "title": "Your entire medicine cabinet should cost $20 \ud83d\udcb0",
+      "description": "9 generic bottles. $20 total. Covers every cold, flu, and allergy scenario.\n\nTylenol, Advil, Benadryl, Robitussin, Mucinex, Sudafed, Sudafed PE, lozenges, thermometer.\n\nThe same coverage in brand names (NyQuil, DayQuil, Advil PM, Theraflu, Mucinex DM)? Over $200.\n\nFor the exact same ingredients.\n\n\ud83d\udd17 cold-plan-app.web.app\nFree. No login. No ads. No data collected.\n\n#medicinecabinet #20dollars #coldmedicine #generics #savemoney #pharmacy #lifehack #otc #healthcare #shoppinglist",
+      "tags": ["medicine cabinet", "20 dollars", "cold medicine", "generic drugs", "9 bottles", "save money", "pharmacy", "OTC", "cold plan", "shopping list", "kit"],
+      "visibility": "public",
+      "upload_status": "pending — upload limit hit Apr 14",
+      "video_id": null,
+      "url": null,
+      "playlist_added": false
+    }
+  ]
+}

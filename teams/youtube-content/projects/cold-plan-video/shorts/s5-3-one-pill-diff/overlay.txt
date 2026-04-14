@@ -1,0 +1,41 @@
+[0:v]
+
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Futura.ttc:text='DayQuil\:':fontsize=56:fontcolor=white:borderw=3:bordercolor=black:x=(w-tw)/2:y=h*0.08:enable='between(t,3.94,22.15)':alpha='if(lt(t-3.94,0.2),(t-3.94)/0.2,1)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Futura.ttc:text='Tylenol + Robitussin + Sudafed PE':fontsize=34:fontcolor=0xFFD700:borderw=3:bordercolor=black:x=(w-tw)/2:y=h*0.08+60:enable='between(t,3.94,22.15)':alpha='if(lt(t-3.94,0.2),(t-3.94)/0.2,1)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Futura.ttc:text='NyQuil\:':fontsize=56:fontcolor=white:borderw=3:bordercolor=black:x=(w-tw)/2:y=h*0.08+120:enable='between(t,6.64,22.15)':alpha='if(lt(t-6.64,0.2),(t-6.64)/0.2,1)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Futura.ttc:text='Tylenol + Robitussin + Benadryl':fontsize=34:fontcolor=0xFFD700:borderw=3:bordercolor=black:x=(w-tw)/2:y=h*0.08+180:enable='between(t,6.64,22.15)':alpha='if(lt(t-6.64,0.2),(t-6.64)/0.2,1)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Futura.ttc:text='Difference\: 1 pill':fontsize=52:fontcolor=0xFF4444:borderw=4:bordercolor=black:x=(w-tw)/2:y=h*0.08+260:enable='between(t,9.64,22.15)':alpha='if(lt(t-9.64,0.2),(t-9.64)/0.2,1)',
+
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Futura.ttc:text='cold-plan-app.web.app':fontsize=56:fontcolor=white:borderw=4:bordercolor=black:x=(w-tw)/2:y=h*0.78:enable='between(t,33.66,39.74)':alpha='if(lt(t-33.66,0.3),(t-33.66)/0.3,1)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Futura.ttc:text='Every recipe. Day and night.':fontsize=44:fontcolor=0xAADDFF:borderw=3:bordercolor=black:x=(w-tw)/2:y=h*0.78+66:enable='between(t,34.66,39.74)':alpha='if(lt(t-34.66,0.3),(t-34.66)/0.3,1)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Futura.ttc:text='Free. No login. No ads. No data collected.':fontsize=34:fontcolor=0xCCCCCC:borderw=3:bordercolor=black:x=(w-tw)/2:y=h*0.78+126:enable='between(t,35.66,39.74)':alpha='if(lt(t-35.66,0.3),(t-35.66)/0.3,1)',
+
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='DayQuil and NyQuil':fontsize=82:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,0.0,1.4)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='are the same thing.':fontsize=82:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,1.4,3.54)',
+
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='Both have Tylenol.':fontsize=82:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,3.64,5.0)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='Both have Robitussin.':fontsize=78:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,5.0,6.5)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='Both have':fontsize=88:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,6.5,7.5)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='a decongestant.':fontsize=82:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,7.5,8.8)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='The only difference?':fontsize=82:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,8.8,10.3)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='NyQuil adds':fontsize=88:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,10.3,11.5)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='one Benadryl':fontsize=88:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,11.5,13.0)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='to make you sleepy.':fontsize=78:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,13.0,14.5)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='Day versus night':fontsize=82:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,14.5,16.0)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='is one pill.':fontsize=88:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,16.0,17.5)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='And they sell them':fontsize=78:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,17.5,19.3)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='as two different products.':fontsize=74:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,19.3,22.15)',
+
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='Buy the generic':fontsize=82:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,22.15,23.7)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='DayQuil ingredients.':fontsize=78:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,23.7,25.4)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='When it'\''s bedtime,':fontsize=78:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,25.4,27.1)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='just add a Benadryl.':fontsize=78:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,27.1,29.0)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='Congratulations.':fontsize=82:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,29.0,30.6)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='You just made NyQuil.':fontsize=74:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,30.6,33.66)',
+
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='Cold Plan has':fontsize=82:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.30:enable='between(t,33.66,35.1)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='every recipe.':fontsize=88:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.30:enable='between(t,35.1,36.4)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='Day and night.':fontsize=82:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.30:enable='between(t,36.4,37.8)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='Link in bio.':fontsize=88:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.30:enable='between(t,37.8,39.74)'
+
+[outv]

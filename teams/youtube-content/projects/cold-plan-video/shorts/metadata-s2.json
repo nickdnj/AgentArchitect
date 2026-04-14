@@ -1,0 +1,44 @@
+{
+  "upload_schedule": "Interleaved with Batch 1 on off-days, Apr 16-22 2026 at 10:00 AM ET",
+  "channel": "Vistter",
+  "playlist": "What's REALLY In Your Cold Medicine?",
+  "series": "Sick Day Math",
+  "shorts": [
+    {
+      "id": "s2-1-sore-throat",
+      "file": "s2-1-sore-throat/output/s2-1-sore-throat-final.mp4",
+      "publish_date": "2026-04-16T10:00:00-04:00",
+      "title": "Sore Throat + Congestion? Two pills. 25 cents.",
+      "description": "You woke up and your throat is on fire. Two generic pills fix it: Advil + Sudafed.\n\nAdvil Cold & Sinus: $12\nThe same 2 generics: 25 cents\n\nCold Plan breaks down every brand-name cold medicine into its generic recipe.\n\n\ud83d\udd17 cold-plan-app.web.app\nFree. No login. No ads. No data collected.\n\n#coldmedicine #sorethroat #congestion #generics #savemoney #pharmacy #lifehack #otc #medicine #healthcare",
+      "tags": ["sore throat", "congestion", "cold medicine", "Advil", "Sudafed", "generic drugs", "save money", "pharmacy", "OTC", "cold plan", "medicine hacks", "healthcare savings"],
+      "visibility": "public"
+    },
+    {
+      "id": "s2-2-cant-sleep",
+      "file": "s2-2-cant-sleep/output/s2-2-cant-sleep-final.mp4",
+      "publish_date": "2026-04-18T10:00:00-04:00",
+      "title": "Can't Sleep? Stuffy Nose? Two pills. 20 cents.",
+      "description": "It's 2 AM. You can't breathe. And you've got that big meeting tomorrow.\n\nTwo pills: Benadryl + Sudafed PE. Same combo in NyQuil, minus the stuff you don't need.\n\nNyQuil + Sudafed PE: $15\nTwo generics: 20 cents\n\nCold Plan breaks down every brand-name cold medicine into its generic recipe.\n\n\ud83d\udd17 cold-plan-app.web.app\nFree. No login. No ads. No data collected.\n\n#cantsleep #stuffynose #coldmedicine #benadryl #generics #savemoney #pharmacy #lifehack #otc #nighttime #healthcare",
+      "tags": ["can't sleep", "stuffy nose", "cold medicine", "Benadryl", "Sudafed PE", "NyQuil", "generic drugs", "save money", "pharmacy", "OTC", "cold plan", "nighttime relief"],
+      "visibility": "public"
+    },
+    {
+      "id": "s2-3-full-cold",
+      "file": "s2-3-full-cold/output/s2-3-full-cold-final.mp4",
+      "publish_date": "2026-04-20T10:00:00-04:00",
+      "title": "Full-Blown Cold? Four pills. 50 cents.",
+      "description": "Everything hurts. Head. Throat. Chest. You're a mess.\n\nFour pills — the nuclear option: Tylenol + Robitussin + Mucinex + Sudafed.\n\nNyQuil Severe: $18\nThe same 4 generics: 50 cents\n\nCold Plan breaks down every brand-name cold medicine into its generic recipe.\n\n\ud83d\udd17 cold-plan-app.web.app\nFree. No login. No ads. No data collected.\n\n#fullblowncold #coldmedicine #nyquil #generics #savemoney #pharmacy #lifehack #otc #sickday #healthcare",
+      "tags": ["full cold", "cold medicine", "NyQuil Severe", "Tylenol", "Robitussin", "Mucinex", "Sudafed", "generic drugs", "save money", "pharmacy", "OTC", "cold plan", "nuclear option"],
+      "visibility": "public"
+    },
+    {
+      "id": "s2-4-allergy",
+      "file": "s2-4-allergy/output/s2-4-allergy-final.mp4",
+      "publish_date": "2026-04-22T10:00:00-04:00",
+      "title": "Allergy Season Hit Different \ud83e\udd27 Two pills. 20 cents.",
+      "description": "Sneezing. Runny nose. Itchy everything. It's that time of year.\n\nTwo pills: Benadryl + Sudafed. Same combo in Benadryl-D — they just slapped a D on the box and doubled the price.\n\nBenadryl-D: $12\nTwo generics: 20 cents\n\nCold Plan breaks down every brand-name cold medicine into its generic recipe.\n\n\ud83d\udd17 cold-plan-app.web.app\nFree. No login. No ads. No data collected.\n\n#allergyseason #allergies #benadryl #coldmedicine #generics #savemoney #pharmacy #lifehack #otc #springallergies #healthcare",
+      "tags": ["allergy season", "allergies", "Benadryl-D", "Sudafed", "cold medicine", "generic drugs", "save money", "pharmacy", "OTC", "cold plan", "spring allergies", "pollen"],
+      "visibility": "public"
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+[0:v]
+
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Futura.ttc:text='Most pharmacy products':fontsize=44:fontcolor=white:borderw=3:bordercolor=black:x=(w-tw)/2:y=h*0.10:enable='between(t,5.11,23.84)':alpha='if(lt(t-5.11,0.2),(t-5.11)/0.2,1)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Futura.ttc:text='30-50% markup':fontsize=56:fontcolor=0xFFD700:borderw=3:bordercolor=black:x=(w-tw)/2:y=h*0.10+55:enable='between(t,5.11,23.84)':alpha='if(lt(t-5.11,0.2),(t-5.11)/0.2,1)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Futura.ttc:text='Cold medicine':fontsize=44:fontcolor=white:borderw=3:bordercolor=black:x=(w-tw)/2:y=h*0.10+130:enable='between(t,7.61,23.84)':alpha='if(lt(t-7.61,0.2),(t-7.61)/0.2,1)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Futura.ttc:text='2,000% markup':fontsize=64:fontcolor=0xFF4444:borderw=4:bordercolor=black:x=(w-tw)/2:y=h*0.10+185:enable='between(t,7.61,23.84)':alpha='if(lt(t-7.61,0.2),(t-7.61)/0.2,1)',
+
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Futura.ttc:text='cold-plan-app.web.app':fontsize=56:fontcolor=white:borderw=4:bordercolor=black:x=(w-tw)/2:y=h*0.78:enable='between(t,32.20,38.81)':alpha='if(lt(t-32.20,0.3),(t-32.20)/0.3,1)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Futura.ttc:text='Every recipe. Every price.':fontsize=44:fontcolor=0xAADDFF:borderw=3:bordercolor=black:x=(w-tw)/2:y=h*0.78+66:enable='between(t,33.20,38.81)':alpha='if(lt(t-33.20,0.3),(t-33.20)/0.3,1)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Futura.ttc:text='Free. No login. No ads. No data collected.':fontsize=34:fontcolor=0xCCCCCC:borderw=3:bordercolor=black:x=(w-tw)/2:y=h*0.78+126:enable='between(t,34.20,38.81)':alpha='if(lt(t-34.20,0.3),(t-34.20)/0.3,1)',
+
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='Why cold medicine':fontsize=88:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,0.40,1.53)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='is the biggest markup':fontsize=82:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,1.53,2.80)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='in your drugstore.':fontsize=88:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,2.80,4.61)',
+
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='Most products':fontsize=88:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,5.01,6.20)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='in a pharmacy':fontsize=88:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,6.20,7.30)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='have a thirty':fontsize=88:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,7.30,8.40)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='to fifty percent markup.':fontsize=78:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,8.40,9.70)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='Cold medicine?':fontsize=88:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,9.70,10.60)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='Try two thousand':fontsize=88:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,10.60,11.60)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='percent.':fontsize=100:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,11.60,12.60)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='A twelve-dollar box':fontsize=82:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,12.60,13.80)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='of NyQuil':fontsize=88:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,13.80,14.70)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='contains about':fontsize=88:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,14.70,15.60)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='twelve cents worth':fontsize=82:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,15.60,16.80)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='of generic ingredients.':fontsize=78:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,16.80,18.20)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text=They\'re selling you:fontsize=82:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,18.20,19.50)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='convenience':fontsize=92:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,19.50,20.60)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='and a brand name.':fontsize=82:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,20.60,23.84)',
+
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='And the craziest part?':fontsize=78:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,24.25,25.50)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='The pharmacist':fontsize=88:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,25.50,26.50)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='behind the counter':fontsize=82:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,26.50,27.60)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='knows this.':fontsize=92:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,27.60,28.60)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='They buy the same':fontsize=82:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,28.60,29.80)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='generics you should be.':fontsize=76:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,29.80,31.80)',
+
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='Cold Plan shows you':fontsize=82:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.30:enable='between(t,32.20,33.30)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='every recipe.':fontsize=88:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.30:enable='between(t,33.30,34.30)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='Every price.':fontsize=88:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.30:enable='between(t,34.30,35.20)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='Free.':fontsize=100:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.30:enable='between(t,35.20,36.10)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='Link in bio.':fontsize=88:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.30:enable='between(t,36.10,38.81)'
+
+[outv]

@@ -1,0 +1,45 @@
+[0:v]
+
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Futura.ttc:text='NyQuil':fontsize=60:fontcolor=white:borderw=3:bordercolor=black:x=(w-tw)/2:y=h*0.10:enable='between(t,6.72,23.94)':alpha='if(lt(t-6.72,0.2),(t-6.72)/0.2,1)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Futura.ttc:text='contains Tylenol':fontsize=40:fontcolor=0xFF4444:borderw=3:bordercolor=black:x=(w-tw)/2:y=h*0.10+70:enable='between(t,6.72,23.94)':alpha='if(lt(t-6.72,0.2),(t-6.72)/0.2,1)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Futura.ttc:text='DayQuil':fontsize=60:fontcolor=white:borderw=3:bordercolor=black:x=(w-tw)/2:y=h*0.10+145:enable='between(t,8.42,23.94)':alpha='if(lt(t-8.42,0.2),(t-8.42)/0.2,1)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Futura.ttc:text='contains Tylenol':fontsize=40:fontcolor=0xFF4444:borderw=3:bordercolor=black:x=(w-tw)/2:y=h*0.10+215:enable='between(t,8.42,23.94)':alpha='if(lt(t-8.42,0.2),(t-8.42)/0.2,1)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Futura.ttc:text='Theraflu':fontsize=60:fontcolor=white:borderw=3:bordercolor=black:x=(w-tw)/2:y=h*0.10+290:enable='between(t,9.92,23.94)':alpha='if(lt(t-9.92,0.2),(t-9.92)/0.2,1)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Futura.ttc:text='contains Tylenol':fontsize=40:fontcolor=0xFF4444:borderw=3:bordercolor=black:x=(w-tw)/2:y=h*0.10+360:enable='between(t,9.92,23.94)':alpha='if(lt(t-9.92,0.2),(t-9.92)/0.2,1)',
+
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Futura.ttc:text='cold-plan-app.web.app':fontsize=56:fontcolor=white:borderw=4:bordercolor=black:x=(w-tw)/2:y=h*0.78:enable='between(t,31.19,39.18)':alpha='if(lt(t-31.19,0.3),(t-31.19)/0.3,1)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Futura.ttc:text='Know what you'\''re taking.':fontsize=44:fontcolor=0xAADDFF:borderw=3:bordercolor=black:x=(w-tw)/2:y=h*0.78+66:enable='between(t,32.19,39.18)':alpha='if(lt(t-32.19,0.3),(t-32.19)/0.3,1)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Futura.ttc:text='Free. No login. No ads. No data collected.':fontsize=34:fontcolor=0xCCCCCC:borderw=3:bordercolor=black:x=(w-tw)/2:y=h*0.78+126:enable='between(t,33.19,39.18)':alpha='if(lt(t-33.19,0.3),(t-33.19)/0.3,1)',
+
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='If you take NyQuil':fontsize=82:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,0.40,1.80)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='and Tylenol together,':fontsize=82:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,1.80,3.20)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='you'\''re double-dosing':fontsize=82:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,3.20,4.60)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='on the same drug.':fontsize=82:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,4.60,6.02)',
+
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='NyQuil already':fontsize=82:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,6.82,8.05)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='has Tylenol in it.':fontsize=82:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,8.05,9.45)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='Same with DayQuil.':fontsize=82:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,9.45,10.75)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='Same with Theraflu.':fontsize=82:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,10.75,12.15)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='If you pop a Tylenol':fontsize=78:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,12.15,13.70)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='on top of any of those,':fontsize=76:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,13.70,15.30)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='twice the acetaminophen.':fontsize=74:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,15.30,16.90)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='And too much':fontsize=82:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,16.90,18.10)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='is the number one cause':fontsize=76:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,18.10,19.70)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='of liver failure':fontsize=82:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,19.70,21.00)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='in the US.':fontsize=88:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,21.00,22.54)',
+
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='This is why':fontsize=88:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,24.34,25.42)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='you need to know':fontsize=82:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,25.42,26.50)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='what'\''s actually in':fontsize=82:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,26.50,27.60)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='your cold medicine.':fontsize=82:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,27.60,28.70)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='Not the brand name.':fontsize=82:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,28.70,29.90)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='The ingredients.':fontsize=88:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,29.90,31.19)',
+
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='Cold Plan breaks down':fontsize=78:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.30:enable='between(t,31.59,32.80)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='every brand-name':fontsize=82:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.30:enable='between(t,32.80,33.80)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='cold medicine':fontsize=82:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.30:enable='between(t,33.80,34.70)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='so you know exactly':fontsize=82:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.30:enable='between(t,34.70,35.90)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='what you'\''re taking.':fontsize=82:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.30:enable='between(t,35.90,37.10)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='Link in bio.':fontsize=88:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.30:enable='between(t,37.10,39.18)'
+
+[outv]

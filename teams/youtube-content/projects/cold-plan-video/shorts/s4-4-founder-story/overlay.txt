@@ -1,0 +1,45 @@
+[0:v]
+
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Futura.ttc:text='30 years':fontsize=60:fontcolor=white:borderw=3:bordercolor=black:x=(w-tw)/2:y=h*0.10:enable='between(t,5.06,26.54)':alpha='if(lt(t-5.06,0.2),(t-5.06)/0.2,1)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Futura.ttc:text='of business travel':fontsize=40:fontcolor=0xFFD700:borderw=3:bordercolor=black:x=(w-tw)/2:y=h*0.10+70:enable='between(t,5.06,26.54)':alpha='if(lt(t-5.06,0.2),(t-5.06)/0.2,1)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Futura.ttc:text='1.3 million miles':fontsize=60:fontcolor=white:borderw=3:bordercolor=black:x=(w-tw)/2:y=h*0.10+145:enable='between(t,7.56,26.54)':alpha='if(lt(t-7.56,0.2),(t-7.56)/0.2,1)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Futura.ttc:text='on United':fontsize=40:fontcolor=0xFFD700:borderw=3:bordercolor=black:x=(w-tw)/2:y=h*0.10+215:enable='between(t,7.56,26.54)':alpha='if(lt(t-7.56,0.2),(t-7.56)/0.2,1)',
+
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Futura.ttc:text='cold-plan-app.web.app':fontsize=56:fontcolor=white:borderw=4:bordercolor=black:x=(w-tw)/2:y=h*0.78:enable='between(t,36.52,43.45)':alpha='if(lt(t-36.52,0.3),(t-36.52)/0.3,1)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Futura.ttc:text='30 years of cold hacking.':fontsize=44:fontcolor=0xAADDFF:borderw=3:bordercolor=black:x=(w-tw)/2:y=h*0.78+66:enable='between(t,37.52,43.45)':alpha='if(lt(t-37.52,0.3),(t-37.52)/0.3,1)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Futura.ttc:text='Free. No login. No ads. No data collected.':fontsize=34:fontcolor=0xCCCCCC:borderw=3:bordercolor=black:x=(w-tw)/2:y=h*0.78+126:enable='between(t,38.52,43.45)':alpha='if(lt(t-38.52,0.3),(t-38.52)/0.3,1)',
+
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='I stopped buying':fontsize=88:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,0.0,1.30)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='brand-name cold medicine':fontsize=76:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,1.30,2.65)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='thirty years ago.':fontsize=88:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,2.65,4.56)',
+
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='Thirty years':fontsize=88:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,4.56,5.60)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='of business travel.':fontsize=82:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,5.60,6.70)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='Over a million miles':fontsize=82:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,6.70,7.90)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='on United.':fontsize=88:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,7.90,8.90)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='And every cold':fontsize=88:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,8.90,10.00)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='I caught on the road,':fontsize=80:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,10.00,11.20)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='I treated with':fontsize=88:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,11.20,12.10)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='the same handful':fontsize=88:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,12.10,13.20)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='of generic pills.':fontsize=88:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,13.20,14.30)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='A twenty-dollar kit':fontsize=82:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,14.30,15.50)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='that lasted six months.':fontsize=80:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,15.50,17.10)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='Meanwhile, my coworkers':fontsize=78:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,17.10,18.40)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='were dropping fifteen bucks':fontsize=74:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,18.40,19.70)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='on NyQuil every time.':fontsize=80:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,19.70,21.14)',
+
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='I finally built an app':fontsize=80:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,26.54,28.00)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='that does what I used to do':fontsize=70:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,28.00,29.50)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='on napkins':fontsize=88:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,29.50,30.50)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='in hotel rooms.':fontsize=88:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,30.50,31.50)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='Match your symptoms,':fontsize=80:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,31.50,32.60)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='get the exact pills,':fontsize=82:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,32.60,33.60)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='see the price.':fontsize=88:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,33.60,36.12)',
+
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='Cold Plan.':fontsize=96:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.30:enable='between(t,36.52,37.60)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='Thirty years':fontsize=88:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.30:enable='between(t,37.60,38.50)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='of figuring this out':fontsize=80:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.30:enable='between(t,38.50,39.80)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='so you don'\''t have to.':fontsize=80:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.30:enable='between(t,39.80,41.20)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='Link in bio.':fontsize=88:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.30:enable='between(t,41.20,43.00)'
+
+[outv]
