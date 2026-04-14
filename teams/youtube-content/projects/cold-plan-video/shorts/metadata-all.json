@@ -1,0 +1,61 @@
+{
+  "upload_schedule": "Every other day, starting April 15, 2026 at 10:00 AM ET",
+  "channel": "Vistter",
+  "playlist": "What's REALLY In Your Cold Medicine?",
+  "shorts": [
+    {
+      "id": "s1-1-nyquil",
+      "file": "s1-1-nyquil/output/s1-1-nyquil-final.mp4",
+      "publish_date": "2026-04-15T10:00:00-04:00",
+      "title": "What's REALLY in NyQuil? 💊 3 pills, 12 cents",
+      "description": "NyQuil is just 3 generic pills: Tylenol + Robitussin + Benadryl.\n\nA box of NyQuil: $12-15\nThe same 3 generics: about 12 cents\n\nCold Plan breaks down every brand-name cold medicine into its generic recipe.\n\n🔗 cold-plan-app.web.app\nFree. No login. No ads. No data collected.\n\n#coldmedicine #nyquil #generics #savemoney #pharmacy #lifehack #coldseason #otc #medicine #healthcare",
+      "tags": ["cold medicine", "NyQuil", "generic drugs", "save money", "pharmacy", "OTC", "cold and flu", "generic vs brand", "cold plan", "medicine hacks", "healthcare savings", "drug prices"],
+      "visibility": "public"
+    },
+    {
+      "id": "s1-5-tylenol-pm",
+      "file": "s1-5-tylenol-pm/output/s1-5-tylenol-pm-final.mp4",
+      "publish_date": "2026-04-17T10:00:00-04:00",
+      "title": "What's REALLY in Tylenol PM? 💊 2 pills, 3 cents",
+      "description": "Tylenol PM is just 2 generic pills: regular Tylenol + Benadryl.\n\nA box of Tylenol PM: $11\nThe same 2 generics: about 3 cents\nThat's a 99% markup.\n\nCold Plan breaks down every brand-name cold medicine into its generic recipe.\n\n🔗 cold-plan-app.web.app\nFree. No login. No ads. No data collected.\n\n#tylenolpm #coldmedicine #generics #savemoney #pharmacy #lifehack #otc #medicine #healthcare #drugprices",
+      "tags": ["Tylenol PM", "cold medicine", "generic drugs", "save money", "pharmacy", "OTC", "sleep aid", "generic vs brand", "cold plan", "medicine hacks", "99 percent markup"],
+      "visibility": "public"
+    },
+    {
+      "id": "s1-4-mucinex-dm",
+      "file": "s1-4-mucinex-dm/output/s1-4-mucinex-dm-final.mp4",
+      "publish_date": "2026-04-19T10:00:00-04:00",
+      "title": "What's REALLY in Mucinex DM? 💊 2 pills, 15 cents",
+      "description": "Mucinex DM is just 2 generic ingredients: Mucinex (guaifenesin) + Robitussin (DXM).\n\nA box of Mucinex DM: $15-20\nThe same 2 generics: about 15 cents\nThat \"extended-release\" tablet? Same active ingredient.\n\nCold Plan breaks down every brand-name cold medicine into its generic recipe.\n\n🔗 cold-plan-app.web.app\nFree. No login. No ads. No data collected.\n\n#mucinex #coldmedicine #generics #savemoney #pharmacy #lifehack #otc #cough #chestcongestion #drugprices",
+      "tags": ["Mucinex DM", "cold medicine", "generic drugs", "save money", "pharmacy", "OTC", "cough medicine", "chest congestion", "cold plan", "medicine hacks", "drug prices"],
+      "visibility": "public"
+    },
+    {
+      "id": "s1-3-advil-pm",
+      "file": "s1-3-advil-pm/output/s1-3-advil-pm-final.mp4",
+      "publish_date": "2026-04-21T10:00:00-04:00",
+      "title": "What's REALLY in Advil PM? 💊 2 pills, 5 cents",
+      "description": "Advil PM is just 2 generic pills: regular Advil + Benadryl. They literally just put them together.\n\nA box of Advil PM: $10-12\nThe same 2 generics: about 5 cents\nYou're paying for the word \"PM\" on the label.\n\nCold Plan breaks down every brand-name cold medicine into its generic recipe.\n\n🔗 cold-plan-app.web.app\nFree. No login. No ads. No data collected.\n\n#advilpm #coldmedicine #generics #savemoney #pharmacy #lifehack #otc #sleepaid #painrelief #drugprices",
+      "tags": ["Advil PM", "cold medicine", "generic drugs", "save money", "pharmacy", "OTC", "sleep aid", "pain relief", "cold plan", "medicine hacks", "drug prices"],
+      "visibility": "public"
+    },
+    {
+      "id": "s1-2-dayquil",
+      "file": "s1-2-dayquil/output/s1-2-dayquil-final.mp4",
+      "publish_date": "2026-04-23T10:00:00-04:00",
+      "title": "What's REALLY in DayQuil? 💊 3 pills, 10 cents",
+      "description": "DayQuil is just 3 generic pills: Tylenol + Sudafed PE + Robitussin. Identical to NyQuil minus the sleep aid.\n\nA box of DayQuil: $12-15\nThe same 3 generics: about 10 cents\nSame drugs. Same doses. Different price tag.\n\nCold Plan breaks down every brand-name cold medicine into its generic recipe.\n\n🔗 cold-plan-app.web.app\nFree. No login. No ads. No data collected.\n\n#dayquil #coldmedicine #generics #savemoney #pharmacy #lifehack #otc #coldandflu #medicine #drugprices",
+      "tags": ["DayQuil", "cold medicine", "generic drugs", "save money", "pharmacy", "OTC", "cold and flu", "generic vs brand", "cold plan", "medicine hacks", "drug prices"],
+      "visibility": "public"
+    },
+    {
+      "id": "s1-6-theraflu",
+      "file": "s1-6-theraflu/output/s1-6-theraflu-final.mp4",
+      "publish_date": "2026-04-25T10:00:00-04:00",
+      "title": "What's REALLY in Theraflu? 💊 Fancy? Not really.",
+      "description": "Theraflu is just 3 generic pills dissolved in hot water: Tylenol + Benadryl + Sudafed PE.\n\n$10-12 for the powder packets\nAbout 8 cents if you just swallow 3 generic pills\nThe hot water is free.\n\nCold Plan breaks down every brand-name cold medicine into its generic recipe.\n\n🔗 cold-plan-app.web.app\nFree. No login. No ads. No data collected.\n\n#theraflu #coldmedicine #generics #savemoney #pharmacy #lifehack #otc #coldandflu #hotremedy #drugprices",
+      "tags": ["Theraflu", "cold medicine", "generic drugs", "save money", "pharmacy", "OTC", "cold and flu", "hot remedy", "cold plan", "medicine hacks", "drug prices"],
+      "visibility": "public"
+    }
+  ]
+}

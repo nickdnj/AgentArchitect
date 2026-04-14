@@ -1,0 +1,42 @@
+[0:v]
+
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Futura.ttc:text='What'\''s REALLY in':fontsize=72:fontcolor=white:borderw=4:bordercolor=black:x=(w-tw)/2:y=h*0.15:enable='between(t,0,2.84)':alpha='if(lt(t,0.3),t/0.3,1)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Futura.ttc:text='Mucinex DM?':fontsize=90:fontcolor=white:borderw=5:bordercolor=black:x=(w-tw)/2:y=h*0.15+90:enable='between(t,0,2.84)':alpha='if(lt(t,0.3),t/0.3,1)',
+
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Futura.ttc:text='Mucinex':fontsize=60:fontcolor=white:borderw=3:bordercolor=black:x=(w-tw)/2:y=h*0.10:enable='between(t,3.14,11.12)':alpha='if(lt(t-3.14,0.2),(t-3.14)/0.2,1)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Futura.ttc:text='loosens mucus':fontsize=40:fontcolor=0xFFD700:borderw=3:bordercolor=black:x=(w-tw)/2:y=h*0.10+70:enable='between(t,3.14,11.12)':alpha='if(lt(t-3.14,0.2),(t-3.14)/0.2,1)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Futura.ttc:text='Robitussin':fontsize=60:fontcolor=white:borderw=3:bordercolor=black:x=(w-tw)/2:y=h*0.10+145:enable='between(t,5.8,11.12)':alpha='if(lt(t-5.8,0.2),(t-5.8)/0.2,1)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Futura.ttc:text='cough':fontsize=40:fontcolor=0xFFD700:borderw=3:bordercolor=black:x=(w-tw)/2:y=h*0.10+215:enable='between(t,5.8,11.12)':alpha='if(lt(t-5.8,0.2),(t-5.8)/0.2,1)',
+
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Futura.ttc:text='$15-20':fontsize=80:fontcolor=0xFF4444:borderw=4:bordercolor=black:x=w*0.10:y=h*0.08:enable='between(t,11.12,24.18)':alpha='if(lt(t-11.12,0.3),(t-11.12)/0.3,1)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Futura.ttc:text='15 cents':fontsize=80:fontcolor=0x44FF44:borderw=4:bordercolor=black:x=w*0.58:y=h*0.08:enable='between(t,13.0,24.18)':alpha='if(lt(t-13.0,0.3),(t-13.0)/0.3,1)',
+
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Futura.ttc:text='cold-plan-app.web.app':fontsize=56:fontcolor=white:borderw=4:bordercolor=black:x=(w-tw)/2:y=h*0.78:enable='between(t,24.18,29.06)':alpha='if(lt(t-24.18,0.3),(t-24.18)/0.3,1)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Futura.ttc:text='Every recipe. Every price.':fontsize=44:fontcolor=0xAADDFF:borderw=3:bordercolor=black:x=(w-tw)/2:y=h*0.78+66:enable='between(t,25.2,29.06)':alpha='if(lt(t-25.2,0.3),(t-25.2)/0.3,1)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Futura.ttc:text='Free. No login. No ads. No data collected.':fontsize=34:fontcolor=0xCCCCCC:borderw=3:bordercolor=black:x=(w-tw)/2:y=h*0.78+126:enable='between(t,26.2,29.06)':alpha='if(lt(t-26.2,0.3),(t-26.2)/0.3,1)',
+
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='What'\''s really':fontsize=88:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,0.0,1.0)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='in Mucinex DM?':fontsize=88:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,1.0,2.04)',
+
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='Two ingredients.':fontsize=88:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,3.14,4.5)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='Mucinex to break up':fontsize=78:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,4.5,6.2)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='the mucus.':fontsize=88:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,6.2,7.3)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='Robitussin to suppress':fontsize=76:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,7.3,8.8)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='your cough.':fontsize=88:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,8.8,9.8)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='That'\''s the whole thing.':fontsize=78:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,9.8,11.0)',
+
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='Mucinex is one of':fontsize=82:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,11.42,13.0)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='the most expensive':fontsize=82:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,13.0,14.5)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='at fifteen to twenty':fontsize=82:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,14.5,16.0)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='dollars.':fontsize=88:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,16.0,16.8)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='Generic?':fontsize=88:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,16.8,17.8)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='About fifteen cents.':fontsize=82:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,17.8,19.5)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='That extended-release':fontsize=78:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,19.5,21.0)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='tablet they brag about?':fontsize=76:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,21.0,22.5)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='Same active ingredient.':fontsize=78:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,22.5,24.0)',
+
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='See every recipe':fontsize=82:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.30:enable='between(t,24.48,25.8)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='at Cold Plan.':fontsize=82:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.30:enable='between(t,25.8,27.0)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='Link in bio.':fontsize=88:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.30:enable='between(t,27.0,29.0)'
+
+[outv]

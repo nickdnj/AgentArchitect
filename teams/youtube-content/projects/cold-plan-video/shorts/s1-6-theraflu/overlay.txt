@@ -1,0 +1,44 @@
+[0:v]
+
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Futura.ttc:text='What'\''s REALLY in':fontsize=72:fontcolor=white:borderw=4:bordercolor=black:x=(w-tw)/2:y=h*0.15:enable='between(t,0,2.57)':alpha='if(lt(t,0.3),t/0.3,1)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Futura.ttc:text='Theraflu?':fontsize=96:fontcolor=white:borderw=5:bordercolor=black:x=(w-tw)/2:y=h*0.15+90:enable='between(t,0,2.57)':alpha='if(lt(t,0.3),t/0.3,1)',
+
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Futura.ttc:text='Tylenol':fontsize=60:fontcolor=white:borderw=3:bordercolor=black:x=(w-tw)/2:y=h*0.10:enable='between(t,2.87,13.63)':alpha='if(lt(t-2.87,0.2),(t-2.87)/0.2,1)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Futura.ttc:text='pain & fever':fontsize=40:fontcolor=0xFFD700:borderw=3:bordercolor=black:x=(w-tw)/2:y=h*0.10+70:enable='between(t,2.87,13.63)':alpha='if(lt(t-2.87,0.2),(t-2.87)/0.2,1)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Futura.ttc:text='Benadryl':fontsize=60:fontcolor=white:borderw=3:bordercolor=black:x=(w-tw)/2:y=h*0.10+145:enable='between(t,5.8,13.63)':alpha='if(lt(t-5.8,0.2),(t-5.8)/0.2,1)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Futura.ttc:text='sleep':fontsize=40:fontcolor=0xFFD700:borderw=3:bordercolor=black:x=(w-tw)/2:y=h*0.10+215:enable='between(t,5.8,13.63)':alpha='if(lt(t-5.8,0.2),(t-5.8)/0.2,1)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Futura.ttc:text='Sudafed PE':fontsize=60:fontcolor=white:borderw=3:bordercolor=black:x=(w-tw)/2:y=h*0.10+290:enable='between(t,8.2,13.63)':alpha='if(lt(t-8.2,0.2),(t-8.2)/0.2,1)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Futura.ttc:text='congestion':fontsize=40:fontcolor=0xFFD700:borderw=3:bordercolor=black:x=(w-tw)/2:y=h*0.10+360:enable='between(t,8.2,13.63)':alpha='if(lt(t-8.2,0.2),(t-8.2)/0.2,1)',
+
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Futura.ttc:text='$10-12':fontsize=80:fontcolor=0xFF4444:borderw=4:bordercolor=black:x=w*0.10:y=h*0.08:enable='between(t,13.63,23.34)':alpha='if(lt(t-13.63,0.3),(t-13.63)/0.3,1)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Futura.ttc:text='8 cents':fontsize=80:fontcolor=0x44FF44:borderw=4:bordercolor=black:x=w*0.58:y=h*0.08:enable='between(t,15.5,23.34)':alpha='if(lt(t-15.5,0.3),(t-15.5)/0.3,1)',
+
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Futura.ttc:text='cold-plan-app.web.app':fontsize=56:fontcolor=white:borderw=4:bordercolor=black:x=(w-tw)/2:y=h*0.78:enable='between(t,23.34,29.89)':alpha='if(lt(t-23.34,0.3),(t-23.34)/0.3,1)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Futura.ttc:text='Every recipe. Every price.':fontsize=44:fontcolor=0xAADDFF:borderw=3:bordercolor=black:x=(w-tw)/2:y=h*0.78+66:enable='between(t,24.3,29.89)':alpha='if(lt(t-24.3,0.3),(t-24.3)/0.3,1)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Futura.ttc:text='Free. No login. No ads. No data collected.':fontsize=34:fontcolor=0xCCCCCC:borderw=3:bordercolor=black:x=(w-tw)/2:y=h*0.78+126:enable='between(t,25.3,29.89)':alpha='if(lt(t-25.3,0.3),(t-25.3)/0.3,1)',
+
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='What'\''s really':fontsize=88:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,0.0,0.8)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='in Theraflu?':fontsize=88:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,0.8,1.76)',
+
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='Three pills':fontsize=88:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,2.87,4.2)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='dissolved in hot water.':fontsize=76:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,4.2,5.8)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='Tylenol for pain.':fontsize=82:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,5.8,7.2)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='Benadryl':fontsize=88:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,7.2,8.2)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='to knock you out.':fontsize=82:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,8.2,9.5)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='And Sudafed PE':fontsize=82:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,9.5,10.8)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='for congestion.':fontsize=82:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,10.8,12.0)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='Fancy? Not really.':fontsize=88:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,12.0,13.5)',
+
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='Ten to twelve dollars':fontsize=82:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,13.93,15.5)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='for the powder packets.':fontsize=78:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,15.5,17.0)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='About eight cents':fontsize=82:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,17.0,18.5)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='if you just swallow':fontsize=82:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,18.5,19.8)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='three generic pills.':fontsize=82:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,19.8,21.2)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='The hot water is free.':fontsize=82:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.46:enable='between(t,21.2,23.0)',
+
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='Cold Plan.':fontsize=88:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.30:enable='between(t,23.64,24.8)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='Every brand-name':fontsize=82:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.30:enable='between(t,24.8,26.0)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='cold medicine decoded.':fontsize=78:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.30:enable='between(t,26.0,27.8)',
+drawtext=fontfile=/System/Library/Fonts/Supplemental/Impact.ttf:text='Link in bio.':fontsize=88:fontcolor=white:borderw=7:bordercolor=black:x=(w-tw)/2:y=h*0.30:enable='between(t,27.8,29.5)'
+
+[outv]
