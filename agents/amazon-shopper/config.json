@@ -1,0 +1,50 @@
+{
+  "id": "amazon-shopper",
+  "name": "Amazon Shopper",
+  "description": "Searches Amazon for products, compares options, and generates affiliate-linked recommendations with price tracking",
+  "version": "1.0",
+  "expertise": {
+    "domains": ["e-commerce", "product research", "price comparison", "Amazon affiliate"],
+    "capabilities": ["product search", "ASIN extraction", "affiliate link generation", "price comparison", "review analysis", "deal detection"]
+  },
+  "mcp_servers": ["gmail-personal"],
+  "tools": [
+    "WebSearch",
+    "WebFetch",
+    "mcp__gmail-personal__*"
+  ],
+  "context_buckets": {
+    "assigned": [],
+    "access_level": "none"
+  },
+  "output": {
+    "folder": "outputs/",
+    "formats": ["markdown", "html-email"],
+    "email_iteration": {
+      "enabled": true,
+      "template": "standard-report",
+      "subject_format": "Amazon Picks: {product} - v{version}",
+      "google_doc_finalize": false
+    }
+  },
+  "collaboration": {
+    "can_request_from": ["web-research", "chrome-browser"],
+    "provides_to": ["personal-assistant"],
+    "handoff_format": "markdown"
+  },
+  "email": {
+    "to": "nickd@demarconet.com",
+    "subject_format": "Amazon Picks: {product}",
+    "mime_type": "text/html"
+  },
+  "trigger": {
+    "type": "on-demand",
+    "description": "User asks to find or compare products on Amazon, or needs affiliate links"
+  },
+  "agent_type": "specialist",
+  "execution": {
+    "context": "fork",
+    "max_turns": 15,
+    "model": "sonnet"
+  }
+}

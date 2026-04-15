@@ -16,6 +16,11 @@
       "agent_id": "garage-sale-planner",
       "role": "Researches and generates garage/yard/estate sale reports for any location with maps and routes",
       "context_override": null
+    },
+    {
+      "agent_id": "amazon-shopper",
+      "role": "Searches Amazon for products, compares options, and generates affiliate-linked recommendations",
+      "context_override": null
     }
   ],
 
@@ -29,6 +34,7 @@
     "execution": { "model": "opus", "max_turns": 50 },
     "routing": {
       "garage-sales": ["garage-sale-planner"],
+      "amazon-shopping": ["amazon-shopper"],
       "web-research": ["web-research"],
       "browser-tasks": ["chrome-browser"],
       "document-search": ["rag-search"],
