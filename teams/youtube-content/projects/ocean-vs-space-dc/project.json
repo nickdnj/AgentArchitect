@@ -1,0 +1,39 @@
+{
+  "id": "ocean-vs-space-dc",
+  "title": "Why Are We Building Data Centers in Space?",
+  "subtitle": "The ocean is the obvious answer.",
+  "topic": "Contrarian tech documentary arguing ocean-based data centers are more practical, cheaper, and better for the environment than VC-hyped space data centers",
+  "video_type": "documentary",
+  "created": "2026-04-15",
+  "last_updated": "2026-04-15",
+  "status": "in-progress",
+  "phases": {
+    "setup": {"status": "complete"},
+    "research": {"status": "complete"},
+    "scripting": {"status": "complete"},
+    "storyboard": {"status": "complete"},
+    "storyboard_pptx": {"status": "pending"},
+    "storyboard_review": {"status": "pending"},
+    "audio": {"status": "pending"},
+    "audio_review": {"status": "pending"},
+    "visuals": {"status": "pending"},
+    "assembly": {"status": "pending"},
+    "metadata": {"status": "complete"},
+    "upload": {"status": "complete", "youtube_url": "https://www.youtube.com/watch?v=1blZlZmVIWM", "video_id": "1blZlZmVIWM", "visibility": "unlisted", "uploaded_at": "2026-04-15"},
+    "review": {"status": "pending-user-review"}
+  },
+  "settings": {
+    "target_length_minutes": 14,
+    "resolution": "1920x1080",
+    "fps": 30,
+    "narration_voice": "ElevenLabs Josh",
+    "background_music": true,
+    "music_volume": 0.15,
+    "default_visual_style": "ken-burns-zoom",
+    "publish_to_youtube": false
+  },
+  "channels": {
+    "primary": "vistter2"
+  },
+  "notes": "Research-heavy data-driven documentary. All images AI-generated (no user-provided source material). Contrarian tech angle. Key thesis: the math doesn't work for space, but it already works for ocean."
+}
