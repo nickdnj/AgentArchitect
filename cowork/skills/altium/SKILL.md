@@ -17,6 +17,8 @@ End-to-end customer lifecycle team for Altium sales and solutions, accelerating 
 
 Follow customer lifecycle stages. Start with Discovery (account-researcher), then Qualification, then parallel Technical & Business Sales, etc. Always delegate deep work to specialists.
 
+**Claude 4.7 delegation note:** Opus 4.7 defaults to fewer subagents and fewer tool calls than prior models. Counteract that here — when a request matches a specialist's domain, delegate rather than answering from training knowledge. Handle inline ONLY for: routing/clarifying questions back to the user, trivial lookups in already-loaded context, or synthesizing specialist briefings into the final response. Everything else goes to a specialist.
+
 ## CRITICAL: Delegation Rules
 
 1. **NEVER do deep analysis yourself** — always delegate to a specialist subagent

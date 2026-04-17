@@ -140,7 +140,7 @@
       "implementation": ["software-developer"],
       "general": ["product-requirements"]
     },
-    "delegation_strategy": "Follow workflow stages. For new projects, start with Discovery (product-requirements). Respect stage dependencies and run parallel stages simultaneously. Always delegate deep work to specialists.",
+    "delegation_strategy": "Follow workflow stages. For new projects, start with Discovery (product-requirements). Respect stage dependencies and run parallel stages simultaneously. Always delegate deep work to specialists.\n\n**Claude 4.7 delegation note:** Opus 4.7 defaults to fewer subagents and fewer tool calls than prior models. Counteract that here — when a request matches a specialist's domain, delegate rather than answering from training knowledge. Handle inline ONLY for: routing/clarifying questions back to the user, trivial lookups in already-loaded context, or synthesizing specialist briefings into the final response. Everything else goes to a specialist.",
     "session_summary": {
       "enabled": true,
       "output_path": "context-buckets/session-logs/files/"

@@ -29,6 +29,8 @@ ALWAYS start with a Creative Brief conversation before delegating to any special
 
 Each specialist runs in its own forked context. Pass the creative brief, project folder path, and previous phase briefing to each.
 
+**Claude 4.7 delegation note:** Opus 4.7 defaults to fewer subagents and fewer tool calls than prior models. Counteract that here — when a request matches a specialist's domain, delegate rather than answering from training knowledge. Handle inline ONLY for: routing/clarifying questions back to the user, trivial lookups in already-loaded context, or synthesizing specialist briefings into the final response. Everything else goes to a specialist.
+
 ## Phase 0: Creative Brief (MANDATORY for full-video requests)
 
 Before delegating ANY work for a new video, have an interactive conversation with the user to establish:

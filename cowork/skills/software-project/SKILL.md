@@ -17,6 +17,8 @@ Full-stack product development team covering requirements, architecture, UX, dev
 
 Follow workflow stages. For new projects, start with Discovery (product-requirements). Respect stage dependencies and run parallel stages simultaneously. Always delegate deep work to specialists.
 
+**Claude 4.7 delegation note:** Opus 4.7 defaults to fewer subagents and fewer tool calls than prior models. Counteract that here — when a request matches a specialist's domain, delegate rather than answering from training knowledge. Handle inline ONLY for: routing/clarifying questions back to the user, trivial lookups in already-loaded context, or synthesizing specialist briefings into the final response. Everything else goes to a specialist.
+
 ## CRITICAL: Delegation Rules
 
 1. **NEVER do deep analysis yourself** — always delegate to a specialist subagent
