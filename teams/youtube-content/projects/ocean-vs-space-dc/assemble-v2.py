@@ -24,7 +24,7 @@ PAUSE_SCENE   = 0.5
 PAUSE_CHAPTER = 1.5
 
 # ── Scenes that need letterbox (no zoom — chart/infographic content) ──────────
-LETTERBOX_SCENES = {10, 19, 30}
+LETTERBOX_SCENES = {10, 19, 30, 35}
 
 # ── Scenes with sequential drawtext reveals ───────────────────────────────────
 DRAWTEXT_REVEALS = {
@@ -58,6 +58,17 @@ DRAWTEXT_REVEALS = {
             ("SLB DIGITAL",               "$1B ARR · +121% YoY",           24.0,  400),
             ("6 GW STRANDED ENERGY",      "In US alone — Armada",          36.0,  530),
             ("SHELL 2050",                "DCs → 5,000 TWh globally",      50.0,  660),
+        ]
+    },
+    35: {
+        "title_lines": [
+            ("RESEARCH & FACT-CHECKING",                          0.5,  100, 52),
+            ("All claims verified against primary sources",       2.0,  200, 32),
+            ("Microsoft · ETH Zurich · BOEM · OEUK",             3.5,  320, 36),
+            ("Crusoe · Aikido · Nautilus · Hyperscale Data",      4.5,  380, 36),
+            ("Narration: ElevenLabs",                             6.5,  500, 30),
+            ("Full source list in description",                   8.5,  620, 40),
+            ("VISTTER",                                          10.5,  780, 80),
         ]
     },
 }

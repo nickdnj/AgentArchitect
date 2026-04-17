@@ -7,11 +7,11 @@ import os, subprocess, json
 import whisper
 
 PROJECT_DIR  = os.path.dirname(os.path.abspath(__file__))
-AUDIO_WAV    = os.path.join(PROJECT_DIR, "output", "draft-v6-audio.wav")
-WORDS_CACHE  = os.path.join(PROJECT_DIR, "output", "whisper-v2-words.json")
-ASS_FILE     = os.path.join(PROJECT_DIR, "output", "captions-v2.ass")
-INPUT_VIDEO  = os.path.join(PROJECT_DIR, "output", "draft-v6.mp4")
-OUTPUT_VIDEO = os.path.join(PROJECT_DIR, "output", "draft-v6-captioned.mp4")
+AUDIO_WAV    = os.path.join(PROJECT_DIR, "output", "draft-v7-audio.wav")
+WORDS_CACHE  = os.path.join(PROJECT_DIR, "output", "whisper-v3-words.json")
+ASS_FILE     = os.path.join(PROJECT_DIR, "output", "captions-v3.ass")
+INPUT_VIDEO  = os.path.join(PROJECT_DIR, "output", "draft-v7.mp4")
+OUTPUT_VIDEO = os.path.join(PROJECT_DIR, "output", "draft-v7-captioned.mp4")
 
 WORDS_PER_GROUP = 4
 FONT_NAME  = "Impact"

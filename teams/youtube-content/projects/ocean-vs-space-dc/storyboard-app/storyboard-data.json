@@ -552,17 +552,17 @@
       "id": 35,
       "chapter": 10,
       "chapter_title": "The Verdict",
-      "title": "End Card",
-      "duration": "19:15-19:25 (10s)",
+      "title": "End Card — Credits & Sources",
+      "duration": "19:15-19:30 (15s)",
       "narration": "",
-      "visual": "Vistter branded end screen with subscribe CTA.",
+      "visual": "Dark end screen with sequential drawtext reveals: fact-checking statement, key sources, narration credit, description CTA, Vistter branding.",
       "image_prompt": "End card \u2014 Vistter branding",
-      "text_overlay": "Sources in description / VISTTER",
+      "text_overlay": "Drawtext reveals (handled in assembly)",
       "motion": "static",
       "music": "Fade to silence",
       "transition": "Fade to black",
       "image_path": "assets/images/scene-35.png",
-      "notes": ""
+      "notes": "Credits/references/fact-checking end card. 15s with sequential text reveals."
     }
   ],
   "thumbnails": [
