@@ -64,6 +64,44 @@ Each team has an orchestrator that routes requests to the right specialists. Her
 
 ---
 
+## Want to try Agent Architect in your own workspace?
+
+Agent Architect ships with a one-command starter kit. You'll get Archie (the meta-agent) and a 3-agent starter team — a Setup Concierge, a Researcher, and a Writer — in a clean workspace of your own. No maintainer-specific data.
+
+### The conversational install (recommended — no shell required)
+
+1. Install [Claude Code](https://claude.com/code) and sign in.
+2. Make an empty directory and open Claude Code inside it:
+   ```
+   mkdir ~/my-agent-architect
+   cd ~/my-agent-architect
+   claude
+   ```
+3. Paste this one line into the Claude Code prompt:
+
+   > Read https://raw.githubusercontent.com/nickdnj/AgentArchitect/main/INSTALL.md and follow it.
+
+Claude Code reads `INSTALL.md`, interviews you briefly (working directory, email, workspace name — all optional), and handles the install conversationally. Total time: ~3 minutes.
+
+When it's done, ask:
+
+```
+/starter help me set up Gmail
+```
+
+The Setup Concierge walks you through connecting your first MCP server end-to-end.
+
+### The manual install (if you already have this repo cloned)
+
+```bash
+node scripts/build-starter.js --output ~/my-agent-architect
+cd ~/my-agent-architect
+./setup.sh
+claude .
+```
+
+---
+
 ## What Does Agent Architect Do?
 
 ### Build Individual Agents
