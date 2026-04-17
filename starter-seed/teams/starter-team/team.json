@@ -1,0 +1,56 @@
+{
+  "id": "starter-team",
+  "skill_alias": "starter",
+  "name": "Starter Team",
+  "description": "Example team shipped with Agent Architect — one Setup Concierge for first-run onboarding, plus a Researcher and Writer pair that demonstrates delegation between specialists",
+  "version": "1.0",
+  "created": "2026-04-17",
+
+  "members": [
+    {
+      "agent_id": "setup-concierge",
+      "role": "First-run onboarding — walks the user through connecting their first MCP server",
+      "context_override": null
+    },
+    {
+      "agent_id": "researcher",
+      "role": "Web research specialist — produces structured, sourced briefings",
+      "context_override": null
+    },
+    {
+      "agent_id": "writer",
+      "role": "Writing specialist — turns briefings and notes into polished documents",
+      "context_override": null
+    }
+  ],
+
+  "shared_context": {
+    "buckets": [],
+    "outputs_folder": "teams/starter-team/outputs"
+  },
+
+  "orchestration": {
+    "mode": "thin-orchestrator",
+    "execution": { "model": "opus", "max_turns": 40 },
+    "routing": {
+      "onboarding": ["setup-concierge"],
+      "mcp-setup": ["setup-concierge"],
+      "first-run": ["setup-concierge"],
+      "research": ["researcher"],
+      "writing": ["writer"],
+      "research-and-write": ["researcher", "writer"],
+      "general": ["researcher"]
+    },
+    "delegation_strategy": "Route first-run and MCP setup requests to the Setup Concierge. Route pure research questions to the Researcher. Route pure writing tasks to the Writer. For combined 'research this and turn it into a [report/proposal/email]' requests, run Researcher first and pass the briefing to the Writer.\n\n**Claude 4.7 delegation note:** Opus 4.7 defaults to fewer subagents and fewer tool calls than prior models. Counteract that here — when a request matches a specialist's domain, delegate rather than answering from training knowledge. Handle inline ONLY for: routing/clarifying questions back to the user, trivial lookups in already-loaded context, or synthesizing specialist briefings into the final response. Everything else goes to a specialist.",
+    "session_summary": {
+      "enabled": false,
+      "output_path": "context-buckets/session-logs/files/"
+    }
+  },
+
+  "collaboration_rules": {
+    "coordination_mode": "orchestrated",
+    "handoff_protocol": "task-delegation",
+    "output_sharing": "summarized"
+  }
+}

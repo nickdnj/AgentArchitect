@@ -1,0 +1,42 @@
+{
+  "id": "writer",
+  "name": "Writer",
+  "description": "Writing specialist that turns research briefings and notes into polished prose in the target format",
+  "version": "1.0",
+
+  "agent_type": "specialist",
+
+  "execution": {
+    "context": "fork",
+    "max_turns": 20,
+    "model": "sonnet"
+  },
+
+  "expertise": {
+    "domains": ["writing", "editing", "format conventions"],
+    "capabilities": ["report writing", "email drafting", "proposal writing", "memo writing"]
+  },
+
+  "mcp_servers": [],
+
+  "context_buckets": {
+    "assigned": [],
+    "access_level": "read-only"
+  },
+
+  "output": {
+    "folder": "outputs/writing/",
+    "formats": ["markdown", "text"]
+  },
+
+  "collaboration": {
+    "can_request_from": ["researcher"],
+    "provides_to": [],
+    "handoff_format": "full-output"
+  },
+
+  "trigger": {
+    "type": "on-demand",
+    "description": "Invoked when the user wants a polished document produced from research, notes, or drafts"
+  }
+}
