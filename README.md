@@ -2,7 +2,51 @@
 
 > *"Every great team starts with a blueprint."*
 
-**Agent Architect** is a master AI agent that designs, builds, and orchestrates teams of specialized AI agents. Think of it as an architect for your AI workforce - it doesn't just create individual agents, it crafts entire teams with clear roles, shared workspaces, and intelligent collaboration patterns.
+**Agent Architect** is a master AI agent that designs, builds, and orchestrates teams of specialized AI agents inside Claude Code. Think of it as an architect for your AI workforce — it doesn't just create individual agents, it crafts entire teams with clear roles, shared workspaces, and intelligent collaboration patterns.
+
+---
+
+## Quick Install
+
+You'll get your own Agent Architect workspace with **Archie** (the meta-agent who helps you design teams) and a 3-agent starter team: a **Setup Concierge** for MCP onboarding, a **Researcher**, and a **Writer**.
+
+**1. Install [Claude Code](https://claude.com/code) and sign in.**
+
+**2. Create an empty directory and open Claude Code inside it:**
+
+```bash
+mkdir ~/my-agent-architect
+cd ~/my-agent-architect
+claude
+```
+
+**3. Paste this one line into the Claude Code prompt:**
+
+```
+Read https://raw.githubusercontent.com/nickdnj/AgentArchitect/main/INSTALL.md and follow it.
+```
+
+Claude Code reads `INSTALL.md`, interviews you briefly (working directory, email, workspace name — all optional), and handles the install conversationally. **No shell commands required. Total time: about 3 minutes.**
+
+**4. When install finishes, say:**
+
+```
+/starter help me set up Gmail
+```
+
+The Setup Concierge walks you through connecting your first MCP server end-to-end. Once that's working, you can:
+
+- Ask the **Researcher** to look something up: *"Researcher, what's the current state of [topic]?"*
+- Ask the **Writer** to turn a briefing into a polished doc: *"Writer, turn that into a one-page memo."*
+- Say `/architect` to meet Archie and design your own team.
+
+> **Prefer the manual install?** If you've already cloned this repo locally:
+> ```bash
+> node scripts/build-starter.js --output ~/my-agent-architect
+> cd ~/my-agent-architect
+> ./setup.sh
+> claude .
+> ```
 
 ---
 
@@ -20,9 +64,9 @@ When you work with Archie, you're not just configuring JSON files. You're having
 
 ---
 
-## Meet the Team Leads
+## Teams Built With Agent Architect
 
-Each team has an orchestrator that routes requests to the right specialists. Here's who's running the show:
+These are the teams the maintainer has built and runs every day using this same system. The starter installer gives you an empty workshop — these are examples of what you can build from it.
 
 <table>
   <tr>
@@ -61,44 +105,6 @@ Each team has an orchestrator that routes requests to the right specialists. Her
 | **Software Project** | Software Lead | 9 specialists | `/software-project` |
 | **Altium Solutions** | Altium Lead | 15 specialists | `/altium` |
 | **YouTube Content** | YouTube Lead | 5 specialists | `/youtube-content` |
-
----
-
-## Want to try Agent Architect in your own workspace?
-
-Agent Architect ships with a one-command starter kit. You'll get Archie (the meta-agent) and a 3-agent starter team — a Setup Concierge, a Researcher, and a Writer — in a clean workspace of your own. No maintainer-specific data.
-
-### The conversational install (recommended — no shell required)
-
-1. Install [Claude Code](https://claude.com/code) and sign in.
-2. Make an empty directory and open Claude Code inside it:
-   ```
-   mkdir ~/my-agent-architect
-   cd ~/my-agent-architect
-   claude
-   ```
-3. Paste this one line into the Claude Code prompt:
-
-   > Read https://raw.githubusercontent.com/nickdnj/AgentArchitect/main/INSTALL.md and follow it.
-
-Claude Code reads `INSTALL.md`, interviews you briefly (working directory, email, workspace name — all optional), and handles the install conversationally. Total time: ~3 minutes.
-
-When it's done, ask:
-
-```
-/starter help me set up Gmail
-```
-
-The Setup Concierge walks you through connecting your first MCP server end-to-end.
-
-### The manual install (if you already have this repo cloned)
-
-```bash
-node scripts/build-starter.js --output ~/my-agent-architect
-cd ~/my-agent-architect
-./setup.sh
-claude .
-```
 
 ---
 
