@@ -2,8 +2,8 @@
   "id": "starter-team",
   "skill_alias": "starter",
   "name": "Starter Team",
-  "description": "Example team shipped with Agent Architect — one Setup Concierge for first-run onboarding, plus a Researcher and Writer pair that demonstrates delegation between specialists",
-  "version": "1.0",
+  "description": "Example team shipped with Agent Architect — Setup Concierge for first-run onboarding, Researcher and Writer pair that demonstrates delegation, and an OpenClaw Migration specialist for users coming from OpenClaw",
+  "version": "1.1",
   "created": "2026-04-17",
 
   "members": [
@@ -20,6 +20,11 @@
     {
       "agent_id": "writer",
       "role": "Writing specialist — turns briefings and notes into polished documents",
+      "context_override": null
+    },
+    {
+      "agent_id": "migration-openclaw",
+      "role": "OpenClaw migration — reads the user's OpenClaw AgentSkills and converts them to Agent Architect format",
       "context_override": null
     }
   ],
@@ -39,9 +44,12 @@
       "research": ["researcher"],
       "writing": ["writer"],
       "research-and-write": ["researcher", "writer"],
+      "openclaw-migration": ["migration-openclaw"],
+      "migrate": ["migration-openclaw"],
+      "import-openclaw": ["migration-openclaw"],
       "general": ["researcher"]
     },
-    "delegation_strategy": "Route first-run and MCP setup requests to the Setup Concierge. Route pure research questions to the Researcher. Route pure writing tasks to the Writer. For combined 'research this and turn it into a [report/proposal/email]' requests, run Researcher first and pass the briefing to the Writer.\n\n**Claude 4.7 delegation note:** Opus 4.7 defaults to fewer subagents and fewer tool calls than prior models. Counteract that here — when a request matches a specialist's domain, delegate rather than answering from training knowledge. Handle inline ONLY for: routing/clarifying questions back to the user, trivial lookups in already-loaded context, or synthesizing specialist briefings into the final response. Everything else goes to a specialist.",
+    "delegation_strategy": "Route first-run and MCP setup requests to the Setup Concierge. Route pure research questions to the Researcher. Route pure writing tasks to the Writer. For combined 'research this and turn it into a [report/proposal/email]' requests, run Researcher first and pass the briefing to the Writer. Route any 'migrate from OpenClaw', 'import my OpenClaw skills', or similar requests to the OpenClaw Migration specialist.\n\n**Claude 4.7 delegation note:** Opus 4.7 defaults to fewer subagents and fewer tool calls than prior models. Counteract that here — when a request matches a specialist's domain, delegate rather than answering from training knowledge. Handle inline ONLY for: routing/clarifying questions back to the user, trivial lookups in already-loaded context, or synthesizing specialist briefings into the final response. Everything else goes to a specialist.",
     "session_summary": {
       "enabled": false,
       "output_path": "context-buckets/session-logs/files/"

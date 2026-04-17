@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "last_updated": "2026-04-09",
+  "last_updated": "2026-04-17",
   "agents": [
     {
       "id": "monthly-bulletin",
@@ -393,6 +393,14 @@
       "folder": "agents/improver",
       "teams": [],
       "created": "2026-04-09",
+      "status": "active"
+    },
+    {
+      "id": "migration-openclaw",
+      "name": "OpenClaw Migration",
+      "folder": "agents/migration-openclaw",
+      "teams": [],
+      "created": "2026-04-17",
       "status": "active"
     }
   ]

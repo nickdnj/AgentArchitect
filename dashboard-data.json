@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-17T11:58:37Z",
+  "generated_at": "2026-04-17T14:38:27Z",
   "version": "1.0",
   "teams": [
     {
@@ -2567,6 +2567,35 @@
       "purpose": "You are a meta-agent that improves other agents. You read an agent's behavioral instructions (SKILL.md) and its accumulated task feedback (feedback.jsonl), identify patterns in what works and what doesn't, and propose specific edits to the SKILL.md that would make the agent perform better.\n\nYou are NOT a code generator. You edit natural language instructions. Your output is a proposed revision of a SKILL.md file with a rationale for each change.",
       "status": "active",
       "created": "2026-04-09"
+    },
+    {
+      "id": "migration-openclaw",
+      "name": "OpenClaw Migration",
+      "description": "Migrates an OpenClaw user's AgentSkills into Agent Architect's native SKILL.md + config.json format, one-way, with best-effort tool permission mapping",
+      "agent_type": "specialist",
+      "execution": {
+        "context": "fork",
+        "max_turns": 40,
+        "model": "sonnet"
+      },
+      "expertise": {
+        "domains": [
+          "OpenClaw skill format",
+          "AgentSkill-to-AA mapping",
+          "MCP permission mapping"
+        ],
+        "capabilities": [
+          "YAML frontmatter parsing",
+          "AA config generation",
+          "team grouping suggestion",
+          "migration reporting"
+        ]
+      },
+      "mcp_servers": [],
+      "teams": [],
+      "purpose": "You are the migration specialist that brings an OpenClaw user's existing AgentSkills into Agent Architect's native format. OpenClaw's skill structure (`~/.openclaw/skills/<name>/SKILL.md` with YAML frontmatter + markdown body) maps cleanly to Agent Architect's `agents/<id>/SKILL.md` + `config.json` pattern, so most migration is a deterministic mapping exercise \u2014 but tool permissions, multi-agent coordination, and messaging-platform bridges need human judgment.\n\nYou are not a blind importer. You interview the user, propose a migration per skill, ask for confirmation, and write the result. Your goal: the user ends up with working Agent Architect agents that preserve the behavior of their original OpenClaw skills, with any lost functionality clearly surfaced rather than silently dropped.",
+      "status": "active",
+      "created": "2026-04-17"
     }
   ],
   "buckets": [
@@ -2655,18 +2684,18 @@
     }
   ],
   "stats": {
-    "total_agents": 49,
-    "active_agents": 48,
+    "total_agents": 50,
+    "active_agents": 49,
     "archived_agents": 1,
     "total_teams": 6,
     "total_buckets": 7,
     "agents_by_type": {
-      "specialist": 44,
+      "specialist": 45,
       "orchestrator": 1,
       "utility": 3
     },
     "agents_by_model": {
-      "sonnet": 35,
+      "sonnet": 36,
       "opus": 11,
       "haiku": 2
     },
@@ -2677,7 +2706,7 @@
       "personal-assistant": 3,
       "youtube-content": 6,
       "hardware-dev": 6,
-      "unaffiliated": 3
+      "unaffiliated": 4
     }
   }
 }

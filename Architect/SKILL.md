@@ -210,6 +210,32 @@ A self-contained directory with:
 - Absolute paths → `${VARIABLE}` placeholders or relative paths
 - Cross-team agent references are pruned (e.g., Altium-only buckets removed from shared agents)
 
+### `migrate-from-openclaw`
+
+Delegate to the `migration-openclaw` specialist to import OpenClaw AgentSkills into this workspace.
+
+**Usage:**
+```
+/architect migrate-from-openclaw
+```
+
+**What it does:**
+1. Dispatches the `migration-openclaw` specialist
+2. The specialist asks where the user's OpenClaw install lives (default `~/.openclaw/skills/`)
+3. Inventories the skills and lets the user pick which to migrate
+4. For each, proposes a mapping (YAML frontmatter → config.json, body → SKILL.md, permissions → mcp_servers) and asks for confirmation
+5. Writes valid AA agents to `agents/<id>/` and updates `registry/agents.json`
+6. Optionally groups migrated agents into a team
+7. Runs `node scripts/generate-agents.js` at the end
+
+**Scope:**
+- One-way only (OpenClaw → AA)
+- Migrates skill behavior + best-effort tool permission mapping
+- Does NOT migrate messaging-platform bridges (WhatsApp, Discord), long-running runtime behavior, or bundled code
+- Unknown permissions and unsupported patterns are surfaced in the final report, never silently dropped
+
+See `agents/migration-openclaw/SKILL.md` for the specialist's full workflow.
+
 ### `team list` / `agent list` / `bucket list`
 
 Display registered entities with:
