@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Storyboard Review — The Jersey Stack Ep 1: The Transistor</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --card: #1a1d27;
+    --card-hover: #1e2230;
+    --border: #2a2e3d;
+    --text: #e4e6ed;
+    --text-muted: #8b8fa3;
+    --accent: #3b82f6;
+    --accent-dim: #1d4ed8;
+    --green: #22c55e;
+    --red: #ef4444;
+    --orange: #f59e0b;
+    --chapter-bg: #141620;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+  }
+  header {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 24px;
+    display: flex; align-items: center; justify-content: space-between;
+    backdrop-filter: blur(12px);
+  }
+  header h1 { font-size: 16px; font-weight: 600; }
+  header .subtitle { color: var(--text-muted); font-size: 13px; margin-left: 12px; }
+  .header-actions { display: flex; gap: 8px; align-items: center; }
+  .header-actions button {
+    background: var(--card); color: var(--text); border: 1px solid var(--border);
+    padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 13px;
+    transition: background 0.15s;
+  }
+  .header-actions button:hover { background: var(--card-hover); }
+  .header-actions button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .header-actions button.primary:hover { background: var(--accent-dim); }
+  .save-status { font-size: 12px; color: var(--green); opacity: 0; transition: opacity 0.3s; }
+  .save-status.visible { opacity: 1; }
+
+  .sidebar {
+    position: fixed; left: 0; top: 49px; bottom: 0; width: 240px;
+    background: var(--chapter-bg); border-right: 1px solid var(--border);
+    overflow-y: auto; padding: 12px 0; z-index: 50;
+  }
+  .sidebar h3 {
+    font-size: 11px; text-transform: uppercase; letter-spacing: 0.8px;
+    color: var(--text-muted); padding: 8px 16px 4px; margin-top: 8px;
+  }
+  .sidebar h3:first-child { margin-top: 0; }
+  .sidebar a {
+    display: block; padding: 6px 16px; color: var(--text-muted); text-decoration: none;
+    font-size: 13px; border-left: 3px solid transparent; transition: all 0.15s;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .sidebar a:hover { background: var(--card); color: var(--text); }
+  .sidebar a.active { border-left-color: var(--accent); color: var(--text); background: var(--card); }
+  .sidebar a .badge {
+    display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+    background: var(--orange); margin-left: 6px; vertical-align: middle;
+  }
+
+  main { margin-left: 240px; padding: 24px 32px 80px; max-width: 960px; }
+
+  .chapter-header {
+    margin: 32px 0 16px; padding-bottom: 8px;
+    border-bottom: 2px solid var(--accent);
+    display: flex; align-items: baseline; gap: 12px;
+  }
+  .chapter-header:first-child { margin-top: 0; }
+  .chapter-header h2 { font-size: 18px; font-weight: 600; }
+  .chapter-header span { font-size: 13px; color: var(--text-muted); }
+
+  .scene-card {
+    background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+    margin-bottom: 20px; overflow: hidden; transition: border-color 0.2s;
+  }
+  .scene-card:hover { border-color: var(--accent); }
+  .scene-card.has-notes { border-left: 3px solid var(--orange); }
+
+  .scene-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 16px; background: rgba(255,255,255,0.02);
+    border-bottom: 1px solid var(--border); cursor: pointer;
+  }
+  .scene-header h3 { font-size: 14px; font-weight: 600; }
+  .scene-header .meta { display: flex; gap: 12px; align-items: center; }
+  .scene-header .duration {
+    font-size: 12px; color: var(--text-muted); background: var(--bg);
+    padding: 2px 8px; border-radius: 4px;
+  }
+  .scene-header .motion-badge {
+    font-size: 11px; padding: 2px 6px; border-radius: 4px;
+    background: var(--accent-dim); color: #93c5fd;
+  }
+
+  .scene-body { padding: 16px; display: grid; gap: 16px; }
+
+  .scene-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .scene-row.full { grid-template-columns: 1fr; }
+
+  .field-label {
+    font-size: 11px; text-transform: uppercase; letter-spacing: 0.6px;
+    color: var(--text-muted); margin-bottom: 4px; font-weight: 600;
+  }
+  .field-value { font-size: 13px; line-height: 1.7; }
+  .field-value.narration {
+    font-style: italic; color: #c4c8d8; background: rgba(255,255,255,0.03);
+    padding: 10px 12px; border-radius: 6px; border-left: 3px solid var(--accent);
+  }
+  .field-value.prompt {
+    font-family: 'SF Mono', 'Fira Code', monospace; font-size: 12px;
+    color: #a5b4c8; background: var(--bg); padding: 10px 12px; border-radius: 6px;
+    white-space: pre-wrap; word-break: break-word;
+  }
+  .field-value.overlay {
+    color: var(--orange); font-weight: 500;
+  }
+
+  .image-container {
+    width: 100%; aspect-ratio: 16/9; background: var(--bg); border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px dashed var(--border); overflow: hidden; position: relative;
+  }
+  .image-container img { width: 100%; height: 100%; object-fit: cover; }
+  .image-container .placeholder {
+    color: var(--text-muted); font-size: 13px; text-align: center; padding: 20px;
+  }
+  .image-container .placeholder .icon { font-size: 32px; margin-bottom: 8px; opacity: 0.4; }
+
+  .notes-section { margin-top: 4px; }
+  .notes-textarea {
+    width: 100%; min-height: 72px; background: var(--bg); border: 1px solid var(--border);
+    border-radius: 6px; color: var(--text); padding: 10px 12px; font-size: 13px;
+    font-family: inherit; resize: vertical; line-height: 1.6;
+    transition: border-color 0.2s;
+  }
+  .notes-textarea:focus { outline: none; border-color: var(--accent); }
+  .notes-textarea::placeholder { color: #555; }
+
+  .thumb-section { margin-top: 40px; }
+  .thumb-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+  .thumb-card {
+    background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+    padding: 16px; transition: border-color 0.2s;
+  }
+  .thumb-card:hover { border-color: var(--accent); }
+  .thumb-card h4 { font-size: 14px; margin-bottom: 8px; }
+
+  .stats-bar {
+    display: flex; gap: 20px; padding: 8px 0; font-size: 12px; color: var(--text-muted);
+  }
+  .stats-bar .stat { display: flex; align-items: center; gap: 4px; }
+  .stats-bar .dot { width: 6px; height: 6px; border-radius: 50%; }
+  .stats-bar .dot.green { background: var(--green); }
+  .stats-bar .dot.orange { background: var(--orange); }
+  .stats-bar .dot.blue { background: var(--accent); }
+
+  @media (max-width: 768px) {
+    .sidebar { display: none; }
+    main { margin-left: 0; padding: 16px; }
+    .scene-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div style="display:flex;align-items:center">
+    <h1>Storyboard Review</h1>
+    <span class="subtitle" id="project-title"></span>
+  </div>
+  <div class="header-actions">
+    <span class="save-status" id="save-status">Saved</span>
+    <button onclick="saveAll()" class="primary" id="save-btn">Save Notes</button>
+    <button onclick="clearAllNotes()">Clear All Notes</button>
+  </div>
+</header>
+
+<nav class="sidebar" id="sidebar"></nav>
+<main id="main"></main>
+
+<script>
+let storyData = null;
+let saveTimeout = null;
+
+async function loadData() {
+  const resp = await fetch('storyboard-data.json');
+  storyData = await resp.json();
+  document.getElementById('project-title').textContent = storyData.project;
+  document.title = `Storyboard — ${storyData.project}`;
+  render();
+}
+
+function render() {
+  renderSidebar();
+  renderMain();
+  updateStats();
+}
+
+function renderSidebar() {
+  const nav = document.getElementById('sidebar');
+  let html = '';
+  let currentChapter = null;
+  for (const s of storyData.scenes) {
+    if (s.chapter !== currentChapter) {
+      currentChapter = s.chapter;
+      html += `<h3>Ch ${s.chapter}: ${s.chapter_title}</h3>`;
+    }
+    const hasNotes = s.notes && s.notes.trim().length > 0;
+    html += `<a href="#scene-${s.id}" onclick="scrollToScene(${s.id})">${s.id}. ${s.title}${hasNotes ? '<span class="badge"></span>' : ''}</a>`;
+  }
+  html += `<h3>Thumbnails</h3>`;
+  for (const t of storyData.thumbnails) {
+    const hasNotes = t.notes && t.notes.trim().length > 0;
+    html += `<a href="#${t.id}">${t.title}${hasNotes ? '<span class="badge"></span>' : ''}</a>`;
+  }
+  nav.innerHTML = html;
+}
+
+function renderMain() {
+  const main = document.getElementById('main');
+  let html = '';
+  let currentChapter = null;
+
+  html += `<div class="stats-bar" id="stats-bar"></div>`;
+
+  for (const s of storyData.scenes) {
+    if (s.chapter !== currentChapter) {
+      currentChapter = s.chapter;
+      html += `<div class="chapter-header"><h2>Chapter ${s.chapter}: ${s.chapter_title}</h2></div>`;
+    }
+    html += renderSceneCard(s);
+  }
+
+  html += `<div class="thumb-section"><div class="chapter-header"><h2>Thumbnail Concepts</h2></div><div class="thumb-grid">`;
+  for (const t of storyData.thumbnails) {
+    html += renderThumbCard(t);
+  }
+  html += `</div></div>`;
+
+  main.innerHTML = html;
+}
+
+function renderSceneCard(s) {
+  const hasNotes = s.notes && s.notes.trim().length > 0;
+  return `
+    <div class="scene-card ${hasNotes ? 'has-notes' : ''}" id="scene-${s.id}">
+      <div class="scene-header">
+        <h3>Scene ${s.id}: ${s.title}</h3>
+        <div class="meta">
+          <span class="duration">${s.duration}</span>
+          <span class="motion-badge">${s.motion}</span>
+        </div>
+      </div>
+      <div class="scene-body">
+        <div class="image-container">
+          ${s.image_path
+            ? `<img src="${s.image_path}" alt="Scene ${s.id}">`
+            : `<div class="placeholder"><div class="icon">&#x1f3ac;</div>Image not generated yet</div>`}
+        </div>
+
+        ${s.narration ? `
+        <div class="scene-row full">
+          <div><div class="field-label">Narration</div><div class="field-value narration">${escHtml(s.narration)}</div></div>
+        </div>` : ''}
+
+        <div class="scene-row">
+          <div><div class="field-label">Visual Description</div><div class="field-value">${escHtml(s.visual)}</div></div>
+          <div><div class="field-label">Text Overlay</div><div class="field-value overlay">${escHtml(s.text_overlay || '(none)')}</div></div>
+        </div>
+
+        <div class="scene-row full">
+          <div><div class="field-label">Image Prompt</div><div class="field-value prompt">${escHtml(s.image_prompt)}</div></div>
+        </div>
+
+        <div class="scene-row">
+          <div><div class="field-label">Music / Audio</div><div class="field-value">${escHtml(s.music)}</div></div>
+          <div><div class="field-label">Transition</div><div class="field-value">${escHtml(s.transition)}</div></div>
+        </div>
+
+        <div class="notes-section">
+          <div class="field-label">Review Notes</div>
+          <textarea class="notes-textarea"
+            placeholder="Add your notes for this scene..."
+            data-scene-id="${s.id}"
+            oninput="onNoteChange(this)">${escHtml(s.notes || '')}</textarea>
+        </div>
+      </div>
+    </div>`;
+}
+
+function renderThumbCard(t) {
+  return `
+    <div class="thumb-card" id="${t.id}">
+      <h4>${t.title}</h4>
+      <div class="image-container" style="margin-bottom:12px">
+        ${t.image_path
+          ? `<img src="${t.image_path}" alt="${t.title}">`
+          : `<div class="placeholder"><div class="icon">&#x1f5bc;</div>Not generated</div>`}
+      </div>
+      <div class="field-label">Prompt</div>
+      <div class="field-value prompt" style="margin-bottom:8px">${escHtml(t.image_prompt)}</div>
+      <div class="field-label">Text Overlay</div>
+      <div class="field-value overlay" style="margin-bottom:8px">${escHtml(t.text_overlay)}</div>
+      <div class="field-label">Notes</div>
+      <textarea class="notes-textarea"
+        placeholder="Thumbnail feedback..."
+        data-thumb-id="${t.id}"
+        oninput="onThumbNoteChange(this)">${escHtml(t.notes || '')}</textarea>
+    </div>`;
+}
+
+function onNoteChange(el) {
+  const id = parseInt(el.dataset.sceneId);
+  const scene = storyData.scenes.find(s => s.id === id);
+  if (scene) scene.notes = el.value;
+  scheduleSave();
+  renderSidebar();
+  el.closest('.scene-card').classList.toggle('has-notes', el.value.trim().length > 0);
+}
+
+function onThumbNoteChange(el) {
+  const id = el.dataset.thumbId;
+  const thumb = storyData.thumbnails.find(t => t.id === id);
+  if (thumb) thumb.notes = el.value;
+  scheduleSave();
+  renderSidebar();
+}
+
+function scheduleSave() {
+  clearTimeout(saveTimeout);
+  saveTimeout = setTimeout(() => saveAll(), 2000);
+}
+
+async function saveAll() {
+  const btn = document.getElementById('save-btn');
+  const status = document.getElementById('save-status');
+  btn.textContent = 'Saving...';
+  try {
+    const resp = await fetch('/save', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(storyData, null, 2)
+    });
+    if (resp.ok) {
+      btn.textContent = 'Save Notes';
+      status.textContent = 'Saved';
+      status.classList.add('visible');
+      setTimeout(() => status.classList.remove('visible'), 2000);
+    } else {
+      btn.textContent = 'Save failed!';
+      status.textContent = 'Error saving';
+      status.style.color = 'var(--red)';
+      status.classList.add('visible');
+    }
+  } catch (e) {
+    btn.textContent = 'Save Notes';
+    localStorage.setItem('storyboard-backup', JSON.stringify(storyData));
+    status.textContent = 'Saved to localStorage (server not running)';
+    status.classList.add('visible');
+    setTimeout(() => status.classList.remove('visible'), 3000);
+  }
+  updateStats();
+}
+
+function clearAllNotes() {
+  if (!confirm('Clear all notes? This cannot be undone.')) return;
+  storyData.scenes.forEach(s => s.notes = '');
+  storyData.thumbnails.forEach(t => t.notes = '');
+  render();
+  saveAll();
+}
+
+function scrollToScene(id) {
+  document.getElementById(`scene-${id}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  document.querySelectorAll('.sidebar a').forEach(a => a.classList.remove('active'));
+  event?.target?.classList.add('active');
+}
+
+function updateStats() {
+  const total = storyData.scenes.length;
+  const withNotes = storyData.scenes.filter(s => s.notes && s.notes.trim()).length;
+  const withImages = storyData.scenes.filter(s => s.image_path).length;
+  const bar = document.getElementById('stats-bar');
+  if (bar) {
+    bar.innerHTML = `
+      <span class="stat"><span class="dot blue"></span>${total} scenes</span>
+      <span class="stat"><span class="dot orange"></span>${withNotes} with notes</span>
+      <span class="stat"><span class="dot green"></span>${withImages} images generated</span>
+      <span class="stat">Runtime: ${storyData.total_runtime}</span>
+    `;
+  }
+}
+
+function escHtml(s) {
+  if (!s) return '';
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
+}
+
+loadData();
+</script>
+</body>
+</html>

@@ -1,0 +1,223 @@
+{
+  "id": "jersey-stack-ep1-transistor",
+  "title": "The Jersey Stack — Episode 1: The Transistor",
+  "series": {
+    "name": "The Jersey Stack",
+    "thesis": "New Jersey was the real tech incubator for the world.",
+    "season": 1,
+    "season_title": "The Stack — what NJ BUILT",
+    "episode_number": 1,
+    "planned_episodes": [
+      "S1E1: The Transistor (Bell Labs Murray Hill, Dec 23 1947)",
+      "S1E2: The Switch (TRADIC / first all-transistor computer, Bell Labs Whippany NJ, 1954)",
+      "S1E3: The Machine (Interdata 8/32, Oceanport, 60s–70s)",
+      "S1E4: The System (Unix + C, Bell Labs Murray Hill, 1969–78)",
+      "S1E5: The Diaspora (BSD, GNU, Linux — epilogue)"
+    ],
+    "season_2_tease_locked": "DEFERRED — per Gate 1 creator directive, Season 2 is not teased in Season 1. Season 2 green-lights only if Season 1 performs. Crawford Hill / Horn Antenna / CMB content held for eventual Season 2 opener.",
+    "bookend_narrative": "Netflix's $1B, 292-acre, 12-soundstage East Coast production hub at the former Fort Monmouth Army base. Closed Dec 5 2025. Phase 1A opens 2027, Phase 1B 2028. The same soil that invented the transistor is now building the studio where the content streams back. Plus: the Transistor Monument at Holmdel / Bell Works, now famous as Lumon HQ in Severance."
+  },
+  "topic": "December 23, 1947. Bardeen, Brattain, and Shockley at Bell Labs Murray Hill invent the point-contact transistor. The 20th century pivots. This is the origin story of the Jersey Stack.",
+  "video_type": "documentary",
+  "logline": "December 23, 1947. Three men at Bell Labs in Murray Hill, New Jersey, press a paperclip-sized piece of germanium against two gold contacts. A voice amplifies. The 20th century pivots.",
+  "created": "2026-04-18",
+  "last_updated": "2026-04-19",
+  "last_updated_note": "Post-Gate-2 series thesis sharpening (2026-04-19): series is specifically about transistor→computer. Ep 2 renamed 'The Switch' (TRADIC 1954); PCB/Auto-Sembly demoted from Ep 2 subject to supporting tech in Ep 2/3. Scene 30 narration + visual rewritten to tease amp→switch. Josh re-records of 15 Kokoro scenes complete. Full MP3 reconcat + Scene 30 re-record + Scene 30 image regen pending.",
+  "status": "in-progress",
+  "phases": {
+    "setup": {"status": "complete"},
+    "research": {"status": "complete", "artifact": "research/archival-photos.md"},
+    "scripting": {"status": "complete", "artifact": "script.md", "note": "Gate 2 revision applied; narration is LOCKED for Gate 2 — audio re-record reads from this."},
+    "storyboard": {"status": "complete", "artifact": "storyboard.md", "note": "Gate 2 — 30 scenes (was 31). Chapter 9 consolidated."},
+    "storyboard_pptx": {"status": "regenerated", "artifact": "storyboard.pptx", "note": "Regenerated at Gate 2 — 30 scenes, Ep 2 title updated, Ch 9 consolidation reflected."},
+    "storyboard_review": {"status": "approved", "approved_at": "2026-04-18", "note": "Gate 1 APPROVED with revisions."},
+    "audio": {
+      "status": "complete",
+      "completed_at": "2026-04-19",
+      "gate_1_completed_at": "2026-04-18",
+      "gate_2_re_record_completed_at": "2026-04-19",
+      "voice_gate_1": "ElevenLabs Josh",
+      "voice_id_gate_1": "TxGEqnHWrfWFTfGW9XjX",
+      "voice_gate_2_rerecords": "Kokoro am_onyx (ElevenLabs quota exhausted at Gate 2 re-record pass)",
+      "voice_note": "Gate 1 keep-as-is scenes retain ElevenLabs Josh audio; 14 re-recorded scenes + new scene-29 use Kokoro am_onyx. Mixed voice — flag for human review if voice consistency is a concern.",
+      "model": "eleven_multilingual_v2",
+      "voice_settings": {"stability": 0.5, "similarity_boost": 0.75, "style": 0.4},
+      "scene_count": 30,
+      "previous_scene_count": 31,
+      "total_narration_seconds_gate_1": 990.7,
+      "total_with_gaps_seconds_gate_1": 1002.8,
+      "total_duration_mmss_gate_1": "16:43",
+      "total_narration_seconds_gate_2": 781.351,
+      "total_with_gaps_seconds_gate_2": 793.151,
+      "total_duration_mmss_gate_2": "13:13",
+      "loudness_achieved_lufs": "-16.6",
+      "loudness_true_peak_dbtp": "-1.0",
+      "gate_2_re_record_list_new_ids": [5, 6, 7, 8, 9, 13, 17, 18, 21, 24, 25, 26, 27, 29, 30],
+      "gate_2_note_scene_29": "New scene-29 (Back to Drone) regenerated via Kokoro — old scene-30.wav was overwritten before rename could be performed. Narration text and timing correct; audio quality matches Kokoro am_onyx standard.",
+      "gate_2_no_re_record_new_ids": [1, 2, 3, 4, 10, 11, 12, 14, 15, 16, 19, 20, 22, 23, 28],
+      "scene_id_remapping_gate_2": {
+        "note": "Old Scene 25 + old Scene 26 combined into new Scene 25. Old Scenes 27-31 renumbered down to new 26-30.",
+        "unchanged_ids": "1-24 retain same IDs (though content changed for some)",
+        "25": "NEW COMBINED (was 25 Shockley Goes West + 26 Traitorous Eight)",
+        "26": "was 27 (Payoff Beat — thesis line preserved verbatim)",
+        "27": "was 28 (Count-Up)",
+        "28": "was 29 (Quiet Line)",
+        "29": "was 30 (Back to Drone)",
+        "30": "was 31 (Ep 2 End Card — renamed 'The Switch' post-Gate-2; visual now transistor+sine→square morph, not PCB)"
+      },
+      "loudness_target": "-16 LUFS (EBU R128 / ITU-R BS.1770-3)",
+      "loudness_true_peak": "-1.0 dBTP",
+      "format_per_scene": "48kHz 16-bit mono WAV",
+      "artifacts": {
+        "scene_wavs_gate_1": "assets/audio/narration/scene-NN.wav (31 files — Gate 1 lock, superseded)",
+        "full_mp3_gate_1": "assets/audio/narration/full-narration.mp3 (Gate 1 lock, superseded)",
+        "durations_txt_gate_1": "assets/audio/narration/full-narration-durations.txt",
+        "ambient_pad": "assets/audio/music/ambient-pad-normalized.wav",
+        "sfx_scene15": "assets/audio/sfx/scene-15-amplified-tone.wav"
+      }
+    },
+    "audio_review": {"status": "pending-gate-2", "reviewed_at": "2026-04-19", "note": "Gate 2 re-record complete. 14 scenes re-recorded (Kokoro am_onyx) + scene-29 regenerated. IMPORTANT: 14 re-record scenes use Kokoro am_onyx; Gate 1 keep-as-is scenes retain ElevenLabs Josh. Mixed voice — creator should listen for consistency before proceeding to assembly."},
+    "visuals": {"status": "pending"},
+    "assembly": {"status": "pending"},
+    "metadata": {"status": "pending"},
+    "upload": {"status": "pending"},
+    "review": {"status": "pending"}
+  },
+  "settings": {
+    "target_length_minutes": 14.75,
+    "target_length_range": "12-15 min",
+    "resolution": "1920x1080",
+    "fps": 30,
+    "narration_voice": "ElevenLabs — Josh (creator's established preference). Third-person, warm, mid-register, lived-in authority.",
+    "tone": "Veritasium meets early Hank Green — intellectually serious, personally alive, zero dryness. Lived-in authority.",
+    "background_music": true,
+    "music_volume": 0.15,
+    "music_style": "Documentary-orchestral. Radiolab x Ken Burns. Synth accents OK for present-day bookend beats.",
+    "default_visual_style": "ken-burns-zoom",
+    "publish_to_youtube": false
+  },
+  "creative_brief_locked": true,
+  "structure": {
+    "chapters": 12,
+    "scenes": 30,
+    "estimated_runtime_seconds": 885,
+    "estimated_runtime_mmss": "14:45",
+    "word_count": 1940
+  },
+  "creator_assets": {
+    "confirmed": [
+      "Drone footage of Transistor Monument at Holmdel / Bell Works (Saarinen building) — cold open + closing bookend (new Scenes 1, 29)",
+      "InfoAge Science & History Museums photography (Nick is a volunteer at Camp Evans, Wall Township) — confirmed transistor artifacts on display (Scene 22). Possible drone of Camp Evans pending airspace check."
+    ],
+    "uncertain": [
+      "Murray Hill Nokia Bell Labs filming access — script builds with or without",
+      "Possible WWII radar gear at InfoAge (creator to verify before final assembly)",
+      "Netflix Fort Monmouth construction b-roll (AI fallback in place)"
+    ]
+  },
+  "creator_decisions_locked": {
+    "mervin_kelly": "KEEP AS NAMED CHARACTER. Use 2 PD magazine headshots + AI-filled in-lab context scenes. (Gate 1 lock: ACCEPT AI fill.)",
+    "traitorous_eight": "COMPOSITE. Do NOT use copyrighted Wayne Miller / Magnum group photo. Build 4x2 motion-graphic grid from individual PD Commons headshots (Noyce, Moore, Kleiner where available) + AI-filled period portraits for the rest. Grid now inside combined Scene 25 (Gate 2).",
+    "narration_voice": "ElevenLabs Josh",
+    "shockley_eugenics": "Gate 1 LOCK: KEEP the single sentence at end of Chapter 6 (Scene 19). Do not split, do not dwell.",
+    "severance_clip": "Gate 1 LOCK: USE the fair-use clip in Scene 2.",
+    "prc6_mention": "Gate 1 LOCK: KEEP TIGHT. No PRC-6. Go straight to PRC-25 / Vietnam / Abrams quote in Scene 21.",
+    "season_2_tease": "Gate 1 LOCK: REMOVED. A pilot stands on its own. Ep 2 tease remains (committed content).",
+    "ep_2_title": "Post-Gate-2 LOCK: 'The Switch' (TRADIC / first transistor computer). Reflects sharpened series thesis: transistor→computer lineage, not NJ tech ecosystem broadly. Supersedes earlier 'The Circuit Board' framing.",
+    "ch9_thesis_line": "Gate 2 LOCK: 'Silicon Valley came from Jersey. It just built a better brand.' — PRESERVED VERBATIM in new Scene 26."
+  },
+  "hard_facts_verified": {
+    "demo_date": "December 23, 1947, afternoon, Bell Labs Murray Hill NJ, Lab 1E-455",
+    "demo_mechanism": "Point-contact transistor: gold foil strips on plastic triangle pressed into germanium slab. Mic -> device -> loudspeaker. Power gain ~18.",
+    "bardeen_quote_home": "Casual remark to his wife Jane: 'We discovered something today.'",
+    "kelly_solid_state_group": "Mervin Kelly formed new solid-state group 1945, led by Shockley and chemist Stanley Morgan.",
+    "shockley_junction_transistor": "January 23, 1948 — Shockley conceived the junction transistor alone in a Chicago hotel room over four weeks, furious at being left off the point-contact patent.",
+    "consent_decree": "1956 AT&T consent decree forced licensing of ~7,820 Bell patents including the transistor. Gordon Moore called it 'one of the most important developments for the commercial semiconductor industry.'",
+    "traitorous_eight": "Sept 18, 1957 — Blank, Grinich, Hoerni, Kleiner, Last, Moore, Noyce, Roberts resigned from Shockley Semiconductor and founded Fairchild. Fairchild spawned Intel (1968, Noyce + Moore), AMD, National Semiconductor, and Kleiner Perkins.",
+    "nobel_1956": "Shockley, Bardeen, Brattain shared the 1956 Nobel Prize in Physics.",
+    "bardeen_two_nobels": "Bardeen is the only person to win the Nobel in Physics twice (1956 transistor; 1972 BCS theory of superconductivity).",
+    "prc_25": "Gen. Creighton Abrams called the transistorized AN/PRC-25 'the single most important tactical item in Vietnam.'",
+    "bell_works": "Saarinen-designed Holmdel complex completed 1962. Somerset Development bought it 2013 for $27M, reopened as 'Bell Works' mixed-use. Water tower on site is shaped like a transistor (installed ~1961/62). Currently serves as the Lumon HQ exterior/atrium in Apple TV+'s Severance.",
+    "netflix_fort_monmouth": "Dec 5, 2025 — Netflix closed on 292-acre Fort Monmouth parcel for $55M. $1B+ total investment, 12 soundstages, Phase 1A opens 2027, Phase 1B 2028. Public groundbreaking May 2025; deal closing Dec 5, 2025.",
+    "apple_m3_max_transistors": "92 billion transistors (largest publicly-confirmed M-series figure at script time).",
+    "crawford_hill": "Penzias & Wilson detected the cosmic microwave background at the Crawford Hill Horn Antenna (Holmdel Township, NJ) in 1964. Nobel 1978. Transistorized receiver electronics with cryogenic ruby maser front end made the detection possible. Same township as Bell Works. [HELD FOR POSSIBLE SEASON 2 — not used in Ep 1.]"
+  },
+  "flagged_for_fact_check": [
+    "Brief references '~200B transistors on an Apple M-series chip.' Script uses the verified figure (~92B on M3 Max).",
+    "Exact attendees at the Dec 23 1947 afternoon demo not enumerated in public sources beyond Bardeen, Brattain, and H. R. Moore plus 'colleagues and managers.'",
+    "'Traitorous Eight' naming is a well-known informal label but not a contemporaneous term.",
+    "General Creighton Abrams 'single most important tactical item in Vietnam' attribution to PRC-25 is widely cited."
+  ],
+  "change_log": [
+    {
+      "date": "2026-04-18",
+      "gate": "Gate 1 — storyboard review",
+      "status": "approved with revisions",
+      "structural_changes": [
+        "REMOVED Scene 31 (Horn Antenna / Season 2 tease) — pilot stands on its own.",
+        "RENUMBERED former Scene 32 as new Scene 31; former Chapter 13 as new Chapter 12.",
+        "New totals: 12 chapters, 31 scenes, ~14:10 runtime.",
+        "EXTENDED Scene 30 transition to 1.5s slow fade + brief silence.",
+        "TIGHTENED Scene 30 landing line.",
+        "TIGHTENED Scene 30 total duration to 30s."
+      ],
+      "locked_creative_calls": [
+        "Severance fair-use clip (Scene 2): USE.",
+        "Mervin Kelly visuals: ACCEPT AI fill.",
+        "PRC-6 mention: KEEP TIGHT. Go to PRC-25 / Abrams.",
+        "Shockley eugenics (Scene 19): KEEP single sentence."
+      ],
+      "pptx_regenerated": true
+    },
+    {
+      "date": "2026-04-19",
+      "gate": "Gate 2 — audio review",
+      "status": "approved with revisions",
+      "structural_changes": [
+        "RENAMED Episode 2 'The Board' → 'The Circuit Board' throughout (outline, script, storyboard, project.json, storyboard-data.json, storyboard.pptx, Scene 30 narration and text overlay). [SUPERSEDED post-Gate-2: now 'The Switch' — see 2026-04-19 entry]",
+        "CONSOLIDATED Chapter 9: old Scene 25 (Shockley Goes West) + old Scene 26 (Traitorous Eight) combined into new Scene 25 ('Shockley Goes West & the Walkout'). Less enumeration — the 4x2 composite grid carries the names visually rather than narrating each one.",
+        "RENUMBERED old Scenes 27-31 → new Scenes 26-30 (down by 1).",
+        "New totals: 12 chapters, 30 scenes, ~14:45 narration runtime (was 31 scenes / 16:42 actual at Gate 2 audio review).",
+        "TARGETED NARRATION TRIMS in Scenes 5, 6, 7, 8, 9, 13, 17, 18, 21, 24, 27 — redundant phrases, over-enumeration, meta-framing sentences removed. Structural beats intact.",
+        "PRESERVED VERBATIM: Scene 26 thesis line ('Silicon Valley came from Jersey. It just built a better brand.'). Scene 29 closing bookend. Scene 19 single-sentence eugenics line. Scene 15 demo beat. Scene 16 'we discovered something today.' Scene 22 InfoAge callback. Scene 2 cold-open Severance hook.",
+        "AUDIO IMPACT: 14 scene re-records required (Scenes 5, 6, 7, 8, 9, 13, 17, 18, 21, 24, 25-new, 26, 27, 30); 16 scenes byte-identical to Gate 1 lock (Scenes 1, 2, 3, 4, 10, 11, 12, 14, 15, 16, 19, 20, 22, 23, 28, 29)."
+      ],
+      "runtime_math": {
+        "previous_narration_actual_mmss": "16:42",
+        "visual_budget_mmss": "14:10",
+        "new_narration_estimate_mmss": "14:45",
+        "target_range_mmss": "14:30-15:30",
+        "savings_mmss": "~1:57",
+        "savings_by_scene_seconds": {
+          "scene_5_trim": "~3s",
+          "scene_6_trim": "~6s",
+          "scene_7_trim": "~15s",
+          "scene_8_trim": "~5s",
+          "scene_9_trim": "~3s",
+          "scene_13_trim": "~5s",
+          "scene_17_trim": "~8s",
+          "scene_18_trim": "~15s",
+          "scene_21_trim": "~1s",
+          "scene_24_trim": "~15s",
+          "chapter_9_consolidation_25_26": "~30s",
+          "scene_27_trim_was_28": "~7s",
+          "scene_30_ep2_rename_trim_was_31": "~2s"
+        }
+      },
+      "locked_creative_calls_added_at_gate_2": [
+        "Ep 2 title locked as 'The Switch' (post-Gate-2 thesis sharpening).",
+        "Chapter 9 thesis line locked verbatim: 'Silicon Valley came from Jersey. It just built a better brand.'"
+      ],
+      "pptx_regenerated": true,
+      "storyboard_app_data_updated": true
+    }
+  ],
+  "deliverables": {
+    "outline": "outline.md",
+    "script": "script.md",
+    "storyboard": "storyboard.md",
+    "storyboard_pptx": "storyboard.pptx",
+    "storyboard_app": "storyboard-app/storyboard-data.json",
+    "research_report": "research/archival-photos.md"
+  }
+}

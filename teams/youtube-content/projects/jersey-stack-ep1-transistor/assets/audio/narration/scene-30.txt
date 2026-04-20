@@ -1,0 +1,1 @@
+But what you just saw was a transistor as an amplifier — a voice, eighteen times louder. To build a computer, you need a switch. On. Off. One. Zero. Next time on The Jersey Stack — The Switch.
