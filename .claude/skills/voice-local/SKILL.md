@@ -27,6 +27,13 @@ Once active, follow these rules for ALL subsequent interactions:
 6. **Still use all other tools normally** — Read, Write, Grep, Task, etc. Just communicate results via voice
 7. **For long outputs** (code, file contents, lists), write to a file and tell the user where it is rather than reading it all aloud
 8. **Match the user's energy** — if they're casual, be casual. If they're focused, be direct.
+9. **ALWAYS print a terminal summary** (MANDATORY) when the spoken response contains any of:
+   - URLs, file paths, app names, phone numbers, addresses, code snippets
+   - Lists of 3+ items, or ANY set of options/choices the user must pick from
+   - Structured data (tables, pricing, metrics, search results)
+   - Numbered decisions — if you ask "option A or option B", ALSO print `1. Option A` / `2. Option B` to the terminal
+   Format: clean markdown (headers, bullets, tables, hyperlinks) optimized for copy-paste. Speak first via `converse`, then print the summary in the same turn, BEFORE the next `wait_for_response`. Skip only for pure conversational replies (yes/no, acknowledgments, clarifying questions with no data).
+   Rationale: spoken audio is ephemeral; Nick needs to copy-paste from the terminal without asking you to repeat.
 
 ## Voice Settings
 

@@ -167,10 +167,12 @@
       ]
     },
     "openai-image": {
-      "name": "OpenAI Image Generation MCP Server",
-      "package": "@lpenguin/openai-image-mcp",
+      "name": "OpenAI Image Generation MCP Server (nickdnj fork w/ gpt-image-2)",
+      "package": "github:nickdnj/openai-image-mcp#feat/gpt-image-2",
       "type": "nodejs",
-      "repository": "https://github.com/lpenguin/openai-image-mcp",
+      "repository": "https://github.com/nickdnj/openai-image-mcp/tree/feat/gpt-image-2",
+      "upstream_repository": "https://github.com/lpenguin/openai-image-mcp",
+      "upstream_pr": "https://github.com/lpenguin/openai-image-mcp/pull/9",
       "accounts": ["default"],
       "auth": "api_key",
       "credentials": {
@@ -178,22 +180,26 @@
         "notes": "Uses OPENAI_API_KEY environment variable. Nick's Pro plan key is already in the shell environment."
       },
       "capabilities": [
-        "Image generation (gpt-image-1, gpt-image-1-mini, DALL-E 3, DALL-E 2)",
+        "Image generation (gpt-image-2, gpt-image-1, gpt-image-1-mini, DALL-E 3, DALL-E 2)",
+        "gpt-image-2 thinking mode (low/medium/high) for charts, diagrams, multilingual text",
         "Image editing (gpt-image-1)",
-        "Transparency support (transparent/opaque/auto)",
+        "Transparency support (gpt-image-1 only; gpt-image-2 is opaque/auto only)",
         "Multiple output formats (PNG, JPEG, WebP)",
         "Quality controls (low/medium/high/auto)",
-        "Size options (1024x1024, 1536x1024, 1024x1536, auto)"
+        "Size options (gpt-image-2 supports up to 2000px wide with new aspect ratios)"
       ],
       "claude_code_config": {
         "type": "stdio",
         "command": "npx",
-        "args": ["-y", "@lpenguin/openai-image-mcp"]
+        "args": ["-y", "github:nickdnj/openai-image-mcp#feat/gpt-image-2"]
       },
       "status": "active",
       "notes": [
-        "Most comprehensive OpenAI image MCP - supports all current models",
-        "No Docker needed - runs via npx",
+        "Running from nickdnj fork at feat/gpt-image-2 branch until upstream PR merges",
+        "Fork adds two tools: generate_image_gpt2 (standard) and generate_image_gpt2_thinking (reasoning mode)",
+        "thinking param shape (low/medium/high) derived from launch coverage — verify against OpenAI official spec before relying heavily",
+        "Upstream PR: https://github.com/lpenguin/openai-image-mcp/pull/9 — switch back to @lpenguin/openai-image-mcp on npm once merged + published",
+        "No Docker needed - runs via npx with prepare script triggering TypeScript build",
         "API key inherited from environment"
       ]
     },

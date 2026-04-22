@@ -67,7 +67,9 @@ Read `script/storyboard.md` and build an asset manifest:
 
 ### Step 2: Generate AI Images (OpenAI Image MCP)
 
-Use `generate_image_dalle3` for photorealistic scenes, `generate_image_gpt` for stylized/illustrated content.
+**Default for 2026-04 onward:** use `generate_image_gpt2` (OpenAI's gpt-image-2, released 2026-04-21). It has the strongest prompt adherence, best multilingual text rendering, and up-to-2000px output. For prompts that require precise layout, strict text placement, accurate charts/diagrams/maps, or strong reasoning about composition, use `generate_image_gpt2_thinking` with `thinking: "medium"` (or `"high"` for the hardest prompts). Thinking mode bills extra reasoning tokens — use it deliberately, not by default.
+
+Fall back to `generate_image_gpt` (gpt-image-1) or `generate_image_gpt_mini` only if gpt-image-2 is unavailable or cost-sensitive batches make the +60% price unacceptable. **Never use DALL-E 2 or DALL-E 3** — output quality is noticeably worse and Nick has standing guidance to avoid them entirely. The `dalle2` and `dalle3` tools are retained only for legacy compatibility and must not be called from this agent.
 
 **Settings:**
 - Use landscape aspect ratio for video (1792x1024 for DALL-E 3, or specify wide format)
@@ -208,7 +210,7 @@ Return a briefing to the orchestrator based on mode:
 
 | MCP Server | Key Tools | Purpose |
 |-----------|-----------|---------|
-| `openai-image` | `generate_image_dalle3`, `generate_image_gpt`, `generate_image_gpt_mini` | Scene images, illustrations, thumbnails |
+| `openai-image` | `generate_image_gpt2` (default), `generate_image_gpt2_thinking`, `generate_image_gpt`, `generate_image_gpt_mini` | Scene images, illustrations, thumbnails. Default to gpt-image-2; use thinking mode for layout-strict or text-heavy prompts. Do NOT use `generate_image_dalle3` or `generate_image_dalle2`. |
 | `voicemode` | `converse`, `service` | Text-to-speech narration generation |
 | `video-editor` | `execute_command` | Background music generation, audio processing |
 

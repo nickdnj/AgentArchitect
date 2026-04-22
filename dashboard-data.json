@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-17T14:38:27Z",
+  "generated_at": "2026-04-22T11:57:08Z",
   "version": "1.0",
   "teams": [
     {
@@ -2116,6 +2116,8 @@
           "visual-asset-creation"
         ],
         "capabilities": [
+          "gpt-image-2-generation",
+          "gpt-image-2-thinking-mode",
           "dalle3-image-generation",
           "gpt-image-generation",
           "tts-narration-generation",
