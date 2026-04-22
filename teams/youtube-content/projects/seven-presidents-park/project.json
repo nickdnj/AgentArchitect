@@ -30,9 +30,9 @@
     "audio_review": {"status": "pending"},
     "visuals": {"status": "pending"},
     "assembly": {"status": "pending"},
-    "metadata": {"status": "pending"},
-    "upload": {"status": "pending"},
-    "review": {"status": "pending"}
+    "metadata": {"status": "complete"},
+    "upload": {"status": "complete", "youtube_url": "https://www.youtube.com/watch?v=slRPw0u71jU", "video_id": "slRPw0u71jU", "channel": "vistter2", "channel_id": "UCfWC5cyYX15sSolvZya5RUQ", "version": "v8", "visibility": "unlisted", "uploaded": "2026-04-22", "title": "The Jersey Beach That Lied About Its Presidents", "wrong_channel_deletions": ["ejVHLGsqHJM", "caNtAtUvLZY", "dpcvoZQn7eU"], "note": "ejVHLGsqHJM, caNtAtUvLZY, dpcvoZQn7eU were uploaded to nickdnj personal channel in error and deleted 2026-04-22"},
+    "review": {"status": "pending-user-review"}
   },
   "settings": {
     "target_length_minutes": 8,

@@ -45,7 +45,7 @@ NARRATION = f"{PROJECT}/audio/narration"
 SEGMENTS_DIR = f"{PROJECT}/assembly/segments"
 ASSEMBLY_DIR = f"{PROJECT}/assembly"
 OUTPUT_DIR = f"{PROJECT}/output"
-OUTPUT_FILE = f"{OUTPUT_DIR}/seven-presidents-draft-v5.mp4"
+OUTPUT_FILE = f"{OUTPUT_DIR}/seven-presidents-draft-v8.mp4"
 
 FPS = 30
 RESOLUTION = "1920x1080"
@@ -62,7 +62,8 @@ SCENES = [
     # Remaining ~19.8s goes to 1e
     {
         "id": "1a", "segment": 1,
-        "image": "nick-park-opening.jpg",
+        "image": "drone-park-opening-slow20.mp4",
+        "scene_type": "video",
         "motion": "ken-burns-pan",
         "duration": 10,
         "text": "Long Branch, New Jersey",
@@ -677,9 +678,9 @@ def build_segment(scene, out_path):
         print(f"  Segment already exists, skipping: {out_path}")
         return
 
-    img = f"{IMAGES}/{scene['image']}"
-    if not os.path.exists(img):
-        print(f"  WARNING: Image not found: {img} — using placeholder black frame")
+    src = f"{IMAGES}/{scene['image']}"
+    if not os.path.exists(src):
+        print(f"  WARNING: Asset not found: {src} — using placeholder black frame")
         # Create a black placeholder
         run(["ffmpeg", "-y", "-f", "lavfi",
              f"-i", f"color=c=black:s={RESOLUTION}:d={scene['duration']}:r={FPS}",
@@ -688,6 +689,41 @@ def build_segment(scene, out_path):
         return
 
     duration = scene["duration"]
+
+    # --- Video clip path (scene_type == "video") ---
+    if scene.get("scene_type") == "video":
+        text_filter = make_text_filter(
+            scene.get("text"),
+            scene.get("text_position"),
+            scene.get("text_start", 0) or 0,
+            scene.get("text_end"),
+            duration,
+            scene_id=scene["id"]
+        )
+        # Scale/pad to 1920x1080 (clip is already 1920x1080, so this is a no-op
+        # in practice but ensures consistent output regardless of source size)
+        vf = f"scale={W}:{H}:force_original_aspect_ratio=decrease,pad={W}:{H}:(ow-iw)/2:(oh-ih)/2:black"
+        if text_filter:
+            vf = vf + "," + text_filter
+
+        cmd = [
+            "ffmpeg", "-y",
+            "-i", src,
+            "-vf", vf,
+            "-t", str(duration),
+            "-c:v", "libx264",
+            "-crf", "18",
+            "-preset", "medium",
+            "-pix_fmt", "yuv420p",
+            "-r", str(FPS),
+            "-an",  # no audio — video-only segment like all other scenes
+            out_path
+        ]
+        run(cmd, f"Segment {scene['id']} (video clip)")
+        return
+
+    # --- Still image path ---
+    img = src
     orientation = scene["orientation"]
     # Auto-detect portrait images regardless of storyboard spec
     if image_is_portrait(img):
@@ -1010,7 +1046,7 @@ def main_no_text():
     print("=" * 60)
 
     clean_segments = f"{ASSEMBLY_DIR}/segments-clean"
-    clean_output = f"{OUTPUT_DIR}/seven-presidents-clean.mp4"
+    clean_output = f"{OUTPUT_DIR}/seven-presidents-clean-v8.mp4"
     os.makedirs(clean_segments, exist_ok=True)
 
     # Step 0: Resolve fill durations
@@ -1032,8 +1068,8 @@ def main_no_text():
             segment_paths.append(out)
             continue
 
-        img = f"{IMAGES}/{scene['image']}"
-        if not os.path.exists(img):
+        src = f"{IMAGES}/{scene['image']}"
+        if not os.path.exists(src):
             run(["ffmpeg", "-y", "-f", "lavfi",
                  "-i", f"color=c=black:s={RESOLUTION}:d={scene['duration']}:r={FPS}",
                  "-c:v", "libx264", "-pix_fmt", "yuv420p",
@@ -1042,6 +1078,24 @@ def main_no_text():
             continue
 
         duration = scene["duration"]
+
+        # Video clip — no text, scale/pad to 1920x1080
+        if scene.get("scene_type") == "video":
+            vf = f"scale={W}:{H}:force_original_aspect_ratio=decrease,pad={W}:{H}:(ow-iw)/2:(oh-ih)/2:black"
+            run([
+                "ffmpeg", "-y",
+                "-i", src,
+                "-vf", vf,
+                "-t", str(duration),
+                "-c:v", "libx264", "-crf", "18", "-preset", "medium",
+                "-pix_fmt", "yuv420p", "-r", str(FPS),
+                "-an",
+                out
+            ], f"Clean segment {scene['id']} (video clip)")
+            segment_paths.append(out)
+            continue
+
+        img = src
         orientation = scene["orientation"]
         if image_is_portrait(img):
             orientation = "portrait"
