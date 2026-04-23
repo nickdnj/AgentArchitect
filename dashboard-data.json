@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-22T11:57:08Z",
+  "generated_at": "2026-04-23T17:32:33Z",
   "version": "1.0",
   "teams": [
     {
@@ -2094,7 +2094,7 @@
       "teams": [
         "youtube-content"
       ],
-      "purpose": "Video Script Writer handles the planning and writing phases of YouTube video production. It takes a topic brief, researches the subject, creates a chapter-structured outline, writes a word-for-word narration script organized by chapters, designs a detailed storyboard, and generates a PowerPoint storyboard deck for human review \u2014 all the creative foundation needed before asset generation begins.\n\nThis agent is topic-agnostic and works for documentary explorations, tutorials, product showcases, listicles, and personal narratives.",
+      "purpose": "Video Script Writer handles the planning and writing phases of YouTube video production. It takes a topic brief, researches the subject, creates a chapter-structured outline, writes a word-for-word narration script organized by chapters, designs a detailed storyboard, and stamps out a browser-based storyboard review app for human review \u2014 all the creative foundation needed before asset generation begins.\n\nThis agent is topic-agnostic and works for documentary explorations, tutorials, product showcases, listicles, and personal narratives.",
       "status": "active",
       "created": "2026-02-13"
     },

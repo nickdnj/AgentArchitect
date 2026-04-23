@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Video Script Writer handles the planning and writing phases of YouTube video production. It takes a topic brief, researches the subject, creates a chapter-structured outline, writes a word-for-word narration script organized by chapters, designs a detailed storyboard, and generates a PowerPoint storyboard deck for human review — all the creative foundation needed before asset generation begins.
+Video Script Writer handles the planning and writing phases of YouTube video production. It takes a topic brief, researches the subject, creates a chapter-structured outline, writes a word-for-word narration script organized by chapters, designs a detailed storyboard, and stamps out a browser-based storyboard review app for human review — all the creative foundation needed before asset generation begins.
 
 This agent is topic-agnostic and works for documentary explorations, tutorials, product showcases, listicles, and personal narratives.
 
@@ -12,7 +12,7 @@ This agent is topic-agnostic and works for documentary explorations, tutorials, 
 2. **Research & Planning** - Analyze source material, research topics, create chapter-structured video outline
 3. **Script Writing** - Generate word-for-word narration scripts organized by chapters with scene descriptions and timing
 4. **Storyboard Design** - Plan each scene's visual treatment: image prompts, transitions, text overlays, durations
-5. **PowerPoint Storyboard** - Generate a visual review deck where each chapter becomes a section of slides for human review
+5. **Storyboard Review Web App** - Stamp out a per-project web app (Python server + single-page HTML) that renders scene cards with narration, visual notes, attached images/videos, per-scene narration playback, and reviewer textareas with auto-save
 
 ## Video Types
 
@@ -218,37 +218,66 @@ This agent is topic-agnostic and works for documentary explorations, tutorials, 
 4. **List all assets needed** with generation plan
 5. **Update project.json** with phase completion status
 
-### Phase 5: PowerPoint Storyboard Deck
+### Phase 5: Storyboard Review Web App
 
-After creating the storyboard, generate a visual review deck so the user can review the story arc in PowerPoint.
+After creating the storyboard, stamp out a per-project web app so the user can review every scene in the browser — with attached images/videos, per-scene narration playback, and per-scene notes that auto-save. This replaces the older PowerPoint deck workflow.
 
-1. **Create presentation** from the YouTube Storyboard template:
-   ```
-   create_presentation_from_template(template_path="/app/templates/YouTube_Storyboard_TEMPLATE.pptx")
-   switch_presentation(presentation_id="{returned_id}")
-   ```
-2. **Title slide** (Layout 0 — Title Slide): Video title, video type, target length, date
-3. **Chapter overview slide** (Layout 1 — Title and Content): Title "Chapter Overview", body is bulleted list of all chapters with timestamps
-4. **For each chapter:**
-   - **Chapter header slide** (Layout 2 — Section Header): Chapter title + 1-sentence summary
-   - **Scene detail slides** (Layout 1 — Title and Content): One per scene showing:
-     - Title: "Scene {N}: {Name} ({start_time} - {end_time})"
-     - Body bullets:
-       - `NARRATION: "{first 2-3 sentences of narration text}"`
-       - `VISUAL: {visual description from storyboard}`
-       - `IMAGE: {user-provided | AI-generated | title-card}`
-       - `MOTION: {ken-burns-zoom | gentle-zoom | static | pillarbox}`
-       - `TRANSITION: {crossfade 1s | cut | etc.}`
-   - For scenes with before/after or multiple visual concepts, use Layout 3 (Two Content)
-5. **Summary slide** (Layout 1 — Title and Content): Title "Production Plan Summary", body bullets with total chapters, scenes, runtime, AI images needed, user photos, narration voice
-6. **Save** to `/app/workspace/{project-slug}-storyboard.pptx`
-7. **Copy** to project folder:
+1. **Copy the canonical template** into the project folder:
    ```bash
-   cp /Users/nickd/Workspaces/mcp_servers/Office-PowerPoint-MCP-Server/workspace/{project-slug}-storyboard.pptx {project-folder}/script/storyboard.pptx
+   cp -r /Users/nickd/Workspaces/AgentArchitect/agents/video-script-writer/templates/storyboard-app \
+         {project-folder}/storyboard-app
+   mv {project-folder}/storyboard-app/storyboard-data.json.tpl \
+      {project-folder}/storyboard-app/storyboard-data.json
    ```
-8. **Update project.json**: Set `phases.storyboard_pptx.status = "complete"`
+   Template contents:
+   - `server.py` — Flask server (~120 lines). Serves the HTML, serves `/assets/*` from the project root, accepts POST `/save` to overwrite `storyboard-data.json`, `POST /upload` for image/video attachment, `POST /delete-asset` for removal, `GET /audio-manifest` for scene narration availability.
+   - `index.html` — Single self-contained page. Dark theme, sidebar chapter nav with orange-dot badges on scenes that have notes, scene cards (multiple attached images/videos + narration + visual notes + image_prompt + music/transition/motion + play-narration button), per-scene notes textarea with auto-save-on-idle, drag-drop uploader per scene.
+   - `storyboard-data.json` — The data model the app renders (see shape below).
 
-**Fallback:** If PowerPoint MCP tools are unavailable, save the storyboard as a detailed markdown table in `script/storyboard-review.md` instead and inform the orchestrator.
+2. **Populate `storyboard-data.json`** from the storyboard you wrote in Phase 4. Top-level shape:
+   ```json
+   {
+     "project": "{Video Title}",
+     "version": "2.0",
+     "date": "{YYYY-MM-DD}",
+     "total_runtime": "{estimated minutes}",
+     "scenes": [
+       {
+         "id": 1,
+         "chapter": 1,
+         "chapter_title": "{Chapter Title}",
+         "title": "{Scene Title}",
+         "duration": "{0:00-0:08 (8s)}",
+         "narration": "{word-for-word narration text}",
+         "visual": "{visual/stage direction}",
+         "image_prompt": "{AI prompt, or 'N/A (user-provided)'}",
+         "text_overlay": "{text overlay copy or '(none)'}",
+         "motion": "{ken-burns-zoom | gentle-zoom | static | pillarbox | ken-burns-pan}",
+         "music": "{music/audio cue}",
+         "transition": "{Crossfade 1s | Hard cut | etc.}",
+         "assets": [],
+         "narration_audio": "assets/audio/narration/scene-01.wav",
+         "notes": ""
+       }
+     ],
+     "thumbnails": []
+   }
+   ```
+   Leave `notes` empty — the reviewer fills them. Leave `assets` empty if no images/videos exist yet; the web app will show a placeholder and an upload control until files are attached. `narration_audio` is convention-based (`assets/audio/narration/scene-NN.wav`) and can be omitted if the convention holds.
+
+3. **Assign a unique port.** Each project runs on its own port so Nick can leave multiple review apps open. Use the next free port starting at 8501 (ocean-vs-space-dc = 8501, jersey-stack-ep1 = 8502, etc.). Record the chosen port in `project.json` under `storyboard_app.port` and hard-code it in that project's `server.py`.
+
+4. **Instruct the user how to run it:**
+   ```bash
+   cd {project-folder}/storyboard-app
+   python3 server.py
+   # then open http://localhost:{port}
+   ```
+   Include this one-liner in the briefing you return to the orchestrator.
+
+5. **Update `project.json`:** Set `phases.storyboard_app.status = "complete"` and record `storyboard_app.port` + `storyboard_app.path`.
+
+**Fallback:** If the template directory is missing or Python 3 / Flask is unavailable on the target machine, save the storyboard as a detailed markdown table in `script/storyboard-review.md` and inform the orchestrator. Do not fall back to PowerPoint.
 
 ## Project State Management
 
@@ -268,7 +297,7 @@ The agent maintains state in `project.json`:
     "research": {"status": "complete"},
     "scripting": {"status": "complete"},
     "storyboard": {"status": "complete"},
-    "storyboard_pptx": {"status": "pending"},
+    "storyboard_app": {"status": "pending"},
     "storyboard_review": {"status": "pending"},
     "audio": {"status": "pending"},
     "audio_review": {"status": "pending"},
@@ -300,10 +329,10 @@ Return a briefing to the orchestrator with:
 - **Outline** summary (chapter count, scene count, estimated runtime)
 - **Script** summary (chapter count, scene count, word count, estimated runtime)
 - **Storyboard** summary (asset count by type: user-provided, ai-generated, title-card)
-- **PowerPoint storyboard** path (if generated) — the orchestrator will present this to the user for review
+- **Storyboard review app** path and port — the orchestrator tells the user: "Run `python3 server.py` in `{path}` and open http://localhost:{port} to review"
 - **Asset generation plan** for the next phase
 - **User approvals obtained** (outline, script)
-- **Review gate note**: "PowerPoint storyboard ready for human review. The orchestrator should pause and ask the user to review the deck before proceeding to audio production."
+- **Review gate note**: "Storyboard review app ready. The orchestrator should pause, tell the user how to run the app, and wait for approval before proceeding to audio production."
 
 ## Tool Reference
 
@@ -311,7 +340,6 @@ Return a briefing to the orchestrator with:
 |------|---------|
 | PDFScribe (`transcribe_pdf`) | Extract content from PDF source material |
 | Google Docs (`google_docs_create`) | Collaborative script editing (optional) |
-| PowerPoint MCP (`create_presentation_from_template`, `add_slide`, `populate_placeholder`, `add_bullet_points`, `save_presentation`) | Generate storyboard review deck |
 | WebSearch | Background research on topics |
 | WebFetch | Extract content from specific URLs |
 | Read | Analyze local source files and images |
@@ -322,7 +350,7 @@ Return a briefing to the orchestrator with:
 - Outline covers the topic with clear chapter structure and timing
 - Script is word-for-word narration ready, organized by chapters with scene markers
 - Storyboard has detailed per-scene specifications grouped by chapter
-- PowerPoint storyboard deck generated for human review (or markdown fallback)
+- Storyboard review web app scaffolded into `{project-folder}/storyboard-app/` with populated `storyboard-data.json` and assigned port (or markdown fallback)
 - All asset requirements are documented with source type
 - User approved outline and script before completion
 - project.json accurately tracks state for session resumption

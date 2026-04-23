@@ -25,7 +25,7 @@ NARRATION_DIR = ASSETS_DIR / "audio" / "narration"
 INDEX_FILE = APP_DIR / "index.html"
 
 # --- config -----------------------------------------------------------------
-PORT = 8502  # override per-project
+PORT = 8501  # override per-project
 MAX_UPLOAD_BYTES = 500 * 1024 * 1024  # 500 MB (accommodates 4K drone clips; tune per project)
 IMAGE_EXTS = {".png", ".jpg", ".jpeg"}
 VIDEO_EXTS = {".mp4", ".mov", ".webm"}
