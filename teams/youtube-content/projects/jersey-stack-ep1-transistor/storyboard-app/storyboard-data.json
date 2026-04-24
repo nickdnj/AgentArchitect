@@ -10,7 +10,7 @@
       "chapter": 1,
       "chapter_title": "Cold Open — The Severance Hook",
       "title": "Drone Reveal — Transistor Monument & Bell Works (HD)",
-      "duration": "0:00-0:25 (25s)",
+      "duration": "0:00-0:07 (7s)",
       "narration": "You might recognize this building.",
       "visual": "Creator drone footage. Extreme close on the Transistor Monument sculpture at Holmdel — the three legs reading clearly in frame. Slow, smooth pullback. The Saarinen-designed mirrored rectangle of Bell Works reveals itself behind it, catching late-afternoon light.",
       "image_prompt": "Creator-provided drone video (already owned). Extreme close on Transistor Monument sculpture at Holmdel / Bell Works. Slow 4K pullback revealing Saarinen mirrored rectangle. Magic-hour preferred. [Creator asset — no AI generation needed]",
@@ -23,7 +23,7 @@
       "assets": [
         {
           "order": 0,
-          "path": "assets/videos/scene-01-tranistor-52a525.mp4",
+          "path": "assets/videos/scene-01-look-d73233.mp4",
           "type": "video"
         }
       ]
@@ -33,7 +33,7 @@
       "chapter": 1,
       "chapter_title": "Cold Open — The Severance Hook",
       "title": "The Severance Reveal (HD / pop culture)",
-      "duration": "0:25-0:50 (25s)",
+      "duration": "0:07-0:27 (20s)",
       "narration": "That's the Lumon Industries headquarters from Severance. What you probably don't know is what it used to be. This was Bell Labs Holmdel. And the monument out front — the one shaped like a transistor — marks something that was invented twenty miles north of here, on December twenty-third, nineteen forty-seven.",
       "visual": "Hard cut from the drone shot of Bell Works to a recognizable Lumon-atrium still / brief Severance clip (fair-use documentary commentary). Quick beat, then cut back to an archival black-and-white photograph of Bell Labs Holmdel circa late 1960s — Saarinen's mirrored box when it was new, cars in the parking lot with fins.",
       "image_prompt": "Fair-use Severance still/clip (Lumon atrium — documentary commentary; creator licensing call LOCKED: USE, appeal if flagged). Cut back to B&W Bell Labs Holmdel circa 1965-70 archival (PD/CC Commons — Bell_Labs_Holmdel.jpg era), parking lot with fin-era cars. [Archival + fair-use — no AI generation for this scene]",
@@ -41,16 +41,21 @@
       "motion": "gentle-zoom",
       "music": "Holds the single note. A small synth accent on the Severance cut.",
       "transition": "Crossfade 1s",
-      "image_path": "assets/images/scene-02.png",
       "audio_status": "Gate 1 WAV OK — no re-record",
       "notes": "",
       "assets": [
         {
-          "path": "assets/images/scene-02.png",
-          "type": "image",
-          "order": 0
+          "order": 0,
+          "path": "assets/images/scene-02-dji-0024-1d4341.jpg",
+          "type": "image"
+        },
+        {
+          "order": 1,
+          "path": "assets/images/scene-02-bellworkentry-d58b1a.png",
+          "type": "image"
         }
-      ]
+      ],
+      "image_path": "assets/images/scene-02-dji-0024-1d4341.jpg"
     },
     {
       "id": 3,
@@ -121,6 +126,11 @@
           "path": "assets/images/scene-05.png",
           "type": "image",
           "order": 0
+        },
+        {
+          "path": "assets/images/scene-05-mh-attera.jpg",
+          "type": "image",
+          "order": 1
         }
       ]
     },
@@ -145,6 +155,11 @@
           "path": "assets/images/scene-06.png",
           "type": "image",
           "order": 0
+        },
+        {
+          "path": "assets/images/scene-06-monopoly-bet.png",
+          "type": "image",
+          "order": 1
         }
       ]
     },
@@ -166,9 +181,24 @@
       "notes": "",
       "assets": [
         {
-          "path": "assets/images/scene-07.png",
+          "path": "assets/images/scene-07-floor-plan-corridor.png",
           "type": "image",
           "order": 0
+        },
+        {
+          "path": "assets/images/scene-07.png",
+          "type": "image",
+          "order": 1
+        },
+        {
+          "path": "assets/images/scene-07-murray-hill-head-house-I-1942.jpg",
+          "type": "image",
+          "order": 2
+        },
+        {
+          "path": "assets/images/scene-07-murray-hill-cafeteria-1942.jpg",
+          "type": "image",
+          "order": 3
         }
       ]
     },
@@ -205,6 +235,16 @@
           "path": "assets/images/scene-08.png",
           "type": "image",
           "order": 0
+        },
+        {
+          "path": "assets/images/scene-08-eniac-vacuum-tubes-1946.jpg",
+          "type": "image",
+          "order": 1
+        },
+        {
+          "path": "assets/images/scene-08-eniac-tubes-closeup.jpg",
+          "type": "image",
+          "order": 2
         }
       ]
     },
@@ -243,6 +283,11 @@
           "path": "assets/images/scene-09.png",
           "type": "image",
           "order": 0
+        },
+        {
+          "path": "assets/images/scene-09a.mp4",
+          "type": "video",
+          "order": 1
         }
       ]
     },
@@ -339,6 +384,16 @@
           "path": "assets/images/scene-13.png",
           "type": "image",
           "order": 0
+        },
+        {
+          "path": "assets/images/scene-13-bardeen-thinking.png",
+          "type": "image",
+          "order": 1
+        },
+        {
+          "path": "assets/images/scene-13-shockley-bench.png",
+          "type": "image",
+          "order": 2
         }
       ]
     },
@@ -355,14 +410,19 @@
       "motion": "ken-burns-zoom",
       "music": "Cold, minimal — a single piano note every few beats.",
       "transition": "Crossfade 1s",
-      "image_path": "assets/images/scene-14.png",
+      "image_path": "assets/images/scene-14-point-contact-apparatus.png",
       "audio_status": "Gate 1 WAV OK — no re-record",
       "notes": "",
       "assets": [
         {
-          "path": "assets/images/scene-14.png",
+          "path": "assets/images/scene-14-point-contact-apparatus.png",
           "type": "image",
           "order": 0
+        },
+        {
+          "path": "assets/images/scene-14.png",
+          "type": "image",
+          "order": 1
         }
       ]
     },
@@ -387,6 +447,11 @@
           "path": "assets/images/scene-15.png",
           "type": "image",
           "order": 0
+        },
+        {
+          "path": "assets/images/scene-15-oscilloscope-gain.png",
+          "type": "image",
+          "order": 1
         }
       ]
     },
@@ -403,7 +468,7 @@
       "motion": "ken-burns-zoom",
       "music": "Resolves, warm and quiet.",
       "transition": "Fade to black 1.5s — brief silence before Chapter 6",
-      "image_path": "assets/images/scene-16.png",
+      "image_path": "assets/images/scene-16-bardeen-kitchen.png",
       "audio_status": "Gate 1 WAV OK — no re-record (locked understated landing)",
       "notes": "",
       "panels": [
@@ -420,9 +485,14 @@
       ],
       "assets": [
         {
-          "path": "assets/images/scene-16.png",
+          "path": "assets/images/scene-16-bardeen-kitchen.png",
           "type": "image",
           "order": 0
+        },
+        {
+          "path": "assets/images/scene-16.png",
+          "type": "image",
+          "order": 1
         }
       ]
     },
@@ -447,6 +517,11 @@
           "path": "assets/images/scene-17.png",
           "type": "image",
           "order": 0
+        },
+        {
+          "path": "assets/images/scene-17-shockley-chicago-phonebooth.png",
+          "type": "image",
+          "order": 1
         }
       ]
     },
@@ -483,6 +558,11 @@
           "path": "assets/images/scene-18.png",
           "type": "image",
           "order": 0
+        },
+        {
+          "path": "assets/images/scene-18-chicago-hotel-exterior.png",
+          "type": "image",
+          "order": 1
         }
       ]
     },
@@ -507,6 +587,11 @@
           "path": "assets/images/scene-19.png",
           "type": "image",
           "order": 0
+        },
+        {
+          "path": "assets/images/scene-19-team-breaks.png",
+          "type": "image",
+          "order": 1
         }
       ]
     },
@@ -531,6 +616,16 @@
           "path": "assets/images/scene-20.png",
           "type": "image",
           "order": 0
+        },
+        {
+          "path": "assets/images/scene-20-newspaper-front-page.png",
+          "type": "image",
+          "order": 1
+        },
+        {
+          "path": "assets/images/scene-20-bown-press-conference.png",
+          "type": "image",
+          "order": 2
         }
       ]
     },
@@ -579,6 +674,11 @@
           "path": "assets/images/scene-22.png",
           "type": "image",
           "order": 0
+        },
+        {
+          "path": "assets/images/scene-22-infoage-radar.png",
+          "type": "image",
+          "order": 1
         }
       ]
     },
@@ -638,9 +738,14 @@
       ],
       "assets": [
         {
+          "path": "assets/images/scene-24a.mp4",
+          "type": "video",
+          "order": 0
+        },
+        {
           "path": "assets/images/scene-24.png",
           "type": "image",
-          "order": 0
+          "order": 1
         }
       ]
     },
@@ -665,6 +770,21 @@
           "path": "assets/images/scene-25.png",
           "type": "image",
           "order": 0
+        },
+        {
+          "path": "assets/images/scene-25-shockley-ssl-391-san-antonio.jpg",
+          "type": "image",
+          "order": 1
+        },
+        {
+          "path": "assets/images/scene-25-robert-noyce-1959.png",
+          "type": "image",
+          "order": 2
+        },
+        {
+          "path": "assets/images/scene-25-traitorous-eight-composite.png",
+          "type": "image",
+          "order": 3
         }
       ]
     },
@@ -689,6 +809,16 @@
           "path": "assets/images/scene-26.png",
           "type": "image",
           "order": 0
+        },
+        {
+          "path": "assets/images/scene-26-logo-cascade.png",
+          "type": "image",
+          "order": 1
+        },
+        {
+          "path": "assets/images/scene-26-silicon-valley-aerial-1972.png",
+          "type": "image",
+          "order": 2
         }
       ]
     },
@@ -754,15 +884,19 @@
       "motion": "ken-burns-zoom",
       "music": "Returns to the opening theme, fuller. Resolves fully on the final line.",
       "transition": "Slow fade 1.5s + brief silence before Ep 2 card",
-      "image_path": "assets/images/scene-29.png",
       "audio_status_legacy_wav": "scene-30.wav from Gate 1 lock (narration byte-identical) — rename to scene-29.wav for new ordering",
       "audio_status": "Gate 1 WAV OK — no re-record (locked closing bookend)",
       "notes": "",
       "assets": [
         {
-          "path": "assets/images/scene-29.png",
-          "type": "image",
-          "order": 0
+          "order": 0,
+          "path": "assets/videos/scene-29-tranistor-1-a8da1f.mp4",
+          "type": "video"
+        },
+        {
+          "order": 1,
+          "path": "assets/videos/scene-29-fortmonmouth-nexflix-1-mp4-2dc4a3.mp4",
+          "type": "video"
         }
       ]
     },

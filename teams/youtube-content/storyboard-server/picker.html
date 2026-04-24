@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Storyboard Projects</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --card: #1a1d27;
+    --card-hover: #1e2230;
+    --border: #2a2e3d;
+    --text: #e4e6ed;
+    --text-muted: #8b8fa3;
+    --accent: #3b82f6;
+    --accent-dim: #1d4ed8;
+    --green: #22c55e;
+    --orange: #f59e0b;
+    --red: #ef4444;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg); color: var(--text); line-height: 1.6;
+    min-height: 100vh;
+  }
+  header {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--bg); border-bottom: 1px solid var(--border);
+    padding: 14px 28px;
+    display: flex; align-items: center; justify-content: space-between;
+    backdrop-filter: blur(12px);
+  }
+  header h1 { font-size: 17px; font-weight: 600; }
+  header .subtitle { color: var(--text-muted); font-size: 13px; margin-left: 12px; }
+  header .actions button {
+    background: var(--accent); color: #fff; border: 1px solid var(--accent);
+    padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 13px;
+    font-weight: 500;
+  }
+  header .actions button:hover { background: var(--accent-dim); }
+
+  main {
+    max-width: 1100px; margin: 0 auto; padding: 32px 28px 80px;
+  }
+  .empty-state {
+    text-align: center; padding: 60px 20px; color: var(--text-muted);
+    background: var(--card); border: 1px dashed var(--border); border-radius: 12px;
+  }
+  .empty-state .big { font-size: 40px; opacity: 0.4; margin-bottom: 12px; }
+  .empty-state h2 { color: var(--text); font-weight: 500; margin-bottom: 6px; font-size: 18px; }
+
+  .grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 16px;
+  }
+  .card {
+    background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+    padding: 18px 20px; text-decoration: none; color: inherit;
+    display: flex; flex-direction: column; gap: 10px;
+    transition: border-color 0.2s, background 0.2s, transform 0.12s;
+    cursor: pointer;
+  }
+  .card:hover { border-color: var(--accent); background: var(--card-hover); }
+  .card:active { transform: translateY(1px); }
+  .card h3 {
+    font-size: 15px; font-weight: 600; line-height: 1.35;
+    overflow: hidden; text-overflow: ellipsis;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  }
+  .card .slug {
+    font-family: 'SF Mono', 'Fira Code', monospace; font-size: 11px;
+    color: var(--text-muted); word-break: break-all;
+  }
+  .card .stats {
+    display: flex; gap: 14px; flex-wrap: wrap;
+    font-size: 12px; color: var(--text-muted);
+    border-top: 1px solid var(--border); padding-top: 10px; margin-top: 2px;
+  }
+  .card .stat { display: flex; align-items: center; gap: 5px; }
+  .card .stat .dot { width: 6px; height: 6px; border-radius: 50%; }
+  .card .stat .dot.blue { background: var(--accent); }
+  .card .stat .dot.green { background: var(--green); }
+  .card .stat .dot.orange { background: var(--orange); }
+  .card .modified { font-size: 11px; color: var(--text-muted); }
+
+  /* Modal */
+  .modal-backdrop {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.65);
+    display: none; align-items: center; justify-content: center; z-index: 1000;
+    padding: 20px;
+  }
+  .modal-backdrop.open { display: flex; }
+  .modal {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 24px; width: 100%; max-width: 440px;
+  }
+  .modal h2 { font-size: 17px; margin-bottom: 16px; }
+  .modal label {
+    display: block; font-size: 11px; text-transform: uppercase;
+    letter-spacing: 0.6px; color: var(--text-muted); margin-bottom: 4px; font-weight: 600;
+  }
+  .modal input {
+    width: 100%; background: var(--bg); border: 1px solid var(--border);
+    border-radius: 6px; color: var(--text); padding: 9px 12px;
+    font-size: 14px; font-family: inherit;
+  }
+  .modal input:focus { outline: none; border-color: var(--accent); }
+  .modal .hint {
+    font-size: 11px; color: var(--text-muted); margin-top: 4px; margin-bottom: 14px;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+  }
+  .modal .error {
+    margin-top: 10px; padding: 8px 12px;
+    background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3);
+    color: #fca5a5; font-size: 12px; border-radius: 6px;
+  }
+  .modal .error[hidden] { display: none; }
+  .modal .actions {
+    display: flex; justify-content: flex-end; gap: 8px; margin-top: 20px;
+  }
+  .modal .actions button {
+    padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 13px;
+    border: 1px solid var(--border); background: var(--bg); color: var(--text);
+  }
+  .modal .actions button.primary {
+    background: var(--accent); border-color: var(--accent); color: #fff;
+  }
+  .modal .actions button.primary:hover { background: var(--accent-dim); }
+  .modal .actions button.primary:disabled { opacity: 0.5; cursor: not-allowed; }
+</style>
+</head>
+<body>
+<header>
+  <div style="display:flex;align-items:center">
+    <h1>Storyboard Projects</h1>
+    <span class="subtitle" id="count"></span>
+  </div>
+  <div class="actions">
+    <button onclick="openModal()">+ New Project</button>
+  </div>
+</header>
+
+<main id="main">
+  <div id="grid" class="grid"></div>
+  <div id="empty" class="empty-state" hidden>
+    <div class="big">&#x1f4cb;</div>
+    <h2>No storyboards yet</h2>
+    <p>Click "+ New Project" to create your first one.</p>
+  </div>
+</main>
+
+<div class="modal-backdrop" id="modal-backdrop" onclick="onBackdropClick(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <h2>New Project</h2>
+    <label for="new-slug">Slug</label>
+    <input id="new-slug" type="text" placeholder="my-new-project" autocomplete="off" spellcheck="false"
+      oninput="validateSlug()">
+    <div class="hint">lowercase, digits, hyphens only (e.g. <strong>my-video-2026</strong>)</div>
+    <label for="new-title">Title</label>
+    <input id="new-title" type="text" placeholder="My New Video Title" autocomplete="off">
+    <div class="error" id="modal-error" hidden></div>
+    <div class="actions">
+      <button onclick="closeModal()">Cancel</button>
+      <button class="primary" id="create-btn" onclick="createProject()">Create</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const SLUG_RE = /^[a-z0-9-]+$/;
+
+async function loadProjects() {
+  const grid = document.getElementById('grid');
+  const empty = document.getElementById('empty');
+  const count = document.getElementById('count');
+  try {
+    const resp = await fetch('/api/projects', { cache: 'no-store' });
+    const list = await resp.json();
+    if (!Array.isArray(list) || list.length === 0) {
+      grid.innerHTML = '';
+      empty.hidden = false;
+      count.textContent = '';
+      return;
+    }
+    empty.hidden = true;
+    count.textContent = `${list.length} project${list.length === 1 ? '' : 's'}`;
+    grid.innerHTML = list.map(renderCard).join('');
+  } catch (e) {
+    grid.innerHTML = `<div class="empty-state"><h2>Failed to load projects</h2><p>${escHtml(e.message)}</p></div>`;
+  }
+}
+
+function renderCard(p) {
+  const title = escHtml(p.title || p.slug);
+  const slug = escHtml(p.slug);
+  const mod = p.last_modified ? `Updated ${formatDate(p.last_modified)}` : '';
+  return `
+    <a class="card" href="/p/${slug}/">
+      <h3>${title}</h3>
+      <div class="slug">${slug}</div>
+      <div class="stats">
+        <span class="stat"><span class="dot blue"></span>${p.scene_count} scenes</span>
+        <span class="stat"><span class="dot green"></span>${p.asset_count} assets</span>
+        <span class="stat"><span class="dot orange"></span>${p.notes_count} notes</span>
+      </div>
+      ${mod ? `<div class="modified">${escHtml(mod)}</div>` : ''}
+    </a>`;
+}
+
+function formatDate(iso) {
+  try {
+    const d = new Date(iso);
+    if (isNaN(d.getTime())) return iso;
+    const now = new Date();
+    const sameDay = d.toDateString() === now.toDateString();
+    if (sameDay) return `today at ${d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+    return d.toLocaleDateString([], { year: 'numeric', month: 'short', day: 'numeric' });
+  } catch {
+    return iso;
+  }
+}
+
+// Modal
+function openModal() {
+  document.getElementById('modal-backdrop').classList.add('open');
+  document.getElementById('modal-error').hidden = true;
+  document.getElementById('new-slug').value = '';
+  document.getElementById('new-title').value = '';
+  setTimeout(() => document.getElementById('new-slug').focus(), 30);
+}
+function closeModal() {
+  document.getElementById('modal-backdrop').classList.remove('open');
+}
+function onBackdropClick(e) {
+  if (e.target.id === 'modal-backdrop') closeModal();
+}
+function validateSlug() {
+  const el = document.getElementById('new-slug');
+  const v = el.value.trim();
+  const btn = document.getElementById('create-btn');
+  btn.disabled = !(v && SLUG_RE.test(v));
+}
+
+async function createProject() {
+  const slug = document.getElementById('new-slug').value.trim();
+  const title = document.getElementById('new-title').value.trim();
+  const err = document.getElementById('modal-error');
+  err.hidden = true;
+  if (!SLUG_RE.test(slug)) {
+    err.textContent = 'Slug must be lowercase letters, digits, or hyphens only.';
+    err.hidden = false;
+    return;
+  }
+  if (!title) {
+    err.textContent = 'Title is required.';
+    err.hidden = false;
+    return;
+  }
+  const btn = document.getElementById('create-btn');
+  btn.disabled = true;
+  btn.textContent = 'Creating...';
+  try {
+    const resp = await fetch('/api/projects/new', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ slug, title }),
+    });
+    const body = await resp.json().catch(() => ({}));
+    if (!resp.ok) {
+      err.textContent = body.error || `Create failed (HTTP ${resp.status}).`;
+      err.hidden = false;
+      btn.disabled = false;
+      btn.textContent = 'Create';
+      return;
+    }
+    window.location.href = body.url || `/p/${slug}/`;
+  } catch (e) {
+    err.textContent = `Create error: ${e.message}`;
+    err.hidden = false;
+    btn.disabled = false;
+    btn.textContent = 'Create';
+  }
+}
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeModal();
+  if (e.key === 'Enter' && document.getElementById('modal-backdrop').classList.contains('open')) {
+    const btn = document.getElementById('create-btn');
+    if (!btn.disabled) createProject();
+  }
+});
+
+function escHtml(s) {
+  if (s === null || s === undefined) return '';
+  return String(s)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+loadProjects();
+</script>
+</body>
+</html>

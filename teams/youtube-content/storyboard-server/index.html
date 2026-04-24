@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Storyboard Review</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --card: #1a1d27;
+    --card-hover: #1e2230;
+    --border: #2a2e3d;
+    --text: #e4e6ed;
+    --text-muted: #8b8fa3;
+    --accent: #3b82f6;
+    --accent-dim: #1d4ed8;
+    --green: #22c55e;
+    --red: #ef4444;
+    --orange: #f59e0b;
+    --chapter-bg: #141620;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+  }
+  header {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 24px;
+    display: flex; align-items: center; justify-content: space-between;
+    backdrop-filter: blur(12px);
+  }
+  header h1 { font-size: 16px; font-weight: 600; }
+  header .subtitle { color: var(--text-muted); font-size: 13px; margin-left: 12px; }
+  header .back-link {
+    color: var(--text-muted); text-decoration: none; font-size: 13px;
+    padding: 4px 10px; border-radius: 6px; margin-right: 12px;
+    border: 1px solid transparent; transition: all 0.15s;
+  }
+  header .back-link:hover { color: var(--text); border-color: var(--border); background: var(--card); }
+  .header-actions { display: flex; gap: 8px; align-items: center; }
+  .header-actions button {
+    background: var(--card); color: var(--text); border: 1px solid var(--border);
+    padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 13px;
+    transition: background 0.15s;
+  }
+  .header-actions button:hover { background: var(--card-hover); }
+  .header-actions button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .header-actions button.primary:hover { background: var(--accent-dim); }
+  .save-status { font-size: 12px; color: var(--green); opacity: 0; transition: opacity 0.3s; }
+  .save-status.visible { opacity: 1; }
+
+  .sidebar {
+    position: fixed; left: 0; top: 49px; bottom: 0; width: 240px;
+    background: var(--chapter-bg); border-right: 1px solid var(--border);
+    overflow-y: auto; padding: 12px 0; z-index: 50;
+  }
+  .sidebar h3 {
+    font-size: 11px; text-transform: uppercase; letter-spacing: 0.8px;
+    color: var(--text-muted); padding: 8px 16px 4px; margin-top: 8px;
+  }
+  .sidebar h3:first-child { margin-top: 0; }
+  .sidebar a {
+    display: block; padding: 6px 16px; color: var(--text-muted); text-decoration: none;
+    font-size: 13px; border-left: 3px solid transparent; transition: all 0.15s;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .sidebar a:hover { background: var(--card); color: var(--text); }
+  .sidebar a.active { border-left-color: var(--accent); color: var(--text); background: var(--card); }
+  .sidebar a .badge {
+    display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+    background: var(--orange); margin-left: 6px; vertical-align: middle;
+  }
+
+  main { margin-left: 240px; padding: 24px 32px 80px; max-width: 960px; }
+
+  .chapter-header {
+    margin: 32px 0 16px; padding-bottom: 8px;
+    border-bottom: 2px solid var(--accent);
+    display: flex; align-items: baseline; gap: 12px;
+  }
+  .chapter-header:first-child { margin-top: 0; }
+  .chapter-header h2 { font-size: 18px; font-weight: 600; }
+  .chapter-header span { font-size: 13px; color: var(--text-muted); }
+
+  .scene-card {
+    background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+    margin-bottom: 20px; overflow: hidden; transition: border-color 0.2s;
+  }
+  .scene-card:hover { border-color: var(--accent); }
+  .scene-card.has-notes { border-left: 3px solid var(--orange); }
+
+  .scene-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 16px; background: rgba(255,255,255,0.02);
+    border-bottom: 1px solid var(--border);
+  }
+  .scene-header h3 { font-size: 14px; font-weight: 600; }
+  .scene-header .meta { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .scene-header .duration {
+    font-size: 12px; color: var(--text-muted); background: var(--bg);
+    padding: 2px 8px; border-radius: 4px;
+  }
+  .scene-header .motion-badge {
+    font-size: 11px; padding: 2px 6px; border-radius: 4px;
+    background: var(--accent-dim); color: #93c5fd;
+  }
+  .play-btn {
+    background: var(--card); color: var(--text); border: 1px solid var(--border);
+    padding: 4px 10px; border-radius: 6px; cursor: pointer; font-size: 12px;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .play-btn:hover:not(:disabled) { background: var(--card-hover); border-color: var(--accent); }
+  .play-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+  .play-btn .triangle { font-size: 9px; }
+  .narration-player {
+    padding: 10px 16px; background: rgba(59,130,246,0.05);
+    border-bottom: 1px solid var(--border);
+  }
+  .narration-player audio { width: 100%; height: 32px; }
+  .narration-player[hidden] { display: none; }
+
+  .budget-bar {
+    padding: 8px 16px; font-size: 12px; color: var(--text-muted);
+    background: rgba(255,255,255,0.02); border-bottom: 1px solid var(--border);
+    display: flex; gap: 14px; flex-wrap: wrap; align-items: center;
+  }
+  .budget-bar .bdg {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 2px 8px; border-radius: 4px; background: var(--bg);
+    font-variant-numeric: tabular-nums;
+  }
+  .budget-bar .bdg b { color: var(--text); font-weight: 600; }
+  .budget-bar .mode {
+    font-size: 11px; padding: 2px 6px; border-radius: 4px;
+    background: var(--accent-dim); color: #93c5fd;
+  }
+  .budget-bar .mode.video { background: rgba(139,92,246,0.2); color: #c4b5fd; }
+  /* ok = neutral (video-driven / no-image scene — all fine, no action needed) */
+  .budget-bar.status-ok .capacity-bdg { color: var(--text-muted); }
+  /* at_capacity = optimal (all slots filled, ideal pacing) */
+  .budget-bar.status-at_capacity { background: rgba(34,197,94,0.06); }
+  .budget-bar.status-at_capacity .capacity-bdg { color: var(--green); font-weight: 600; }
+  /* under = room for more (pacing could tighten with another image) */
+  .budget-bar.status-under { background: rgba(59,130,246,0.06); }
+  .budget-bar.status-under .capacity-bdg { color: var(--accent); }
+  /* over = too many (assembler will drop trailing images) */
+  .budget-bar.status-over { background: rgba(239,68,68,0.1); border-bottom-color: rgba(239,68,68,0.35); }
+  .budget-bar.status-over .capacity-bdg { color: var(--red); font-weight: 600; }
+  .dropzone.disabled {
+    opacity: 0.5; pointer-events: none; border-style: solid;
+    background: rgba(239,68,68,0.04); border-color: rgba(239,68,68,0.2);
+  }
+  .dropzone.disabled .disabled-reason { color: var(--red); font-weight: 500; }
+
+  .scene-body { padding: 16px; display: grid; gap: 16px; }
+
+  .scene-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .scene-row.full { grid-template-columns: 1fr; }
+
+  .field-label {
+    font-size: 11px; text-transform: uppercase; letter-spacing: 0.6px;
+    color: var(--text-muted); margin-bottom: 4px; font-weight: 600;
+  }
+  .field-value { font-size: 13px; line-height: 1.7; }
+  .field-value.narration {
+    font-style: italic; color: #c4c8d8; background: rgba(255,255,255,0.03);
+    padding: 10px 12px; border-radius: 6px; border-left: 3px solid var(--accent);
+  }
+  .field-value.prompt {
+    font-family: 'SF Mono', 'Fira Code', monospace; font-size: 12px;
+    color: #a5b4c8; background: var(--bg); padding: 10px 12px; border-radius: 6px;
+    white-space: pre-wrap; word-break: break-word;
+  }
+  .field-value.overlay { color: var(--orange); font-weight: 500; }
+
+  .assets-grid { display: grid; gap: 10px; }
+  .asset-tile {
+    position: relative; width: 100%; aspect-ratio: 16/9;
+    background: var(--bg); border-radius: 8px;
+    border: 1px solid var(--border); overflow: hidden;
+  }
+  .asset-tile img, .asset-tile video {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+  }
+  .asset-tile .asset-delete {
+    position: absolute; top: 6px; right: 6px;
+    width: 26px; height: 26px; border-radius: 50%;
+    background: rgba(0,0,0,0.72); color: #fff;
+    border: 1px solid rgba(255,255,255,0.15);
+    cursor: pointer; font-size: 14px; line-height: 1;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; transition: opacity 0.15s, background 0.15s;
+  }
+  .asset-tile:hover .asset-delete { opacity: 1; }
+  .asset-tile .asset-delete:hover { background: var(--red); }
+  .asset-tile .asset-move {
+    position: absolute; bottom: 6px;
+    width: 26px; height: 26px; border-radius: 50%;
+    background: rgba(0,0,0,0.72); color: #fff;
+    border: 1px solid rgba(255,255,255,0.15);
+    cursor: pointer; font-size: 14px; line-height: 1;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; transition: opacity 0.15s, background 0.15s;
+  }
+  .asset-tile .asset-move.left { left: 6px; }
+  .asset-tile .asset-move.right { left: 38px; }
+  .asset-tile:hover .asset-move { opacity: 1; }
+  .asset-tile .asset-move:hover:not([disabled]) { background: var(--accent); }
+  .asset-tile .asset-move[disabled] { opacity: 0.25; cursor: not-allowed; }
+
+  .placeholder-tile {
+    width: 100%; aspect-ratio: 16/9; background: var(--bg); border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px dashed var(--border); color: var(--text-muted);
+    font-size: 13px; text-align: center; padding: 20px;
+  }
+  .placeholder-tile .icon { font-size: 32px; margin-bottom: 8px; opacity: 0.4; display: block; }
+
+  .dropzone {
+    margin-top: 2px; padding: 10px 12px;
+    border: 1px dashed var(--border); border-radius: 8px;
+    background: rgba(255,255,255,0.015);
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    font-size: 12px; color: var(--text-muted);
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .dropzone.drag-over {
+    border-color: var(--accent); background: rgba(59,130,246,0.08); color: var(--text);
+  }
+  .dropzone button {
+    background: var(--card); color: var(--text); border: 1px solid var(--border);
+    padding: 4px 10px; border-radius: 6px; cursor: pointer; font-size: 12px;
+  }
+  .dropzone button:hover { background: var(--card-hover); }
+  .dropzone input[type=file] { display: none; }
+  .upload-error {
+    margin-top: 6px; padding: 6px 10px;
+    background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3);
+    color: #fca5a5; font-size: 12px; border-radius: 6px;
+  }
+  .upload-error[hidden] { display: none; }
+
+  .notes-section { margin-top: 4px; }
+  .notes-textarea {
+    width: 100%; min-height: 72px; background: var(--bg); border: 1px solid var(--border);
+    border-radius: 6px; color: var(--text); padding: 10px 12px; font-size: 13px;
+    font-family: inherit; resize: vertical; line-height: 1.6;
+    transition: border-color 0.2s;
+  }
+  .notes-textarea:focus { outline: none; border-color: var(--accent); }
+  .notes-textarea::placeholder { color: #555; }
+
+  .thumb-section { margin-top: 40px; }
+  .thumb-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+  .thumb-card {
+    background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+    padding: 16px; transition: border-color 0.2s;
+  }
+  .thumb-card:hover { border-color: var(--accent); }
+  .thumb-card h4 { font-size: 14px; margin-bottom: 8px; }
+
+  .stats-bar {
+    display: flex; gap: 20px; padding: 8px 0; font-size: 12px; color: var(--text-muted);
+    flex-wrap: wrap;
+  }
+  .stats-bar .stat { display: flex; align-items: center; gap: 4px; }
+  .stats-bar .dot { width: 6px; height: 6px; border-radius: 50%; }
+  .stats-bar .dot.green { background: var(--green); }
+  .stats-bar .dot.orange { background: var(--orange); }
+  .stats-bar .dot.blue { background: var(--accent); }
+
+  @media (max-width: 768px) {
+    .sidebar { display: none; }
+    main { margin-left: 0; padding: 16px; }
+    .scene-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div style="display:flex;align-items:center">
+    <a href="/" class="back-link" title="Back to all projects">&#8592; Projects</a>
+    <h1>Storyboard Review</h1>
+    <span class="subtitle" id="project-title"></span>
+  </div>
+  <div class="header-actions">
+    <span class="save-status" id="save-status">Saved</span>
+    <button onclick="saveAll()" class="primary" id="save-btn">Save Notes</button>
+    <button onclick="clearAllNotes()">Clear All Notes</button>
+  </div>
+</header>
+
+<nav class="sidebar" id="sidebar"></nav>
+<main id="main"></main>
+
+<script>
+const IMAGE_EXTS = ['png', 'jpg', 'jpeg'];
+const VIDEO_EXTS = ['mp4', 'mov', 'webm'];
+const MAX_UPLOAD_MB = 500;
+
+// Extract slug from /p/<slug>/... path.
+const SLUG = (() => {
+  const m = window.location.pathname.match(/^\/p\/([a-z0-9-]+)\//);
+  return m ? m[1] : '';
+})();
+const BASE = `/p/${SLUG}`;
+
+let storyData = null;
+let audioManifest = {};
+let sceneBudgets = {};
+let saveTimeout = null;
+let currentAudio = null;
+let budgetRefreshTimeout = null;
+
+// --- boot ------------------------------------------------------------------
+async function loadData() {
+  if (!SLUG) {
+    document.getElementById('main').innerHTML =
+      '<div style="padding:40px;color:var(--text-muted)">Invalid project URL. <a href="/" style="color:var(--accent)">Return to picker</a>.</div>';
+    return;
+  }
+  const [dataResp, manifestResp, budgetResp] = await Promise.all([
+    fetch(`${BASE}/storyboard-data.json`, { cache: 'no-store' }),
+    fetch(`${BASE}/audio-manifest`, { cache: 'no-store' }).catch(() => null),
+    fetch(`${BASE}/budget`, { cache: 'no-store' }).catch(() => null),
+  ]);
+  storyData = await dataResp.json();
+  if (manifestResp && manifestResp.ok) {
+    audioManifest = await manifestResp.json();
+  }
+  if (budgetResp && budgetResp.ok) {
+    sceneBudgets = await budgetResp.json();
+  }
+  normalizeAssets(storyData);
+  document.getElementById('project-title').textContent = storyData.project || '';
+  document.title = `Storyboard — ${storyData.project || 'Review'}`;
+  render();
+}
+
+// Backwards-compat: if a scene/thumb has `image_path` but no `assets`, synthesize.
+// This is read-only (in-memory) — the JSON is only rewritten on save.
+function normalizeAssets(data) {
+  const fix = (obj) => {
+    if (!Array.isArray(obj.assets)) {
+      if (obj.image_path && typeof obj.image_path === 'string' && obj.image_path.trim()) {
+        obj.assets = [{ path: obj.image_path, type: 'image', order: 0 }];
+      } else {
+        obj.assets = [];
+      }
+    }
+  };
+  (data.scenes || []).forEach(fix);
+  (data.thumbnails || []).forEach(fix);
+}
+
+// --- render ----------------------------------------------------------------
+function render() {
+  renderSidebar();
+  renderMain();
+  updateStats();
+}
+
+function renderSidebar() {
+  const nav = document.getElementById('sidebar');
+  let html = '';
+  let currentChapter = null;
+  for (const s of storyData.scenes) {
+    if (s.chapter !== currentChapter) {
+      currentChapter = s.chapter;
+      html += `<h3>Ch ${s.chapter}: ${escHtml(s.chapter_title || '')}</h3>`;
+    }
+    const hasNotes = s.notes && s.notes.trim().length > 0;
+    html += `<a href="#scene-${s.id}" onclick="scrollToScene(${s.id})">${s.id}. ${escHtml(s.title || '')}${hasNotes ? '<span class="badge"></span>' : ''}</a>`;
+  }
+  if ((storyData.thumbnails || []).length) {
+    html += `<h3>Thumbnails</h3>`;
+    for (const t of storyData.thumbnails) {
+      const hasNotes = t.notes && t.notes.trim().length > 0;
+      html += `<a href="#thumb-${escAttr(t.id)}">${escHtml(t.title || t.id)}${hasNotes ? '<span class="badge"></span>' : ''}</a>`;
+    }
+  }
+  nav.innerHTML = html;
+}
+
+function renderMain() {
+  const main = document.getElementById('main');
+  let html = '<div class="stats-bar" id="stats-bar"></div>';
+  let currentChapter = null;
+
+  for (const s of storyData.scenes) {
+    if (s.chapter !== currentChapter) {
+      currentChapter = s.chapter;
+      html += `<div class="chapter-header"><h2>Chapter ${s.chapter}: ${escHtml(s.chapter_title || '')}</h2></div>`;
+    }
+    html += renderSceneCard(s);
+  }
+
+  if ((storyData.thumbnails || []).length) {
+    html += `<div class="thumb-section"><div class="chapter-header"><h2>Thumbnail Concepts</h2></div><div class="thumb-grid">`;
+    for (const t of storyData.thumbnails) html += renderThumbCard(t);
+    html += `</div></div>`;
+  }
+
+  main.innerHTML = html;
+}
+
+function renderSceneCard(s) {
+  const hasNotes = s.notes && s.notes.trim().length > 0;
+  const audioReady = audioManifest[String(s.id)] === true;
+  const playLabel = audioReady ? 'Play Narration' : 'Not yet generated';
+  const playTitle = audioReady ? 'Play narration for this scene' : 'Narration WAV not yet generated';
+  return `
+    <div class="scene-card ${hasNotes ? 'has-notes' : ''}" id="scene-${s.id}">
+      <div class="scene-header">
+        <h3>Scene ${s.id}: ${escHtml(s.title || '')}</h3>
+        <div class="meta">
+          <button class="play-btn" ${audioReady ? '' : 'disabled'} title="${escAttr(playTitle)}" onclick="toggleNarration(${s.id})">
+            <span class="triangle">&#9654;</span><span id="play-label-${s.id}">${playLabel}</span>
+          </button>
+          <span class="duration">${escHtml(s.duration || '')}</span>
+          ${s.motion ? `<span class="motion-badge">${escHtml(s.motion)}</span>` : ''}
+        </div>
+      </div>
+      ${renderBudgetBar(s.id)}
+      <div class="narration-player" id="player-wrap-${s.id}" hidden>
+        <audio id="audio-${s.id}" controls preload="none" onended="onAudioEnded(${s.id})"></audio>
+      </div>
+      <div class="scene-body">
+        ${renderAssetsBlock('scene', s.id, s.assets)}
+
+        ${s.narration ? `
+        <div class="scene-row full">
+          <div><div class="field-label">Narration</div><div class="field-value narration">${escHtml(s.narration)}</div></div>
+        </div>` : ''}
+
+        <div class="scene-row">
+          <div><div class="field-label">Visual Description</div><div class="field-value">${escHtml(s.visual || '')}</div></div>
+          <div><div class="field-label">Text Overlay</div><div class="field-value overlay">${escHtml(s.text_overlay || '(none)')}</div></div>
+        </div>
+
+        ${s.image_prompt ? `
+        <div class="scene-row full">
+          <div><div class="field-label">Image Prompt</div><div class="field-value prompt">${escHtml(s.image_prompt)}</div></div>
+        </div>` : ''}
+
+        <div class="scene-row">
+          <div><div class="field-label">Music / Audio</div><div class="field-value">${escHtml(s.music || '')}</div></div>
+          <div><div class="field-label">Transition</div><div class="field-value">${escHtml(s.transition || '')}</div></div>
+        </div>
+
+        <div class="notes-section">
+          <div class="field-label">Review Notes</div>
+          <textarea class="notes-textarea"
+            placeholder="Add your notes for this scene..."
+            data-scene-id="${s.id}"
+            oninput="onNoteChange(this)">${escHtml(s.notes || '')}</textarea>
+        </div>
+      </div>
+    </div>`;
+}
+
+function renderThumbCard(t) {
+  return `
+    <div class="thumb-card" id="thumb-${escAttr(t.id)}">
+      <h4>${escHtml(t.title || t.id)}</h4>
+      ${renderAssetsBlock('thumb', t.id, t.assets)}
+      ${t.image_prompt ? `<div class="field-label" style="margin-top:10px">Prompt</div>
+      <div class="field-value prompt" style="margin-bottom:8px">${escHtml(t.image_prompt)}</div>` : ''}
+      ${t.text_overlay ? `<div class="field-label">Text Overlay</div>
+      <div class="field-value overlay" style="margin-bottom:8px">${escHtml(t.text_overlay)}</div>` : ''}
+      <div class="field-label">Notes</div>
+      <textarea class="notes-textarea"
+        placeholder="Thumbnail feedback..."
+        data-thumb-id="${escAttr(t.id)}"
+        oninput="onThumbNoteChange(this)">${escHtml(t.notes || '')}</textarea>
+    </div>`;
+}
+
+function renderAssetsBlock(kind, id, assets) {
+  const owner = `${kind}:${id}`;
+  const ownerAttr = escAttr(owner);
+  let tiles = '';
+  if (!assets || assets.length === 0) {
+    tiles = `<div class="placeholder-tile"><div><span class="icon">&#x1f3ac;</span>No assets yet</div></div>`;
+  } else {
+    tiles = `<div class="assets-grid">`;
+    for (let i = 0; i < assets.length; i++) {
+      const a = assets[i];
+      const path = escAttr(a.path);
+      const src = `${BASE}/${path}`;
+      const leftDis = i === 0 ? 'disabled' : '';
+      const rightDis = i === assets.length - 1 ? 'disabled' : '';
+      const media = (a.type === 'video')
+        ? `<video src="${src}" controls preload="metadata"></video>`
+        : `<img src="${src}" alt="">`;
+      tiles += `<div class="asset-tile">
+        ${media}
+        <button class="asset-move left" title="Move left" ${leftDis} onclick="moveAsset('${ownerAttr}', '${path}', -1)">&#x2039;</button>
+        <button class="asset-move right" title="Move right" ${rightDis} onclick="moveAsset('${ownerAttr}', '${path}', 1)">&#x203a;</button>
+        <button class="asset-delete" title="Delete" onclick="deleteAsset('${ownerAttr}', '${path}')">&times;</button>
+      </div>`;
+    }
+    tiles += `</div>`;
+  }
+  tiles += renderDropzone(owner);
+  tiles += `<div class="upload-error" id="err-${ownerAttr}" hidden></div>`;
+  return tiles;
+}
+
+function renderDropzone(owner) {
+  const ownerAttr = escAttr(owner);
+  const [kind, rawId] = owner.split(':');
+  // Thumbnails have no budget — always allow.
+  let imagesBlocked = false;
+  let blockReason = '';
+  if (kind === 'scene') {
+    const b = sceneBudgets[rawId];
+    if (b && b.max_images === 0) {
+      imagesBlocked = true;
+      blockReason = b.mode === 'video-driven'
+        ? 'Video-driven scene · no image slots'
+        : 'No narration yet · image slots unknown';
+    } else if (b && b.attached_images >= b.max_images && b.max_images > 0) {
+      imagesBlocked = true;
+      blockReason = `At capacity (${b.attached_images}/${b.max_images} images · 10s floor)`;
+    }
+  }
+  if (imagesBlocked) {
+    // Still allow videos (no floor).
+    return `
+    <label class="dropzone" data-owner="${ownerAttr}"
+      ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event)">
+      <span class="disabled-reason">${escHtml(blockReason)} — videos still allowed</span>
+      <span style="font-size:11px;color:var(--text-muted)">Drop a video (mp4/mov/webm) or <strong style="color:var(--text)">browse…</strong></span>
+      <input type="file" accept="video/mp4,video/quicktime,video/webm"
+        onchange="onFileInput(event, '${ownerAttr}')">
+    </label>`;
+  }
+  return `
+    <label class="dropzone" data-owner="${ownerAttr}"
+      ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event)">
+      <span>Drop image/video, or <strong style="color:var(--text)">browse…</strong></span>
+      <span style="font-size:11px;color:var(--text-muted)">png, jpg, mp4, mov, webm · max ${MAX_UPLOAD_MB} MB</span>
+      <input type="file" accept="image/png,image/jpeg,video/mp4,video/quicktime,video/webm"
+        onchange="onFileInput(event, '${ownerAttr}')">
+    </label>`;
+}
+
+function renderBudgetBar(sceneId) {
+  const b = sceneBudgets[String(sceneId)];
+  if (!b) {
+    return `<div class="budget-bar" id="budget-${sceneId}"><span class="bdg">Budget: <b>computing…</b></span></div>`;
+  }
+  const modeLabel = b.mode === 'video-driven' ? 'video-driven' : 'narration-driven';
+  const modeCls = b.mode === 'video-driven' ? 'mode video' : 'mode';
+  let capText;
+  if (b.max_images === 0) {
+    capText = b.mode === 'video-driven' ? 'no image slots (video-driven)' : 'no narration yet';
+  } else if (b.status === 'over') {
+    const drop = b.attached_images - b.max_images;
+    capText = `${b.attached_images}/${b.max_images} images ⚠ · assembler will drop ${drop}`;
+  } else if (b.status === 'at_capacity') {
+    capText = `${b.attached_images}/${b.max_images} images ✓ optimal`;
+  } else { // under
+    const room = b.max_images - b.attached_images;
+    capText = `${b.attached_images}/${b.max_images} images · room for ${room} more`;
+  }
+  return `<div class="budget-bar status-${b.status}" id="budget-${sceneId}">
+    <span class="bdg">Narration <b>${b.narration_seconds.toFixed(1)}s</b></span>
+    <span class="bdg">Video <b>${b.video_seconds.toFixed(1)}s</b></span>
+    <span class="bdg">Scene <b>${b.scene_seconds.toFixed(1)}s</b></span>
+    <span class="${modeCls}">${modeLabel}</span>
+    <span class="bdg capacity-bdg">${capText}</span>
+  </div>`;
+}
+
+// --- upload / delete -------------------------------------------------------
+function onDragOver(e) { e.preventDefault(); e.currentTarget.classList.add('drag-over'); }
+function onDragLeave(e) { e.currentTarget.classList.remove('drag-over'); }
+function onDrop(e) {
+  e.preventDefault();
+  const zone = e.currentTarget;
+  zone.classList.remove('drag-over');
+  const owner = zone.dataset.owner;
+  const file = e.dataTransfer.files && e.dataTransfer.files[0];
+  if (file) uploadFile(owner, file);
+}
+function onFileInput(e, owner) {
+  const file = e.target.files && e.target.files[0];
+  if (file) uploadFile(owner, file);
+  e.target.value = '';  // reset so the same file can be re-picked
+}
+
+function classifyFile(file) {
+  const ext = (file.name.split('.').pop() || '').toLowerCase();
+  if (IMAGE_EXTS.includes(ext)) return { kind: 'image', ext };
+  if (VIDEO_EXTS.includes(ext)) return { kind: 'video', ext };
+  return { kind: null, ext };
+}
+
+function showUploadError(owner, msg) {
+  const el = document.getElementById(`err-${owner}`);
+  if (!el) return;
+  el.textContent = msg;
+  el.hidden = false;
+  setTimeout(() => { el.hidden = true; }, 5000);
+}
+
+async function uploadFile(owner, file) {
+  const [kind_key, id] = owner.split(':');
+  const { kind } = classifyFile(file);
+  if (!kind) {
+    showUploadError(owner, `Rejected: ${file.name} — not an allowed image or video type.`);
+    return;
+  }
+  if (file.size > MAX_UPLOAD_MB * 1024 * 1024) {
+    showUploadError(owner, `Rejected: ${file.name} is over ${MAX_UPLOAD_MB} MB.`);
+    return;
+  }
+  if (kind === 'image' && kind_key === 'scene') {
+    const b = sceneBudgets[id];
+    if (b && b.max_images === 0) {
+      const why = b.mode === 'video-driven' ? 'video-driven scene (no image slots)' : 'no narration yet';
+      showUploadError(owner, `Rejected: ${why}. Drop a video instead, or trim a video first.`);
+      return;
+    }
+    if (b && b.attached_images >= b.max_images) {
+      showUploadError(owner, `Rejected: scene is at image capacity (${b.attached_images}/${b.max_images}). Delete one to add another, or extend narration.`);
+      return;
+    }
+  }
+  const sceneId = kind_key === 'thumb' ? -1 : parseInt(id, 10);
+  const fd = new FormData();
+  fd.append('scene_id', String(sceneId));
+  fd.append('kind', kind);
+  fd.append('file', file);
+
+  try {
+    const resp = await fetch(`${BASE}/upload`, { method: 'POST', body: fd });
+    const body = await resp.json().catch(() => ({}));
+    if (!resp.ok) {
+      showUploadError(owner, body.error || `Upload failed (HTTP ${resp.status}).`);
+      return;
+    }
+    const asset = body.asset;
+    const target = findOwner(owner);
+    if (!target) return;
+    if (!Array.isArray(target.assets)) target.assets = [];
+    asset.order = target.assets.length;
+    target.assets.push(asset);
+    mirrorLegacyImagePath(target);
+    render();
+    scheduleSave(true);
+    scheduleBudgetRefresh();
+  } catch (e) {
+    showUploadError(owner, `Upload error: ${e.message}`);
+  }
+}
+
+async function deleteAsset(owner, path) {
+  if (!confirm(`Delete this asset?\n${path}`)) return;
+  try {
+    const resp = await fetch(`${BASE}/delete-asset`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ path }),
+    });
+    const body = await resp.json().catch(() => ({}));
+    if (!resp.ok) {
+      showUploadError(owner, body.error || `Delete failed (HTTP ${resp.status}).`);
+      return;
+    }
+    const target = findOwner(owner);
+    if (target && Array.isArray(target.assets)) {
+      target.assets = target.assets.filter(a => a.path !== path);
+      target.assets.forEach((a, i) => { a.order = i; });
+      mirrorLegacyImagePath(target);
+    }
+    render();
+    scheduleSave(true);
+    scheduleBudgetRefresh();
+  } catch (e) {
+    showUploadError(owner, `Delete error: ${e.message}`);
+  }
+}
+
+function moveAsset(owner, path, delta) {
+  const target = findOwner(owner);
+  if (!target || !Array.isArray(target.assets)) return;
+  const idx = target.assets.findIndex(a => a.path === path);
+  if (idx < 0) return;
+  const newIdx = idx + delta;
+  if (newIdx < 0 || newIdx >= target.assets.length) return;
+  const [moved] = target.assets.splice(idx, 1);
+  target.assets.splice(newIdx, 0, moved);
+  target.assets.forEach((a, i) => { a.order = i; });
+  mirrorLegacyImagePath(target);
+  const y = window.scrollY;
+  render();
+  window.scrollTo(0, y);
+  scheduleSave(true);
+}
+
+function findOwner(owner) {
+  const [kind, rawId] = owner.split(':');
+  if (kind === 'scene') {
+    const id = parseInt(rawId, 10);
+    return storyData.scenes.find(s => s.id === id) || null;
+  }
+  return (storyData.thumbnails || []).find(t => String(t.id) === rawId) || null;
+}
+
+// Keep legacy `image_path` pointed at the first image asset, for downstream tools.
+function mirrorLegacyImagePath(obj) {
+  const firstImage = (obj.assets || []).find(a => a.type === 'image');
+  if (firstImage) obj.image_path = firstImage.path;
+  else delete obj.image_path;
+}
+
+// --- narration playback ----------------------------------------------------
+function toggleNarration(sceneId) {
+  const wrap = document.getElementById(`player-wrap-${sceneId}`);
+  const audio = document.getElementById(`audio-${sceneId}`);
+  if (!wrap || !audio) return;
+  if (currentAudio && currentAudio !== audio) {
+    currentAudio.pause();
+    const prevId = currentAudio.id.replace('audio-', '');
+    const prevWrap = document.getElementById(`player-wrap-${prevId}`);
+    if (prevWrap) prevWrap.hidden = true;
+    const prevLabel = document.getElementById(`play-label-${prevId}`);
+    if (prevLabel) prevLabel.textContent = 'Play Narration';
+  }
+  if (!audio.src) {
+    const scene = storyData.scenes.find(s => String(s.id) === String(sceneId));
+    const rel = (scene && scene.narration_audio) || `assets/audio/narration/scene-${String(sceneId).padStart(2,'0')}.wav`;
+    audio.src = `${BASE}/${rel}`;
+  }
+  if (audio.paused) {
+    wrap.hidden = false;
+    audio.play();
+    currentAudio = audio;
+    const label = document.getElementById(`play-label-${sceneId}`);
+    if (label) label.textContent = 'Playing…';
+  } else {
+    audio.pause();
+    const label = document.getElementById(`play-label-${sceneId}`);
+    if (label) label.textContent = 'Play Narration';
+  }
+}
+
+function onAudioEnded(sceneId) {
+  const label = document.getElementById(`play-label-${sceneId}`);
+  if (label) label.textContent = 'Play Narration';
+}
+
+// --- notes save ------------------------------------------------------------
+function onNoteChange(el) {
+  const id = parseInt(el.dataset.sceneId, 10);
+  const scene = storyData.scenes.find(s => s.id === id);
+  if (scene) scene.notes = el.value;
+  scheduleSave();
+  renderSidebar();
+  el.closest('.scene-card').classList.toggle('has-notes', el.value.trim().length > 0);
+}
+
+function onThumbNoteChange(el) {
+  const id = el.dataset.thumbId;
+  const thumb = (storyData.thumbnails || []).find(t => String(t.id) === id);
+  if (thumb) thumb.notes = el.value;
+  scheduleSave();
+  renderSidebar();
+}
+
+function scheduleSave(immediate = false) {
+  clearTimeout(saveTimeout);
+  saveTimeout = setTimeout(() => saveAll(), immediate ? 0 : 2000);
+}
+
+async function refreshBudget() {
+  try {
+    const r = await fetch(`${BASE}/budget`, { cache: 'no-store' });
+    if (r.ok) {
+      sceneBudgets = await r.json();
+      // Re-render just the budget bars + dropzones in place (avoid full re-render during typing).
+      for (const s of (storyData.scenes || [])) {
+        const bar = document.getElementById(`budget-${s.id}`);
+        if (bar) bar.outerHTML = renderBudgetBar(s.id);
+        const zone = document.querySelector(`.dropzone[data-owner="scene:${s.id}"]`);
+        if (zone) {
+          const nz = htmlToNode(renderDropzone(`scene:${s.id}`));
+          zone.replaceWith(nz);
+        }
+      }
+    }
+  } catch (e) { /* non-fatal */ }
+}
+
+function scheduleBudgetRefresh() {
+  clearTimeout(budgetRefreshTimeout);
+  budgetRefreshTimeout = setTimeout(refreshBudget, 300);
+}
+
+function htmlToNode(s) {
+  const t = document.createElement('template');
+  t.innerHTML = s.trim();
+  return t.content.firstElementChild;
+}
+
+async function saveAll() {
+  const btn = document.getElementById('save-btn');
+  const status = document.getElementById('save-status');
+  btn.textContent = 'Saving...';
+  try {
+    const resp = await fetch(`${BASE}/save`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(storyData, null, 2),
+    });
+    if (resp.ok) {
+      btn.textContent = 'Save Notes';
+      status.textContent = 'Saved';
+      status.style.color = 'var(--green)';
+      status.classList.add('visible');
+      setTimeout(() => status.classList.remove('visible'), 2000);
+    } else {
+      btn.textContent = 'Save failed!';
+      status.textContent = 'Error saving';
+      status.style.color = 'var(--red)';
+      status.classList.add('visible');
+    }
+  } catch (e) {
+    btn.textContent = 'Save Notes';
+    localStorage.setItem(`storyboard-backup-${SLUG}`, JSON.stringify(storyData));
+    status.textContent = 'Saved to localStorage (server not running)';
+    status.style.color = 'var(--orange)';
+    status.classList.add('visible');
+    setTimeout(() => status.classList.remove('visible'), 3000);
+  }
+  updateStats();
+}
+
+function clearAllNotes() {
+  if (!confirm('Clear all notes? This cannot be undone.')) return;
+  storyData.scenes.forEach(s => s.notes = '');
+  (storyData.thumbnails || []).forEach(t => t.notes = '');
+  render();
+  saveAll();
+}
+
+function scrollToScene(id) {
+  document.getElementById(`scene-${id}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  document.querySelectorAll('.sidebar a').forEach(a => a.classList.remove('active'));
+  event?.target?.classList.add('active');
+}
+
+function updateStats() {
+  const total = storyData.scenes.length;
+  const withNotes = storyData.scenes.filter(s => s.notes && s.notes.trim()).length;
+  const withAssets = storyData.scenes.filter(s => (s.assets || []).length > 0).length;
+  const bar = document.getElementById('stats-bar');
+  if (bar) {
+    bar.innerHTML = `
+      <span class="stat"><span class="dot blue"></span>${total} scenes</span>
+      <span class="stat"><span class="dot orange"></span>${withNotes} with notes</span>
+      <span class="stat"><span class="dot green"></span>${withAssets} scenes with assets</span>
+      <span class="stat">Runtime: ${escHtml(storyData.total_runtime || '')}</span>
+    `;
+  }
+}
+
+// --- escape helpers --------------------------------------------------------
+function escHtml(s) {
+  if (s === null || s === undefined) return '';
+  return String(s)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;').replace(/'/g,'&#39;')
+    .replace(/\n/g,'<br>');
+}
+function escAttr(s) {
+  if (s === null || s === undefined) return '';
+  return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+loadData();
+</script>
+</body>
+</html>
