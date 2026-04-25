@@ -1,0 +1,148 @@
+All right, so this machine, so purposely, we eject the floppy disk as a precaution because
+some machines could be, the floppy could get damaged when you turn them off or turn them
+on improperly.
+So we had the floppy six out, so this one we're going to do, control the leak.
+This artifact might change out, but this is where it is for now.
+This is a zenith system from the 80s showing inside of the machine.
+Right now, it doesn't have a very interesting demo.
+There's one of the things that ghosts can work on.
+Right now, it just has a diagnostic system.
+So it's just not very interesting, but it's something.
+So it boots off the floppy and we go to select mode, number two.
+And then I usually do a video display, number five, and number of times to run it.
+It doesn't matter.
+A thousand times.
+You want to skip on air as well.
+And then we do three mono and color two or two.
+It doesn't matter.
+But at least it'll be something interesting.
+It'll be that for a while.
+You come over 64.
+You can run the crinshop.
+So you can run the crinshop.
+I'll show you how to do that later.
+Or you can run.
+I am the C64.
+It's like a self-running demo that they can run.
+But again, you could decide what's for now.
+Let's just do I am the C64.
+And oh, well, you can figure out the commands later.
+But I just did this is because it's as jiffy dots just hit this key and this key.
+And it loads up the first and loads and runs the first program.
+Otherwise, we do load star option.
+This one may be switched out, but this is the office exhibit.
+It's not very interesting.
+We usually have it off just because we don't really know how to operate it or run a demo.
+But it does turn on.
+In the back, you're supposed to actually hit the floppy drive first.
+There's a disk in there.
+I don't know if you're dead.
+But we might switch this output.
+I'd love to know more about this and have actually the interesting demo to run it off of this.
+So, yeah, so depending on what demo you want to do, the Apple Tune here will run off of floppy.
+I'm going to try to run the drive too.
+This one will run off of the iPod.
+Apple won around the iPod.
+You will know the programs.
+This one doesn't have any disk stuff yet.
+I'm eventually going to get one.
+You don't have any disk or anything.
+This one here is two cartridges.
+It actually gets three cartridges that you can run.
+And by the screen, this one is yet to get a demo working.
+We'd love to get something working with that.
+This one is off of floppy too.
+This is the boot disk for CPM.
+For now, this is the demo.
+I think there's other disks that work like this account or something like that.
+This is the boot disk for the annual press return to load it up.
+This one has Microsoft Basic and Basic.
+I'm the other side.
+So that way you will go to the B drive to run that one.
+And then do M basic.
+This one has come with a 128.
+So there's an all-comp 1540W Ultimate 2.
+And I think there's three buttons here.
+You hit the middle button.
+And I'm just going to select what I usually do.
+I used to do Geo's 128.
+And now I'm just doing a game, like a volleyball game.
+You can pick whatever one you want to do.
+So you're just like, these are disk images on the SD cards.
+The SD card is inserted into this.
+So I'm just going to roll it up and play the game.
+I'm going to show you in detail later.
+But sort of just mount the disk.
+And you can actually, there's a reset button.
+The cursor doesn't come up.
+It's beside the rocker switch.
+There is a reset button which should push in.
+Which should reset it and get it to the prompt.
+In this case, I actually mounted that disk.
+It's going to automatically move.
+There's joystick there.
+IBM has a boot disk.
+There's no disk in there.
+It goes to Basic.
+But it says a demo in there.
+OEM demo, which basically shows you how to use the machine.
+Because remember, this is new.
+These machines were new.
+And people never really know much about personal computers or business computers or all computers.
+So this is sort of like how to use it.
+The TI portable also has two disks.
+There's a self-rending demos.
+We do have other floppy disks that you can demonstrate it here.
+These were done by David Getsfoyne.
+And any questions asked him.
+He's like, really good.
+He fixed this machine.
+This is self-rending basic demo.
+You can break out of it.
+You can list it.
+But it'll keep running it.
+It's just running to BCF.
+This machine has had problems.
+So it's temperamental.
+We're going to figure out what's going on with this.
+But normally, it would go to King's Quest off this floppy disk.
+We are trying to get an SD card thing.
+But it needs some sort of additional RAM or something.
+So this side card was disconnected.
+Anita, you have two disks.
+First, the Kickstart disk.
+You put in the Kickstart disk.
+Later models had the operating system in ROMs.
+Or whatever it gets, bootloader.
+Bootloader into the ROMs.
+This one, you first load in this disk, which is the Kickstart.
+And then you put it in the workbench, which is an actual operating system.
+So when it shows the screen,
+it's going for workbench, you put in the workbench.
+So again, remember, you eject the disk to the end of the day.
+This one, there is an SD card reader.
+We tried to have a lot of these machines,
+the modern solutions, just because the older solutions they fail.
+And it's faster and easier to do this.
+So, a smart menu is how you get it to not.
+This has a Fuji Net connected to it.
+So it has an SD card, but that's only to store things locally.
+But the Fuji Net allows you to go through the internet to a server
+and load up, download files, and run them.
+So right now, in the slot one, it has a weather app.
+So I did, was I selected it.
+You can find that motivation about Fuji Net here, or an internet.
+I hit the option, some amounts, and boots that image.
+So if you did it correctly, it's going to load up the weather of this area.
+And there are different configuration options that you use with these buttons
+to change it to a different city.
+You need the beeping, that's normal for a tie.
+So I think that's a good thing, because that gives you feedback.
+Because back in the day, things are loading.
+How long is it loading, or is it working?
+Is it installed? You know, at least there's beeping, so.
+But that's a great thing. Fuji Net, there's a lot of them available these days.
+So there is also another Fuji Net for this machine.
+Very new, this was in fact one of the first ones ever available for the atom.
+A failed machine.
+But if it's turned on correctly, there's another.

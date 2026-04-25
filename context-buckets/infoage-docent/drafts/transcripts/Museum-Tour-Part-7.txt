@@ -1,0 +1,99 @@
+All right, so we had the big room size computers vacuum twos and we get the transistors
+They're still sort of large computers and get the many computers smaller transistors and now
+Some point the microchip is invented people are striving for their personal computers remember these system operator
+They're the only ones can touch it people want to have their own personal computers our own computers
+So the microchip is invented so now it's possible
+It's it's like small enough may be affordable enough to do it. So people make different things like this
+This is a clone of the p to p8 a huge 400 pound machine that we saw over there
+Um, and then people like the selfie that makes you know board computers and the all-tear all-tear was a very important
+computer
+Obviously love this you can have an assemble or an unassembled you can assemble this more money, but you couldn't make enough of these so
+M sign made one that was compatible with it, but again, it's like flipping switches like the p to p8s
+Um, so it's interesting. It's fun. Obviously love it, but the ordinary person they wouldn't really will be operating this
+But it's fun. They want to have something in their home
+It's wpc's i10 that sort of thing and then all right, so you have these trainers because like these microchips come out
+People are like, well, how do we use these things work?
+You know, so these are ways to demonstrate to people and to play around with the microchips
+This is a mos kim one
+It's a 6502 chip in there. So this is a trainer of weights to demonstrate to two people
+What it is how it works? Why it's interesting?
+This one is a car see a cosmic. This is for 1802 microchip
+And someone put another one over here. I don't know what that one is. What is that one?
+All right, anyway, uh, saw 20 that's also an interesting one
+We felt thousands time. You should read the book hackers. It talks about Lee thousandstein
+This is early hacking. This is good for history. So if there's one one book, you should be first as hackers, okay?
+So Lee thousandstein made this computer very similar to the xi 10 SWTBC
+So we get the single board computers the apple one now. This is not a real apple one
+If it was a real apple one, we have a security guide with shotguns starting this
+This is called the mimeo. So it is
+Works exactly the same as one
+And you can put different chips in there because some people would have date exact chips and but it works like apple one
+But apple one explain to people was just this just a single board
+There was no packaging or anything like that. People would typically do like this
+They have a wooden board and they drill it in and then you have to buy the keyboard separately
+You just had you just got the board then you got to be buy the keyboard separately
+And then this this is for cassette tapes
+You have a cassette tape reader and
+That would allow you to load programs and say programs from there
+We have some modern method of doing that with a iPad
+I'm sorry iPod and this is a way using like
+Audio files to load programs into this this other chip here is basic
+So normally you would have to run these instructions and if you want to run a basic program first
+You have to load the basic interpreter and then you have to load the basic program
+So that would take 30 40 seconds for each one of those
+So there's a demo that'll work and I can show you
+Most of these work
+I usually run a letterlander. It's a simple program easy to understand
+There's instructions on how to load it. I'll tell you in detail a bit more later
+So now right 76 1976
+1977 apple two
+Come on up here is 80 go come at the same year apple was making their apple one. They were planning for the apple two
+Now it's in a package now if you put it in a home or a school
+It looks easier to use you don't have all these wires and
+Switches you have a keyboard. It looks like a typewriter. You have disk drives
+You have a screen
+It looks like you can put it in your home. You can actually use it for something
+Commodore pet they had made calculators now they decide to make a computer
+MOS had created a 65 or two chips, so now they made a computer to put it in
+They tried to do everything in one package trying to save money. They thought it was a great idea
+Maybe it was a little cost, but it was just too cramped this keyboard is the chick lick keyboard
+It's a little too small
+They need to separate this out make it a quick keyboard move the
+cassette and drive out and the monitor so it was successful, but the next version obviously was a little bit bigger and easier to use
+Radio shack they stole computers out of their store
+That was great because you can actually because the computer's one new people you go in there
+You can like they can show you how it works and what it's used for for and then if it breaks you can bring it back
+Maybe not so much for the others at least at the beginning
+So it's hard to use
+Challenger is an example of a 65.2 base system
+It was a couple that did it and then eventually they had divorced and the company folded up
+Um, this is a synchronous 80 was trying to be like small economic economical computer 1k
+As a later model and this is a Ukrainian computer see
+This was a clone of this machine. So this big thing they didn't have all the chips and same things
+But they reverse engineered this and made this
+Ukrainian you can see this really outcome in there
+So now you see this one had terminals
+They have some portable computing this one is about 24 pounds, but cpm was an operating system. That was a way to
+Operate the disks to access and save files load files and not all that sort of thing
+But you could take this on a plane you could actually fit it under the seat the back then and take it to a sales presentation or whatever and show it off to people
+um
+Exit system is they made the calculators and then they got into computers
+But then there was you know they
+They weren't very good about computers. So the problem with pricing. So eventually they they
+When competition with Commodore they actually were losing money every time they sold what so they eventually got out of making computers
+This may have been a good computer, but the pricing wasn't
+enough for them to keep going
+Commodore 128
+So we have this here because
+She's come on our 64 was a great. It was very popular and
+Then the Commodore 20 you came out it was supposed to be like the next step above
+But often people would go into this Commodore 64 mode and you visit that way
+so
+A lot of people made software that was native for this machine
+So
+This actually is a new software that someone made in 2019 so people are actually making a new software for this machine
+But this one is also interesting one of the creators of this bill heard came
+And he comes to our show every year
+But it was they there's a whole history and story about this where they had to use put in a second chip
+It's the 80 chip so that on do it can choose between going in Commodore 64 mode or Commodore 128 mode
+But it can also run cpm the popular operating system at the time. Sorry. Cut

@@ -1,0 +1,18 @@
+Instructions for the Atari Mega STE Cubase demo.
+If you haven't turned on already, turn on the smart plug there by pressing the button.
+The system boots up automatically, check some RAM before loading up Cubase.
+You have a menu there, you can use the mouse, left button to do file, open.
+Don't know what this message means, but I just click OK.
+And then you find a director where your songs are right now.
+There are only a few songs.
+Double click on songs.
+And it looks like there's three songs in there.
+You click the second one and click OK.
+It loads it up and then press play.
+So these should be on automatically to the connected two little power strip down there.
+As you see multiple plugs.
+And it continues to play.
+I think some of the songs are going to stop this.
+Some of the songs might just keep playing forever, I don't know why.
+In case it sort of locks up, I had that problem with one of the visitors who was a child randomly banging the keys.
+There is also a nice little reset button there, right here, which you can press to reset the system in case it's not responsive.

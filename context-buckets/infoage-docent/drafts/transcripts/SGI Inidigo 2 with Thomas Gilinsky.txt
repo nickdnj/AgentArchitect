@@ -1,0 +1,29 @@
+So, here, with the Indigo 2, silicon graphics,
+so primary draw was there the only computer for some,
+the only company for some 50 years or so,
+that sold a computer that could do real time
+3D graphics at all.
+So, these were very heavily used in CGI for Hollywood,
+in NASA for visualization, engineering companies,
+a post office for some reason.
+So, when you log in, you get very slick looking graphical user
+database and you have a, you should have a program here
+called the iPhone catalog.
+If you don't see it, then you'll go up to your tool chest here,
+find, and click graphics demos or demos here.
+And that will just open up your iPhone catalog.
+On the demos tab here, you have multiple tabs
+for different sorts of programs.
+It's vaguely like the program manager in Windows 3.
+We have about 50, 30, and so demos set up on the computer
+already.
+And it's pretty much just like Windows, you double click,
+it will open, you resize the window,
+and here we get full 3D graphics.
+So, this one is called Insect.
+It is for the most part a, just a movie showing
+a CGI ad walking around.
+Here we have A-Mesh.
+Which is, visualization of music.
+For most of these demos, if you want to rotate things,
+you're going to be pressing the middle mouse button.

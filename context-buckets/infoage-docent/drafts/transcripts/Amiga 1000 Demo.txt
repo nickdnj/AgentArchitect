@@ -1,0 +1,16 @@
+Allow those since this is the original MEGA,
+later named the MEGA 1000.
+As you know, you boot it up with the kickstart.
+I have another disk here.
+It's not labeled really correctly.
+But it has some demos on there.
+So you can run the demos.
+I think there's two demos on here.
+We're going to try to get some more demos, especially
+the original bouncing ball demo.
+So double click on that.
+And then the demo should run.
+Well, it's a floppy.
+So if you want to run something in the background there,
+whereas people are coming by, you
+can show them what's off the machine.

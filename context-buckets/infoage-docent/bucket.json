@@ -1,0 +1,80 @@
+{
+  "id": "infoage-docent",
+  "name": "InfoAge Computer Museum Docent Resources",
+  "description": "Source materials and drafts for the InfoAge Computer Museum docent manual. Mirrors the 'Docent Shared Resources' Drive folder shared by Jeff Brace, plus original drafts authored by Nick.",
+  "version": "0.1",
+  "created": "2026-04-24",
+  "updated": "2026-04-24",
+
+  "content_type": "documents",
+
+  "sources": [
+    {
+      "type": "local",
+      "path": "files/Docent Shared Resources/",
+      "description": "Mirror of the Google Drive 'Docent Shared Resources' folder (1UeWnuDr5Iocb8RKokfobnmPjBu8k01Tr) — extracted from 4-part zip on 2026-04-24. Read-only source material."
+    },
+    {
+      "type": "local",
+      "path": "drafts/",
+      "description": "Original drafts of the docent manual authored by Nick. Editable. Subfolders: artifacts/, operational/, general/."
+    },
+    {
+      "type": "remote",
+      "url": "https://drive.google.com/drive/folders/1UeWnuDr5Iocb8RKokfobnmPjBu8k01Tr",
+      "description": "Authoritative remote folder. Re-sync via Drive MCP or zip download when the local mirror gets stale."
+    }
+  ],
+
+  "key_assets": {
+    "existing_signs": [
+      {"file": "files/Docent Shared Resources/Signs/Eniac.pdf", "title": "ENIAC sign"},
+      {"file": "files/Docent Shared Resources/Signs/Eniac2.pdf", "title": "ENIAC Women sign"},
+      {"file": "files/Docent Shared Resources/Signs/RCACosmac1802.pdf", "title": "RCA COSMAC 1802 sign"},
+      {"file": "files/Docent Shared Resources/Signs/TheUnivac.pdf", "title": "UNIVAC 1 sign"},
+      {"file": "files/Docent Shared Resources/Signs/Wang4000.pdf", "title": "Wang 4000 sign"},
+      {"file": "files/Docent Shared Resources/Signs/TubesToICs_Tubes.pdf", "title": "Tubes-to-ICs: Vacuum Tube"},
+      {"file": "files/Docent Shared Resources/Signs/TubesToICs_Gates.pdf", "title": "Tubes-to-ICs: Logic Gates"},
+      {"file": "files/Docent Shared Resources/Signs/TubesToICs_Components.pdf", "title": "Tubes-to-ICs: Building Blocks"}
+    ],
+    "structural_template": {
+      "file": "files/Docent Shared Resources/Manuals/Radio History Museum/Radio_Technology_Museum_Docent_Handbook (edited 2019) .pdf",
+      "title": "Radio Technology Museum Docent Handbook v4.0 (Spring 2018, partial)",
+      "note": "Closest existing example of a docent handbook at InfoAge. Not for the computer museum but its 6-section structure (general / open-close / map / history / area summaries / per-area deep dives) transfers directly."
+    },
+    "existing_ops_material": [
+      {"file": "files/Docent Shared Resources/Docent FAQ.docx", "title": "Jeff Brace's Docent FAQ"},
+      {"file": "files/Docent Shared Resources/Opening Checklist for Docents.xlsx", "title": "Opening checklist (xlsx)"},
+      {"file": "files/Docent Shared Resources/Closing Checklist for Docents.xlsx", "title": "Closing checklist (xlsx)"},
+      {"file": "files/Docent Shared Resources/Plug Names and Location.docx", "title": "Plug map (15 plugs)"},
+      {"file": "files/Docent Shared Resources/Docent Schedule.xlsx", "title": "Docent schedule (actively maintained)"}
+    ]
+  },
+
+  "stakeholders": {
+    "jeff_brace": {
+      "email": "jeffrey@vcfed.org",
+      "role": "VCF National Board VP, VCF East showrunner, volunteer coordinator",
+      "asked_for_help_with_manual": true,
+      "source": "Docent FAQ.docx — 'DOCENT MANUAL — This is a work in progress. As I have more time, I will start to make this into a real document instead of assorted pages and information. Anyone willing to help me on this, please let me know.'"
+    },
+    "doug_crawford": {
+      "email": "douglas.crawford@vcfed.org",
+      "role": "Museum manager, runs docent training"
+    }
+  },
+
+  "access_control": {
+    "default_level": "read-write",
+    "allowed_agents": ["max", "general-purpose"],
+    "allowed_teams": []
+  },
+
+  "metadata": {
+    "drive_folder_id": "1UeWnuDr5Iocb8RKokfobnmPjBu8k01Tr",
+    "drive_folder_name": "Docent Shared Resources",
+    "extracted_from_zip": "2026-04-24",
+    "source_size_gb": 7.6,
+    "artifact_folders": 24
+  }
+}

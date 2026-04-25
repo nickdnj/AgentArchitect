@@ -64,6 +64,15 @@
       "assigned_to": ["hardware-dev", "software-project"],
       "created": "2026-04-09",
       "status": "active"
+    },
+    {
+      "id": "infoage-docent",
+      "name": "InfoAge Computer Museum Docent Resources",
+      "folder": "context-buckets/infoage-docent",
+      "content_type": "documents",
+      "assigned_to": ["personal-assistant"],
+      "created": "2026-04-24",
+      "status": "active"
     }
   ]
 }

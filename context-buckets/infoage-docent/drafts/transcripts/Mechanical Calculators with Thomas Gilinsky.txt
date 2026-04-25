@@ -1,0 +1,147 @@
+OK, this is our RC Allen adding machine.
+It's a donation of my own.
+This is a good demonstration of how exactly
+somebody would be doing mathematics
+with the aid of an appliance instead of in their mind
+before the advent of the electronic computer.
+This is all purely mechanical.
+And at first glance, all it can do is addition.
+Instead of a normal calculator where you punch in the number,
+it shows up here, you have one full set of nine digits
+for every single digit's place.
+This is your once place, tens place, hundreds place, thousands
+place, 10,000 place.
+This is tenths, and this is hundreds.
+So let's just do a simple addition.
+I want to add 25 and 75.
+So first I punch in 2 to 5.
+So I'm on my input register.
+And I want to get it into the internal register.
+So I pulled the crank with 25 on the input.
+We can see it output here on the paper tape.
+And it's our internal register as well.
+Now I add 75.
+I pulled the crank.
+And we can see that our internal register shows 100.
+We have 75 printed red up here.
+Now we want to total it.
+You do one empty crank with nothing in the input.
+And then with your thumb on the total key, you press it.
+Start to pull the crank.
+You can release your thumb because it will lock down.
+Crank fully.
+And it will output on the paper tape.
+And it will clear out our internal register.
+Now let's do something a little bit more complex.
+Let's do subtraction.
+At first glance, all you can do on here is addition.
+But you can fake it using 9th complement.
+So let me put 100 on our register here, 100.
+And I want to subtract 25.
+Well, if we know that all we can do is add,
+and we only have so many places here,
+we could fake it kind of by putting in 75
+and just putting all 9s here.
+So we'll roll over and go to the end.
+If we do that, we get 75, subtract.
+But that will work for every single number.
+So here, again, at 75, if we treat the 9s at the top here
+like 0, and each one above it as 1, 2, 3, 4, 5, 6, 7, 8,
+and so on, then let's subtract 25 again from here.
+0, 0, 0, 0, 1, 2, 0, 1, 2, 3, 4, 5.
+Last time, we just put in 75 instead of 74.
+Another core case, you have to add one at the end.
+So again, 9, 9, 9, 7, 5 means negative 25.
+So we crank again, and we get 50.
+So oh, there's subtraction.
+If we want to do multiplication now,
+its multiplication is addition multiple times.
+So it's more of a simple concept.
+But if I want to do something like 12 times 12,
+I don't want to pull this crank 12 times in a row.
+Instead, you do it the way you do it on pencil and paper.
+You do the ones place, and then you multiply by 10.
+You do the 10th place, you multiply by 100.
+You do the 100th place, and so on.
+So I have 12 of my input registry here,
+and I'm going to press this button here called repeat.
+That just prevents the input register from clearing
+when I pull the crank.
+So with 12 in the one place, I'm going to crank twice.
+Now we can see 24 on our input register,
+on our internal register.
+I'm going to un-repeat, press correct to clearly input,
+and then press 12 in the 10th place.
+And I'm only going to crank that once.
+If you can see our internal register, we have 144.
+So crank, total, and we can see the result here.
+Then we have something like division.
+Division is subtraction multiple times,
+but you don't really get shortcuts
+like you do with multiplication.
+So let's say I want to see how many weeks there are in a year.
+The starters are going to have to shift everything
+as far over as possible, so I can get as much precision.
+So I'm going to punch in 3, 6, 5.
+That's in our internal register.
+Now I start subtracting.
+I know I can't subtract 7 from 3, but I can from 36.
+So I put in negative 07.
+So 0, 0, 1, 2, 3, 4, 5, 6, 7.
+I have to go up a 1.
+And then, with the repeat key down,
+I just keep cranking until I know I can't subtract 7 anymore.
+So 1, 2, 3, 4, 5.
+I can't keep going, so I move over 1.
+1, 2.
+Can't keep going over 1.
+1.
+OK, so I started pulling the crank too early.
+So I'm going to have to clear this and add 7 back again.
+Back.
+Now I have to move over 1.
+Subtract 7 from here.
+0, 1, 2, 3, 4, 5, 6, 7, up 1.
+Keep cranking on 2, 3, 4.
+Move over again.
+0, 1, move over again.
+1, 2, 3, 4, 5, 6, 7, 8.
+We're with 4, still in our internal register,
+but we can't keep going.
+Steps are remainder.
+And we can see up here, our paper tape,
+a record of every single time we had to subtract
+the number.
+And we see we subtracted 5 times from the 10th place,
+twice from the ones.
+Once from the 10th place, because we had to add again,
+we subtracted 4 times from the 100th place, twice
+from the 1,000th place, and 8 times from the 10,000th place.
+So we know our result is 52.1428.
+If you do that on a calculator, you'll
+get the exact same answer with 365 divided by 7.
+This takes forever.
+But you can do it.
+And you will have absolute precision,
+as long as you're doing it right, versus a slide rule
+where you can multiply and divide very, very quickly,
+but you do not get the same level of precision.
+So we can see when computers first began
+to be electrified.
+If you went with a digital computer,
+you would have addition and subtraction very, very quickly.
+But you could divide and multiply.
+You'd have more precision, but would just take far longer,
+even until recently, division has taken ages
+on most digital processors.
+Versus, if you wanted an application
+where you wanted to divide, multiply,
+or do exponents, or square roots, or even integrals,
+you would go with an analog electric calculator,
+or a electrical computer, which is where we get the split
+early on in our display.
+We have digital on one side and analog on the other.
+Until eventually, digital gets fast enough
+that it's good enough to replace analog.
+And from there on, it's all digital.
+And from there on, it's all digital.

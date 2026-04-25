@@ -1,0 +1,43 @@
+Here's the new power supply switch which is back here. When you turn it on, oh sorry, here's the
+Fuji net, right? It's connected over Adam net, right? And it has, it's just a RJ11, like the keyboard
+right, and it has an in and out, so it should be in. It doesn't have any independent power, it gets
+this power from the atom. So when you turn it on, it powers the atom, you should see the lights go
+on. The thing is, it's going to start at the typewriter because the atom starts too fast before
+the Fuji net's booted and ready. So look and make sure you see the lights on the Fuji net,
+right? Now you know it's good. Now you come back over to the reset and just basically reset it
+and now you should see this flashing. It's loading in the little config program, welcome to Fuji net.
+So this is where you want to be. So plug in this plug, this turn it on, it starts up like the typewriter
+reset it and it will catch the Fuji net and then this is the thing that you load. And you'll notice
+it looks very similar to the Atari one, right? You have slots for hosts and I'm going to go add a new
+host, right? Somewhere on the web that you can get discs and these are like the virtual drives,
+right? So they put in Thomas Cherry Holmes, I'm going to add mine, I'll show you right here. So you go
+to two, empty. Oh wait, uh, returns one or eight select slot tab, go to distance. Okay, so I have to
+hit two, then I can hit B. Oh, add it, sorry, yeah, B. I forgot they got these funky keys, right? So F,
+U, J, I, Fuji net, dealer or right, you may find other ones you want to add later, right? Hit return.
+And now it saves it, right? And now you have to, it already has this disc loaded in here, but let's say
+we want something besides Donkey Kong, right? It will remember this and you can put other drives,
+but remember you only want one, right? Because it doesn't boot off the other ones. So you don't
+need to load them. So if you want it a different game, you pick the host and then it goes out on the
+internet, right? And I've got Atari and Adam games, right? So you go and Adam,
+EOS is like the EOS is the operating system for this, right? And then you can see the no drivers
+educational games graphic designs, right? So games. And then you have to just go
+down that scrolls for you. Is there a way to page down on this one? That's a good question.
+I don't know. I see this, but I think that just means more. He has an up.
+All right, there's something I don't look into. Yeah, this is still like nobody,
+nobody has one of these except me, VCF and a couple of people like they are not telling these yet.
+But here, I'll just pick a game, right? You pick a game,
+beyond truck, right? And then it wants to know where to put it. Now I'm going to replace that one,
+right? And then you do read only of just like the Atari, so you do V. And then it's in there,
+right? And then you can boot, right? This I.V.
+Oh, this is new. Oh, sorry, that was config of the Poojinet. Sorry, but it's on there.
+I hit I.V.V.V.I. Bootslot 1.V.I.
+Maybe I'll see. That's a lot of the enough internet.
+These are the others. There's a couple of pretty some of them anyway.
+Just playing the Ellen truck. Yeah, I don't even know what that is.
+Now, if you hit reset, now it's going to basically remember that in there, right?
+And just boots. If you want to go back to that config screen because you're sick of seeing this,
+right? You want something different. You got to turn everything off because you got to turn this off.
+Otherwise, it just thinks you're resetting. Right? So turn it back on. It goes to the typewriter.
+You see the Poojinet's ready, hit reset, and then you go right to the Poojinet.
+And that's it. So you can set up a disc, and if you guys are happy with it, it will just boot.
+See, it keeps the...
