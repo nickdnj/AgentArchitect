@@ -2,8 +2,8 @@
   "project": "The Jersey Stack — Ep 1: The Transistor",
   "version": "2.0",
   "date": "2026-04-29",
-  "total_runtime": "~14:45 narration (14:10 visual budget — Gate 2 trims applied)",
-  "gate_2_note": "Post-Gate-2 thesis sharpening (Apr 19): series is specifically transistor→computer. Ep 2 renamed 'The Switch' (TRADIC 1954). Scene 30 rewritten with amp→switch hook + transistor+sine→square visual (was PCB). Chapter 9 already consolidated (old 25+26 → new 25). Runtime ~14:45 narration budget (actual Josh render TBD post reconcat). Apr 25: scenes 1 & 2 merged (scene 1 narration was only 2.37s); new combined scene 1 narration ~23s, IDs 3-30 unchanged. Apr 25 batch: scene 19 narration rewritten (eugenics dropped), scene 21 +2 AI images (Signal Corps + PRC-25), scene 27 +2 AI images (point-contact + die macro), scene 28 removed entirely, scene 29 narration rewritten (Somerset → Bell Works). Apr 29 batch: scenes 11/12/13/17 composite images split into separate portrait + action beats; scene 14 prepended with 'December 23, 1947' title card; scene 25 merged into scene 26 (eugenics/manager framing dropped, thesis line preserved). Scene 25 removed; ID gap left intentionally.",
+  "total_runtime": "~13:49 narration (Apr 29 regen — scene 26 merged, scene 29 cut to closing beat)",
+  "gate_2_note": "Post-Gate-2 thesis sharpening (Apr 19): series is specifically transistor→computer. Ep 2 renamed 'The Switch' (TRADIC 1954). Scene 30 rewritten with amp→switch hook + transistor+sine→square visual (was PCB). Chapter 9 already consolidated (old 25+26 → new 25). Runtime ~14:45 narration budget (actual Josh render TBD post reconcat). Apr 25: scenes 1 & 2 merged (scene 1 narration was only 2.37s); new combined scene 1 narration ~23s, IDs 3-30 unchanged. Apr 25 batch: scene 19 narration rewritten (eugenics dropped), scene 21 +2 AI images (Signal Corps + PRC-25), scene 27 +2 AI images (point-contact + die macro), scene 28 removed entirely, scene 29 narration rewritten (Somerset → Bell Works). Apr 29 batch: scenes 11/12/13/17 composite images split into separate portrait + action beats; scene 14 prepended with 'December 23, 1947' title card; scene 25 merged into scene 26 (eugenics/manager framing dropped, thesis line preserved). Scene 25 removed; ID gap left intentionally. Apr 29 narration regen: scene 26 re-rendered with new thesis ending; scene 29 cut to short closing beat. Full-narration.mp3 rebuilt — 13.81 min total.",
   "scenes": [
     {
       "id": 1,
@@ -767,29 +767,29 @@
       "chapter_title": "The Diaspora",
       "title": "Shockley West → Walkout → The Diaspora — COMBINED (was 25 + 26)",
       "duration": "11:25-12:35 (70s)",
-      "audio_status": "RE-RECORD 2026-04-29 — NEW combined scene 25+26 narration. Dropped 'Shockley was a terrible manager / paranoid / lie-detector tests' framing per creator note. Walkout beat preserved; thesis line preserved verbatim.",
-      "narration": "Later that year, Shockley left Bell Labs and opened Shockley Semiconductor in Mountain View, California. He recruited eight of the sharpest young PhDs in the country. On September eighteenth, nineteen fifty-seven, all eight walked into his office and resigned together. History would call them the Traitorous Eight. Twelve blocks away, they founded Fairchild Semiconductor.\n\nEleven years later, in nineteen sixty-eight, two of those eight — Robert Noyce and Gordon Moore — left Fairchild and started Intel. Eugene Kleiner co-founded Kleiner Perkins, the venture firm that funded most of what came next. The others seeded AMD, National Semiconductor, and dozens more.\n\nSilicon Valley, the place and the culture, did not originate in California. It was a diaspora. The seed that Shockley carried west was germanium dust from a basement laboratory in Murray Hill, New Jersey.\n\nSilicon Valley came from Jersey. It just built a better brand.",
+      "audio_status": "RE-RECORDED 2026-04-29 — combined scene 25+26 narration with new thesis ending ('Silicon Valley came from New Jersey. California scaled it. But Jersey built it.'). 68.08s.",
+      "narration": "Later that year, William Shockley left Bell Labs and opened Shockley Semiconductor Laboratory in Mountain View. He recruited eight of the sharpest young PhDs in the country.\n\nOn September eighteenth, nineteen fifty-seven — all eight walked into his office and resigned together.\n\nHistory would call them the Traitorous Eight.\n\nTwelve blocks away, they founded Fairchild Semiconductor.\n\nEleven years later, in nineteen sixty-eight, two of those eight — Robert Noyce and Gordon Moore — left Fairchild and started Intel.\n\nEugene Kleiner co-founded Kleiner Perkins — the firm that funded much of what came next.\n\nThe others seeded AMD, National Semiconductor — and dozens more.\n\nSilicon Valley — the place and the culture — did not originate in California.\n\nIt was a diaspora.\n\nThe seed that Shockley carried west… was germanium dust from a basement laboratory in Murray Hill.\n\nSilicon Valley came from New Jersey.\n\nCalifornia scaled it.\n\nBut Jersey built it.",
       "image_prompt": "COMBINED scene (was 25 + 26 — merged 2026-04-29). Sequence: 1) Map animation MH NJ → MV CA. 2) Period AI exterior of Shockley Semiconductor Laboratory storefront, Mountain View 1956–57, plate-glass windows, palm trees, period cars, 16:9 color photo with mid-century grade. 3) Composite 4x2 grid — eight 1950s-era portraits (Blank / Grinich / Hoerni / Kleiner / Last / Moore / Noyce / Roberts) with names below each. 4) Date sting SEPTEMBER 18, 1957 — portraits detach and slide out together. 5) Logo cascade — Fairchild → Intel (1968) → AMD → Kleiner Perkins. 6) Satellite of Silicon Valley pulling back across the continental US until a single pin pulses on Murray Hill, NJ. Hold on thesis line. [Mix of motion graphics + AI-generated period imagery; the grid carries enumeration so narration does not have to list names.]",
       "visual": "Map animation — Murray Hill NJ pin, single line drawn across the continent to Mountain View CA. Period AI-generated exterior of Shockley Semiconductor Laboratory storefront. Dissolve to the 4x2 composite grid of the Traitorous Eight with names below each portrait. Date sting SEPTEMBER 18, 1957 hits and the eight portraits detach from the grid and slide out of frame together — carrying the Fairchild beat. Cut to the logo cascade — Fairchild → Intel (1968) → AMD → Kleiner Perkins. Pan to a satellite view of Silicon Valley, which slowly pulls back across the continent until the continental U.S. fills the frame. A single pin pulses on Murray Hill, NJ. Hold on the thesis line — 'Silicon Valley came from Jersey. It just built a better brand.'",
       "text_overlay": "SHOCKLEY SEMICONDUCTOR LABORATORY — MOUNTAIN VIEW, CA — 1956; names under each portrait JULIUS BLANK / VICTOR GRINICH / JEAN HOERNI / EUGENE KLEINER / JAY LAST / GORDON MOORE / ROBERT NOYCE / C. SHELDON ROBERTS; date sting SEPTEMBER 18, 1957; logo cards FAIRCHILD → INTEL (1968) → AMD → KLEINER PERKINS; closing thesis card SILICON VALLEY CAME FROM JERSEY",
       "motion": "ken-burns-pan",
       "music": "Travel motif lifts on the MH → CA arc, turns decisive on the walkout, then opens up wide on the diaspora pullback — the emotional climax of the thesis. Let the closing line breathe.",
       "transition": "Crossfade 1s",
-      "image_path": "assets/images/scene-25.png",
+      "image_path": "assets/images/scene-26-shockley-portrait-365fdd.png",
       "assets": [
         {
           "order": 0,
-          "path": "assets/images/scene-25.png",
+          "path": "assets/images/scene-26-shockley-portrait-365fdd.png",
           "type": "image"
         },
         {
           "order": 1,
-          "path": "assets/images/scene-25-traitorous-eight-composite.png",
+          "path": "assets/images/scene-26-scene-26-shockley-semiconductor-lab-f98b18.png",
           "type": "image"
         },
         {
           "order": 2,
-          "path": "assets/images/scene-25-robert-noyce-1959.png",
+          "path": "assets/images/scene-26-scene-26-traitorous-eight-97cfa8.png",
           "type": "image"
         },
         {
@@ -801,9 +801,14 @@
           "order": 4,
           "path": "assets/images/scene-26-silicon-valley-aerial-1972.png",
           "type": "image"
+        },
+        {
+          "order": 5,
+          "path": "assets/images/scene-26-njbuilt-5d8518.png",
+          "type": "image"
         }
       ],
-      "notes": "Update the audio narration. "
+      "notes": ""
     },
     {
       "id": 27,
@@ -820,7 +825,7 @@
       "transition": "Crossfade 1s",
       "image_path": "assets/images/scene-27-1sttrans-9e3ba9.png",
       "audio_status": "Gate 2 RE-RECORD — compressed 'between November and December of nineteen forty-seven' → 'in the winter of nineteen forty-seven'; removed duplicated 'all of it, all of it'",
-      "notes": "",
+      "notes": "We need a new image with the list of stuff where transistors are used... per the narration. ",
       "assets": [
         {
           "order": 0,
@@ -840,7 +845,7 @@
       "chapter_title": "Closing Bookend",
       "title": "Back to the Drone (HD → FM) — was Scene 30",
       "duration": "13:15-13:45 (30s)",
-      "narration": "So come back to the ground. The sculpture in Holmdel is still there. The mirrored Bell Works building, once Bell Labs' palace on a hill, is still standing — reborn in twenty-thirteen as Bell Works, a two-million-square-foot 'metroburb' filled with startups, restaurants, and a quarter-mile atrium open to the public. And twenty miles south of it, on the same Fort Monmouth soil where the Signal Corps laboratories once bought the first transistors, Netflix is now pouring concrete. A one-billion-dollar, twelve-soundstage East Coast production hub. Phase one opens in twenty-twenty-seven. The ground that made the thing that makes the shows is now making the studio where the shows get made. That is not coincidence. That is how this place works. Every layer of the computer age was built inside a twenty-mile strip of New Jersey — and we are going to walk through all of them, one layer at a time.",
+      "narration": "That is not a coincidence. That's continuity.",
       "visual": "Creator drone footage returns. Transistor Monument in foreground, Saarinen Bell Works behind it. Slow pullback. Cross-cut to Netflix Fort Monmouth construction — cranes, foundations, soil being moved (AI rendering or creator b-roll if available). Hold an extra 2 seconds on the final Holmdel frame before the scene ends — let the landing line breathe.",
       "image_prompt": "Creator-provided drone + AI-generated / stock construction. 1) Creator Holmdel drone footage (returns to the opening shot, fuller composition). 2) Netflix Fort Monmouth construction — creator b-roll if available; otherwise AI prompt: Wide cinematic aerial view of a large construction site at dusk, multiple cranes and bulldozers moving earth on a 292-acre parcel, cleared land, distant backdrop of New Jersey suburban trees, early-stage foundations visible, photorealistic, 16:9. Hold an extra 2s on the final Holmdel frame before cutting — narration is done, music resolves, the 'one layer at a time' line needs to breathe.",
       "text_overlay": "NETFLIX STUDIOS FORT MONMOUTH — $1B — 12 SOUNDSTAGES — PHASE 1A OPENS 2027 (lower-third, 6s on Netflix cut)",
@@ -848,8 +853,8 @@
       "music": "Returns to the opening theme, fuller. Resolves fully on the final line.",
       "transition": "Slow fade 1.5s + brief silence before Ep 2 card",
       "audio_status_legacy_wav": "scene-30.wav from Gate 1 lock (narration byte-identical) — rename to scene-29.wav for new ordering",
-      "audio_status": "RE-RECORD 2026-04-25 — Somerset → Bell Works metroburb",
-      "notes": "That is not a coincidence. That is how this place works. Every",
+      "audio_status": "RE-RECORDED 2026-04-29 — narration cut to closing two-line beat: 'That is not a coincidence. That's continuity.' 3.53s.",
+      "notes": "",
       "assets": [
         {
           "order": 0,
@@ -868,6 +873,11 @@
         },
         {
           "order": 3,
+          "path": "assets/images/scene-29-pon1di-zgryhy0dp04ko0ep-4-ezotwhaitawzexeq-0betm-01833d.jpeg",
+          "type": "image"
+        },
+        {
+          "order": 4,
           "path": "assets/videos/scene-29-fortmonmouth-nexflix-1-mp4-2dc4a3.mp4",
           "type": "video"
         }
