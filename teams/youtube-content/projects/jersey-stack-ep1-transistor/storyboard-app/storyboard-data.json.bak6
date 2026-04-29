@@ -1,0 +1,874 @@
+{
+  "project": "The Jersey Stack — Ep 1: The Transistor",
+  "version": "2.0",
+  "date": "2026-04-19",
+  "total_runtime": "~14:45 narration (14:10 visual budget — Gate 2 trims applied)",
+  "gate_2_note": "Post-Gate-2 thesis sharpening (Apr 19): series is specifically transistor→computer. Ep 2 renamed 'The Switch' (TRADIC 1954). Scene 30 rewritten with amp→switch hook + transistor+sine→square visual (was PCB). Chapter 9 already consolidated (old 25+26 → new 25). Runtime ~14:45 narration budget (actual Josh render TBD post reconcat).",
+  "scenes": [
+    {
+      "id": 1,
+      "chapter": 1,
+      "chapter_title": "Cold Open — The Severance Hook",
+      "title": "Drone Reveal — Transistor Monument & Bell Works (HD)",
+      "duration": "0:00-0:07 (7s)",
+      "narration": "You might recognize this building.",
+      "visual": "Creator drone footage. Extreme close on the Transistor Monument sculpture at Holmdel — the three legs reading clearly in frame. Slow, smooth pullback. The Saarinen-designed mirrored rectangle of Bell Works reveals itself behind it, catching late-afternoon light.",
+      "image_prompt": "Creator-provided drone video (already owned). Extreme close on Transistor Monument sculpture at Holmdel / Bell Works. Slow 4K pullback revealing Saarinen mirrored rectangle. Magic-hour preferred. [Creator asset — no AI generation needed]",
+      "text_overlay": "(none)",
+      "motion": "static",
+      "music": "Fades in — ambient synth pad, one sustained note, like waking up.",
+      "transition": "Hard cut to Severance reveal",
+      "audio_status": "Gate 1 WAV OK — no re-record",
+      "notes": "",
+      "assets": [
+        {
+          "order": 0,
+          "path": "assets/videos/scene-01-look-d73233.mp4",
+          "type": "video"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "chapter": 1,
+      "chapter_title": "Cold Open — The Severance Hook",
+      "title": "The Severance Reveal (HD / pop culture)",
+      "duration": "0:07-0:27 (20s)",
+      "narration": "That's the Lumon Industries headquarters from Severance. What you probably don't know is what it used to be. This was Bell Labs Holmdel. And the monument out front — the one shaped like a transistor — marks something that was invented twenty miles north of here, on December twenty-third, nineteen forty-seven.",
+      "visual": "Hard cut from the drone shot of Bell Works to a recognizable Lumon-atrium still / brief Severance clip (fair-use documentary commentary). Quick beat, then cut back to an archival black-and-white photograph of Bell Labs Holmdel circa late 1960s — Saarinen's mirrored box when it was new, cars in the parking lot with fins.",
+      "image_prompt": "Fair-use Severance still/clip (Lumon atrium — documentary commentary; creator licensing call LOCKED: USE, appeal if flagged). Cut back to B&W Bell Labs Holmdel circa 1965-70 archival (PD/CC Commons — Bell_Labs_Holmdel.jpg era), parking lot with fin-era cars. [Archival + fair-use — no AI generation for this scene]",
+      "text_overlay": "BELL LABS, HOLMDEL NJ (lower-third on the archival photo cut)",
+      "motion": "gentle-zoom",
+      "music": "Holds the single note. A small synth accent on the Severance cut.",
+      "transition": "Crossfade 1s",
+      "audio_status": "Gate 1 WAV OK — no re-record",
+      "notes": "",
+      "assets": [
+        {
+          "order": 0,
+          "path": "assets/images/scene-02-dji-0024-1d4341.jpg",
+          "type": "image"
+        },
+        {
+          "order": 1,
+          "path": "assets/images/scene-02-bellworkentry-d58b1a.png",
+          "type": "image"
+        },
+        {
+          "order": 2,
+          "path": "assets/images/scene-02-bellworksinside-b18250.png",
+          "type": "image"
+        }
+      ],
+      "image_path": "assets/images/scene-02-dji-0024-1d4341.jpg"
+    },
+    {
+      "id": 3,
+      "chapter": 1,
+      "chapter_title": "Cold Open — The Severance Hook",
+      "title": "Modern-Life Transistor Montage (present day)",
+      "duration": "0:50-1:15 (25s)",
+      "narration": "Every one of these exists because of what three men did in a single room in New Jersey, in about ten minutes, seventy-nine years ago. The twentieth century pivoted on a bench in a basement. This is where it started.",
+      "visual": "Four fast cuts, ~6s each. 1) Modern smartphone in a hand, screen-on. 2) Interior of a hyperscale server room — blue LEDs receding into the dark. 3) The Netflix home-screen UI on a television. 4) NASA's Mars rover self-portrait on the Martian surface.",
+      "image_prompt": "Four AI-generated stills (2% gentle-zoom on each, cuts ~6s apart):\n1) Modern smartphone held in a hand, vertical composition, glowing screen, shallow DOF, clean studio lighting, cinematic, 16:9 crop\n2) Interior of a hyperscale data center server room, rows of glowing blue LEDs receding into darkness, wide angle, cinematic cool palette, 16:9\n3) Netflix home-screen interface displayed on a 4K television in a warm living room, soft rim lighting, photorealistic, 16:9\n4) Mars rover (Perseverance-class) self-portrait on the rust-orange Martian surface, wide shot, photorealistic NASA-style, 16:9",
+      "text_overlay": "(none — fast cuts carry themselves)",
+      "motion": "gentle-zoom",
+      "music": "Builds — light percussion, forward motion.",
+      "transition": "Hard cut to black for title card",
+      "image_path": "assets/images/scene-03.png",
+      "audio_status": "Gate 1 WAV OK — no re-record",
+      "notes": "",
+      "assets": [
+        {
+          "path": "assets/images/scene-03.png",
+          "type": "image",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "chapter": 1,
+      "chapter_title": "Cold Open — The Severance Hook",
+      "title": "Title Card",
+      "duration": "1:15-1:30 (15s)",
+      "narration": "(beat of silence — let the card breathe)",
+      "visual": "Hard cut to black. Title card animates in — heavy serif main title, thinner sans subtitle. Black with subtle noise texture. Small series mark.",
+      "image_prompt": "Title card built in FFmpeg drawtext / motion template. Black with subtle noise texture. Main title 'THE JERSEY STACK' in heavy serif (HBO-doc weight). Subtitle 'EPISODE 1 — THE TRANSISTOR' in lighter sans. Small series mark. [Motion graphic — not an AI image]",
+      "text_overlay": "THE JERSEY STACK (main) / EPISODE 1 — THE TRANSISTOR (subtitle)",
+      "motion": "static",
+      "music": "Resolves on a single sustained note, then drops into a low bed.",
+      "transition": "Crossfade 1s to Chapter 2",
+      "image_path": "assets/images/scene-04.png",
+      "audio_status": "Gate 1 WAV OK — no re-record (silence beat)",
+      "notes": "",
+      "assets": [
+        {
+          "path": "assets/images/scene-04.png",
+          "type": "image",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "chapter": 2,
+      "chapter_title": "The Cathedral",
+      "title": "Establishing Murray Hill (MH)",
+      "duration": "1:30-2:00 (30s)",
+      "narration": "Twenty miles north of Holmdel is the building where it actually happened. Bell Laboratories, Murray Hill, New Jersey. Ten miles west of Manhattan, set back from a quiet suburban road. It looked like a small college campus. It wasn't. It was the research arm of AT&T, the American telephone monopoly — and inside it was arguably the densest concentration of scientific talent on Earth.",
+      "visual": "Archival black-and-white aerial of Bell Labs Murray Hill, late 1940s (Gottscho-Schleisner / LOC or AT&T Archives). Slow Ken Burns zoom-in. Cut to a modern exterior of the same complex — Nokia Bell Labs signage visible — to close the 80-year gap.",
+      "image_prompt": "Archival (PD/CC) + creator or CC contemporary. Primary: Gottscho-Schleisner LOC aerial or AIP Niels Bohr Library aerial; alt Alcatel-Lucent_Murray_Hill.JPG + Bell_Laboratories_at_New_Providence,_New_Jersey_(7235324892).jpg (Commons CC). Modern Nokia Bell Labs exterior — Nokia_Bell_Labs_Murray_Hill,_NJ.jpg or Nokia_Bell_Labs_sign.jpg (Commons CC). [Archival + creator — no AI generation]",
+      "text_overlay": "BELL LABS — MURRAY HILL, NJ — c. 1947 (lower-third)",
+      "motion": "ken-burns-zoom",
+      "music": "Warm, orchestral pad, slight nostalgia.",
+      "transition": "Crossfade 1s",
+      "image_path": "assets/images/scene-05.png",
+      "audio_status": "Gate 2 RE-RECORD — slight tighten (final clause restructured)",
+      "notes": "",
+      "assets": [
+        {
+          "path": "assets/images/scene-05.png",
+          "type": "image",
+          "order": 0
+        },
+        {
+          "path": "assets/images/scene-05-mh-entrance.jpg",
+          "type": "image",
+          "order": 1
+        },
+        {
+          "path": "assets/images/scene-05-mh-attera.jpg",
+          "type": "image",
+          "order": 2
+        },
+        {
+          "path": "assets/images/scene-05-mh-alcatel.jpg",
+          "type": "image",
+          "order": 3
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "chapter": 2,
+      "chapter_title": "The Cathedral",
+      "title": "The Monopoly Bet & Kelly (MH)",
+      "duration": "2:00-2:30 (30s)",
+      "narration": "AT&T was a regulated monopoly. Stable profits, predictable profits — and a portion of those profits was, by design, funneled into research with no deadline. The man who decided what to do with that money was Mervin Kelly, the Director of Research. Kelly was an engineer's engineer, but he thought like a gambler. And in nineteen forty-five, he made a very specific bet.",
+      "visual": "Diagram animation — AT&T → Western Electric → Bell Labs, three tiers. Dissolve to a period photograph of a telephone switchboard operator. Dissolve to Mervin Kelly's PD magazine portrait.",
+      "image_prompt": "Motion graphic + archival + PD portrait. 1) Motion graphic: AT&T → Western Electric → Bell Labs three-tier flow. 2) Archival photo of 1940s AT&T telephone switchboard operator (PD, widely available). 3) Mervin Kelly portrait — Mervin_Kelly_Bell_telephone_magazine_(1922).jpg (PD-US, Commons). [Mix of motion graphic and archival — no AI generation]",
+      "text_overlay": "MERVIN KELLY — DIRECTOR OF RESEARCH, BELL LABS (on Kelly portrait)",
+      "motion": "ken-burns-zoom",
+      "music": "Steady, curious.",
+      "transition": "Crossfade 1s",
+      "image_path": "assets/images/scene-06.png",
+      "audio_status": "Gate 2 RE-RECORD — tightened; removed 'enormous' and 'No quarterly targets.'",
+      "notes": "",
+      "assets": [
+        {
+          "path": "assets/images/scene-06.png",
+          "type": "image",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "chapter": 2,
+      "chapter_title": "The Cathedral",
+      "title": "The 700-Foot Corridor (MH)",
+      "duration": "2:30-3:15 (45s)",
+      "narration": "Kelly believed the next revolution in communications would be solid-state — no moving parts, no glowing filaments. And he built the building to produce it. There was a corridor on the first floor of Murray Hill that ran seven hundred feet — nearly the length of two football fields. Physicists had offices on that corridor. So did chemists. So did metallurgists and engineers. You could not walk from your office to the cafeteria without colliding with someone who was thinking about your problem from a completely different angle. In the fall of nineteen forty-five, Kelly put a thirty-five-year-old physicist named William Shockley in charge of a new solid-state group. Shockley recruited a quiet theorist from the Midwest named John Bardeen, and an experimentalist from the Pacific Northwest named Walter Brattain. Two years later, those three names would go on the most important patent of the century.",
+      "visual": "AI-generated reconstruction — looking down a 1940s research-building corridor, nearly a thousand feet long, men in white shirts and ties passing between laboratory doorways, fluorescent tube lighting, the hallway vanishing to a point. Slow dolly forward.",
+      "image_prompt": "Mid-1940s Bell Labs long interior corridor, seven-hundred-foot vanishing-point perspective, men in white shirts and ties walking between laboratory doorways, fluorescent tube lighting, polished linoleum floor, cinematic black-and-white photograph, slight film grain, documentary realism, 16:9",
+      "text_overlay": "THE 700-FOOT CORRIDOR (3s sting mid-scene)",
+      "motion": "ken-burns-zoom",
+      "music": "Builds slightly. Warm bed builds.",
+      "transition": "Crossfade 1s",
+      "image_path": "assets/images/scene-07.png",
+      "audio_status": "Gate 2 RE-RECORD — trimmed 'Kelly designed it that way on purpose' sentence + 'inside that building' + 'solid-state physics group' compressed",
+      "notes": "",
+      "assets": [
+        {
+          "path": "assets/images/scene-07.png",
+          "type": "image",
+          "order": 0
+        },
+        {
+          "path": "assets/images/scene-07-murray-hill-head-house-I-1942.jpg",
+          "type": "image",
+          "order": 1
+        },
+        {
+          "path": "assets/images/scene-07-murray-hill-cafeteria-1942.jpg",
+          "type": "image",
+          "order": 2
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "chapter": 3,
+      "chapter_title": "The Problem",
+      "title": "The Vacuum Tube Problem (MH era)",
+      "duration": "3:15-3:40 (25s)",
+      "narration": "Every long-distance phone call in America in nineteen forty-five traveled along a copper line, and every few dozen miles, that signal got weaker and needed to be amplified. The device that did the amplifying was the vacuum tube. Vacuum tubes worked — but barely. They were the size of a light bulb. They ran hot. They burned out constantly. Scale up the American phone network, and the math broke. The tubes alone would have needed their own power plants.",
+      "visual": "Macro slow-motion shot of a single vacuum tube warming up, filament glowing orange. Pull back to an archival photograph of a 1940s telephone amplifier rack — hundreds of tubes.",
+      "image_prompt": "Archival stock macro + AI-generated rack. 1) Macro of a glowing vacuum tube (licensed stock or Commons — plenty available). 2) AI prompt: Nineteen-forties telephone amplifier rack, hundreds of glowing vacuum tubes in a dim switching room, orange filaments, archival documentary style, 16:9",
+      "text_overlay": "(none)",
+      "motion": "ken-burns-zoom",
+      "music": "Tension, low strings.",
+      "transition": "Crossfade 1s",
+      "image_path": "assets/images/scene-08.png",
+      "audio_status": "Gate 2 RE-RECORD — removed 'To understand why Kelly...' framing + 'cook an egg' + 'enormous amounts of power'",
+      "notes": "",
+      "panels": [
+        {
+          "path": "assets/images/scene-08b.png",
+          "duration_fraction": 0.5,
+          "label": "Vacuum tube macro — building the problem"
+        },
+        {
+          "path": "assets/images/scene-08.png",
+          "duration_fraction": 0.5,
+          "label": "1940s amplifier rack — the scale"
+        }
+      ],
+      "assets": [
+        {
+          "path": "assets/images/scene-08.png",
+          "type": "image",
+          "order": 0
+        },
+        {
+          "path": "assets/images/scene-08-eniac-vacuum-tubes-1946.jpg",
+          "type": "image",
+          "order": 1
+        },
+        {
+          "path": "assets/images/scene-08-eniac-tubes-closeup.jpg",
+          "type": "image",
+          "order": 2
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "chapter": 3,
+      "chapter_title": "The Problem",
+      "title": "The Semiconductor Idea (diagram)",
+      "duration": "3:40-4:05 (25s)",
+      "narration": "Kelly's bet was this: somewhere inside a class of materials called semiconductors — germanium, silicon — there was a way to move electrons around a tiny crystal that would do the job of a vacuum tube, with none of the heat, the size, or the fragility. Shockley had an idea in nineteen forty-five — a thing he called a field-effect amplifier. He was convinced it would work. He spent two years on it. It did not work.",
+      "visual": "Clean 2D animation — electrons as blue dots moving through a hex lattice, holes as red gaps. Dissolve to a photorealistic block of germanium rotating slowly against a black background.",
+      "image_prompt": "2D motion graphic + AI-generated crystal. 1) Animated 2D — electrons as blue dots moving through hexagonal lattice, red 'hole' gaps. 2) AI prompt: Photorealistic block of germanium crystal rotating slowly, metallic gray with subtle prismatic reflections, black background, macro studio lighting, 16:9",
+      "text_overlay": "ELECTRON / HOLE / GERMANIUM (minimal labels)",
+      "motion": "gentle-zoom",
+      "music": "Curious, discovery register.",
+      "transition": "Crossfade 1s",
+      "image_path": "assets/images/scene-09.png",
+      "audio_status": "Gate 2 RE-RECORD — removed 'No one quite knew how.' and 'do the same job as' tightened",
+      "notes": "",
+      "panels": [
+        {
+          "path": "assets/images/scene-09a.mp4",
+          "duration_fraction": 0.52,
+          "label": "Animated electron/hole lattice",
+          "is_motion": true,
+          "motion_duration_s": 15
+        },
+        {
+          "path": "assets/images/scene-09.png",
+          "duration_fraction": 0.48,
+          "label": "Germanium crystal — the physical material"
+        }
+      ],
+      "assets": [
+        {
+          "path": "assets/images/scene-09.png",
+          "type": "image",
+          "order": 0
+        },
+        {
+          "path": "assets/images/scene-09a.mp4",
+          "type": "video",
+          "order": 1
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "chapter": 3,
+      "chapter_title": "The Problem",
+      "title": "The Wall (MH)",
+      "duration": "4:05-4:25 (20s)",
+      "narration": "By the summer of nineteen forty-seven, Shockley's group had been chasing the solid-state amplifier for two years. They had almost nothing to show for it.",
+      "visual": "Archival Bell Labs bench photograph from the late 1940s (the 1948 trio photo cropped wide, or a Commons Murray Hill lab interior). AI-generated close-up of a notebook page with equations crossed out in black ink.",
+      "image_prompt": "Archival + AI-generated. 1) Bell Labs bench photograph — use the 1948 trio shot Bardeen_Shockley_Brattain_1948.JPG cropped wide for texture (PD-US, Commons). 2) AI prompt: Close-up of a mid-century handwritten physics notebook page, failed equations crossed out in black ink, warm desk-lamp light, cinematic macro, 16:9",
+      "text_overlay": "(none)",
+      "motion": "ken-burns-zoom",
+      "music": "Drops to near silence.",
+      "transition": "Crossfade 1s",
+      "image_path": "assets/images/scene-10.png",
+      "audio_status": "Gate 1 WAV OK — no re-record",
+      "notes": "",
+      "assets": [
+        {
+          "path": "assets/images/scene-10.png",
+          "type": "image",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "chapter": 4,
+      "chapter_title": "The Trio",
+      "title": "Bardeen (MH)",
+      "duration": "4:25-4:50 (25s)",
+      "narration": "John Bardeen was thirty-eight years old, born in Madison, Wisconsin, the son of a university dean. He was famously quiet — so quiet that colleagues sometimes forgot he was in the room. He did his best thinking in equations, and he did not like to be rushed. Bardeen would, much later, become the only person in history to win the Nobel Prize in Physics twice. He was the theorist on the team.",
+      "visual": "John Bardeen's 1956 Nobel portrait (PD). Slow zoom. Cut to AI-generated scene — a man at a blackboard, chalk in hand, solving equations in complete silence.",
+      "image_prompt": "Archival PD portrait + AI-generated lab scene. 1) Bardeen.jpg — 1956 Nobel portrait (PD-Sweden / Nobel Foundation). Pillarbox the portrait (formal headshot, likely vertical composition). 2) AI prompt: 1940s theoretical physicist in white shirt and dark tie standing at a blackboard covered in equations, chalk in hand, warm tungsten lighting, quiet concentration, cinematic black-and-white, 16:9",
+      "text_overlay": "JOHN BARDEEN — THEORIST (lower-third)",
+      "motion": "ken-burns-zoom",
+      "music": "Gentle, contemplative.",
+      "transition": "Crossfade 1s",
+      "image_path": "assets/images/scene-11.png",
+      "audio_status": "Gate 1 WAV OK — no re-record",
+      "notes": "",
+      "assets": [
+        {
+          "path": "assets/images/scene-11.png",
+          "type": "image",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "chapter": 4,
+      "chapter_title": "The Trio",
+      "title": "Brattain (MH)",
+      "duration": "4:50-5:15 (25s)",
+      "narration": "Walter Brattain was Bardeen's opposite — loud, funny, raised on a ranch in Washington State. Brattain had what Bell Labs people called 'the best pair of hands in the building.' He could assemble an experiment that no one else could get to work. While Bardeen reasoned about it on a chalkboard, Brattain built it on a bench. The two of them, it turned out, were perfectly paired. They shared an office.",
+      "visual": "Walter Brattain's 1956 Nobel portrait (PD). Slow zoom. AI-generated scene — hands under a warm lab light, carefully adjusting a probe against a metal surface.",
+      "image_prompt": "Archival PD portrait + AI-generated. 1) Brattain.jpg — 1956 Nobel portrait (PD-Sweden). Pillarbox the portrait. 2) AI prompt: Close-up of experienced experimentalist hands under warm lab light in a 1940s laboratory, carefully adjusting a needle-probe against a metal surface on a bench, shallow depth of field, cinematic macro, black-and-white, 16:9",
+      "text_overlay": "WALTER BRATTAIN — EXPERIMENTALIST",
+      "motion": "ken-burns-zoom",
+      "music": "Continues gently, hands-on feel.",
+      "transition": "Crossfade 1s",
+      "image_path": "assets/images/scene-12.png",
+      "audio_status": "Gate 1 WAV OK — no re-record",
+      "notes": "",
+      "assets": [
+        {
+          "path": "assets/images/scene-12.png",
+          "type": "image",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "chapter": 4,
+      "chapter_title": "The Trio",
+      "title": "Shockley & The Breakthrough Month (MH)",
+      "duration": "5:15-6:10 (55s)",
+      "narration": "Their boss, William Shockley, was thirty-seven — a brilliant theoretical physicist, already ambitious, already difficult. He led the group, but he traveled often, and he spent less and less time at the bench. In the fall of nineteen forty-seven, with Shockley mostly out of the building, Bardeen had the insight that unlocked everything. He realized that electrons were getting trapped on the surface of the germanium crystal — that the surface itself was acting as a shield, blocking the effect Shockley had been chasing. If they could get underneath that surface, with the right kind of contact, they might have an amplifier. Through November and into December of nineteen forty-seven, Bardeen and Brattain, in Lab One-E-four-fifty-five at Murray Hill, worked their way toward the device. They were within days of it. They just didn't know yet.",
+      "visual": "William Shockley's 1959 PD blackboard-lecture photo. Slightly cooler grade. Dissolve to AI-generated scene — Bardeen writing a key insight in a notebook, dated 'November 1947.' Chalkboard behind with surface-state diagrams.",
+      "image_prompt": "Archival + AI-generated. 1) William_Shockley_1959_lecture_(wh478sd1288).jpg OR William_Shockley_blackboard_transistor_(Vd304ks6545).jpg (Commons, Stanford Archives). 2) AI prompt: 1940s physicist at a wooden desk writing in a leather-bound notebook, page dated NOVEMBER 1947, fountain pen, warm desk-lamp, hand-drawn diagram of a crystal surface with surface-state notation, cinematic black-and-white, 16:9",
+      "text_overlay": "WILLIAM SHOCKLEY — TEAM LEAD (first 10s), then BARDEEN'S SURFACE-STATE INSIGHT — NOVEMBER 1947 (next 10s)",
+      "motion": "ken-burns-zoom",
+      "music": "Tension resolves into hope.",
+      "transition": "Slower crossfade 1.5s (chapter weight)",
+      "image_path": "assets/images/scene-13.png",
+      "audio_status": "Gate 2 RE-RECORD — dropped 'directly into the bulk of the crystal,' qualifier",
+      "notes": "",
+      "assets": [
+        {
+          "path": "assets/images/scene-13.png",
+          "type": "image",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "chapter": 5,
+      "chapter_title": "December 23, 1947 — The Bench",
+      "title": "The Setup (MH)",
+      "duration": "6:10-6:40 (30s)",
+      "narration": "December twenty-third, nineteen forty-seven. The afternoon before Christmas Eve. In a basement room at Murray Hill, Walter Brattain laid out the final version of the device. It was absurdly small. A slab of germanium about the size of a thumbnail. A triangular plastic wedge, with two narrow strips of gold foil glued to its edges, pressed down onto the germanium's surface — the two gold contacts spaced a thousandth of an inch apart. A paper clip would have dwarfed it.",
+      "visual": "Extreme macro. Photograph or museum shot of the actual 1947 point-contact transistor (Smithsonian / Commons `1st-Transistor.jpg`). Slow push in toward the gold contacts.",
+      "image_prompt": "Archival PD artifact photo + optional AI-generated reconstruction. PRIMARY: 1st-Transistor.jpg (Commons, 3264x2448) — photograph of the original artifact. Backup: The_First_Transistor_ever_made,_built_in_1947_-_Bell_Labs.jpg or Smithsonian NMAH transistor sample (verify CC0). Optional AI reconstruction: Extreme macro photograph of the 1947 point-contact transistor — polished gray germanium slab the size of a thumbnail, triangular plastic wedge with two narrow gold-foil strips pressed onto the crystal surface, gold contacts spaced one one-thousandth of an inch apart, warm tungsten lab light, black background, shallow depth of field, photorealistic historical reconstruction, 16:9",
+      "text_overlay": "DECEMBER 23, 1947 — BELL LABS, MURRAY HILL, NEW JERSEY (full scene)",
+      "motion": "ken-burns-zoom",
+      "music": "Cold, minimal — a single piano note every few beats.",
+      "transition": "Crossfade 1s",
+      "image_path": "assets/images/scene-14.png",
+      "audio_status": "Gate 1 WAV OK — no re-record",
+      "notes": "",
+      "assets": [
+        {
+          "path": "assets/images/scene-14.png",
+          "type": "image",
+          "order": 0
+        },
+        {
+          "path": "assets/images/scene-14-bell-labs-drafting-room-1942.jpg",
+          "type": "image",
+          "order": 1
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "chapter": 5,
+      "chapter_title": "December 23, 1947 — The Bench",
+      "title": "The Demo (MH) — HERO SCENE",
+      "duration": "6:40-7:20 (40s)",
+      "narration": "Bardeen and Brattain invited a small group of colleagues and managers down to the lab. They connected the device into an audio circuit — a microphone on one end, a loudspeaker on the other. Brattain spoke into the microphone. And the room heard his voice come back out of the speaker, louder. Amplified by a factor of about eighteen. No glass, no filament, no heat. A piece of metal-on-crystal, the size of a paper clip, doing what vacuum tubes had needed the better part of a century to do. They called it a transfer resistor. Within months, they would shorten that to transistor.",
+      "visual": "AI-generated wide shot — a small group of men in ties and white shirts gathered around a wooden bench in a basement laboratory. Brattain at the controls. An oscilloscope glowing green in foreground.",
+      "image_prompt": "1940s Bell Labs basement laboratory, afternoon light, a small group of men in ties and white lab coats gathered around a wooden bench, Walter Brattain at the controls, oscilloscope screen glowing green in foreground, wiring and test equipment, warm tungsten light, documentary cinematic, black-and-white with subtle warm tint, 16:9. Historical realism — do not stylize. [HERO SCENE — generate multiple variants]",
+      "text_overlay": "POWER GAIN: ~18x (stings on at the amplification beat, 4s)",
+      "motion": "ken-burns-zoom",
+      "music": "Holds on a single sustained note. SFX: soft tone swell at the 'amplified' beat — like a voice through a tinny speaker. This is the audible payoff.",
+      "transition": "Crossfade 1s",
+      "image_path": "assets/images/scene-15.png",
+      "audio_status": "Gate 1 WAV OK — no re-record (locked hero beat)",
+      "notes": "",
+      "assets": [
+        {
+          "path": "assets/images/scene-15.png",
+          "type": "image",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "chapter": 5,
+      "chapter_title": "December 23, 1947 — The Bench",
+      "title": "Bardeen Goes Home (domestic)",
+      "duration": "7:20-7:55 (35s)",
+      "narration": "Bardeen drove home that evening. He did not make a speech, he did not call a press conference. When his wife Jane asked him how his day had been, he is reported to have said, quote — 'we discovered something today.' Then he went to bed. The twentieth century had just pivoted in a basement in New Jersey, and the man who did it closed his eyes and went to sleep.",
+      "visual": "AI-generated — exterior of a modest post-war New Jersey colonial house at dusk, snow on the lawn, warm yellow light glowing from the kitchen window. Cut to interior — Bardeen at a kitchen table, his wife Jane pouring coffee. He says something quietly. She looks up.",
+      "image_prompt": "Two AI-generated shots:\n1) Exterior of a modest 1940s post-war New Jersey colonial house at dusk, light snow on the lawn, warm yellow light glowing from the kitchen window, quiet suburban street, cinematic painterly, 16:9\n2) 1940s American kitchen interior — a quiet middle-aged physicist in a cardigan sitting at a wooden kitchen table, his wife standing pouring coffee, warm lamplight, domestic and understated, cinematic black-and-white with warm tint, 16:9",
+      "text_overlay": "Handwritten-style end-of-scene: 'We discovered something today.' — John Bardeen",
+      "motion": "ken-burns-zoom",
+      "music": "Resolves, warm and quiet.",
+      "transition": "Fade to black 1.5s — brief silence before Chapter 6",
+      "image_path": "assets/images/scene-16.png",
+      "audio_status": "Gate 1 WAV OK — no re-record (locked understated landing)",
+      "notes": "",
+      "panels": [
+        {
+          "path": "assets/images/scene-16.png",
+          "duration_fraction": 0.45,
+          "label": "Exterior — modest 1940s NJ colonial, period-correct 1947 sedan"
+        },
+        {
+          "path": "assets/images/scene-16b.png",
+          "duration_fraction": 0.55,
+          "label": "Interior — Bardeen at kitchen table, Jane pouring coffee"
+        }
+      ],
+      "assets": [
+        {
+          "path": "assets/images/scene-16.png",
+          "type": "image",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "chapter": 6,
+      "chapter_title": "The Fracture",
+      "title": "Shockley Finds Out (MH → Chicago)",
+      "duration": "7:55-8:25 (30s)",
+      "narration": "William Shockley had not been in the lab on December twenty-third. He had been traveling. When he got back and learned what Bardeen and Brattain had done without him, he was, by every account, furious. He tried to get his name added to the patent application — alone. Bell Labs' lawyers looked at Shockley's own writings, found them uncomfortably close to a nineteen-twenty-five patent by a German physicist named Julius Lilienfeld, and quietly left Shockley's name off the document entirely.",
+      "visual": "Shockley portrait, cooler palette. Dissolve to AI-generated — a man pacing a dim hotel room, cigarette in hand, papers scattered on the bed.",
+      "image_prompt": "Archival + AI-generated. 1) Shockley portrait (cooler grade applied) — same source as Scene 13. 2) AI prompt: 1940s man pacing a dim hotel room, cigarette in hand, papers scattered on an unmade bed, visible tension in body language, cinematic black-and-white, film-noir lighting, 16:9",
+      "text_overlay": "(none)",
+      "motion": "ken-burns-zoom",
+      "music": "Returns on a darker tone, low strings.",
+      "transition": "Crossfade 1s",
+      "image_path": "assets/images/scene-17.png",
+      "audio_status": "Gate 2 RE-RECORD — dropped 'He argued that the device was built on his theoretical groundwork.'",
+      "notes": "",
+      "assets": [
+        {
+          "path": "assets/images/scene-17.png",
+          "type": "image",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "chapter": 6,
+      "chapter_title": "The Fracture",
+      "title": "Four Weeks in Chicago (Chicago)",
+      "duration": "8:25-8:50 (25s)",
+      "narration": "So Shockley got on a train to Chicago, checked into a hotel room, and for four weeks — while his colleagues celebrated Christmas and New Year — he filled notebook after notebook, alone, out of pure competitive rage. On January twenty-third, nineteen forty-eight — exactly one month after the basement demo — Shockley had the junction transistor. Layered, like a sandwich. More reliable. Easier to manufacture. The version that would actually power the next fifty years.",
+      "visual": "AI-generated — 1940s Chicago hotel room at night, snow visible through a tall window, a lone physicist at a wooden desk covered in notebook pages and hand-drawn diagrams. Banker's lamp. Cigarette smoke curling. Dissolve to AI macro — a hand-drawn junction transistor diagram in a notebook, labeled 'N-P-N.'",
+      "image_prompt": "Two AI-generated shots:\n1) 1940s Chicago hotel room at night, winter snow visible through a tall window, a lone physicist at a wooden desk covered in notebook pages and hand-drawn circuit diagrams, banker's lamp, cigarette smoke curling in warm light, cinematic melancholy obsession, 16:9\n2) Macro close-up of a hand-drawn 1948 junction transistor diagram in a physics notebook, layered sandwich structure labeled N-P-N, fountain-pen ink, warm desk lamp, cinematic, 16:9",
+      "text_overlay": "CHICAGO — DEC 1947 / JAN 1948 (first); THE JUNCTION TRANSISTOR — JAN 23, 1948 (second)",
+      "motion": "ken-burns-zoom",
+      "music": "Builds, obsessive.",
+      "transition": "Crossfade 1s",
+      "image_path": "assets/images/scene-18.png",
+      "audio_status": "Gate 2 RE-RECORD — compressed date-range framing; removed 'designed a completely different kind of transistor. A better one.' into tighter flow",
+      "notes": "",
+      "panels": [
+        {
+          "path": "assets/images/scene-18.png",
+          "duration_fraction": 0.6,
+          "label": "Chicago hotel room — four weeks of obsession"
+        },
+        {
+          "path": "assets/images/scene-18b.png",
+          "duration_fraction": 0.4,
+          "label": "Hand-drawn NPN junction transistor diagram, Jan 1948"
+        }
+      ],
+      "assets": [
+        {
+          "path": "assets/images/scene-18.png",
+          "type": "image",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "chapter": 6,
+      "chapter_title": "The Fracture",
+      "title": "The Team Breaks (MH)",
+      "duration": "8:50-9:05 (15s visual — narration carries through to next scene)",
+      "narration": "The team never recovered. Shockley blocked Bardeen and Brattain from the junction work. Brattain asked to be transferred. In nineteen fifty-one, Bardeen quietly left Bell Labs for the University of Illinois — where, twenty-one years later, he would win a second Nobel Prize, this time for superconductivity. The three men who invented the transistor together did not really speak again. Shockley's own story gets darker from here. He'd end his career at Stanford advocating for eugenics — a brilliant physicist who chose, in the end, to be remembered for something ugly. But the device he helped launch was already loose in the world.",
+      "visual": "The three portraits side by side on black. Bardeen's portrait slides off to the left and dissolves; Brattain's slides to the right and dissolves; Shockley holds center.",
+      "image_prompt": "Archival portraits composite — three PD portraits (Bardeen, Brattain, Shockley) side-by-side on black. Custom composite animation in assembly: Bardeen slides left and dissolves, Brattain slides right and dissolves, Shockley holds center — then Shockley fades too on the closing line. Shockley 1975 Stanford photo can briefly intercut on the eugenics line (creator discretion). [Composite animation — no new AI generation]",
+      "text_overlay": "1951 — BARDEEN LEAVES BELL LABS",
+      "motion": "static",
+      "music": "Minor, resigned.",
+      "transition": "Crossfade 1s",
+      "image_path": "assets/images/scene-19.png",
+      "audio_status": "Gate 1 WAV OK — no re-record (locked single eugenics sentence)",
+      "notes": "",
+      "assets": [
+        {
+          "path": "assets/images/scene-19.png",
+          "type": "image",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "chapter": 7,
+      "chapter_title": "The Announcement & The Cold War Customer",
+      "title": "The June 1948 Press Conference (MH / NYC)",
+      "duration": "9:05-9:35 (30s)",
+      "narration": "On June thirtieth, nineteen forty-eight, Bell Labs held a press conference in New York and unveiled the transistor to the world. A Bell spokesman named Ralph Bown held up a hundred-times-scale cutaway model and explained what it did. Most of the press yawned. Newspapers buried it on inside pages. The consumer market had no use for a delicate lab curiosity that cost more than a television set. But there was one customer in the room who understood immediately what it meant. And that customer was also in New Jersey.",
+      "visual": "AI-generated reconstruction — Ralph Bown, in a dark suit, standing at a podium holding a 100x cutaway model of the transistor up to news photographers. Flashbulbs. Black and white.",
+      "image_prompt": "Nineteen forty-eight Bell Labs press conference, New York City — a tall man in a dark suit (Ralph Bown) standing at a podium holding a hundred-times-scale cutaway model of a point-contact transistor up to news photographers, flashbulbs popping, rows of seated reporters with notepads, black-and-white documentary photograph, cinematic historical realism, 16:9",
+      "text_overlay": "BELL LABS PRESS CONFERENCE — JUNE 30, 1948 — NEW YORK",
+      "motion": "ken-burns-zoom",
+      "music": "Brief mid-century newsreel brass motif, then pulls back.",
+      "transition": "Crossfade 1s",
+      "image_path": "assets/images/scene-20.png",
+      "audio_status": "Gate 1 WAV OK — no re-record",
+      "notes": "",
+      "assets": [
+        {
+          "path": "assets/images/scene-20.png",
+          "type": "image",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "id": 21,
+      "chapter": 7,
+      "chapter_title": "The Announcement & The Cold War Customer",
+      "title": "Fort Monmouth & the 20-Mile Line (MH → FM)",
+      "duration": "9:35-10:00 (25s)",
+      "narration": "Twenty miles down the road, at the U.S. Army Signal Corps Laboratories at Fort Monmouth, the Cold War was already on. The Army needed smaller, lighter, tougher field radios — and vacuum tubes couldn't cut it. Fort Monmouth became one of the earliest serious customers for the transistor, pouring defense money into Bell Labs and its licensees, and in doing so, de-risking the entire technology. A generation later, the transistorized field radio that came out of that pipeline — the AN/PRC-25 — would be called, by General Creighton Abrams, quote, 'the single most important tactical item in Vietnam.'",
+      "visual": "Map graphic — clean line drawn from Murray Hill NJ down to Fort Monmouth NJ, '20 MILES' labeled. Dissolve to archival Signal Corps Center, Fort Monmouth, 1949 (Commons PD). Dissolve to a hero shot of the AN/PRC-25 (PD).",
+      "image_prompt": "Motion graphic + archival PD + AI hero. 1) Map animation: NJ satellite, pin drops Murray Hill, line draws south to Fort Monmouth pin, '20 MILES' label. 2) Signal_Corps_Center,_Fort_Monmouth_NJ_1949.jpg (Commons PD). 3) AI hero prompt: Hero product photograph of an AN/PRC-25 military tactical radio, olive-drab, 1960s vintage, studio black background, dramatic side lighting, 16:9 (Commons PRC-25 images also viable)",
+      "text_overlay": "U.S. ARMY SIGNAL CORPS LABORATORIES — FORT MONMOUTH, NJ (on Signal Corps photo); then 'THE SINGLE MOST IMPORTANT TACTICAL ITEM IN VIETNAM' — GEN. CREIGHTON ABRAMS (on PRC-25 hero, 6s)",
+      "motion": "ken-burns-zoom",
+      "music": "Steady, building.",
+      "transition": "Crossfade 1s",
+      "image_path": "assets/images/scene-21.png",
+      "audio_status": "Gate 2 RE-RECORD — dropped 'for soldiers'",
+      "notes": "",
+      "assets": [
+        {
+          "path": "assets/images/scene-21.png",
+          "type": "image",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "id": 22,
+      "chapter": 7,
+      "chapter_title": "The Announcement & The Cold War Customer",
+      "title": "InfoAge at Camp Evans (creator callback) (FM)",
+      "duration": "10:00-10:30 (30s)",
+      "narration": "You can still walk onto a piece of that story today. The old Signal Corps radar base at Camp Evans, in Wall Township, is now called InfoAge — a volunteer-run museum on the original ground where the Army tracked enemy aircraft and bounced radar off the moon. Inside one of those buildings, under glass, sit some of the earliest transistors the Signal Corps ever bought. Same soil. Same story. Different century. Fort Monmouth didn't just buy the first transistors. Fort Monmouth is about to invent something of its own. But that is the story of episode two.",
+      "visual": "Creator-owned photographs of InfoAge Science & History Museums — exterior of the Marconi-era buildings at Camp Evans; creator-owned close-up photo of the early transistor artifacts on display at InfoAge; possible creator drone of the Camp Evans historic district (airspace TBD).",
+      "image_prompt": "CREATOR-PROVIDED (Nick is a volunteer at InfoAge):\n- Creator photograph — InfoAge Marconi-era buildings exterior (Camp Evans, Wall Township)\n- Creator photograph — the transistor artifacts on display at InfoAge (confirmed on site)\n- Optional creator drone footage of Camp Evans historic district (airspace permitting)\n- Fallback: Project_Diana_antenna.jpg (Commons PD) as a supporting Camp Evans texture shot\n[Creator assets — no AI generation needed for this scene]",
+      "text_overlay": "INFOAGE SCIENCE & HISTORY MUSEUMS — CAMP EVANS — WALL TOWNSHIP, NJ (lower-third)",
+      "motion": "ken-burns-zoom",
+      "music": "Warms — a quiet pride note.",
+      "transition": "Crossfade 1s",
+      "image_path": "assets/images/scene-22.png",
+      "audio_status": "Gate 1 WAV OK — no re-record (locked InfoAge callback)",
+      "notes": "",
+      "assets": [
+        {
+          "path": "assets/images/scene-22.png",
+          "type": "image",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "id": 23,
+      "chapter": 8,
+      "chapter_title": "1956 — The Nobel and the Decree",
+      "title": "Nobel (Stockholm)",
+      "duration": "10:30-10:50 (20s)",
+      "narration": "In December of nineteen fifty-six, in Stockholm, William Shockley, John Bardeen, and Walter Brattain shared the Nobel Prize in Physics. It was the first time in years the three of them had stood on the same stage. By most accounts, they did not quite look at each other.",
+      "visual": "Three Nobel PD portraits — Shockley, Bardeen, Brattain — arranged sequentially with Stockholm 1956 date-stamp animation. (No free group ceremony shot exists; the triptych substitutes.)",
+      "image_prompt": "Archival PD portraits (triptych). Three Nobel PD portraits — Shockley.jpg (via Nobel Foundation if available), Bardeen.jpg, Brattain.jpg — arranged as a triptych with Stockholm 1956 date stamp. No free ceremony group shot exists. [Archival composite — no AI generation]",
+      "text_overlay": "NOBEL PRIZE IN PHYSICS — STOCKHOLM — DECEMBER 1956",
+      "motion": "ken-burns-zoom",
+      "music": "Ceremonial, but restrained.",
+      "transition": "Crossfade 1s",
+      "image_path": "assets/images/scene-23.png",
+      "audio_status": "Gate 1 WAV OK — no re-record",
+      "notes": "",
+      "assets": [
+        {
+          "path": "assets/images/scene-23.png",
+          "type": "image",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "id": 24,
+      "chapter": 8,
+      "chapter_title": "1956 — The Nobel and the Decree",
+      "title": "The Consent Decree (legal + metaphor)",
+      "duration": "10:50-11:25 (35s)",
+      "narration": "But the bigger thing that happened to the transistor in nineteen fifty-six was not the Nobel. It was a federal courtroom. To settle a seven-year antitrust case, AT&T signed a consent decree forcing it to license every patent in its vault — more than seven thousand of them, including the transistor — to any American company that asked, for a nominal fee. Intel co-founder Gordon Moore would later call it 'one of the most important developments for the commercial semiconductor industry.' In one signature, the moat dissolved. Anyone could build a transistor now. And a lot of people were about to.",
+      "visual": "Stylized legal document — header 'UNITED STATES v. WESTERN ELECTRIC — CONSENT DECREE — JANUARY 24, 1956.' Key phrases animate in: '7,820 PATENTS', 'ALL AMERICAN COMPANIES', 'NOMINAL LICENSE FEE'. Dissolve to AI metaphor shot — stone dam, huge gates slowly opening, water rushing through.",
+      "image_prompt": "Title-card + motion graphic + AI metaphor. 1) Stylized legal-document treatment: header 'UNITED STATES v. WESTERN ELECTRIC — CONSENT DECREE — JANUARY 24, 1956.' Key phrases animate in: '7,820 PATENTS', 'ALL AMERICAN COMPANIES', 'NOMINAL LICENSE FEE'. 2) AI metaphor prompt: Cinematic shot of a large stone dam with huge mechanical gates slowly opening, water rushing through, dramatic sky, wide angle, photorealistic, 16:9",
+      "text_overlay": "Pull-quote — 'One of the most important developments for the commercial semiconductor industry.' — GORDON MOORE",
+      "motion": "ken-burns-zoom",
+      "music": "Swells — this is the turning point.",
+      "transition": "Hard cut (no crossfade) — energy shift into diaspora",
+      "image_path": "assets/images/scene-24.png",
+      "audio_status": "Gate 2 RE-RECORD — compressed 'the more consequential thing' meta-framing; AT&T/Justice-Department framing tightened",
+      "notes": "",
+      "panels": [
+        {
+          "path": "assets/images/scene-24a.mp4",
+          "duration_fraction": 0.43,
+          "label": "Animated consent decree legal document",
+          "is_motion": true,
+          "motion_duration_s": 18
+        },
+        {
+          "path": "assets/images/scene-24.png",
+          "duration_fraction": 0.57,
+          "label": "Dam gates opening — the moat dissolved metaphor"
+        }
+      ],
+      "assets": [
+        {
+          "path": "assets/images/scene-24.png",
+          "type": "image",
+          "order": 0
+        },
+        {
+          "path": "assets/images/scene-24a.mp4",
+          "type": "video",
+          "order": 1
+        }
+      ]
+    },
+    {
+      "id": 25,
+      "chapter": 9,
+      "chapter_title": "The Diaspora",
+      "title": "Shockley Goes West & the Walkout (MH → Mountain View) — COMBINED",
+      "duration": "11:25-12:00 (35s)",
+      "narration": "Later that same year, Shockley left Bell Labs and opened Shockley Semiconductor in Mountain View, California. He recruited eight of the sharpest young PhDs in the country. He was also, it turned out, one of the worst managers the industry had ever seen — paranoid, combative, given to requiring his employees to submit to lie-detector tests. On September eighteenth, nineteen fifty-seven, all eight walked into his office and resigned together. History would call them the Traitorous Eight. Twelve blocks away, they founded Fairchild Semiconductor.",
+      "visual": "Map animation — Murray Hill NJ pin, single line drawn across the continent to Mountain View CA. Smaller pin drops. Period AI-generated exterior of Shockley Semiconductor Laboratory storefront in Mountain View, late 1950s. Dissolve to composite 4x2 grid — eight 1950s-era portrait images with names below each (Blank, Grinich, Hoerni, Kleiner, Last, Moore, Noyce, Roberts). Date sting SEPTEMBER 18, 1957 hits and the eight portraits detach from the grid and slide out of frame together.",
+      "image_prompt": "COMBINED (was Scenes 25 + 26). Motion graphic + AI-generated storefront + composite Traitorous Eight grid. 1) Map animation — Murray Hill NJ pin → continental arc → Mountain View CA pin. 2) AI prompt (Shockley Semi): Exterior of a 1950s Silicon Valley storefront laboratory, single-story commercial building, plate-glass windows, signage reading 'Shockley Semiconductor Laboratory', palm trees and parked period cars out front, Mountain View California late 1950s, cinematic historical, color photograph with period grade, 16:9. 3) Composite grid — PD portraits where available (Noyce, Moore, Kleiner) + AI-filled 1950s headshots for Blank, Grinich, Hoerni, Last, Roberts. AI prompt per missing name: '1950s black-and-white portrait photograph of a thirty-something male scientist in a suit and tie, studio lighting, formal employee-file headshot style, mid-century American, photorealistic, 4:5'. Arrange as 4x2 grid with names below. Date sting SEPTEMBER 18, 1957 — portraits detach and slide out together. The grid carries the enumeration visually so narration doesn't have to list the names.",
+      "text_overlay": "SHOCKLEY SEMICONDUCTOR LABORATORY — MOUNTAIN VIEW, CA — 1956 (first half); names under each portrait JULIUS BLANK / VICTOR GRINICH / JEAN HOERNI / EUGENE KLEINER / JAY LAST / GORDON MOORE / ROBERT NOYCE / C. SHELDON ROBERTS; date sting SEPTEMBER 18, 1957 (second half)",
+      "motion": "ken-burns-zoom",
+      "music": "Travel motif lifts, turns tense, then decisive on the walkout — biggest musical payoff besides the demo scene.",
+      "transition": "Crossfade 1s",
+      "image_path": "assets/images/scene-25.png",
+      "audio_status": "Gate 2 RE-RECORD — NEW COMBINED narration (was old Scenes 25 + 26). Less enumeration; 4x2 composite grid carries the eight names visually.",
+      "notes": "",
+      "assets": [
+        {
+          "path": "assets/images/scene-25.png",
+          "type": "image",
+          "order": 0
+        },
+        {
+          "path": "assets/images/scene-25-shockley-semiconductor-lab-exterior.jpg",
+          "type": "image",
+          "order": 1
+        },
+        {
+          "path": "assets/images/scene-25-shockley-ssl-391-san-antonio.jpg",
+          "type": "image",
+          "order": 2
+        },
+        {
+          "path": "assets/images/scene-25-robert-noyce-1959.png",
+          "type": "image",
+          "order": 3
+        }
+      ]
+    },
+    {
+      "id": 26,
+      "chapter": 9,
+      "chapter_title": "The Diaspora",
+      "title": "The Payoff Beat (map) — was Scene 27",
+      "duration": "12:00-12:35 (35s)",
+      "narration": "Eleven years later, in nineteen sixty-eight, two of those eight — Robert Noyce and Gordon Moore — left Fairchild and started Intel. Eugene Kleiner co-founded Kleiner Perkins, the venture firm that funded most of what came next. The others seeded AMD, National Semiconductor, and dozens more. Silicon Valley, the place and the culture, did not originate in California. It was a diaspora. The seed that Shockley carried west was germanium dust from a basement laboratory in Murray Hill, New Jersey. Silicon Valley came from Jersey. It just built a better brand.",
+      "visual": "Fast logo sequence — Fairchild → Intel (1968) → AMD → Kleiner Perkins. Pan to a satellite view of Silicon Valley, which slowly pulls back across the continent until the continental U.S. fills the frame. A single pin pulses on Murray Hill, NJ.",
+      "image_prompt": "Logo sequence + motion graphic. 1) Logo sequence (brief, 4 beats, ~1s each): Fairchild → Intel (1968) → AMD → Kleiner Perkins. 2) Satellite map of Silicon Valley pulling back across the continental US until a single pin pulses on Murray Hill, NJ. [Motion graphic — no AI generation]",
+      "text_overlay": "FAIRCHILD → INTEL (1968) → AMD → KLEINER PERKINS → THE VALLEY",
+      "motion": "ken-burns-pan",
+      "music": "The emotional climax of the thesis. Let it breathe.",
+      "transition": "Crossfade 1s",
+      "image_path": "assets/images/scene-26.png",
+      "audio_status": "Gate 2 RE-RECORD — tightened Noyce/Moore/Kleiner enumeration. THESIS LINE PRESERVED VERBATIM: 'Silicon Valley came from Jersey. It just built a better brand.'",
+      "notes": "",
+      "assets": [
+        {
+          "path": "assets/images/scene-26.png",
+          "type": "image",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "id": 27,
+      "chapter": 10,
+      "chapter_title": "What It Became",
+      "title": "The Count-Up (motion graphic) — was Scene 28",
+      "duration": "12:35-13:00 (25s)",
+      "narration": "One transistor on a bench in nineteen forty-seven. Today, Apple's M-three Max processor packs about ninety-two billion transistors onto a single chip the size of a postage stamp. The descendants of that device have shrunk by a factor of about a hundred million and gotten roughly a trillion times cheaper. Every phone, every server, every car, every pacemaker, every pixel on every streaming screen on Earth rides on the thing those three men built in the winter of nineteen forty-seven.",
+      "visual": "Motion graphic — counter starts at '1' over a tiny image of the 1947 device, then accelerates: 1971 Intel 4004 (2,300), 1989 486 (~1.2M), 2000 Pentium 4 (~42M), 2010 (~1B), 2023 Apple M3 Max (~92B). Ends on an AI macro shot of a modern silicon die.",
+      "image_prompt": "Motion graphic + AI-generated chip macro. 1) Counter motion graphic: 1 (1947 point-contact) → 2,300 (Intel 4004, 1971) → ~1.2M (Intel 486, 1989) → ~42M (Pentium 4, 2000) → ~1B (2010) → ~92B (Apple M3 Max, 2023). 2) AI prompt: Extreme macro of a modern Apple-silicon SoC die, iridescent microscopic circuitry, dramatic studio lighting, photorealistic, 16:9",
+      "text_overlay": "Counter IS the text; final sting APPLE M3 MAX — 92,000,000,000",
+      "motion": "gentle-zoom",
+      "music": "Forward momentum, inspired.",
+      "transition": "Crossfade 1s",
+      "image_path": "assets/images/scene-27.png",
+      "audio_status": "Gate 2 RE-RECORD — compressed 'between November and December of nineteen forty-seven' → 'in the winter of nineteen forty-seven'; removed duplicated 'all of it, all of it'",
+      "notes": "",
+      "assets": [
+        {
+          "path": "assets/images/scene-27.png",
+          "type": "image",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "id": 28,
+      "chapter": 10,
+      "chapter_title": "What It Became",
+      "title": "The Quiet Line (title) — was Scene 29",
+      "duration": "13:00-13:15 (15s)",
+      "narration": "Moore's Law is, in the end, a seventy-seven-year story of one demonstration compounding.",
+      "visual": "Black frame. A single line of white serif text fades in, centered.",
+      "image_prompt": "Title card (FFmpeg drawtext). Black frame. White serif text fades in, centered. [Motion graphic — no AI image]",
+      "text_overlay": "77 YEARS. ONE DEMO.",
+      "motion": "static",
+      "music": "Drops to a sustained pad.",
+      "transition": "Slow fade 1.5s",
+      "image_path": "assets/images/scene-28.png",
+      "audio_status_legacy_wav": "scene-29.wav from Gate 1 lock (narration byte-identical) — rename to scene-28.wav for new ordering",
+      "audio_status": "Gate 1 WAV OK — no re-record (locked quiet-line)",
+      "notes": "",
+      "assets": [
+        {
+          "path": "assets/images/scene-28.png",
+          "type": "image",
+          "order": 0
+        }
+      ]
+    },
+    {
+      "id": 29,
+      "chapter": 11,
+      "chapter_title": "Closing Bookend",
+      "title": "Back to the Drone (HD → FM) — was Scene 30",
+      "duration": "13:15-13:45 (30s)",
+      "narration": "So come back to the ground. The sculpture in Holmdel is still there. The mirrored Bell Works building, once Bell Labs' palace on a hill, is still standing, because a developer named Somerset bought it in twenty-thirteen for twenty-seven million dollars and filled it with startups. And twenty miles south of it, on the same Fort Monmouth soil where the Signal Corps laboratories once bought the first transistors, Netflix is now pouring concrete. A one-billion-dollar, twelve-soundstage East Coast production hub. Phase one opens in twenty-twenty-seven. The ground that made the thing that makes the shows is now making the studio where the shows get made. That is not coincidence. That is how this place works. Every layer of the computer age was built inside a twenty-mile strip of New Jersey — and we are going to walk through all of them, one layer at a time.",
+      "visual": "Creator drone footage returns. Transistor Monument in foreground, Saarinen Bell Works behind it. Slow pullback. Cross-cut to Netflix Fort Monmouth construction — cranes, foundations, soil being moved (AI rendering or creator b-roll if available). Hold an extra 2 seconds on the final Holmdel frame before the scene ends — let the landing line breathe.",
+      "image_prompt": "Creator-provided drone + AI-generated / stock construction. 1) Creator Holmdel drone footage (returns to the opening shot, fuller composition). 2) Netflix Fort Monmouth construction — creator b-roll if available; otherwise AI prompt: Wide cinematic aerial view of a large construction site at dusk, multiple cranes and bulldozers moving earth on a 292-acre parcel, cleared land, distant backdrop of New Jersey suburban trees, early-stage foundations visible, photorealistic, 16:9. Hold an extra 2s on the final Holmdel frame before cutting — narration is done, music resolves, the 'one layer at a time' line needs to breathe.",
+      "text_overlay": "NETFLIX STUDIOS FORT MONMOUTH — $1B — 12 SOUNDSTAGES — PHASE 1A OPENS 2027 (lower-third, 6s on Netflix cut)",
+      "motion": "ken-burns-zoom",
+      "music": "Returns to the opening theme, fuller. Resolves fully on the final line.",
+      "transition": "Slow fade 1.5s + brief silence before Ep 2 card",
+      "audio_status_legacy_wav": "scene-30.wav from Gate 1 lock (narration byte-identical) — rename to scene-29.wav for new ordering",
+      "audio_status": "Gate 1 WAV OK — no re-record (locked closing bookend)",
+      "notes": "",
+      "assets": [
+        {
+          "order": 0,
+          "path": "assets/videos/scene-29-tranistor-1-a8da1f.mp4",
+          "type": "video"
+        },
+        {
+          "order": 1,
+          "path": "assets/videos/scene-29-fortmonmouth-nexflix-1-mp4-2dc4a3.mp4",
+          "type": "video"
+        }
+      ]
+    },
+    {
+      "id": 30,
+      "chapter": 12,
+      "chapter_title": "Ep 2 Outro",
+      "title": "Next Episode End Card — The Switch",
+      "duration": "13:45-13:55 (10s)",
+      "narration": "But what you just saw was a transistor as an amplifier — a voice, eighteen times louder. To build a computer, you need a switch. On. Off. One. Zero. Next time on The Jersey Stack — The Switch.",
+      "visual": "Hero shot of a single 1950s point-contact transistor in a TO-5 metal can against a deep black background. Blurred oscilloscope screen in the background shows a sine wave on the left morphing into a square wave on the right — amp becoming switch, visualized. Cinematic moody rim lighting. End card: 'THE JERSEY STACK — EPISODE 2 — THE SWITCH — COMING SOON.' Series logo.",
+      "image_prompt": "Dramatic hero shot of a single vintage 1950s point-contact transistor in a TO-5 metal can with three protruding wire leads, centered against a deep black background, an oscilloscope screen visible in the soft blurred background showing a sine wave on the left side morphing into a square wave on the right side — the visual metaphor is a continuous analog waveform transitioning into a discrete digital pulse train. Moody dramatic rim lighting on the transistor, warm metallic highlights on the can, cinematic shallow depth of field, photorealistic, 16:9 widescreen aspect ratio, no text or labels anywhere in the image.",
+      "text_overlay": "EPISODE 2 — THE SWITCH (animates in on end card)",
+      "motion": "static",
+      "music": "Punchy tag, cuts out clean.",
+      "transition": "Cut to black — end of episode",
+      "image_path": "assets/images/scene-30.png",
+      "audio_status": "Post-Gate-2 RE-RECORD pending — new amp→switch hook narration teases Ep 2 'The Switch'",
+      "notes": "",
+      "assets": [
+        {
+          "path": "assets/images/scene-30.png",
+          "type": "image",
+          "order": 0
+        }
+      ]
+    }
+  ],
+  "thumbnails": []
+}

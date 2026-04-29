@@ -1,0 +1,8 @@
+{
+  "title": "The Jersey Stack — Ep 1: The Transistor (DRAFT v3)",
+  "description": "🎬 DRAFT v3 — for review only, not for public sharing.\n\nNew Jersey invented the transistor. A 20-mile stretch of NJ holds the birthplace of the thing that runs every device in your pocket, and a monument to itself just outside the Severance set. Episode 1 of The Jersey Stack follows the story from Bell Labs Murray Hill in 1947 through the Traitorous Eight walkout in 1957 — and ends back at Fort Monmouth, where Netflix is rebuilding the ground that built the hardware.\n\nKnown issues in this cut:\n• Scene 29 (closing drone) has ~40 seconds of frame-hold where the video runs out before the narration ends — cutaway montage planned for v4\n• Some AI-generated text (S20 newspaper headline, S26 logo sequence) may have rendering artifacts\n• Scene 9 and Scene 24 motion graphics are full-length — pacing may need trimming\n\nChapters:\n0:00 Drone Reveal & Severance Hook\n1:05 Title Card\n1:20 Bell Labs Murray Hill\n3:25 The Vacuum Tube Problem\n5:10 The Inventors\n7:20 The Demo (Dec 23, 1947)\n9:55 Shockley Chicago & the Junction\n11:45 The June 1948 Press Conference\n12:30 Fort Monmouth & InfoAge\n13:40 Nobel & the Consent Decree\n14:05 Shockley Semi & the Walkout\n14:30 The Count-Up\n14:50 Back to the Drone — Netflix Fort Monmouth\n\n---\nPart of The Jersey Stack — a five-episode series on how New Jersey invented the modern computer.",
+  "tags": ["documentary", "new jersey", "bell labs", "transistor", "history of technology", "vistter", "the jersey stack"],
+  "category": "Education",
+  "thumbnail": "/Users/nickd/Workspaces/AgentArchitect/teams/youtube-content/projects/jersey-stack-ep1-transistor/output/jersey-stack-ep1-v3-thumb.jpg",
+  "visibility": "unlisted"
+}

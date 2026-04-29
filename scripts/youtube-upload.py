@@ -13,11 +13,14 @@ import argparse
 import json
 import os
 import pickle
+import ssl
+import time
 import sys
 
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
+from googleapiclient.errors import HttpError
 from googleapiclient.http import MediaFileUpload
 
 TOKEN_FILE = os.path.expanduser("~/.config/youtube-upload/token.pickle")
@@ -105,10 +108,31 @@ def upload_video(youtube, video_path, meta, visibility):
     print(f"Uploading {video_path} ({file_size_mb:.1f} MB)...", file=sys.stderr)
 
     response = None
+    max_retries = 10
+    retry = 0
     while response is None:
-        status, response = request.next_chunk()
-        if status:
-            print(f"Upload progress: {int(status.progress() * 100)}%", file=sys.stderr)
+        try:
+            status, response = request.next_chunk()
+            if status:
+                print(f"Upload progress: {int(status.progress() * 100)}%", file=sys.stderr)
+            retry = 0  # reset on success
+        except (ssl.SSLEOFError, ssl.SSLError, ConnectionResetError, BrokenPipeError, OSError) as e:
+            retry += 1
+            if retry > max_retries:
+                raise
+            wait = min(2 ** retry, 60)
+            print(f"Network error ({e}), retrying in {wait}s (attempt {retry}/{max_retries})...", file=sys.stderr)
+            time.sleep(wait)
+        except HttpError as e:
+            if e.resp.status in (500, 502, 503, 504):
+                retry += 1
+                if retry > max_retries:
+                    raise
+                wait = min(2 ** retry, 60)
+                print(f"HTTP {e.resp.status} error, retrying in {wait}s (attempt {retry}/{max_retries})...", file=sys.stderr)
+                time.sleep(wait)
+            else:
+                raise
 
     return response
 

@@ -1,57 +1,34 @@
 {
   "project": "The Jersey Stack — Ep 1: The Transistor",
   "version": "2.0",
-  "date": "2026-04-19",
+  "date": "2026-04-29",
   "total_runtime": "~14:45 narration (14:10 visual budget — Gate 2 trims applied)",
-  "gate_2_note": "Post-Gate-2 thesis sharpening (Apr 19): series is specifically transistor→computer. Ep 2 renamed 'The Switch' (TRADIC 1954). Scene 30 rewritten with amp→switch hook + transistor+sine→square visual (was PCB). Chapter 9 already consolidated (old 25+26 → new 25). Runtime ~14:45 narration budget (actual Josh render TBD post reconcat).",
+  "gate_2_note": "Post-Gate-2 thesis sharpening (Apr 19): series is specifically transistor→computer. Ep 2 renamed 'The Switch' (TRADIC 1954). Scene 30 rewritten with amp→switch hook + transistor+sine→square visual (was PCB). Chapter 9 already consolidated (old 25+26 → new 25). Runtime ~14:45 narration budget (actual Josh render TBD post reconcat). Apr 25: scenes 1 & 2 merged (scene 1 narration was only 2.37s); new combined scene 1 narration ~23s, IDs 3-30 unchanged. Apr 25 batch: scene 19 narration rewritten (eugenics dropped), scene 21 +2 AI images (Signal Corps + PRC-25), scene 27 +2 AI images (point-contact + die macro), scene 28 removed entirely, scene 29 narration rewritten (Somerset → Bell Works). Apr 29 batch: scenes 11/12/13/17 composite images split into separate portrait + action beats; scene 14 prepended with 'December 23, 1947' title card; scene 25 merged into scene 26 (eugenics/manager framing dropped, thesis line preserved). Scene 25 removed; ID gap left intentionally.",
   "scenes": [
     {
       "id": 1,
       "chapter": 1,
       "chapter_title": "Cold Open — The Severance Hook",
-      "title": "Drone Reveal — Transistor Monument & Bell Works (HD)",
-      "duration": "0:00-0:07 (7s)",
-      "narration": "You might recognize this building.",
-      "visual": "Creator drone footage. Extreme close on the Transistor Monument sculpture at Holmdel — the three legs reading clearly in frame. Slow, smooth pullback. The Saarinen-designed mirrored rectangle of Bell Works reveals itself behind it, catching late-afternoon light.",
-      "image_prompt": "Creator-provided drone video (already owned). Extreme close on Transistor Monument sculpture at Holmdel / Bell Works. Slow 4K pullback revealing Saarinen mirrored rectangle. Magic-hour preferred. [Creator asset — no AI generation needed]",
-      "text_overlay": "(none)",
-      "motion": "static",
-      "music": "Fades in — ambient synth pad, one sustained note, like waking up.",
-      "transition": "Hard cut to Severance reveal",
-      "audio_status": "Gate 1 WAV OK — no re-record",
+      "title": "Drone Reveal & Severance Hook (merged 1+2)",
+      "duration": "0:00-0:23 (~23s)",
+      "narration": "You might recognize this building. That's the Lumon Industries headquarters from Severance. What you probably don't know is what it used to be. This was Bell Labs Holmdel. And the monument out front — the one shaped like a transistor — marks something that was invented twenty miles north of here, on December twenty-third, nineteen forty-seven.",
+      "visual": "Open on the Transistor Monument drone shot at Holmdel / Bell Works (Saarinen mirrored rectangle revealing behind it, late-afternoon light). Hard cut to a recognizable Lumon-atrium still / brief Severance clip (fair-use documentary commentary). Quick beat, then cut back to an archival B&W photograph of Bell Labs Holmdel circa late 1960s — Saarinen's mirrored box when it was new, fin-era cars in the parking lot.",
+      "image_prompt": "Lead asset: creator-provided drone video of the Transistor Monument at Holmdel (already owned). Then fair-use Severance still/clip (Lumon atrium — documentary commentary; creator licensing call LOCKED: USE, appeal if flagged). Cut back to B&W Bell Labs Holmdel circa 1965-70 archival (PD/CC Commons — Bell_Labs_Holmdel.jpg era), parking lot with fin-era cars. [Creator video + archival + fair-use — no AI generation]",
+      "text_overlay": "BELL LABS, HOLMDEL NJ (lower-third on the archival photo cut)",
+      "motion": "ken-burns-zoom",
+      "music": "Fades in — ambient synth pad, one sustained note. Small synth accent on the Severance cut. Holds the note through the archival photo.",
+      "transition": "Crossfade 1s",
+      "audio_status": "MERGED — re-render Gate 1 WAV from combined narration",
       "notes": "",
       "assets": [
         {
           "order": 0,
           "path": "assets/videos/scene-01-look-d73233.mp4",
           "type": "video"
-        }
-      ]
-    },
-    {
-      "id": 2,
-      "chapter": 1,
-      "chapter_title": "Cold Open — The Severance Hook",
-      "title": "The Severance Reveal (HD / pop culture)",
-      "duration": "0:07-0:27 (20s)",
-      "narration": "That's the Lumon Industries headquarters from Severance. What you probably don't know is what it used to be. This was Bell Labs Holmdel. And the monument out front — the one shaped like a transistor — marks something that was invented twenty miles north of here, on December twenty-third, nineteen forty-seven.",
-      "visual": "Hard cut from the drone shot of Bell Works to a recognizable Lumon-atrium still / brief Severance clip (fair-use documentary commentary). Quick beat, then cut back to an archival black-and-white photograph of Bell Labs Holmdel circa late 1960s — Saarinen's mirrored box when it was new, cars in the parking lot with fins.",
-      "image_prompt": "Fair-use Severance still/clip (Lumon atrium — documentary commentary; creator licensing call LOCKED: USE, appeal if flagged). Cut back to B&W Bell Labs Holmdel circa 1965-70 archival (PD/CC Commons — Bell_Labs_Holmdel.jpg era), parking lot with fin-era cars. [Archival + fair-use — no AI generation for this scene]",
-      "text_overlay": "BELL LABS, HOLMDEL NJ (lower-third on the archival photo cut)",
-      "motion": "gentle-zoom",
-      "music": "Holds the single note. A small synth accent on the Severance cut.",
-      "transition": "Crossfade 1s",
-      "audio_status": "Gate 1 WAV OK — no re-record",
-      "notes": "",
-      "assets": [
-        {
-          "order": 0,
-          "path": "assets/images/scene-02-dji-0024-1d4341.jpg",
-          "type": "image"
         },
         {
           "order": 1,
-          "path": "assets/images/scene-02-bellworkentry-d58b1a.png",
+          "path": "assets/images/scene-02-dji-0024-1d4341.jpg",
           "type": "image"
         }
       ],
@@ -147,17 +124,17 @@
       "motion": "ken-burns-zoom",
       "music": "Steady, curious.",
       "transition": "Crossfade 1s",
-      "image_path": "assets/images/scene-06.png",
+      "image_path": "assets/images/scene-06-monopoly-bet.png",
       "audio_status": "Gate 2 RE-RECORD — tightened; removed 'enormous' and 'No quarterly targets.'",
       "notes": "",
       "assets": [
         {
-          "path": "assets/images/scene-06.png",
+          "path": "assets/images/scene-06-monopoly-bet.png",
           "type": "image",
           "order": 0
         },
         {
-          "path": "assets/images/scene-06-monopoly-bet.png",
+          "path": "assets/images/scene-06.png",
           "type": "image",
           "order": 1
         }
@@ -176,7 +153,7 @@
       "motion": "ken-burns-zoom",
       "music": "Builds slightly. Warm bed builds.",
       "transition": "Crossfade 1s",
-      "image_path": "assets/images/scene-07.png",
+      "image_path": "assets/images/scene-07-floor-plan-corridor.png",
       "audio_status": "Gate 2 RE-RECORD — trimmed 'Kelly designed it that way on purpose' sentence + 'inside that building' + 'solid-state physics group' compressed",
       "notes": "",
       "assets": [
@@ -199,6 +176,11 @@
           "path": "assets/images/scene-07-murray-hill-cafeteria-1942.jpg",
           "type": "image",
           "order": 3
+        },
+        {
+          "order": 4,
+          "path": "assets/images/scene-07-from-scene-23.png",
+          "type": "image"
         }
       ]
     },
@@ -215,7 +197,7 @@
       "motion": "ken-burns-zoom",
       "music": "Tension, low strings.",
       "transition": "Crossfade 1s",
-      "image_path": "assets/images/scene-08.png",
+      "image_path": "assets/images/scene-08-scene-07-bell-system-switchboard-1943-95b282.jpg",
       "audio_status": "Gate 2 RE-RECORD — removed 'To understand why Kelly...' framing + 'cook an egg' + 'enormous amounts of power'",
       "notes": "",
       "panels": [
@@ -232,19 +214,19 @@
       ],
       "assets": [
         {
-          "path": "assets/images/scene-08.png",
-          "type": "image",
-          "order": 0
+          "order": 0,
+          "path": "assets/images/scene-08-scene-07-bell-system-switchboard-1943-95b282.jpg",
+          "type": "image"
         },
         {
-          "path": "assets/images/scene-08-eniac-vacuum-tubes-1946.jpg",
+          "path": "assets/images/scene-08.png",
           "type": "image",
           "order": 1
         },
         {
-          "path": "assets/images/scene-08-eniac-tubes-closeup.jpg",
-          "type": "image",
-          "order": 2
+          "order": 2,
+          "path": "assets/images/scene-08-scene-08-early-audion-repeaters-1919-98f384.jpg",
+          "type": "image"
         }
       ]
     },
@@ -328,14 +310,19 @@
       "motion": "ken-burns-zoom",
       "music": "Gentle, contemplative.",
       "transition": "Crossfade 1s",
-      "image_path": "assets/images/scene-11.png",
+      "image_path": "assets/images/scene-11-bardeen-portrait.png",
       "audio_status": "Gate 1 WAV OK — no re-record",
       "notes": "",
       "assets": [
         {
-          "path": "assets/images/scene-11.png",
-          "type": "image",
-          "order": 0
+          "order": 0,
+          "path": "assets/images/scene-11-bardeen-portrait.png",
+          "type": "image"
+        },
+        {
+          "order": 1,
+          "path": "assets/images/scene-11-bardeen-chalkboard.png",
+          "type": "image"
         }
       ]
     },
@@ -352,14 +339,19 @@
       "motion": "ken-burns-zoom",
       "music": "Continues gently, hands-on feel.",
       "transition": "Crossfade 1s",
-      "image_path": "assets/images/scene-12.png",
+      "image_path": "assets/images/scene-12-brattain-portrait.png",
       "audio_status": "Gate 1 WAV OK — no re-record",
       "notes": "",
       "assets": [
         {
-          "path": "assets/images/scene-12.png",
-          "type": "image",
-          "order": 0
+          "order": 0,
+          "path": "assets/images/scene-12-brattain-portrait.png",
+          "type": "image"
+        },
+        {
+          "order": 1,
+          "path": "assets/images/scene-12-brattain-bench.png",
+          "type": "image"
         }
       ]
     },
@@ -376,24 +368,29 @@
       "motion": "ken-burns-zoom",
       "music": "Tension resolves into hope.",
       "transition": "Slower crossfade 1.5s (chapter weight)",
-      "image_path": "assets/images/scene-13.png",
+      "image_path": "assets/images/scene-13-shockley-portrait.png",
       "audio_status": "Gate 2 RE-RECORD — dropped 'directly into the bulk of the crystal,' qualifier",
       "notes": "",
       "assets": [
         {
-          "path": "assets/images/scene-13.png",
-          "type": "image",
-          "order": 0
+          "order": 0,
+          "path": "assets/images/scene-13-shockley-portrait.png",
+          "type": "image"
         },
         {
+          "order": 1,
+          "path": "assets/images/scene-13-bardeen-insight.png",
+          "type": "image"
+        },
+        {
+          "order": 2,
           "path": "assets/images/scene-13-bardeen-thinking.png",
-          "type": "image",
-          "order": 1
+          "type": "image"
         },
         {
+          "order": 3,
           "path": "assets/images/scene-13-shockley-bench.png",
-          "type": "image",
-          "order": 2
+          "type": "image"
         }
       ]
     },
@@ -404,25 +401,25 @@
       "title": "The Setup (MH)",
       "duration": "6:10-6:40 (30s)",
       "narration": "December twenty-third, nineteen forty-seven. The afternoon before Christmas Eve. In a basement room at Murray Hill, Walter Brattain laid out the final version of the device. It was absurdly small. A slab of germanium about the size of a thumbnail. A triangular plastic wedge, with two narrow strips of gold foil glued to its edges, pressed down onto the germanium's surface — the two gold contacts spaced a thousandth of an inch apart. A paper clip would have dwarfed it.",
-      "visual": "Extreme macro. Photograph or museum shot of the actual 1947 point-contact transistor (Smithsonian / Commons `1st-Transistor.jpg`). Slow push in toward the gold contacts.",
-      "image_prompt": "Archival PD artifact photo + optional AI-generated reconstruction. PRIMARY: 1st-Transistor.jpg (Commons, 3264x2448) — photograph of the original artifact. Backup: The_First_Transistor_ever_made,_built_in_1947_-_Bell_Labs.jpg or Smithsonian NMAH transistor sample (verify CC0). Optional AI reconstruction: Extreme macro photograph of the 1947 point-contact transistor — polished gray germanium slab the size of a thumbnail, triangular plastic wedge with two narrow gold-foil strips pressed onto the crystal surface, gold contacts spaced one one-thousandth of an inch apart, warm tungsten lab light, black background, shallow depth of field, photorealistic historical reconstruction, 16:9",
+      "visual": "Open on title card — DECEMBER 23, 1947 / The afternoon before Christmas Eve — held for ~2s with quiet film-grain bg. Crossfade to the close-up of the point-contact transistor apparatus on the bench. Extreme macro. Photograph or museum shot of the actual 1947 point-contact transistor (Smithsonian / Commons `1st-Transistor.jpg`). Slow push in toward the gold contacts.",
+      "image_prompt": "TITLE CARD (~2s open beat) — black background, cream serif 'DECEMBER 23, 1947' centered with hairline rule and subtitle 'The afternoon before Christmas Eve.' Hold ~2s, then crossfade to the existing apparatus close-up. Archival PD artifact photo + optional AI-generated reconstruction. PRIMARY: 1st-Transistor.jpg (Commons, 3264x2448) — photograph of the original artifact. Backup: The_First_Transistor_ever_made,_built_in_1947_-_Bell_Labs.jpg or Smithsonian NMAH transistor sample (verify CC0). Optional AI reconstruction: Extreme macro photograph of the 1947 point-contact transistor — polished gray germanium slab the size of a thumbnail, triangular plastic wedge with two narrow gold-foil strips pressed onto the crystal surface, gold contacts spaced one one-thousandth of an inch apart, warm tungsten lab light, black background, shallow depth of field, photorealistic historical reconstruction, 16:9",
       "text_overlay": "DECEMBER 23, 1947 — BELL LABS, MURRAY HILL, NEW JERSEY (full scene)",
       "motion": "ken-burns-zoom",
       "music": "Cold, minimal — a single piano note every few beats.",
       "transition": "Crossfade 1s",
-      "image_path": "assets/images/scene-14-point-contact-apparatus.png",
+      "image_path": "assets/images/scene-14-title-card-dec-23-1947.png",
       "audio_status": "Gate 1 WAV OK — no re-record",
       "notes": "",
       "assets": [
         {
-          "path": "assets/images/scene-14-point-contact-apparatus.png",
-          "type": "image",
-          "order": 0
+          "order": 0,
+          "path": "assets/images/scene-14-title-card-dec-23-1947.png",
+          "type": "image"
         },
         {
+          "order": 1,
           "path": "assets/images/scene-14.png",
-          "type": "image",
-          "order": 1
+          "type": "image"
         }
       ]
     },
@@ -509,19 +506,24 @@
       "motion": "ken-burns-zoom",
       "music": "Returns on a darker tone, low strings.",
       "transition": "Crossfade 1s",
-      "image_path": "assets/images/scene-17.png",
+      "image_path": "assets/images/scene-17-shockley-portrait.png",
       "audio_status": "Gate 2 RE-RECORD — dropped 'He argued that the device was built on his theoretical groundwork.'",
       "notes": "",
       "assets": [
         {
-          "path": "assets/images/scene-17.png",
-          "type": "image",
-          "order": 0
+          "order": 0,
+          "path": "assets/images/scene-17-shockley-portrait.png",
+          "type": "image"
         },
         {
+          "order": 1,
+          "path": "assets/images/scene-17-shockley-hotel.png",
+          "type": "image"
+        },
+        {
+          "order": 2,
           "path": "assets/images/scene-17-shockley-chicago-phonebooth.png",
-          "type": "image",
-          "order": 1
+          "type": "image"
         }
       ]
     },
@@ -572,15 +574,15 @@
       "chapter_title": "The Fracture",
       "title": "The Team Breaks (MH)",
       "duration": "8:50-9:05 (15s visual — narration carries through to next scene)",
-      "narration": "The team never recovered. Shockley blocked Bardeen and Brattain from the junction work. Brattain asked to be transferred. In nineteen fifty-one, Bardeen quietly left Bell Labs for the University of Illinois — where, twenty-one years later, he would win a second Nobel Prize, this time for superconductivity. The three men who invented the transistor together did not really speak again. Shockley's own story gets darker from here. He'd end his career at Stanford advocating for eugenics — a brilliant physicist who chose, in the end, to be remembered for something ugly. But the device he helped launch was already loose in the world.",
+      "narration": "The team never recovered. Shockley blocked Bardeen and Brattain from the junction work. Brattain asked to be transferred. In nineteen fifty-one, Bardeen quietly left Bell Labs for the University of Illinois — where, twenty-one years later, he would win a second Nobel Prize, this time for superconductivity. The three men who invented the transistor together did not really speak again. But the device they had launched was already loose in the world.",
       "visual": "The three portraits side by side on black. Bardeen's portrait slides off to the left and dissolves; Brattain's slides to the right and dissolves; Shockley holds center.",
-      "image_prompt": "Archival portraits composite — three PD portraits (Bardeen, Brattain, Shockley) side-by-side on black. Custom composite animation in assembly: Bardeen slides left and dissolves, Brattain slides right and dissolves, Shockley holds center — then Shockley fades too on the closing line. Shockley 1975 Stanford photo can briefly intercut on the eugenics line (creator discretion). [Composite animation — no new AI generation]",
+      "image_prompt": "Archival portraits composite — three PD portraits (Bardeen, Brattain, Shockley) side-by-side on black. Custom composite animation in assembly: Bardeen slides left and dissolves, Brattain slides right and dissolves, Shockley holds center — then Shockley fades too on the closing line. [Composite animation — no new AI generation]",
       "text_overlay": "1951 — BARDEEN LEAVES BELL LABS",
       "motion": "static",
       "music": "Minor, resigned.",
       "transition": "Crossfade 1s",
       "image_path": "assets/images/scene-19.png",
-      "audio_status": "Gate 1 WAV OK — no re-record (locked single eugenics sentence)",
+      "audio_status": "RE-RECORD 2026-04-25 — eugenics line removed",
       "notes": "",
       "assets": [
         {
@@ -642,14 +644,24 @@
       "motion": "ken-burns-zoom",
       "music": "Steady, building.",
       "transition": "Crossfade 1s",
-      "image_path": "assets/images/scene-21.png",
+      "image_path": "assets/images/scene-21-signal-corps.png",
       "audio_status": "Gate 2 RE-RECORD — dropped 'for soldiers'",
       "notes": "",
       "assets": [
         {
+          "order": 0,
+          "path": "assets/images/scene-21-signal-corps.png",
+          "type": "image"
+        },
+        {
+          "order": 1,
+          "path": "assets/images/scene-21-prc25.png",
+          "type": "image"
+        },
+        {
+          "order": 2,
           "path": "assets/images/scene-21.png",
-          "type": "image",
-          "order": 0
+          "type": "image"
         }
       ]
     },
@@ -750,77 +762,48 @@
       ]
     },
     {
-      "id": 25,
-      "chapter": 9,
-      "chapter_title": "The Diaspora",
-      "title": "Shockley Goes West & the Walkout (MH → Mountain View) — COMBINED",
-      "duration": "11:25-12:00 (35s)",
-      "narration": "Later that same year, Shockley left Bell Labs and opened Shockley Semiconductor in Mountain View, California. He recruited eight of the sharpest young PhDs in the country. He was also, it turned out, one of the worst managers the industry had ever seen — paranoid, combative, given to requiring his employees to submit to lie-detector tests. On September eighteenth, nineteen fifty-seven, all eight walked into his office and resigned together. History would call them the Traitorous Eight. Twelve blocks away, they founded Fairchild Semiconductor.",
-      "visual": "Map animation — Murray Hill NJ pin, single line drawn across the continent to Mountain View CA. Smaller pin drops. Period AI-generated exterior of Shockley Semiconductor Laboratory storefront in Mountain View, late 1950s. Dissolve to composite 4x2 grid — eight 1950s-era portrait images with names below each (Blank, Grinich, Hoerni, Kleiner, Last, Moore, Noyce, Roberts). Date sting SEPTEMBER 18, 1957 hits and the eight portraits detach from the grid and slide out of frame together.",
-      "image_prompt": "COMBINED (was Scenes 25 + 26). Motion graphic + AI-generated storefront + composite Traitorous Eight grid. 1) Map animation — Murray Hill NJ pin → continental arc → Mountain View CA pin. 2) AI prompt (Shockley Semi): Exterior of a 1950s Silicon Valley storefront laboratory, single-story commercial building, plate-glass windows, signage reading 'Shockley Semiconductor Laboratory', palm trees and parked period cars out front, Mountain View California late 1950s, cinematic historical, color photograph with period grade, 16:9. 3) Composite grid — PD portraits where available (Noyce, Moore, Kleiner) + AI-filled 1950s headshots for Blank, Grinich, Hoerni, Last, Roberts. AI prompt per missing name: '1950s black-and-white portrait photograph of a thirty-something male scientist in a suit and tie, studio lighting, formal employee-file headshot style, mid-century American, photorealistic, 4:5'. Arrange as 4x2 grid with names below. Date sting SEPTEMBER 18, 1957 — portraits detach and slide out together. The grid carries the enumeration visually so narration doesn't have to list the names.",
-      "text_overlay": "SHOCKLEY SEMICONDUCTOR LABORATORY — MOUNTAIN VIEW, CA — 1956 (first half); names under each portrait JULIUS BLANK / VICTOR GRINICH / JEAN HOERNI / EUGENE KLEINER / JAY LAST / GORDON MOORE / ROBERT NOYCE / C. SHELDON ROBERTS; date sting SEPTEMBER 18, 1957 (second half)",
-      "motion": "ken-burns-zoom",
-      "music": "Travel motif lifts, turns tense, then decisive on the walkout — biggest musical payoff besides the demo scene.",
-      "transition": "Crossfade 1s",
-      "image_path": "assets/images/scene-25.png",
-      "audio_status": "Gate 2 RE-RECORD — NEW COMBINED narration (was old Scenes 25 + 26). Less enumeration; 4x2 composite grid carries the eight names visually.",
-      "notes": "",
-      "assets": [
-        {
-          "path": "assets/images/scene-25.png",
-          "type": "image",
-          "order": 0
-        },
-        {
-          "path": "assets/images/scene-25-shockley-ssl-391-san-antonio.jpg",
-          "type": "image",
-          "order": 1
-        },
-        {
-          "path": "assets/images/scene-25-robert-noyce-1959.png",
-          "type": "image",
-          "order": 2
-        },
-        {
-          "path": "assets/images/scene-25-traitorous-eight-composite.png",
-          "type": "image",
-          "order": 3
-        }
-      ]
-    },
-    {
       "id": 26,
       "chapter": 9,
       "chapter_title": "The Diaspora",
-      "title": "The Payoff Beat (map) — was Scene 27",
-      "duration": "12:00-12:35 (35s)",
-      "narration": "Eleven years later, in nineteen sixty-eight, two of those eight — Robert Noyce and Gordon Moore — left Fairchild and started Intel. Eugene Kleiner co-founded Kleiner Perkins, the venture firm that funded most of what came next. The others seeded AMD, National Semiconductor, and dozens more. Silicon Valley, the place and the culture, did not originate in California. It was a diaspora. The seed that Shockley carried west was germanium dust from a basement laboratory in Murray Hill, New Jersey. Silicon Valley came from Jersey. It just built a better brand.",
-      "visual": "Fast logo sequence — Fairchild → Intel (1968) → AMD → Kleiner Perkins. Pan to a satellite view of Silicon Valley, which slowly pulls back across the continent until the continental U.S. fills the frame. A single pin pulses on Murray Hill, NJ.",
-      "image_prompt": "Logo sequence + motion graphic. 1) Logo sequence (brief, 4 beats, ~1s each): Fairchild → Intel (1968) → AMD → Kleiner Perkins. 2) Satellite map of Silicon Valley pulling back across the continental US until a single pin pulses on Murray Hill, NJ. [Motion graphic — no AI generation]",
-      "text_overlay": "FAIRCHILD → INTEL (1968) → AMD → KLEINER PERKINS → THE VALLEY",
+      "title": "Shockley West → Walkout → The Diaspora — COMBINED (was 25 + 26)",
+      "duration": "11:25-12:35 (70s)",
+      "audio_status": "RE-RECORD 2026-04-29 — NEW combined scene 25+26 narration. Dropped 'Shockley was a terrible manager / paranoid / lie-detector tests' framing per creator note. Walkout beat preserved; thesis line preserved verbatim.",
+      "narration": "Later that year, Shockley left Bell Labs and opened Shockley Semiconductor in Mountain View, California. He recruited eight of the sharpest young PhDs in the country. On September eighteenth, nineteen fifty-seven, all eight walked into his office and resigned together. History would call them the Traitorous Eight. Twelve blocks away, they founded Fairchild Semiconductor.\n\nEleven years later, in nineteen sixty-eight, two of those eight — Robert Noyce and Gordon Moore — left Fairchild and started Intel. Eugene Kleiner co-founded Kleiner Perkins, the venture firm that funded most of what came next. The others seeded AMD, National Semiconductor, and dozens more.\n\nSilicon Valley, the place and the culture, did not originate in California. It was a diaspora. The seed that Shockley carried west was germanium dust from a basement laboratory in Murray Hill, New Jersey.\n\nSilicon Valley came from Jersey. It just built a better brand.",
+      "image_prompt": "COMBINED scene (was 25 + 26 — merged 2026-04-29). Sequence: 1) Map animation MH NJ → MV CA. 2) Period AI exterior of Shockley Semiconductor Laboratory storefront, Mountain View 1956–57, plate-glass windows, palm trees, period cars, 16:9 color photo with mid-century grade. 3) Composite 4x2 grid — eight 1950s-era portraits (Blank / Grinich / Hoerni / Kleiner / Last / Moore / Noyce / Roberts) with names below each. 4) Date sting SEPTEMBER 18, 1957 — portraits detach and slide out together. 5) Logo cascade — Fairchild → Intel (1968) → AMD → Kleiner Perkins. 6) Satellite of Silicon Valley pulling back across the continental US until a single pin pulses on Murray Hill, NJ. Hold on thesis line. [Mix of motion graphics + AI-generated period imagery; the grid carries enumeration so narration does not have to list names.]",
+      "visual": "Map animation — Murray Hill NJ pin, single line drawn across the continent to Mountain View CA. Period AI-generated exterior of Shockley Semiconductor Laboratory storefront. Dissolve to the 4x2 composite grid of the Traitorous Eight with names below each portrait. Date sting SEPTEMBER 18, 1957 hits and the eight portraits detach from the grid and slide out of frame together — carrying the Fairchild beat. Cut to the logo cascade — Fairchild → Intel (1968) → AMD → Kleiner Perkins. Pan to a satellite view of Silicon Valley, which slowly pulls back across the continent until the continental U.S. fills the frame. A single pin pulses on Murray Hill, NJ. Hold on the thesis line — 'Silicon Valley came from Jersey. It just built a better brand.'",
+      "text_overlay": "SHOCKLEY SEMICONDUCTOR LABORATORY — MOUNTAIN VIEW, CA — 1956; names under each portrait JULIUS BLANK / VICTOR GRINICH / JEAN HOERNI / EUGENE KLEINER / JAY LAST / GORDON MOORE / ROBERT NOYCE / C. SHELDON ROBERTS; date sting SEPTEMBER 18, 1957; logo cards FAIRCHILD → INTEL (1968) → AMD → KLEINER PERKINS; closing thesis card SILICON VALLEY CAME FROM JERSEY",
       "motion": "ken-burns-pan",
-      "music": "The emotional climax of the thesis. Let it breathe.",
+      "music": "Travel motif lifts on the MH → CA arc, turns decisive on the walkout, then opens up wide on the diaspora pullback — the emotional climax of the thesis. Let the closing line breathe.",
       "transition": "Crossfade 1s",
-      "image_path": "assets/images/scene-26.png",
-      "audio_status": "Gate 2 RE-RECORD — tightened Noyce/Moore/Kleiner enumeration. THESIS LINE PRESERVED VERBATIM: 'Silicon Valley came from Jersey. It just built a better brand.'",
-      "notes": "",
+      "image_path": "assets/images/scene-25.png",
       "assets": [
         {
-          "path": "assets/images/scene-26.png",
-          "type": "image",
-          "order": 0
+          "order": 0,
+          "path": "assets/images/scene-25.png",
+          "type": "image"
         },
         {
+          "order": 1,
+          "path": "assets/images/scene-25-traitorous-eight-composite.png",
+          "type": "image"
+        },
+        {
+          "order": 2,
+          "path": "assets/images/scene-25-robert-noyce-1959.png",
+          "type": "image"
+        },
+        {
+          "order": 3,
           "path": "assets/images/scene-26-logo-cascade.png",
-          "type": "image",
-          "order": 1
+          "type": "image"
         },
         {
+          "order": 4,
           "path": "assets/images/scene-26-silicon-valley-aerial-1972.png",
-          "type": "image",
-          "order": 2
+          "type": "image"
         }
-      ]
+      ],
+      "notes": "Update the audio narration. "
     },
     {
       "id": 27,
@@ -835,39 +818,19 @@
       "motion": "gentle-zoom",
       "music": "Forward momentum, inspired.",
       "transition": "Crossfade 1s",
-      "image_path": "assets/images/scene-27.png",
+      "image_path": "assets/images/scene-27-1sttrans-9e3ba9.png",
       "audio_status": "Gate 2 RE-RECORD — compressed 'between November and December of nineteen forty-seven' → 'in the winter of nineteen forty-seven'; removed duplicated 'all of it, all of it'",
       "notes": "",
       "assets": [
         {
-          "path": "assets/images/scene-27.png",
-          "type": "image",
-          "order": 0
-        }
-      ]
-    },
-    {
-      "id": 28,
-      "chapter": 10,
-      "chapter_title": "What It Became",
-      "title": "The Quiet Line (title) — was Scene 29",
-      "duration": "13:00-13:15 (15s)",
-      "narration": "Moore's Law is, in the end, a seventy-seven-year story of one demonstration compounding.",
-      "visual": "Black frame. A single line of white serif text fades in, centered.",
-      "image_prompt": "Title card (FFmpeg drawtext). Black frame. White serif text fades in, centered. [Motion graphic — no AI image]",
-      "text_overlay": "77 YEARS. ONE DEMO.",
-      "motion": "static",
-      "music": "Drops to a sustained pad.",
-      "transition": "Slow fade 1.5s",
-      "image_path": "assets/images/scene-28.png",
-      "audio_status_legacy_wav": "scene-29.wav from Gate 1 lock (narration byte-identical) — rename to scene-28.wav for new ordering",
-      "audio_status": "Gate 1 WAV OK — no re-record (locked quiet-line)",
-      "notes": "",
-      "assets": [
+          "order": 0,
+          "path": "assets/images/scene-27-1sttrans-9e3ba9.png",
+          "type": "image"
+        },
         {
-          "path": "assets/images/scene-28.png",
-          "type": "image",
-          "order": 0
+          "order": 1,
+          "path": "assets/images/scene-27-die-macro.png",
+          "type": "image"
         }
       ]
     },
@@ -877,7 +840,7 @@
       "chapter_title": "Closing Bookend",
       "title": "Back to the Drone (HD → FM) — was Scene 30",
       "duration": "13:15-13:45 (30s)",
-      "narration": "So come back to the ground. The sculpture in Holmdel is still there. The mirrored Bell Works building, once Bell Labs' palace on a hill, is still standing, because a developer named Somerset bought it in twenty-thirteen for twenty-seven million dollars and filled it with startups. And twenty miles south of it, on the same Fort Monmouth soil where the Signal Corps laboratories once bought the first transistors, Netflix is now pouring concrete. A one-billion-dollar, twelve-soundstage East Coast production hub. Phase one opens in twenty-twenty-seven. The ground that made the thing that makes the shows is now making the studio where the shows get made. That is not coincidence. That is how this place works. Every layer of the computer age was built inside a twenty-mile strip of New Jersey — and we are going to walk through all of them, one layer at a time.",
+      "narration": "So come back to the ground. The sculpture in Holmdel is still there. The mirrored Bell Works building, once Bell Labs' palace on a hill, is still standing — reborn in twenty-thirteen as Bell Works, a two-million-square-foot 'metroburb' filled with startups, restaurants, and a quarter-mile atrium open to the public. And twenty miles south of it, on the same Fort Monmouth soil where the Signal Corps laboratories once bought the first transistors, Netflix is now pouring concrete. A one-billion-dollar, twelve-soundstage East Coast production hub. Phase one opens in twenty-twenty-seven. The ground that made the thing that makes the shows is now making the studio where the shows get made. That is not coincidence. That is how this place works. Every layer of the computer age was built inside a twenty-mile strip of New Jersey — and we are going to walk through all of them, one layer at a time.",
       "visual": "Creator drone footage returns. Transistor Monument in foreground, Saarinen Bell Works behind it. Slow pullback. Cross-cut to Netflix Fort Monmouth construction — cranes, foundations, soil being moved (AI rendering or creator b-roll if available). Hold an extra 2 seconds on the final Holmdel frame before the scene ends — let the landing line breathe.",
       "image_prompt": "Creator-provided drone + AI-generated / stock construction. 1) Creator Holmdel drone footage (returns to the opening shot, fuller composition). 2) Netflix Fort Monmouth construction — creator b-roll if available; otherwise AI prompt: Wide cinematic aerial view of a large construction site at dusk, multiple cranes and bulldozers moving earth on a 292-acre parcel, cleared land, distant backdrop of New Jersey suburban trees, early-stage foundations visible, photorealistic, 16:9. Hold an extra 2s on the final Holmdel frame before cutting — narration is done, music resolves, the 'one layer at a time' line needs to breathe.",
       "text_overlay": "NETFLIX STUDIOS FORT MONMOUTH — $1B — 12 SOUNDSTAGES — PHASE 1A OPENS 2027 (lower-third, 6s on Netflix cut)",
@@ -885,8 +848,8 @@
       "music": "Returns to the opening theme, fuller. Resolves fully on the final line.",
       "transition": "Slow fade 1.5s + brief silence before Ep 2 card",
       "audio_status_legacy_wav": "scene-30.wav from Gate 1 lock (narration byte-identical) — rename to scene-29.wav for new ordering",
-      "audio_status": "Gate 1 WAV OK — no re-record (locked closing bookend)",
-      "notes": "",
+      "audio_status": "RE-RECORD 2026-04-25 — Somerset → Bell Works metroburb",
+      "notes": "That is not a coincidence. That is how this place works. Every",
       "assets": [
         {
           "order": 0,
@@ -895,10 +858,21 @@
         },
         {
           "order": 1,
+          "path": "assets/images/scene-29-dji-fly-20260423-104354-24-1776955451498-photo-o-df861a.jpg",
+          "type": "image"
+        },
+        {
+          "order": 2,
+          "path": "assets/images/scene-29-img-0654-2-570d0e.png",
+          "type": "image"
+        },
+        {
+          "order": 3,
           "path": "assets/videos/scene-29-fortmonmouth-nexflix-1-mp4-2dc4a3.mp4",
           "type": "video"
         }
-      ]
+      ],
+      "image_path": "assets/images/scene-29-dji-fly-20260423-104354-24-1776955451498-photo-o-df861a.jpg"
     },
     {
       "id": 30,
