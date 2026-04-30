@@ -1,26 +1,15 @@
 import { describe, test, expect, beforeAll } from 'bun:test';
 import { Hono } from 'hono';
 import { setSignedCookie } from 'hono/cookie';
-import { readdir } from 'node:fs/promises';
-import { resolve } from 'node:path';
 
 import { loadSecrets, secrets } from '@lib/services/secrets.ts';
 import { db } from '@db/client.ts';
+import { migrate } from '@db/migrate.ts';
 import { createApp } from '../../src/server/app.ts';
 
 // Ensure tests use the in-memory DB and fixture secrets even when run individually.
 process.env.DB_PATH = ':memory:';
 process.env.SECRETS_PATH = process.env.SECRETS_PATH ?? './test/fixtures/secrets.env';
-
-async function applyMigrations(): Promise<void> {
-  const conn = db();
-  const migrationsDir = resolve(import.meta.dir, '../../db/migrations');
-  const files = (await readdir(migrationsDir)).filter((f) => f.endsWith('.sql')).sort();
-  for (const f of files) {
-    const sql = await Bun.file(resolve(migrationsDir, f)).text();
-    conn.exec(sql);
-  }
-}
 
 async function mintSessionCookie(email: string): Promise<string> {
   const tmp = new Hono();
@@ -39,7 +28,7 @@ describe('C-2 auth wiring', () => {
 
   beforeAll(async () => {
     loadSecrets();
-    await applyMigrations();
+    await migrate({ quiet: true });
     app = createApp();
   });
 

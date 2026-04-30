@@ -119,3 +119,146 @@ body {
 .pill-approved { background: var(--navy); color: white; }
 .pill-failed_recoverable, .pill-failed_terminal { background: var(--red); color: white; }
 .pill-rendering, .pill-vendor_pending, .pill-assembling, .pill-hooks_generating { background: var(--warn); color: white; }
+
+/* ---------- Review Queue (UXD §4) ---------- */
+
+.review-layout {
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  gap: 24px;
+  margin-top: 16px;
+}
+
+.review-list {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.review-list-header {
+  padding: 10px 14px;
+  font-size: 14px;
+  font-weight: 600;
+  background: var(--sand-50);
+  border-bottom: 1px solid var(--line);
+}
+
+.variant-row {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--line);
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+.variant-row:hover { background: var(--sand-50); }
+.variant-row.is-selected {
+  border-left: 3px solid var(--navy);
+  background: white;
+}
+.variant-hook {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+}
+
+.review-detail {
+  padding: 4px;
+}
+.variant-title {
+  font-size: 18px;
+  margin: 0 0 6px;
+  color: var(--navy);
+}
+.variant-meta {
+  font-size: 12px;
+  color: var(--ink-3);
+  margin: 0 0 16px;
+}
+
+/* AI disclosure gate (UXD §4.3) — amber field per prototype lines 591–612 */
+.ai-disclosure {
+  background: #fff8c5;
+  border: 1px solid #d4a017;
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  margin: 16px 0;
+}
+.ai-disclosure-label {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  font-size: 13px;
+  cursor: pointer;
+}
+.ai-disclosure-label input[type="checkbox"] {
+  margin-top: 2px;
+  cursor: pointer;
+}
+.ai-disclosure-required {
+  color: #b87600;
+  font-weight: 600;
+}
+
+/* Review action buttons */
+.review-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+  align-items: center;
+}
+.btn-approve {
+  flex: 1;
+  background: var(--navy);
+  color: white;
+  border: 0;
+  padding: 12px 18px;
+  border-radius: var(--radius-md);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+.btn-approve:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.btn-approve .red-accent { color: var(--red); margin: 0 4px; }
+
+.btn-regen {
+  background: white;
+  color: var(--navy);
+  border: 1px solid var(--navy);
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  font: inherit;
+  cursor: pointer;
+}
+.btn-reject {
+  background: none;
+  border: 0;
+  color: var(--ink-3);
+  font: inherit;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+.btn-reject:hover { color: var(--red); }
+
+.error-banner {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
+  padding: 10px 14px;
+  border-radius: var(--radius-md);
+  font-size: 13px;
+}
+.empty {
+  color: var(--ink-3);
+  padding: 24px 14px;
+  font-size: 13px;
+}

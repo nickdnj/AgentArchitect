@@ -36,10 +36,12 @@ export const api = {
     list: (status?: string) =>
       request<{ variants: unknown[] }>(`/api/variants${status ? `?status=${encodeURIComponent(status)}` : ''}`),
     get: (id: number) => request<{ variant: unknown }>(`/api/variants/${id}`),
-    approve: (id: number) =>
+    // PRD §7.5 hard gate: caller MUST pass the actual checkbox state. Hardcoding
+    // `true` here would defeat the disclosure gate (H-2 in internal eng review).
+    approve: (id: number, aiDisclosureAcknowledged: boolean) =>
       request<{ download_url: string }>(`/api/variants/${id}/approve`, {
         method: 'POST',
-        body: JSON.stringify({ ai_disclosure_acknowledged: true }),
+        body: JSON.stringify({ ai_disclosure_acknowledged: aiDisclosureAcknowledged }),
       }),
     regen: (id: number, feedback: string) =>
       request<{ new_variant_id: number }>(`/api/variants/${id}/regen`, {

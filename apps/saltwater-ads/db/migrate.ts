@@ -2,7 +2,13 @@ import { readdir } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { db } from './client.ts';
 
-async function migrate(): Promise<void> {
+export interface MigrateResult {
+  applied: number;
+  total: number;
+}
+
+export async function migrate(opts: { quiet?: boolean } = {}): Promise<MigrateResult> {
+  const log = opts.quiet ? () => {} : console.log;
   const conn = db();
   conn.exec(`CREATE TABLE IF NOT EXISTS schema_version (
     version TEXT PRIMARY KEY,
@@ -20,7 +26,7 @@ async function migrate(): Promise<void> {
     const version = f.split('_')[0];
     if (appliedSet.has(version)) continue;
     pending++;
-    console.log(`applying ${f}...`);
+    log(`applying ${f}...`);
     const sql = await Bun.file(resolve(migrationsDir, f)).text();
     conn.transaction(() => {
       conn.exec(sql);
@@ -29,10 +35,12 @@ async function migrate(): Promise<void> {
   }
 
   if (pending === 0) {
-    console.log(`schema is up to date (${applied.length} migrations applied)`);
+    log(`schema is up to date (${applied.length} migrations applied)`);
   } else {
-    console.log(`done — ${pending} migration(s) applied`);
+    log(`done — ${pending} migration(s) applied`);
   }
+
+  return { applied: pending, total: files.length };
 }
 
 if (import.meta.main) {

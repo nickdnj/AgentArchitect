@@ -1,11 +1,11 @@
 -- 0001_init.sql — Saltwater AI Ads
 -- Source: PRD §6.6 (9 core tables) + SAD §5.3 (auth_token + audit_log) + SAD §9.2 (schema_version)
 -- Run via: bun run db:migrate
-
-PRAGMA journal_mode = WAL;
-PRAGMA synchronous = NORMAL;
-PRAGMA foreign_keys = ON;
-PRAGMA busy_timeout = 5000;
+--
+-- PRAGMAs are set on every connection open by db/client.ts. They cannot run
+-- inside a transaction (SQLite raises "Safety level may not be changed
+-- inside a transaction"), and migrate.ts wraps each migration in
+-- BEGIN IMMEDIATE — so PRAGMA lines must NOT live in migration files.
 
 -- ----------------------------------------------------------------------
 -- Schema version tracking (idempotent migrations)
