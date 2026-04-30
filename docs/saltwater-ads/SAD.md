@@ -803,7 +803,7 @@ Type=simple
 User=saltwater
 WorkingDirectory=/opt/saltwater-ads/current
 EnvironmentFile=/opt/saltwater-ads/shared/data/secrets.env
-Environment=PROC_NAME=web PORT=3000
+Environment=PROC_NAME=web PORT=3001
 ExecStart=/usr/local/bin/bun src/server/index.ts
 Restart=always
 RestartSec=5
@@ -815,7 +815,7 @@ Worker unit is identical except `PROC_NAME=worker` and `ExecStart=... src/worker
 
 ```
 saltwater-ads.demarconet.com {
-  reverse_proxy 127.0.0.1:3000
+  reverse_proxy 127.0.0.1:3001
   encode gzip
 }
 ```
