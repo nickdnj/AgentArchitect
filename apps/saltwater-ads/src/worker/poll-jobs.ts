@@ -1,8 +1,11 @@
 import { loadSecrets } from '@lib/services/secrets.ts';
+import { log } from '@lib/log.ts';
 import { tick } from './tick.ts';
 
 // SAD §3 + §4 — worker process. Polls SQLite every 2s for queued render attempts.
 // Run via: bun run src/worker/poll-jobs.ts
+// PROC_NAME=worker is set by the systemd unit (SAD §12.1) so log lines carry
+// proc='worker' instead of the default 'web'.
 
 loadSecrets();
 
@@ -14,16 +17,22 @@ process.on('SIGINT', () => { stopping = true; });
 process.on('SIGTERM', () => { stopping = true; });
 
 async function loop(): Promise<void> {
-  console.log(`saltwater-ads worker starting — poll=${POLL_INTERVAL_MS}ms concurrency=${MAX_CONCURRENT}`);
+  log.info(
+    { poll_ms: POLL_INTERVAL_MS, max_concurrent: MAX_CONCURRENT, pid: process.pid },
+    'worker_started',
+  );
   while (!stopping) {
     try {
       await tick({ maxConcurrent: MAX_CONCURRENT });
     } catch (err) {
-      console.error(JSON.stringify({ level: 'error', source: 'worker.tick', error: (err as Error).message }));
+      log.error(
+        { err: { message: (err as Error).message, stack: (err as Error).stack } },
+        'worker_tick_failed',
+      );
     }
     await Bun.sleep(POLL_INTERVAL_MS);
   }
-  console.log('worker stopped');
+  log.info('worker_stopped');
 }
 
 loop();

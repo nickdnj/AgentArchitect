@@ -1,5 +1,6 @@
 import type { MiddlewareHandler } from 'hono';
 import { db } from '@db/client.ts';
+import { log } from '@lib/log.ts';
 
 // SAD §5.3 + §11 — write audit_log on mutating routes
 export function audit(action: string, targetType?: string): MiddlewareHandler {
@@ -23,7 +24,16 @@ export function audit(action: string, targetType?: string): MiddlewareHandler {
         ]
       );
     } catch (err) {
-      console.error('audit_log write failed:', err);
+      log.error(
+        {
+          request_id: requestId,
+          err: { message: (err as Error).message },
+          action,
+          target_type: targetType,
+          target_id: targetId,
+        },
+        'audit_log_write_failed',
+      );
     }
   };
 }

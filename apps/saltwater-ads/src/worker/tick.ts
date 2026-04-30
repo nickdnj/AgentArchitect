@@ -1,4 +1,5 @@
 import { db } from '@db/client.ts';
+import { log } from '@lib/log.ts';
 import { runPipeline } from './pipeline.ts';
 
 // SAD §4 — one polling iteration.
@@ -66,13 +67,16 @@ export async function tick(args: TickArgs): Promise<void> {
   if (claimed.length === 0) return;
   await Promise.all(claimed.map((job) =>
     runPipeline(job).catch((err) => {
-      console.error(JSON.stringify({
-        level: 'error',
-        source: 'worker.pipeline',
-        render_attempt_id: job.renderAttemptId,
-        from_state: job.fromState,
-        error: (err as Error).message,
-      }));
+      log.error(
+        {
+          attempt_id: job.renderAttemptId,
+          variant_id: job.variantId,
+          from_state: job.fromState,
+          to_state: job.state,
+          err: { message: (err as Error).message, stack: (err as Error).stack },
+        },
+        'pipeline_failed',
+      );
     })
   ));
 }

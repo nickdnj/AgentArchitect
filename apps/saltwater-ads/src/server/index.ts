@@ -1,6 +1,7 @@
 import { serve } from 'bun';
 import { createApp } from './app.ts';
 import { loadSecrets } from '@lib/services/secrets.ts';
+import { log } from '@lib/log.ts';
 
 loadSecrets();
 
@@ -13,4 +14,4 @@ serve({
   development: process.env.NODE_ENV !== 'production',
 });
 
-console.log(`saltwater-ads web ⟶ http://localhost:${PORT}`);
+log.info({ port: PORT, pid: process.pid }, 'web_started');

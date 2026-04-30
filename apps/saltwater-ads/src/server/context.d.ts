@@ -4,6 +4,7 @@
 // handlers don't each redeclare the same keys.
 
 import 'hono';
+import type { Logger } from 'pino';
 
 declare module 'hono' {
   interface ContextVariableMap {
@@ -11,5 +12,6 @@ declare module 'hono' {
     email: string;
     auditTargetId: string;
     auditMeta: Record<string, unknown>;
+    log: Logger; // child logger bound with request_id, set by middleware/request-id.ts
   }
 }
