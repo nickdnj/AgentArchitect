@@ -1,5 +1,6 @@
 import { Hono } from 'hono';
 import { z } from 'zod';
+import { audit } from '../middleware/audit.ts';
 
 const app = new Hono();
 
@@ -19,7 +20,8 @@ const ApproveBody = z.object({
   ai_disclosure_acknowledged: z.literal(true), // hard gate per PRD §7.5
 });
 
-app.post('/:id/approve', async (c) => {
+app.post('/:id/approve', audit('approve', 'variant'), async (c) => {
+  c.set('auditTargetId', c.req.param('id'));
   const body = await c.req.json().catch(() => null);
   const parsed = ApproveBody.safeParse(body);
   if (!parsed.success) {
@@ -29,7 +31,8 @@ app.post('/:id/approve', async (c) => {
   return c.json({ error: 'not_implemented', step: 'variants.approve' }, 501);
 });
 
-app.post('/:id/reject', async (c) => {
+app.post('/:id/reject', audit('reject', 'variant'), async (c) => {
+  c.set('auditTargetId', c.req.param('id'));
   // TODO: INSERT approval(decision='reject'), UPDATE variant.status='rejected'
   return c.json({ error: 'not_implemented', step: 'variants.reject' }, 501);
 });
@@ -38,7 +41,8 @@ const RegenBody = z.object({
   feedback: z.string().min(1).max(1000),
 });
 
-app.post('/:id/regen', async (c) => {
+app.post('/:id/regen', audit('regen', 'variant'), async (c) => {
+  c.set('auditTargetId', c.req.param('id'));
   const body = await c.req.json().catch(() => null);
   const parsed = RegenBody.safeParse(body);
   if (!parsed.success) {

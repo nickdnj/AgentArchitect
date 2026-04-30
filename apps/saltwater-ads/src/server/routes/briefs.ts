@@ -1,5 +1,6 @@
 import { Hono } from 'hono';
 import { z } from 'zod';
+import { audit } from '../middleware/audit.ts';
 // SAD §3 — happy path: POST /briefs creates brief + hook_set + 3 variants + 3 render_attempts
 //   in one BEGIN IMMEDIATE transaction, returns 201 with variant IDs.
 
@@ -13,7 +14,7 @@ const BriefInput = z.object({
   season: z.string().nullable().optional(),
 });
 
-app.post('/', async (c) => {
+app.post('/', audit('generate', 'brief'), async (c) => {
   const body = await c.req.json().catch(() => null);
   const parsed = BriefInput.safeParse(body);
   if (!parsed.success) {
