@@ -53,3 +53,10 @@ outputs/
 # Generated data (FTS5 database)
 data/
 .gstack/
+
+# Saltwater AI Ads — large local-only assets (3.5GB ad library zip from Joe + extracted source)
+teams/personal-assistant/workspace/saltwater-ads-poc/source/
+
+# Firebase deployment artifacts (regenerated on deploy)
+docs/saltwater-ads/prototype/.firebase/
+

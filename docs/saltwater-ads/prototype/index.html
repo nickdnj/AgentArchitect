@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Saltwater AI Ads — Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1a3a5c;
+    --navy-dark: #0d2440;
+    --navy-light: #2d5a8c;
+    --red: #c8102e;
+    --red-dark: #a00d24;
+    --sand: #f5f0e8;
+    --bg: #ffffff;
+    --bg-soft: #fafbfc;
+    --border: #e1e4e8;
+    --border-strong: #c9d1d9;
+    --text: #1f2328;
+    --text-muted: #656d76;
+    --text-faint: #8c959f;
+    --green: #1a7f37;
+    --green-bg: #dcfce7;
+    --amber: #9a6700;
+    --amber-bg: #fff8c5;
+    --gray-bg: #f6f8fa;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.5;
+    height: 100vh;
+    overflow: hidden;
+  }
+  .mono { font-family: 'JetBrains Mono', 'SF Mono', monospace; }
+
+  /* Layout shell */
+  .app {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    height: 100vh;
+  }
+
+  /* Sidebar */
+  .sidebar {
+    background: var(--bg-soft);
+    border-right: 1px solid var(--border);
+    padding: 20px 12px;
+    display: flex;
+    flex-direction: column;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 8px 20px 8px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 16px;
+  }
+  .brand-mark {
+    width: 32px;
+    height: 32px;
+    background: var(--navy);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 700;
+    font-size: 16px;
+  }
+  .brand-name {
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: -0.2px;
+  }
+  .brand-name span { color: var(--text-muted); font-weight: 500; }
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    color: var(--text-muted);
+    font-weight: 500;
+    font-size: 14px;
+    margin-bottom: 2px;
+    text-decoration: none;
+    transition: background 0.1s;
+  }
+  .nav-item:hover { background: var(--gray-bg); color: var(--text); }
+  .nav-item.active { background: var(--navy); color: white; }
+  .nav-item.active:hover { background: var(--navy); color: white; }
+  .nav-icon { width: 16px; height: 16px; opacity: 0.85; }
+  .nav-badge {
+    margin-left: auto;
+    background: var(--red);
+    color: white;
+    font-size: 11px;
+    padding: 2px 7px;
+    border-radius: 10px;
+    font-weight: 600;
+  }
+  .nav-item:not(.active) .nav-badge { background: var(--navy); }
+  .sidebar-footer {
+    margin-top: auto;
+    padding: 16px 8px;
+    border-top: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--text-faint);
+  }
+  .sidebar-footer .user {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+  .avatar {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--navy), var(--red));
+    color: white;
+    font-size: 11px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Main */
+  .main {
+    overflow-y: auto;
+    background: var(--bg);
+  }
+  .main-header {
+    border-bottom: 1px solid var(--border);
+    padding: 14px 32px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: var(--bg);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .breadcrumb {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+  .breadcrumb strong { color: var(--text); font-weight: 600; }
+  .header-spacer { flex: 1; }
+  .header-meta { font-size: 12px; color: var(--text-faint); }
+
+  /* Generate screen */
+  .generate-grid {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 32px;
+    padding: 32px;
+    max-width: 1400px;
+  }
+  .compose h1 {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    margin-bottom: 24px;
+  }
+  .brief-input {
+    width: 100%;
+    min-height: 96px;
+    padding: 14px 16px;
+    border: 1px solid var(--border-strong);
+    border-radius: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text);
+    background: var(--bg-soft);
+    resize: vertical;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .brief-input:focus {
+    outline: none;
+    border-color: var(--navy);
+    background: var(--bg);
+  }
+  .brief-input::placeholder { color: var(--text-faint); }
+  .controls {
+    margin-top: 16px;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .label {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+    display: block;
+  }
+  .pattern-chips {
+    display: flex;
+    gap: 6px;
+  }
+  .chip {
+    padding: 8px 14px;
+    border: 1px solid var(--border-strong);
+    border-radius: 999px;
+    background: var(--bg);
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-muted);
+    transition: all 0.15s;
+  }
+  .chip:hover { background: var(--gray-bg); color: var(--text); }
+  .chip.active {
+    background: var(--navy);
+    color: white;
+    border-color: var(--navy);
+  }
+  .select {
+    padding: 8px 14px;
+    border: 1px solid var(--border-strong);
+    border-radius: 6px;
+    background: var(--bg);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    cursor: pointer;
+    min-width: 220px;
+  }
+  .field-group {
+    margin-top: 24px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid var(--border-strong);
+    border-radius: 6px;
+    font-size: 13px;
+    background: var(--bg);
+  }
+  .generate-btn {
+    margin-top: 32px;
+    width: 100%;
+    padding: 16px 24px;
+    background: var(--navy);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background 0.15s;
+    font-family: inherit;
+  }
+  .generate-btn:hover { background: var(--navy-dark); }
+  .generate-btn .arrow { transition: transform 0.15s; }
+  .generate-btn:hover .arrow { transform: translateX(2px); }
+
+  /* Sidebar — top hooks */
+  .insights {
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px;
+  }
+  .insights h2 {
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-muted);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .insights h2 .live-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--green);
+    border-radius: 50%;
+    display: inline-block;
+  }
+  .hook-item {
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .hook-item:last-child { border-bottom: none; padding-bottom: 0; }
+  .hook-item:first-child { padding-top: 0; }
+  .hook-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--text);
+    margin-bottom: 4px;
+    line-height: 1.4;
+  }
+  .hook-meta {
+    font-size: 12px;
+    color: var(--text-muted);
+    display: flex;
+    justify-content: space-between;
+  }
+  .roas {
+    color: var(--green);
+    font-weight: 600;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* Bottom queue strip */
+  .queue-strip {
+    border-top: 1px solid var(--border);
+    background: var(--bg-soft);
+    padding: 16px 32px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    overflow-x: auto;
+  }
+  .queue-label {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-muted);
+    margin-right: 8px;
+    flex-shrink: 0;
+  }
+  .queue-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    font-size: 12px;
+    flex-shrink: 0;
+  }
+  .queue-item .name {
+    font-weight: 500;
+    color: var(--text);
+  }
+  .pill {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 2px 8px;
+    border-radius: 999px;
+  }
+  .pill-ready { background: var(--green-bg); color: var(--green); }
+  .pill-rendering { background: var(--amber-bg); color: var(--amber); }
+  .pill-approved { background: var(--navy); color: white; }
+  .pill-failed { background: #ffeef0; color: var(--red); }
+
+  /* Review screen — master detail */
+  .review-grid {
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    height: calc(100vh - 51px - 65px);
+  }
+  .review-list {
+    border-right: 1px solid var(--border);
+    overflow-y: auto;
+    background: var(--bg-soft);
+  }
+  .review-list-header {
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--bg-soft);
+    position: sticky;
+    top: 0;
+  }
+  .review-list-header h2 { font-size: 14px; font-weight: 600; }
+  .review-row {
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    display: flex;
+    gap: 12px;
+    transition: background 0.1s;
+    border-left: 3px solid transparent;
+  }
+  .review-row:hover { background: var(--gray-bg); }
+  .review-row.selected {
+    background: var(--bg);
+    border-left-color: var(--navy);
+  }
+  .row-thumb {
+    width: 36px;
+    height: 48px;
+    background: linear-gradient(135deg, #2d5a8c, #1a3a5c);
+    border-radius: 4px;
+    flex-shrink: 0;
+    background-size: cover;
+    background-position: center;
+  }
+  .row-content { flex: 1; min-width: 0; }
+  .row-hook {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text);
+    margin-bottom: 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .row-context {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .row-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11px;
+    color: var(--text-faint);
+  }
+
+  /* Review detail */
+  .review-detail {
+    overflow-y: auto;
+    padding: 28px;
+  }
+  .detail-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .toggle-group {
+    display: inline-flex;
+    background: var(--gray-bg);
+    border-radius: 8px;
+    padding: 3px;
+  }
+  .toggle-btn {
+    padding: 6px 14px;
+    background: transparent;
+    border: none;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .toggle-btn.active {
+    background: var(--bg);
+    color: var(--text);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  }
+  .detail-body {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 32px;
+    align-items: start;
+  }
+  .video-frame {
+    width: 320px;
+    aspect-ratio: 9 / 16;
+    background: linear-gradient(180deg, #2d5a8c 0%, #1a3a5c 60%, #0d2440 100%);
+    border-radius: 12px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(26, 58, 92, 0.15);
+  }
+  .video-frame::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 50% 30%, rgba(255,235,200,0.15), transparent 60%),
+      linear-gradient(0deg, rgba(13,36,64,0.5), transparent 50%);
+  }
+  .video-frame .play {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 56px;
+    height: 56px;
+    background: rgba(255,255,255,0.95);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .video-frame .play::after {
+    content: '';
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 9px 0 9px 14px;
+    border-color: transparent transparent transparent var(--navy);
+    margin-left: 3px;
+  }
+  .video-frame .duration {
+    position: absolute;
+    bottom: 14px;
+    right: 14px;
+    background: rgba(0,0,0,0.6);
+    color: white;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .detail-content { min-width: 0; }
+  .detail-hook {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 1.4;
+    margin-bottom: 18px;
+    color: var(--text);
+  }
+  .detail-meta-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  .detail-tag {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    background: var(--gray-bg);
+    border-radius: 999px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+  .detail-caption-label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+  .caption-edit {
+    width: 100%;
+    min-height: 80px;
+    padding: 12px 14px;
+    border: 1px solid var(--border-strong);
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--text);
+    background: var(--bg-soft);
+    resize: vertical;
+  }
+  .caption-edit:focus {
+    outline: none;
+    border-color: var(--navy);
+    background: var(--bg);
+  }
+
+  .ai-disclosure {
+    margin: 24px 0 16px 0;
+    padding: 14px 16px;
+    background: var(--amber-bg);
+    border: 1px solid #d4a017;
+    border-radius: 8px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .ai-disclosure input[type="checkbox"] {
+    margin-top: 3px;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+  }
+  .ai-disclosure label {
+    font-size: 13px;
+    color: var(--text);
+    cursor: pointer;
+    line-height: 1.5;
+  }
+  .ai-disclosure label strong { color: var(--amber); }
+
+  .actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 8px;
+  }
+  .btn-primary {
+    flex: 1;
+    padding: 14px 20px;
+    background: var(--navy);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .btn-primary:hover { background: var(--navy-dark); }
+  .btn-primary:disabled {
+    background: var(--border-strong);
+    cursor: not-allowed;
+  }
+  .btn-primary .red-accent {
+    color: var(--red);
+    font-weight: 700;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .btn-secondary {
+    padding: 14px 18px;
+    background: var(--bg);
+    color: var(--text);
+    border: 1px solid var(--border-strong);
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.15s;
+  }
+  .btn-secondary:hover { background: var(--gray-bg); }
+  .btn-text {
+    padding: 14px 12px;
+    background: transparent;
+    color: var(--text-muted);
+    border: none;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .btn-text:hover { color: var(--red); }
+
+  /* Compare mode */
+  .compare-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .compare-card {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    background: var(--bg);
+  }
+  .compare-card .video-frame {
+    width: 100%;
+    margin-bottom: 12px;
+  }
+  .compare-card .detail-hook { font-size: 13px; margin-bottom: 8px; }
+  .compare-card .compact-actions {
+    display: flex;
+    gap: 6px;
+    margin-top: 12px;
+  }
+  .compare-card .compact-actions button {
+    flex: 1;
+    padding: 8px 10px;
+    font-size: 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: inherit;
+    border: 1px solid var(--border-strong);
+    background: var(--bg);
+  }
+  .compare-card .compact-actions .approve {
+    background: var(--navy);
+    color: white;
+    border-color: var(--navy);
+  }
+
+  .hidden { display: none !important; }
+
+  /* Settings minimal */
+  .settings-body {
+    max-width: 640px;
+    padding: 32px;
+  }
+  .settings-section {
+    margin-bottom: 32px;
+  }
+  .settings-section h2 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .settings-section .helper {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+  }
+  .secret-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .secret-row:last-child { border-bottom: none; }
+  .secret-name { font-weight: 500; }
+  .secret-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+  .secret-status .ok {
+    width: 6px;
+    height: 6px;
+    background: var(--green);
+    border-radius: 50%;
+  }
+  .secret-status .miss {
+    width: 6px;
+    height: 6px;
+    background: var(--red);
+    border-radius: 50%;
+  }
+  .btn-mini {
+    padding: 6px 12px;
+    background: var(--bg);
+    border: 1px solid var(--border-strong);
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+    font-family: inherit;
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">S</div>
+      <div class="brand-name">Saltwater <span>AI Ads</span></div>
+    </div>
+
+    <a class="nav-item active" data-screen="generate">
+      <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.5l1.8 4.7 4.7.4-3.5 3.1 1 4.6L8 11.9l-4 2.4 1-4.6-3.5-3.1 4.7-.4z"/></svg>
+      Generate
+    </a>
+    <a class="nav-item" data-screen="review">
+      <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><path d="M2 3h12v2H2zm0 4h12v2H2zm0 4h8v2H2z"/></svg>
+      Review Queue
+      <span class="nav-badge">3</span>
+    </a>
+    <a class="nav-item" data-screen="settings">
+      <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><path d="M8 4a4 4 0 100 8 4 4 0 000-8zm0 6a2 2 0 110-4 2 2 0 010 4z"/></svg>
+      Settings
+    </a>
+
+    <div class="sidebar-footer">
+      <div class="user">
+        <div class="avatar">JD</div>
+        <div>Joe DeMarco</div>
+      </div>
+      <div>v0.3 · Coastal Comfort™</div>
+    </div>
+  </aside>
+
+  <main class="main">
+
+    <!-- ============ GENERATE SCREEN ============ -->
+    <div id="screen-generate">
+      <header class="main-header">
+        <div class="breadcrumb"><strong>Generate</strong></div>
+        <div class="header-spacer"></div>
+        <div class="header-meta">Last sync from Triple Whale: 4 min ago</div>
+      </header>
+
+      <div class="generate-grid">
+        <div class="compose">
+          <h1>What ad do you want to make?</h1>
+          <textarea class="brief-input" placeholder="New ad for navy quarter-zip, problem-solution angle, autumn refresh...">New ad for the Performance Polo (navy), problem-solution angle, target weekend dads going to Sunday brunch.</textarea>
+
+          <div class="controls">
+            <div class="pattern-chips">
+              <button class="chip">Founder Story</button>
+              <button class="chip active">Problem-Solution</button>
+              <button class="chip">Limited Drop</button>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <div>
+              <span class="label">SKU</span>
+              <select class="select">
+                <option>Performance Polo — Navy</option>
+                <option>Quarter Zip Fleece — Heather Gray</option>
+                <option>Coastal Button-Down — Blue Gingham</option>
+                <option>USA Flag Lifeguard Hat — Natural Straw</option>
+              </select>
+            </div>
+            <div>
+              <span class="label">Audience tag (optional)</span>
+              <input class="input" placeholder="e.g. Long Island Dads 32-48" value="Long Island Dads 32-48">
+            </div>
+          </div>
+
+          <button class="generate-btn">
+            Generate 3 Variants
+            <span class="arrow">→</span>
+          </button>
+        </div>
+
+        <aside>
+          <div class="insights">
+            <h2><span class="live-dot"></span>Top hooks this week</h2>
+            <div class="hook-item">
+              <div class="hook-text">"This shirt doesn't suck"</div>
+              <div class="hook-meta">
+                <span>Performance Button-Down</span>
+                <span class="roas">4.2× ROAS</span>
+              </div>
+            </div>
+            <div class="hook-item">
+              <div class="hook-text">"Joe + Veronica founder story"</div>
+              <div class="hook-meta">
+                <span>Quarter Zip Fleece</span>
+                <span class="roas">3.8× ROAS</span>
+              </div>
+            </div>
+            <div class="hook-item">
+              <div class="hook-text">"Coastal Comfort™ BOGO"</div>
+              <div class="hook-meta">
+                <span>Long Sleeve Tee</span>
+                <span class="roas">3.1× ROAS</span>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <div class="queue-strip">
+        <span class="queue-label">Recent</span>
+        <div class="queue-item">
+          <span class="name">Performance Polo V1</span>
+          <span class="pill pill-ready">Ready</span>
+        </div>
+        <div class="queue-item">
+          <span class="name">Quarter Zip V3</span>
+          <span class="pill pill-rendering">Rendering</span>
+        </div>
+        <div class="queue-item">
+          <span class="name">Button-Down V2</span>
+          <span class="pill pill-approved">Approved</span>
+        </div>
+        <div class="queue-item">
+          <span class="name">USA Hoodie V1</span>
+          <span class="pill pill-approved">Approved</span>
+        </div>
+        <div class="queue-item">
+          <span class="name">Coastal Tee V4</span>
+          <span class="pill pill-failed">Failed · Retry</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ REVIEW SCREEN ============ -->
+    <div id="screen-review" class="hidden">
+      <header class="main-header">
+        <div class="breadcrumb">Generate / <strong>Review Queue</strong></div>
+        <div class="header-spacer"></div>
+        <div class="header-meta">3 pending</div>
+      </header>
+
+      <div class="review-grid">
+        <div class="review-list">
+          <div class="review-list-header">
+            <h2>Pending review</h2>
+          </div>
+
+          <div class="review-row selected">
+            <div class="row-thumb"></div>
+            <div class="row-content">
+              <div class="row-hook">"Stiff zips? Not this one."</div>
+              <div class="row-context">Performance Polo — Navy · Problem-Solution</div>
+              <div class="row-meta">
+                <span>2 min ago</span>
+                <span class="pill pill-ready">Ready</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="review-row">
+            <div class="row-thumb" style="background: linear-gradient(135deg, #4a7ba8, #1a3a5c);"></div>
+            <div class="row-content">
+              <div class="row-hook">"Why I made this quarter-zip"</div>
+              <div class="row-context">Quarter Zip Fleece — Heather Gray · Founder Story</div>
+              <div class="row-meta">
+                <span>4 min ago</span>
+                <span class="pill pill-ready">Ready</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="review-row">
+            <div class="row-thumb" style="background: linear-gradient(135deg, #5d8fbf, #2d5a8c);"></div>
+            <div class="row-content">
+              <div class="row-hook">"Soft enough you'll forget you'r…"</div>
+              <div class="row-context">Performance Polo — Navy · Problem-Solution</div>
+              <div class="row-meta">
+                <span>5 min ago</span>
+                <span class="pill pill-ready">Ready</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="review-row">
+            <div class="row-thumb" style="background: linear-gradient(135deg, #6b9bcf, #3d6a9c);"></div>
+            <div class="row-content">
+              <div class="row-hook">"Coastal Comfort™ Memorial Day"</div>
+              <div class="row-context">USA Flag Lifeguard Hat · Limited Drop</div>
+              <div class="row-meta">
+                <span>22 min ago</span>
+                <span class="pill pill-rendering">Rendering</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="review-row">
+            <div class="row-thumb" style="background: linear-gradient(135deg, #4a7ba8, #1a3a5c);"></div>
+            <div class="row-content">
+              <div class="row-hook">"This shirt doesn't suck — 8 ver…"</div>
+              <div class="row-context">Performance Button-Down · Problem-Solution</div>
+              <div class="row-meta">
+                <span>1 hr ago</span>
+                <span class="pill pill-approved">Approved</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="review-detail">
+          <!-- DETAIL VIEW (default) -->
+          <div id="detail-single">
+            <div class="detail-toolbar">
+              <div class="toggle-group">
+                <button class="toggle-btn active" onclick="setMode('single')">Detail</button>
+                <button class="toggle-btn" onclick="setMode('compare')">Compare 3 variants</button>
+              </div>
+              <div class="header-spacer"></div>
+              <span class="header-meta">Variant 1 of 3 · Performance Polo — Navy</span>
+            </div>
+
+            <div class="detail-body">
+              <div class="video-frame">
+                <span class="play"></span>
+                <span class="duration">0:18</span>
+              </div>
+
+              <div class="detail-content">
+                <div class="detail-hook">"Stiff zips? Not this one. 8 verified buyers say it's their favorite weekend layer."</div>
+
+                <div class="detail-meta-row">
+                  <span class="detail-tag">Problem-Solution</span>
+                  <span class="detail-tag">Performance Polo — Navy</span>
+                  <span class="detail-tag">9:16 · 1080p</span>
+                </div>
+
+                <span class="detail-caption-label">Primary ad text (editable)</span>
+                <textarea class="caption-edit">Your old polo is stiff, hot, wrinkled. Ours isn't. Real reviews from real buyers — see why 600+ verified owners say it's their favorite weekend layer. Coastal Comfort™ — built for the boat, the dock, and the dinner after.</textarea>
+
+                <div class="ai-disclosure">
+                  <input type="checkbox" id="ai-flag">
+                  <label for="ai-flag"><strong>AI-generated content flag.</strong> I confirm I will set Meta's AI-generated content flag during upload. (Required before download.)</label>
+                </div>
+
+                <div class="actions">
+                  <button class="btn-primary" disabled id="approve-btn">
+                    Approve <span class="red-accent">→</span> Download for Meta
+                  </button>
+                  <button class="btn-secondary">Regen with feedback</button>
+                  <button class="btn-text">Reject</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- COMPARE MODE -->
+          <div id="detail-compare" class="hidden">
+            <div class="detail-toolbar">
+              <div class="toggle-group">
+                <button class="toggle-btn" onclick="setMode('single')">Detail</button>
+                <button class="toggle-btn active" onclick="setMode('compare')">Compare 3 variants</button>
+              </div>
+              <div class="header-spacer"></div>
+              <span class="header-meta">Brief: New ad for navy Performance Polo, problem-solution</span>
+            </div>
+
+            <div class="compare-grid">
+              <div class="compare-card">
+                <div class="video-frame"><span class="play"></span><span class="duration">0:18</span></div>
+                <div class="detail-hook">"Stiff zips? Not this one. 8 verified buyers say it's their favorite weekend layer."</div>
+                <div class="detail-meta-row">
+                  <span class="detail-tag">V1</span>
+                  <span class="detail-tag">Problem-Solution</span>
+                </div>
+                <div class="compact-actions">
+                  <button class="approve">Approve</button>
+                  <button>Regen</button>
+                  <button>Reject</button>
+                </div>
+              </div>
+              <div class="compare-card">
+                <div class="video-frame" style="background: linear-gradient(180deg, #2d5a8c 0%, #1a3a5c 60%, #0d2440 100%);"><span class="play"></span><span class="duration">0:21</span></div>
+                <div class="detail-hook">"Why I made this quarter-zip — soft enough you'll forget you're wearing it."</div>
+                <div class="detail-meta-row">
+                  <span class="detail-tag">V2</span>
+                  <span class="detail-tag">Founder pivot</span>
+                </div>
+                <div class="compact-actions">
+                  <button class="approve">Approve</button>
+                  <button>Regen</button>
+                  <button>Reject</button>
+                </div>
+              </div>
+              <div class="compare-card">
+                <div class="video-frame" style="background: linear-gradient(180deg, #4a7ba8 0%, #2d5a8c 60%, #1a3a5c 100%);"><span class="play"></span><span class="duration">0:15</span></div>
+                <div class="detail-hook">"Soft enough you'll forget you're wearing it from morning gym to evening dinner."</div>
+                <div class="detail-meta-row">
+                  <span class="detail-tag">V3</span>
+                  <span class="detail-tag">Comfort claim</span>
+                </div>
+                <div class="compact-actions">
+                  <button class="approve">Approve</button>
+                  <button>Regen</button>
+                  <button>Reject</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ SETTINGS SCREEN ============ -->
+    <div id="screen-settings" class="hidden">
+      <header class="main-header">
+        <div class="breadcrumb"><strong>Settings</strong></div>
+      </header>
+
+      <div class="settings-body">
+        <div class="settings-section">
+          <h2>API keys</h2>
+          <p class="helper">Stored server-side only. Status shown here is whether a key exists, not the value.</p>
+          <div class="secret-row">
+            <div class="secret-name">Triple Whale (read-only)</div>
+            <div class="secret-status"><span class="ok"></span>Configured · rotated 22 days ago</div>
+            <button class="btn-mini">Update</button>
+          </div>
+          <div class="secret-row">
+            <div class="secret-name">HeyGen Team</div>
+            <div class="secret-status"><span class="ok"></span>Configured · rotated 22 days ago</div>
+            <button class="btn-mini">Update</button>
+          </div>
+          <div class="secret-row">
+            <div class="secret-name">Fashn.ai Pro</div>
+            <div class="secret-status"><span class="ok"></span>Configured · rotated 22 days ago</div>
+            <button class="btn-mini">Update</button>
+          </div>
+          <div class="secret-row">
+            <div class="secret-name">Higgsfield (Sprint 2)</div>
+            <div class="secret-status"><span class="miss"></span>Not configured</div>
+            <button class="btn-mini">Add</button>
+          </div>
+          <div class="secret-row">
+            <div class="secret-name">Meta Ads Manager (Sprint 2)</div>
+            <div class="secret-status"><span class="miss"></span>Not configured</div>
+            <button class="btn-mini">Add</button>
+          </div>
+        </div>
+
+        <div class="settings-section">
+          <h2>Brand bucket</h2>
+          <p class="helper">Voice, customer profile, products, winners/losers. Versioned per generation.</p>
+          <div class="secret-row">
+            <div class="secret-name">voice.md</div>
+            <div class="secret-status">Last updated 2 days ago</div>
+            <button class="btn-mini">Update</button>
+          </div>
+          <div class="secret-row">
+            <div class="secret-name">customer.md</div>
+            <div class="secret-status">Last updated 2 days ago</div>
+            <button class="btn-mini">Update</button>
+          </div>
+          <div class="secret-row">
+            <div class="secret-name">products.json</div>
+            <div class="secret-status">12 SKUs · last updated 2 days ago</div>
+            <button class="btn-mini">Update</button>
+          </div>
+          <div class="secret-row">
+            <div class="secret-name">hooks-winners.jsonl</div>
+            <div class="secret-status">3 entries · earn-it gate at 30</div>
+            <button class="btn-mini">View</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+  // Nav switching
+  document.querySelectorAll('.nav-item').forEach(item => {
+    item.addEventListener('click', e => {
+      e.preventDefault();
+      const screen = item.dataset.screen;
+      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+      item.classList.add('active');
+      document.querySelectorAll('[id^="screen-"]').forEach(s => s.classList.add('hidden'));
+      document.getElementById('screen-' + screen).classList.remove('hidden');
+    });
+  });
+
+  // Pattern chip toggle
+  document.querySelectorAll('.pattern-chips .chip').forEach(c => {
+    c.addEventListener('click', () => {
+      document.querySelectorAll('.pattern-chips .chip').forEach(x => x.classList.remove('active'));
+      c.classList.add('active');
+    });
+  });
+
+  // Review row select
+  document.querySelectorAll('.review-row').forEach(row => {
+    row.addEventListener('click', () => {
+      document.querySelectorAll('.review-row').forEach(r => r.classList.remove('selected'));
+      row.classList.add('selected');
+    });
+  });
+
+  // AI disclosure gate
+  const aiFlag = document.getElementById('ai-flag');
+  const approveBtn = document.getElementById('approve-btn');
+  if (aiFlag && approveBtn) {
+    aiFlag.addEventListener('change', () => {
+      approveBtn.disabled = !aiFlag.checked;
+    });
+  }
+
+  // Compare mode toggle
+  function setMode(mode) {
+    if (mode === 'single') {
+      document.getElementById('detail-single').classList.remove('hidden');
+      document.getElementById('detail-compare').classList.add('hidden');
+    } else {
+      document.getElementById('detail-single').classList.add('hidden');
+      document.getElementById('detail-compare').classList.remove('hidden');
+    }
+  }
+</script>
+
+</body>
+</html>
