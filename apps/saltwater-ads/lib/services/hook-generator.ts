@@ -1,16 +1,24 @@
 import { generateHooks } from '@lib/llm/anthropic.ts';
-import { snapshotBucket } from './brand-bucket-manager.ts';
+import { loadBucketSnapshot } from './brand-bucket-manager.ts';
 import { validateHook } from './validation.ts';
 import type { BriefShape, GenerationResult, Hook } from '@lib/llm/types.ts';
 
 // PRD §6.1.2 — the only LLM-driven agent in the system.
 // Owns: brief → 3 hook variants × 3 sub-variants, validated.
 // Called by Render Orchestrator from worker pipeline (state: hooks_generating).
+//
+// H-1 fix (internal eng review v0.4): this agent MUST hydrate the bucket
+// from the content-addressed cache via loadBucketSnapshot(versionId). It
+// MUST NOT call snapshotBucket() — that would re-snapshot mid-job and
+// silently re-version any in-flight Settings upload, lying about which
+// content actually drove the generation. The brief's create transaction
+// (routes/briefs.ts) is the single place where snapshotBucket() runs.
 
 const MAX_VALIDATION_REGEN = 3;
 
 export interface RunHookGeneratorArgs {
   brief: BriefShape;
+  brandBucketVersionId: number; // assigned at brief-create time, frozen for life of job
 }
 
 export interface RunHookGeneratorResult {
@@ -21,7 +29,8 @@ export interface RunHookGeneratorResult {
 
 export async function runHookGenerator(_args: RunHookGeneratorArgs): Promise<RunHookGeneratorResult> {
   // TODO:
-  //   1. snapshotBucket() → BrandBucketSnapshot + brand_bucket_version row
+  //   1. loadBucketSnapshot(_args.brandBucketVersionId) → BrandBucketSnapshot
+  //      from cache (NEVER call snapshotBucket — see H-1 above)
   //   2. assemble system + user prompt (lib/llm/prompts/*.md templated with bucket fields)
   //   3. call generateHooks() — get 3 main × 3 sub-variants
   //   4. validate every hook → if any fails, regen up to MAX_VALIDATION_REGEN times

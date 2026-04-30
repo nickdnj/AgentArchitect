@@ -20,7 +20,25 @@ app.post('/', audit('generate', 'brief'), async (c) => {
   if (!parsed.success) {
     return c.json({ error: 'invalid_brief', issues: parsed.error.issues }, 400);
   }
-  // TODO: implement brand-bucket snapshot + INSERT brief/hook_set/variant/render_attempt rows
+  // TODO: implement brand-bucket snapshot + INSERT brief/hook_set/variant/render_attempt rows.
+  //
+  // H-1 contract (internal eng review v0.4): this route is the ONLY place
+  // that calls snapshotBucket(). It runs synchronously inside the brief's
+  // BEGIN IMMEDIATE transaction, BEFORE any worker can pick up the job.
+  // Pseudo:
+  //
+  //   const snap = await snapshotBucket();           // materializes cache + brand_bucket_version row
+  //   conn.transaction(() => {
+  //     INSERT brief ... RETURNING id;
+  //     INSERT hook_set (brief_id, brand_bucket_version_id=snap.versionId) RETURNING id;
+  //     INSERT variant × 3 (hook_set_id);
+  //     INSERT render_attempt × 3 (variant_id, state='queued');
+  //   }).immediate();
+  //
+  // The worker picks up render_attempt rows by state. When it advances to
+  // hooks_generating, it calls runHookGenerator({brief, brandBucketVersionId})
+  // which uses loadBucketSnapshot() — the bucket is frozen to the cache
+  // entry that was hashed at this transaction's commit time.
   return c.json({ error: 'not_implemented', step: 'briefs.create' }, 501);
 });
 
