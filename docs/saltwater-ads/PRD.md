@@ -229,13 +229,14 @@ The original PRD claimed build wins on cost economics. That was dishonest becaus
 The agent + 5 services together still scaffold inside `agents/saltwater-ads/` and `teams/saltwater-ads/` for AgentArchitect framework consistency, but service implementations are plain TypeScript modules in `lib/services/`, NOT Claude-driven specialists.
 
 #### 6.1.1 Brand Bucket Manager
-**Owns:** `context-buckets/saltwater-brand/files/`
+**Owns:** `context-buckets/saltwater-brand/files/` (six files; the bucket fingerprint hash is computed over all six)
 - **F-BBM-1:** CRUD operations on `voice.md` (Voice IS / IS NOT, vocabulary IN / OUT, tone rules, anti-patterns, founder-voice rules).
 - **F-BBM-2:** CRUD operations on `customer.md` ("Older Joe DeMarco" archetype: demographics, personality, lifestyle, buying triggers, hooks that resonate, hooks that fall flat).
-- **F-BBM-3:** CRUD operations on `products.json` (SKU catalog: name, price, photos, key claims, season tag).
-- **F-BBM-4:** Append-only writes to `hooks-winners.jsonl` and `hooks-losers.jsonl`. Each entry: `{ad_id, hook_text, pattern, sku, hook_rate, roas, source: "tw" | "manual", logged_at}`.
-- **F-BBM-5:** Trademark enforcement table: maintains a list of verbatim-only strings. Coastal Comfort™ is the seed entry. Any generated copy violating verbatim must fail validation.
-- **F-BBM-6:** Audit log for all edits.
+- **F-BBM-3:** CRUD operations on `winning-patterns.md` (Founder Story / Problem-Solution / Limited Drop pattern catalog with confirmed library examples, hook tone, hook templates, visual brand DNA — feeds Hook Generator's pattern lock per F-HG-5).
+- **F-BBM-4:** CRUD operations on `products.json` (SKU catalog: name, price, photos, key claims, season tag).
+- **F-BBM-5:** Append-only writes to `hooks-winners.jsonl` and `hooks-losers.jsonl`. Each entry: `{ad_id, hook_text, pattern, sku, hook_rate, roas, source: "tw" | "manual", logged_at}` — note `hook_rate` and `roas` are nullable in v0.4 since per-ad spend is not exposed via TW API key auth (see §6.1.3); use `revenue` + `order_count` rank as the primary winner signal.
+- **F-BBM-6:** Trademark enforcement table: maintains a list of verbatim-only strings. Coastal Comfort™ is the seed entry. Any generated copy violating verbatim must fail validation.
+- **F-BBM-7:** Audit log for all edits.
 
 #### 6.1.2 Hook Generator (the only true agent in the system)
 **Powered by:** Claude Sonnet 4.6 via repo-owned LLM provider abstraction at `lib/llm/anthropic.ts` (NOT `~/.claude/skills/claude-api/`). Repo-owned for portability and handoff. Provider abstraction supports prompt caching (cache key = brand bucket version + brief shape) and is replaceable with another LLM provider via a single interface change.
@@ -248,21 +249,86 @@ The agent + 5 services together still scaffold inside `agents/saltwater-ads/` an
 
 **DEFERRED to Sprint 3+ (REVISED 2026-04-30):** Google Search copy and Performance Max asset generation. Original v0.1 included these (F-HG-7, F-HG-8) but scope was bloated for one operator and one channel. Meta video is the only proven Saltwater channel today. Add back only when Joe explicitly asks for cross-channel coverage.
 
-#### 6.1.3 Triple Whale Connector (REVISED 2026-04-30 per eng review)
+#### 6.1.3 Triple Whale Connector (REVISED 2026-04-30 PM — actual API surface, not assumed)
 
 **Service (not agent).** Adapter layer over TW Enterprise REST API.
 
-- **F-TW-1:** Read-only API access using API key from server-side secret store.
-- **F-TW-2:** **Incremental sync, not daily JSONL dumps.** Sync model:
-  - Every TW pull is keyed by **TW ad ID + watermark timestamp** (last successful sync).
-  - New / updated rows since watermark → upserted into `performance_snapshot` table (see §6.6 schema).
-  - Watermark advances on successful sync; on failure, retry from last good watermark.
-  - Eliminates the N+1 / re-parse-everything problem of day-stamped JSONL caches.
-- **F-TW-3:** **On-demand sync (v1).** Operator clicks "Refresh TW data" in Settings; system pulls deltas. **Sprint 2:** add hourly scheduled sync.
-- **F-TW-4:** Performance-classification helper: SQL view over `performance_snapshot` tags ads as `winner` (>2× ROAS), `neutral`, or `loser` (<0.5× ROAS).
-- **F-TW-5:** Decay detector (US-4 — Sprint 2): SQL query flags ads whose 3-day rolling hook rate drops below per-account 7-day median by ≥X% (X tunable, default 25%).
-- **F-TW-6:** Graceful degradation: if TW API is down, system generates ads from brand bucket alone (without performance priming). Hook Generator caches indicate "TW data stale as of [timestamp]" in generation logs.
-- **F-TW-7:** All TW responses logged to `audit_log` for compliance + debugging.
+**API surface reality (verified 2026-04-30 with live key on `saltwater-longisland.myshopify.com`):**
+
+API-key auth exposes **only 5 endpoints**, of which the connector uses 3:
+
+| Endpoint | Method | What we get | What we DON'T get |
+|---|---|---|---|
+| `/users/api-keys/me` | GET | Identity + scope verification | — |
+| `/summary-page/get-data` | POST | **Account-level** blended metrics (sales, AOV, ROAS, MER, gross profit, orders, new vs returning customer revenue) for a date range, current vs prior comparison | **Per-platform spend**, per-ad metrics (`metaAdSpend`, `metaRoas`, `metaCac`, `ncpa`, `ncroas`, `metaImpressions`, `metaClicks`, `metaCpm`, `metaCtr`, `metaHookRate` were all absent in the verified 90-day pull) |
+| `/attribution/get-orders-with-journeys-v2` | POST | **Per-order** customer journey with `source`, `campaignId`, `adsetId`, `adId`, `clickDate` for **6 attribution models** (firstClick, lastClick, fullFirstClick, fullLastClick, lastPlatformClick, linearAll) | Per-ad SPEND (no `cost` / `cpm` / `impressions` / `clicks` per ad) |
+
+**Implication:** per-ad ROAS is **not directly available** via API-key auth. We have per-ad **revenue** + **order count** + (computed) AOV via journey post-processing. Per-ad **spend** requires Meta Ads Manager API directly — Sprint 2+ work.
+
+**Scope reality on the live key:** `summary-page:read, attribution:read`. The two scopes available match the two endpoints we use; no further scopes exposed.
+
+**Functional requirements:**
+
+- **F-TW-1:** Read-only API access via `x-api-key` header from server-side secret store. Identity verified at boot via `/users/api-keys/me`.
+- **F-TW-2:** **Account-level summary sync** via `/summary-page/get-data`. Body shape: `{shopDomain, period: {start, end}, todayHour: null}`, ISO-timestamp date range. Pulls 699 metrics; we extract a curated subset (sales, AOV, ROAS, MER, orders, new/returning customer revenue, gross profit) and store as `account_metric_snapshot` rows keyed by snapshot date + window. Used for the §10.1 spend-efficiency gate.
+- **F-TW-3:** **Per-order journey sync** via `/attribution/get-orders-with-journeys-v2`. Body shape: `{shop, startDate, endDate}` — note `shop` (not `shopDomain`) and `YYYY-MM-DD` strings (not ISO timestamps). Paginated via `earliestDate` cursor. Stores journey rows in `order_journey` table (see schema below). Post-processed into per-ad revenue aggregates by configurable attribution model.
+- **F-TW-4:** **Attribution-model selection.** Configurable in Settings (default: `fullFirstClick`). Different models give wildly different per-channel pictures — verified 30-day data: Meta is 24% of orders by `fullFirstClick` but only 5% by `fullLastClick`. The system MUST surface the chosen model on every metric so operators don't accidentally compare apples to oranges.
+- **F-TW-5:** **Per-ad performance derivation** (post-processing): GROUP BY `adId` from chosen attribution model; SUM revenue, COUNT orders. Tag ads as `winner` (revenue + order_count above ranked threshold) / `neutral` / `loser` (no orders in 30 days while spending). Note: without spend data, "winner" is revenue-rank not ROAS-rank.
+- **F-TW-6:** **On-demand sync (v1).** Operator clicks "Refresh TW data" in Settings → server pulls deltas (last 30 days summary + last 30 days journey). Sprint 2 adds nightly cron.
+- **F-TW-7:** **Decay detector deferred to Sprint 2+.** Original v0.1 assumed TW exposes hook-rate per-ad in real time; it doesn't via this API. Decay logic must come from journey-based revenue trend or be done outside the system.
+- **F-TW-8:** **Graceful degradation:** if TW API is down or stale, Hook Generator runs without performance priming; Settings banner shows "Last TW sync: Xh ago (current sync failed)". Brand bucket alone is sufficient for hook generation; TW priming is bonus, not blocker.
+- **F-TW-9:** **Spend gap acknowledged.** Until Sprint 2+ Meta Ads API integration, per-ad ROAS / CPA / CPM / hook-rate cannot be computed. Sprint 1 month-1 evaluation gates use account-level blended metrics (§10.1) plus per-ad revenue ranking, NOT per-ad ROAS. This is honest, not aspirational.
+- **F-TW-10:** All TW responses logged to `audit_log` for compliance + debugging.
+
+**Schema additions** (replace the single `performance_snapshot` table from §6.6):
+
+```sql
+-- Account-level summary cache (fed by /summary-page/get-data)
+CREATE TABLE account_metric_snapshot (
+  id INTEGER PRIMARY KEY,
+  pulled_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  window_start DATE NOT NULL,
+  window_end DATE NOT NULL,
+  metric_id TEXT NOT NULL,         -- 'sales', 'shopifyAov', 'roas', 'mer', etc.
+  current_value REAL,
+  previous_value REAL,
+  delta_pct REAL,
+  UNIQUE(window_start, window_end, metric_id)
+);
+
+-- Per-order journey cache (fed by /attribution/get-orders-with-journeys-v2)
+CREATE TABLE order_journey (
+  id INTEGER PRIMARY KEY,
+  pulled_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  order_id TEXT NOT NULL,
+  order_name TEXT,
+  total_price REAL,
+  currency TEXT,
+  created_at TIMESTAMP,
+  customer_id TEXT,
+  attribution_json TEXT NOT NULL,  -- full attribution object: 6 models × clicks
+  UNIQUE(order_id)
+);
+
+-- Per-ad rollup (post-processed view, refreshed on each sync)
+CREATE TABLE ad_performance (
+  id INTEGER PRIMARY KEY,
+  computed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  attribution_model TEXT NOT NULL,  -- 'fullFirstClick' | 'fullLastClick' | etc.
+  source TEXT NOT NULL,
+  ad_id TEXT,
+  campaign_id TEXT,
+  adset_id TEXT,
+  window_start DATE NOT NULL,
+  window_end DATE NOT NULL,
+  order_count INTEGER NOT NULL,
+  revenue REAL NOT NULL,
+  computed_aov REAL,                 -- revenue / order_count
+  UNIQUE(attribution_model, source, ad_id, window_start, window_end)
+);
+```
+
+The `performance_snapshot` table from §6.6 (with spend, ROAS, CPA, hook_rate columns) is **deprecated for Sprint 1** since none of those fields are available. It's reintroduced in Sprint 2+ once Meta Ads API directly provides spend/impressions/clicks per ad.
 
 #### 6.1.4 Render Orchestrator
 - **F-RO-1:** Accept hook script + SKU reference + variant config, return rendered MP4 stitched from layers.
@@ -321,12 +387,12 @@ Single-tenant single-file SQLite database is the runtime data store. Brand bucke
 
 **Database location:** `data/saltwater.db` (web app server filesystem; ignored by git; backed up nightly).
 
-**Tables:** `brief`, `hook_set`, `variant`, `render_attempt`, `asset`, `approval`, `publish_event`, `performance_snapshot`, `brand_bucket_version`. See §6.6 for schemas.
+**Tables (Sprint 1 v0.4):** `brief`, `hook_set`, `variant`, `render_attempt`, `asset`, `approval`, `publish_event`, `account_metric_snapshot`, `order_journey`, `ad_performance`, `brand_bucket_version`. See §6.6 for schemas. The pre-v0.4 `performance_snapshot` table is deprecated for Sprint 1 — replaced with `account_metric_snapshot` + `order_journey` + `ad_performance` because per-ad spend is not exposed via TW API key auth (see §6.1.3).
 
 **Brand bucket versioning:**
-- Each generation captures the current `voice.md`, `customer.md`, `products.json`, `hooks-winners.jsonl`, `hooks-losers.jsonl` SHA-256 hashes into the `brand_bucket_version` table.
+- Each generation captures the current `voice.md`, `customer.md`, `winning-patterns.md`, `products.json`, `hooks-winners.jsonl`, `hooks-losers.jsonl` SHA-256 hashes into the `brand_bucket_version` table (six files).
 - Hook generation prompt cache key includes the bucket version hash → identical bucket + identical brief → cache hit.
-- A bucket edit during a running generation does NOT affect that generation (snapshot semantics).
+- A bucket edit during a running generation does NOT affect that generation (snapshot semantics — implementation per SAD §8 materializes content to `data/bucket-cache/<sha>.txt` at snapshot time so the worker reads the frozen copy, not the live file).
 
 **Why SQLite, not Postgres:** single tenant, single operator, single hosted process. SQLite handles concurrent reads + serialized writes natively. If the system ever scales to multi-tenant or high concurrency, migrate to Postgres — but YAGNI in v1.
 
@@ -387,6 +453,7 @@ CREATE TABLE brand_bucket_version (
   captured_at TIMESTAMP,
   voice_sha256 TEXT,
   customer_sha256 TEXT,
+  winning_patterns_sha256 TEXT,    -- added v0.4: 6th bucket file (was missing in pre-v0.4 spec)
   products_sha256 TEXT,
   hooks_winners_sha256 TEXT,
   hooks_losers_sha256 TEXT
@@ -465,17 +532,56 @@ CREATE TABLE publish_event (
   ad_set_id TEXT
 );
 
-CREATE TABLE performance_snapshot (
+-- DEPRECATED for Sprint 1 (PRD v0.4): the original performance_snapshot table assumed
+-- per-ad spend / impressions / clicks / hook_rate would be available via TW API.
+-- Live API probe 2026-04-30 confirmed those fields are NOT exposed via x-api-key auth.
+-- Replaced for Sprint 1 with the three tables below; reintroduced in Sprint 2+ once
+-- Meta Ads Manager API integration ships and per-ad spend becomes available.
+--
+-- CREATE TABLE performance_snapshot ( ... )    -- intentionally not created in 0001_init.sql
+
+-- Account-level summary cache (fed by /summary-page/get-data — PRD §6.1.3 F-TW-2)
+CREATE TABLE account_metric_snapshot (
   id INTEGER PRIMARY KEY,
-  meta_ad_id TEXT,
-  snapshot_date DATE,
-  spend REAL,
-  impressions INTEGER,
-  clicks INTEGER,
-  ctr REAL,
-  hook_rate REAL,
-  roas REAL,
-  mer REAL
+  pulled_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  window_start DATE NOT NULL,
+  window_end DATE NOT NULL,
+  metric_id TEXT NOT NULL,         -- 'sales', 'shopifyAov', 'roas', 'mer', etc.
+  current_value REAL,
+  previous_value REAL,
+  delta_pct REAL,
+  UNIQUE(window_start, window_end, metric_id)
+);
+
+-- Per-order journey cache (fed by /attribution/get-orders-with-journeys-v2 — F-TW-3)
+CREATE TABLE order_journey (
+  id INTEGER PRIMARY KEY,
+  pulled_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  order_id TEXT NOT NULL,
+  order_name TEXT,
+  total_price REAL,
+  currency TEXT,
+  created_at TIMESTAMP,
+  customer_id TEXT,
+  attribution_json TEXT NOT NULL,  -- full attribution object: 6 models × clicks
+  UNIQUE(order_id)
+);
+
+-- Per-ad rollup (post-processed view, refreshed on each sync — F-TW-5)
+CREATE TABLE ad_performance (
+  id INTEGER PRIMARY KEY,
+  computed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  attribution_model TEXT NOT NULL,  -- 'fullFirstClick' | 'fullLastClick' | etc.
+  source TEXT NOT NULL,
+  ad_id TEXT,
+  campaign_id TEXT,
+  adset_id TEXT,
+  window_start DATE NOT NULL,
+  window_end DATE NOT NULL,
+  order_count INTEGER NOT NULL,
+  revenue REAL NOT NULL,
+  computed_aov REAL,                 -- revenue / order_count
+  UNIQUE(attribution_model, source, ad_id, window_start, window_end)
 );
 ```
 
@@ -678,25 +784,39 @@ A separate Software Architecture Document (SAD) will detail data schemas, API co
 
 ## 10. Success Metrics
 
-### 10.1 Primary gate: Qualitative + spend efficiency (REVISED 2026-04-30)
+### 10.1 Primary gate: Qualitative + spend efficiency (REVISED 2026-04-30 PM — attribution-model-aware)
 
-**Honesty about statistics first:** at $3K/mo Meta spend, 4 weeks produces ~10-20 ad variants live. Detecting a 7%→10.5% hit-rate lift at that volume is below the statistical-significance floor. The original PRD treated hit-rate as a hard pass/fail gate; that was numerology. Revised below.
+**Honesty about statistics first:** at $3K/mo Meta spend, 4 weeks produces ~10-20 ad variants live. Detecting a 7%→10.5% hit-rate lift at that volume is below the statistical-significance floor. The original PRD treated hit-rate as a hard pass/fail gate; that was numerology.
 
-**Hard gate (end of month 1):**
-- **Qualitative — Joe's gut:** Does Joe say "yeah, that sounds like Saltwater" on every ad shipped? If <70% pass that test, kill.
-- **Spend efficiency trend:** Has the 4-week trailing CPA stayed within ±20% of baseline (i.e., the system is at minimum NOT making ad performance worse)? If significantly worse, kill.
-- **Operator-load reality:** Is Joe's actual time-per-ad ≤ 5 min? If he's spending >30 min/week on ops, system is broken regardless of output quality.
+**Honesty about attribution second (NEW 2026-04-30 PM):** verified 30-day TW data shows Saltwater's per-channel revenue picture varies wildly by attribution model — Meta is **24% of orders** by `fullFirstClick` but only **5% of orders** by `fullLastClick` (Meta drives discovery; email + organic close). Any "Meta ad performance" gate without specifying the attribution model is meaningless. The gates below now name the model explicitly.
+
+**Verified 90-day baseline** (2026-01-31 → 2026-04-30, see `baseline-metrics.md`):
+- Order Revenue: **$68,038** (-3% vs prior 90d)
+- AOV (`shopifyAov`): **$85.82** (-32% vs prior 90d — already softening before any AI ads ship)
+- Blended ROAS: **3.98**, Blended MER: **25.11**
+- Orders: **732** (+38% vs prior 90d, but at smaller basket sizes)
+- New Customer Revenue: **$42,976** (+61%); Returning Customer Revenue: **$25,062** (-43%)
+
+**Hard gate (end of month 1, post-launch):**
+1. **Qualitative — Joe's gut:** Does Joe say "yeah, that sounds like Saltwater" on every ad shipped? If <70% pass that test, kill.
+2. **Account-level spend efficiency:** Has the 4-week trailing **blended ROAS** stayed within ±20% of the 90-day baseline (3.98 → 3.18-4.78)? AND has the 4-week trailing **AOV** not accelerated its existing decline (no worse than -10% additional drop from $85.82 baseline)? If both worse, kill.
+3. **Meta-specific revenue at full-first-click:** Has Meta's share of `fullFirstClick`-attributed orders held or grown vs the 30-day pre-launch baseline (24% / ~16 orders / ~$1,898 in the most recent 30-day window)? If Meta share drops materially, kill.
+4. **Operator-load reality:** Is Joe's actual time-per-ad ≤ 5 min? If he's spending >30 min/week on ops, system is broken regardless of output quality.
+
+**Why three financial signals, not one:** at this Meta scale ($3K/mo spend, ~16 first-touch orders / 30 days), a single-metric gate is too noisy. We watch (a) whether AI ads degrade overall account performance (blended ROAS + AOV), (b) whether they grow Meta's share of journey starts (fullFirstClick), and (c) whether Joe stays in his time budget. Two of three flagging concern → flag for review; three of three → kill.
 
 **Directional metric (tracked but NOT pass/fail at month 1):**
-- **Hit rate** = % of ads scaling to >2× ROAS in their test budget.
-- **Baseline:** confirmed from 2025 TW data (estimated ~7% from Joe's "5-10%" verbal).
-- **Track for month-3 retrospective**, when sample size is meaningful (~80-100 variants run).
+- **Per-ad revenue rank** by `fullFirstClick` and `fullLastClick`. Both, not one — different models tell different truths about which AI ad worked.
+- **Hit rate** = % of AI ads in the top revenue quartile of all Meta ads in their 4-week window. Baseline from pre-launch 30-day journey data (verified: only 2 unique Meta ad IDs scaled to ≥2 orders in 30 days, i.e., baseline hit rate is essentially "any AI ad that gets ≥2 orders enters the rare-air group").
+- **Track per-attribution-model.** A hook that wins on `fullFirstClick` (drives lots of journey starts) is a different beast than one that wins on `fullLastClick` (closes orders directly). We collect both; we don't average them; we don't pretend they're the same metric.
 
 **Month-3 hit-rate target (real measurement window):**
-- **Stretch:** 2× baseline (7%→14%).
+- **Stretch:** 2× baseline first-touch order count from Meta ads (16 → 32 orders / 30d via `fullFirstClick`).
 - **Floor:** measurably above baseline (not statistical floor at 4 weeks).
 
-**Why this matters:** 4-week hit-rate gates produce false confidence either way — either we kill a working system because 4 weeks of noise looked bad, or we greenlight a broken one because 4 weeks of noise looked good. The qualitative + spend-efficiency gate at month 1 is harder to fool. The hit-rate metric earns trust at month 3 with real volume.
+**Why this matters:** 4-week hit-rate gates produce false confidence either way — either we kill a working system because 4 weeks of noise looked bad, or we greenlight a broken one because 4 weeks of noise looked good. Multi-signal gates at month 1 + attribution-model honesty at month 3 are the only way the project earns trust without lying about what it measured.
+
+**Sprint 2 gate addition:** once Meta Ads Manager API is connected and per-ad spend is available, re-introduce per-ad ROAS as a fourth tracked metric. Until then, "ROAS per ad" cannot be honestly computed from the TW API surface alone.
 
 ### 10.2 Secondary metrics
 
@@ -745,10 +865,10 @@ This avoids dressing up small data as proprietary intelligence on day 1 while le
 
 ## 12. Open Questions
 
-1. **TW Enterprise API key delivery** — still pending from Joe as of Apr 28. Without it, Sprint 1 runs without performance priming (degraded mode).
-2. **Joe's gut-call top 5 winners** from JD001–JD021 — pending. Will inform `hooks-winners.jsonl` seed entries. Optional but high value.
+1. ~~TW Enterprise API key delivery~~ — **RESOLVED 2026-04-30 PM.** Joe added Nick to Saltwater's TW workspace; key generated with `summary-page:read, attribution:read` scopes. Stored in macOS Keychain (`tw-api-key` / `saltwater`). Identity + scope verified live. Baseline pull complete — see `baseline-metrics.md` and `baseline-data/tw-journey-findings.md`.
+2. **Joe's gut-call top 5 winners** from JD001–JD021 — pending. Now MORE important after the 2026-04-30 PM probe revealed only 2 unique Meta ad IDs scaled to ≥2 orders in 30 days (statistical-floor sample). Joe's gut-call is the primary `hooks-winners.jsonl` seed source; TW journey data supplements with revenue rank, not ROAS rank.
 3. **Optional flop nomination** from Joe (negative training signal for `hooks-losers.jsonl`).
-4. **Saltwater baseline hit rate** — actual number from 2025 TW data. Currently estimated at ~7% based on Joe's verbal "5–10% of ads scale" comment. Confirm in Sprint 1 with TW data.
+4. ~~Saltwater baseline hit rate~~ — **RESOLVED 2026-04-30 PM with verified data** (see §10.1 + `baseline-metrics.md`). 90-day blended ROAS 3.98, AOV $85.82, 732 orders. 30-day Meta share = 24% by `fullFirstClick` / 5% by `fullLastClick` — attribution-model selection is now an explicit configurable in §6.1.3 F-TW-4.
 5. ~~Path A vs. Path B for handoff~~ — **RESOLVED 2026-04-30 (eng review):** Path B locked. Web app from day 1, no CLI handoff path. See §6.3.
 6. **Hosting domain for web app (Path B)** — `saltwater-ads.<domain>` — which domain? Saltwaterclothingco.com subdomain? A new Vistter-controlled domain? Joe to decide before Sprint 1.5.
 7. **Meta Ads Manager API access** — Sprint 2. Joe's Meta Business Manager permissions need to grant access to Saltwater AI Ads as a "system user." Not blocking Sprint 1.
@@ -770,6 +890,8 @@ This avoids dressing up small data as proprietary intelligence on day 1 while le
 | 0.1 | 2026-04-28 | Nick DeMarco (with AI assistance) | Initial draft. |
 | 0.2 | 2026-04-30 | Nick DeMarco (with autoplan CEO review — Codex + Claude subagent) | Major revision after CEO-phase dual-voice review surfaced 7 critical/high/medium concerns. Changes: (1) hit-rate moved from hard pass/fail gate to directional metric with month-3 measurement; month-1 gate is qualitative + spend efficiency. (2) Build-vs-buy reframed honestly — priced Nick's time at opportunity cost, acknowledged $500/mo freelance alternative was viable, justified build by family + framework + 1% equity offer (Buddy's offer disclosed). (3) "Exit clean week 4" replaced with "5-10 hr/month maintenance retainer through month 6"; web app from day 1 (no CLI handoff path). (4) Brand bucket "compounding moat" claim dropped on day 1; replaced with month-6 earn-it gate. (5) "Older Joe DeMarco customer archetype" reframed as "AI catalog model" (Glam/VModel-style fashion photography role); positioned transparently — not a synthetic founder proxy. (6) Higgsfield deferred to Sprint 2 conditional. (7) Scope brutally narrowed for v1: Meta video only (Google Search + PMAX deferred); 3 web-app screens (Generate / Review / Settings) instead of 6; deferred Buddy preview-link, manual override, performance digest, brand-bucket UI editor. (8) Risk section: vendor convergence added as primary competitive risk with quarterly kill-switch checkpoint. (9) Risk section: zombie-outcome added (silent subscription burn) with month-2 kill-switch. |
 | 0.3 | 2026-04-30 | Nick DeMarco (with plan-eng-review — Codex eng challenge) | Engineering-phase revision after Codex eng review surfaced 12 findings (4 critical, 5 high, 3 medium). Changes: (1) §6.3 cleaned up — runtime contradiction resolved, Path B locked, no CLI handoff path. (2) §6.4 NEW — backend storage spec: SQLite at `data/saltwater.db`, brand bucket versioned + read-only per run, WAL concurrency. (3) §6.5 NEW — explicit job state machine with states (queued → hooks_generating → hooks_ready → vendor_pending → partial → assembling → ready_for_review), per-vendor timeout budgets, retry budget, idempotency. (4) §6.6 NEW — full SQL data schemas for brief/hook_set/variant/render_attempt/asset/approval/publish_event/performance_snapshot/brand_bucket_version. (5) §7.2 latency rewritten with honest SLA: 3 variants in 8-12 min realistic, 15 min hard ceiling. (6) §7.7 security spec'd: magic-link auth, server-side-only secrets, signed URL access, audit log table. (7) §7.5 AI disclosure made enforceable — "Download for Meta" button gated behind acknowledgment checkbox, Sprint 2 auto-enforces via Meta API. (8) §6.1 reframed — 1 LLM agent (Hook Generator) + 5 deterministic services (NOT 6 agents); v0.1 over-modeled deterministic CRUD as agents. (9) §6.1.2 Hook Generator decoupled from `~/.claude/skills/claude-api/` → repo-owned `lib/llm/anthropic.ts` provider abstraction. (10) §6.1.3 TW Connector switched from daily JSONL dumps to incremental sync with watermark + materialized snapshots; eliminates N+1 risk. (11) §7.4 media spec added: 30fps frame rate, -16 LUFS audio, bundled fonts, golden-media test fixtures. (12) Sprint 1 timeline extended from week 2-3 to week 2-4 acknowledging realistic feasibility for solo dev. (13) §12 question 5 (Path A vs B) resolved. |
+| 0.5 | 2026-04-30 PM (later) | Nick DeMarco (post-internal-eng-review fixes) | Easy-now batch fixes from `reviews/internal-eng-v0.4.md`. (1) §6.6 schema reconciled with §6.1.3 v0.4 — `performance_snapshot` removed (deprecated comment kept), `account_metric_snapshot` + `order_journey` + `ad_performance` added so §6.6 is single-source-of-truth again. (2) §6.6 `brand_bucket_version` schema gained `winning_patterns_sha256` column (was missing — PRD claimed 5 files but on-disk bucket has 6). (3) §6.4 brand bucket versioning list now names 6 files with snapshot-materialization (`data/bucket-cache/<sha>.txt`) called out per SAD §8 contract. (4) §6.1.1 Brand Bucket Manager — added F-BBM-3 for `winning-patterns.md`; renumbered F-BBM-1..7. F-BBM-5 noted that `hook_rate`/`roas` are nullable in v0.4 since per-ad spend isn't TW-exposed. (5) Scaffold patches landed in same pass: `apps/saltwater-ads/db/migrations/0001_init.sql` + `0002_indexes.sql` rewritten to v0.4 schema, `lib/services/tw-connector.ts:60` comment updated, `src/worker/tick.ts` claim transaction now does atomic compare-and-swap (UPDATE … WHERE id=? AND state=?) preventing concurrent double-claim, `test/unit/state-machine.test.ts` added with 5 cases (queued→hooks_generating CAS, second-claim-empty, hooks_ready transition, non-claimable ignored, failed_recoverable not auto-reclaimed). README v0.3→v0.4 ref. SAD header bumped to v0.2 with v0.4 PRD pointer. Remaining critical findings (C-2 auth wiring, H-1 bucket materialization, H-2 AI disclosure UI, H-4 port mismatch + static serving, H-6 pino logging) deferred to a 12-15 hour fix sprint before /plan-eng-review fires. |
+| 0.4 | 2026-04-30 PM | Nick DeMarco (TW API surface verified live) | Reality-check revision after live TW API probe with Saltwater workspace key. Changes: (1) §6.1.3 rewritten end-to-end — TW key auth exposes only 5 endpoints (verified), per-ad spend NOT available (requires Meta Ads Manager API directly, Sprint 2+), per-ad ROAS / CPA / CPM / hook-rate cannot be computed from TW alone. F-TW-1..10 redesigned for actual surface: account-level summary via `/summary-page/get-data` + per-order journey via `/attribution/get-orders-with-journeys-v2`, post-processed to per-ad revenue rank by configurable attribution model. (2) §6.1.3 schema updated — `performance_snapshot` (with spend/ROAS columns) deprecated for Sprint 1; replaced with `account_metric_snapshot` + `order_journey` + `ad_performance` rollup. Spend-bearing schema returns in Sprint 2 once Meta Ads API integrated. (3) §10.1 spend-efficiency gate rewritten attribution-model-aware — verified 30-day data shows Meta is **24% of orders by `fullFirstClick`** but only **5% by `fullLastClick`**; gate without specifying model is meaningless. New month-1 hard gate has 4 signals (qualitative, blended ROAS+AOV vs verified 90-day baseline of 3.98/$85.82, Meta first-touch share, operator load), kill criterion = 2-of-3 financial signals worse. (4) §10.1 baseline numbers locked from verified 90-day TW pull (sales $68,038, AOV $85.82 already softening -32% pre-launch, ROAS 3.98, MER 25.11, RC Revenue down -43%). (5) §12 questions 1 + 4 resolved with verified data; question 2 reframed as primary winner-seed source given small Meta ad sample at hand. New artifacts: `baseline-metrics.md`, `baseline-data/tw-summary-90day-2026-01-31_2026-04-30.json`, `baseline-data/tw-journey-30day-2026-03-31_2026-04-29.json`, `baseline-data/tw-journey-findings.md`. |
 
 ---
 

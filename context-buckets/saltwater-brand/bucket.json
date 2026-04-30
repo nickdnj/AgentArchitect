@@ -1,0 +1,40 @@
+{
+  "id": "saltwater-brand",
+  "name": "Saltwater Brand Bucket",
+  "description": "Brand voice, customer archetype, winning ad patterns, SKU catalog, and performance-tagged hooks for Saltwater Clothing Co. Read by the Saltwater AI Ads Hook Generator agent. Versioned by SHA-256 hash per generation (see PRD §6.4).",
+  "owner_team": "saltwater-ads",
+  "content_type": "mixed",
+  "files": [
+    {
+      "name": "voice.md",
+      "purpose": "Voice IS / IS NOT, vocabulary IN / OUT, tone rules, founder voice, anti-patterns, trademark rules"
+    },
+    {
+      "name": "customer.md",
+      "purpose": "\"Older Joe DeMarco\" archetype — demographics, personality, lifestyle, buying triggers, hooks that resonate / fall flat"
+    },
+    {
+      "name": "winning-patterns.md",
+      "purpose": "Three proven ad patterns (Founder Story, Problem-Solution, Limited Drops), confirmed library examples, hook templates, visual brand DNA"
+    },
+    {
+      "name": "products.json",
+      "purpose": "SKU catalog — id, name, category, season, key claims, photo refs, winning ad refs"
+    },
+    {
+      "name": "hooks-winners.jsonl",
+      "purpose": "Append-only log of hooks that scaled (>2x ROAS) — one JSON per line, written by Brand Bucket Manager F-BBM-4 from TW data"
+    },
+    {
+      "name": "hooks-losers.jsonl",
+      "purpose": "Append-only log of hooks that flopped (<0.5x ROAS) — one JSON per line, written by Brand Bucket Manager F-BBM-4 from TW data"
+    }
+  ],
+  "trademarks_verbatim": [
+    "Coastal Comfort™"
+  ],
+  "earn_it_gate": "Month 6: ≥30 winners with TW attribution AND ≥10 losers with reasons AND demonstrably better Hook Generator output with bucket priming vs without. Until then, this is a useful prompt context library, not a moat. See PRD §10.4.",
+  "promoted_from": "teams/personal-assistant/workspace/saltwater-ads-poc/brand-draft/",
+  "promoted_at": "2026-04-30",
+  "version": "0.1"
+}

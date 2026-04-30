@@ -1,0 +1,75 @@
+{
+  "id": "hook-generator",
+  "name": "Hook Generator",
+  "description": "The only LLM-driven agent in the Saltwater AI Ads system. Takes a brief and a snapshotted brand bucket, returns 3 hook variants × 3 sub-variants for HeyGen lip-sync delivery. Validates output against vocabulary, anti-pattern, and trademark rules before persisting.",
+  "version": "0.1",
+  "expertise": {
+    "domains": [
+      "ad copywriting",
+      "DTC brand voice",
+      "Saltwater Clothing Co brand language",
+      "hook generation for video ads",
+      "trademark enforcement"
+    ],
+    "capabilities": [
+      "brand-bucket-primed generation",
+      "pattern-locked hook creation (founder / problem_solution / limited_drop)",
+      "vocabulary and anti-pattern validation",
+      "date-gated rule enforcement (Veronica wife-rule, Memorial Day, etc.)",
+      "regen-on-validation-failure (up to 3 retries)"
+    ]
+  },
+  "mcp_servers": [],
+  "tools": [],
+  "context_buckets": {
+    "assigned": [
+      "saltwater-brand"
+    ],
+    "access_level": "read-only"
+  },
+  "output": {
+    "folder": "n/a — writes to SQLite via apps/saltwater-ads/",
+    "formats": [
+      "JSON (hook_set + 9 variants)"
+    ],
+    "naming": "hook_set:<id> with 3 main variants × 3 sub-variants"
+  },
+  "collaboration": {
+    "can_request_from": [],
+    "provides_to": [
+      "render-orchestrator (TS service in apps/saltwater-ads/lib/services/)"
+    ],
+    "handoff_format": "variant rows in SQLite with status='queued'"
+  },
+  "workflow_position": {
+    "stage": "hook-generation",
+    "entry_point": false,
+    "order": 1
+  },
+  "trigger": {
+    "type": "called-by-service",
+    "description": "Worker process picks up render_attempt in state='queued' → hooks_generating → calls this agent via lib/llm/anthropic.ts"
+  },
+  "agent_type": "specialist",
+  "execution": {
+    "context": "fork",
+    "max_turns": 1,
+    "model": "sonnet"
+  },
+  "implementation": {
+    "runtime": "embedded in apps/saltwater-ads/",
+    "code_path": "apps/saltwater-ads/lib/services/hook-generator.ts",
+    "llm_provider_path": "apps/saltwater-ads/lib/llm/anthropic.ts",
+    "prompt_templates": [
+      "apps/saltwater-ads/lib/llm/prompts/hook-system.md",
+      "apps/saltwater-ads/lib/llm/prompts/hook-user.md"
+    ],
+    "validation_module": "apps/saltwater-ads/lib/services/validation.ts",
+    "model_id": "claude-sonnet-4-6"
+  },
+  "specs": {
+    "prd_section": "PRD §6.1.2 (F-HG-1..6)",
+    "sad_section": "SAD §3 + §4 + §8",
+    "uxd_section": "UXD Generate screen"
+  }
+}

@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "last_updated": "2026-04-09",
+  "last_updated": "2026-04-30",
   "buckets": [
     {
       "id": "wharfside-docs",
@@ -72,6 +72,15 @@
       "content_type": "documents",
       "assigned_to": ["personal-assistant"],
       "created": "2026-04-24",
+      "status": "active"
+    },
+    {
+      "id": "saltwater-brand",
+      "name": "Saltwater Brand Bucket",
+      "folder": "context-buckets/saltwater-brand",
+      "content_type": "mixed",
+      "assigned_to": ["saltwater-ads"],
+      "created": "2026-04-30",
       "status": "active"
     }
   ]

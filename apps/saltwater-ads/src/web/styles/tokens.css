@@ -1,0 +1,121 @@
+/* UXD locked palette + typography tokens.
+   Reference: docs/saltwater-ads/PRD.md §6.2 + UXD design language section. */
+
+:root {
+  --navy:   #1a3a5c;
+  --red:    #c8102e;
+  --sand-50: #faf7f2;
+  --sand-100: #f5f0e8;
+  --sand-200: #ebe4d6;
+  --sand-700: #6e624c;
+  --ink:    #161616;
+  --ink-2:  #4a4a4a;
+  --ink-3:  #777;
+  --line:   rgba(0, 0, 0, 0.08);
+  --bg:     #ffffff;
+  --ok:     #1f8a5f;
+  --warn:   #b87600;
+
+  --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+.app {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  min-height: 100vh;
+}
+
+.nav {
+  border-right: 1px solid var(--line);
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.nav .brand {
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 24px;
+  font-size: 15px;
+}
+
+.nav button {
+  text-align: left;
+  background: none;
+  border: 0;
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  font: inherit;
+  color: var(--ink-2);
+  cursor: pointer;
+}
+.nav button:hover { background: var(--sand-100); }
+.nav button.active { background: var(--navy); color: white; }
+
+.content {
+  padding: 32px 40px;
+}
+
+.page h1 {
+  margin-top: 0;
+  color: var(--navy);
+}
+
+.brief-form textarea {
+  width: 100%;
+  min-height: 140px;
+  font-family: var(--font-mono);
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  resize: vertical;
+}
+
+.brief-form button {
+  margin-top: 16px;
+  background: var(--navy);
+  color: white;
+  border: 0;
+  padding: 12px 20px;
+  border-radius: var(--radius-md);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+.brief-form button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.pill {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: var(--sand-100);
+  color: var(--sand-700);
+}
+.pill-ready_for_review { background: var(--ok); color: white; }
+.pill-approved { background: var(--navy); color: white; }
+.pill-failed_recoverable, .pill-failed_terminal { background: var(--red); color: white; }
+.pill-rendering, .pill-vendor_pending, .pill-assembling, .pill-hooks_generating { background: var(--warn); color: white; }

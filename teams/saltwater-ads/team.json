@@ -1,0 +1,82 @@
+{
+  "id": "saltwater-ads",
+  "skill_alias": "saltwater-ads",
+  "name": "Saltwater AI Ads Team",
+  "description": "Single-tenant AI ad generation system for Saltwater Clothing Co. One LLM agent (Hook Generator) plus five deterministic services (Brand Bucket Manager, Triple Whale Connector, Render Orchestrator, Assembly, Meta Pusher) generate brand-locked Meta video ads end-to-end. Implementation lives at apps/saltwater-ads/ as a Bun + Hono + Vite/React web app with bun:sqlite. May be exported via scripts/build-starter.js post-validation.",
+  "version": "0.1",
+  "created": "2026-04-30",
+  "members": [
+    {
+      "agent_id": "hook-generator",
+      "role": "The only LLM-driven agent. Generates 3 hook variants × 3 sub-variants per brief, validated against brand bucket rules before persist.",
+      "context_override": null
+    }
+  ],
+  "services": [
+    {
+      "id": "brand-bucket-manager",
+      "name": "Brand Bucket Manager",
+      "kind": "deterministic-service",
+      "code_path": "apps/saltwater-ads/lib/services/brand-bucket-manager.ts",
+      "purpose": "Read voice.md/customer.md/winning-patterns.md/products.json, snapshot SHA-256 hashes per generation, append-only writes to hooks-winners.jsonl + hooks-losers.jsonl, trademark verbatim enforcement, audit log."
+    },
+    {
+      "id": "tw-connector",
+      "name": "Triple Whale Connector",
+      "kind": "deterministic-service",
+      "code_path": "apps/saltwater-ads/lib/services/tw-connector.ts",
+      "purpose": "Read-only access to TW Enterprise API. Account-level summary metrics via /summary-page/get-data; customer journeys via /attribution/get-orders-with-journeys-v2. Per-ad ROAS NOT exposed via key-auth — Joe's gut-call top 5 is the primary winner-seed source. Graceful degradation when TW unreachable."
+    },
+    {
+      "id": "render-orchestrator",
+      "name": "Render Orchestrator",
+      "kind": "deterministic-service",
+      "code_path": "apps/saltwater-ads/lib/services/render-orchestrator.ts",
+      "purpose": "Calls HeyGen Photo Avatar + Fashn try-on in parallel with per-vendor timeout budgets. Idempotency cache keyed by (hook_text, avatar_id) avoids re-billing on regen. Off-likeness operator flag (Sprint 1); automated similarity check Sprint 3."
+    },
+    {
+      "id": "assembly",
+      "name": "Assembly",
+      "kind": "deterministic-service",
+      "code_path": "apps/saltwater-ads/lib/services/assembly.ts",
+      "purpose": "FFmpeg pipeline: concat HeyGen + Fashn + B-roll layers, burn-in captions, brand overlay, 30fps, -16 LUFS audio loudness, 9:16 1080p MP4 output. Golden-media test fixtures verify regression."
+    },
+    {
+      "id": "meta-pusher",
+      "name": "Meta Pusher",
+      "kind": "deterministic-service-deferred",
+      "code_path": "apps/saltwater-ads/lib/services/meta-pusher.ts (Sprint 2)",
+      "purpose": "DEFERRED to Sprint 2. Pushes approved MP4 to Saltwater's Meta Ads Manager as a draft ad with AI-disclosure flag set. v1 is manual upload by Joe."
+    }
+  ],
+  "shared_context": {
+    "buckets": ["saltwater-brand"],
+    "outputs_folder": "teams/saltwater-ads/outputs"
+  },
+  "orchestration": {
+    "mode": "implementation-app",
+    "execution": { "model": "sonnet", "max_turns": 50 },
+    "delegation_strategy": "Unlike most AA teams, the saltwater-ads team is implemented as a standalone web app at apps/saltwater-ads/. The Hook Generator agent is invoked from inside that app via lib/llm/anthropic.ts; the five companion services are TypeScript modules in lib/services/. The team.json registration documents the conceptual roster but day-to-day execution happens inside the Bun + Hono + worker process, not via Task() delegation.",
+    "session_summary": {
+      "enabled": true,
+      "output_path": "context-buckets/session-logs/files/"
+    }
+  },
+  "operator_model": {
+    "primary": "Joe DeMarco (joe@saltwaterclothingco.com) — daily user via web app",
+    "builder_maintainer": "Nick DeMarco (nickd@demarconet.com) — Sprint 1.5 maintainer at 5-10 hr/month through month 6",
+    "secondary": "Buddy DeMarco — Sprint 2 signed-link review only (no account in Sprint 1)"
+  },
+  "deployment_target": {
+    "sprint_1": "local + Tailscale",
+    "sprint_1_5": "TBD per PRD §12 Q6 — single VPS / Fly.io / Railway, NOT serverless (FFmpeg + persistent SQLite required)",
+    "may_export_via": "scripts/build-starter.js (Apr 17, 2026 starter kit)"
+  },
+  "spec_locations": {
+    "prd": "docs/saltwater-ads/PRD.md",
+    "sad": "docs/saltwater-ads/SAD.md",
+    "uxd": "docs/saltwater-ads/UXD.md",
+    "reviews": "docs/saltwater-ads/reviews/",
+    "prototype": "docs/saltwater-ads/prototype/index.html (Firebase Hosting at https://saltwater-ads-mockup.web.app)"
+  }
+}

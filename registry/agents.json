@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "last_updated": "2026-04-17",
+  "last_updated": "2026-04-30",
   "agents": [
     {
       "id": "monthly-bulletin",
@@ -401,6 +401,14 @@
       "folder": "agents/migration-openclaw",
       "teams": [],
       "created": "2026-04-17",
+      "status": "active"
+    },
+    {
+      "id": "hook-generator",
+      "name": "Hook Generator",
+      "folder": "agents/saltwater-ads/hook-generator",
+      "teams": ["saltwater-ads"],
+      "created": "2026-04-30",
       "status": "active"
     }
   ]

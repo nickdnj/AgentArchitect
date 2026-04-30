@@ -1,0 +1,9 @@
+[install]
+auto = true
+
+[install.cache]
+dir = "~/.bun/install/cache"
+
+[test]
+preload = ["./test/setup.ts"]
+coverage = false

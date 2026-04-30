@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "last_updated": "2026-04-09",
+  "last_updated": "2026-04-30",
   "teams": [
     {
       "id": "wharfside-board-assistant",
@@ -48,6 +48,14 @@
       "folder": "teams/hardware-dev",
       "member_count": 6,
       "created": "2026-04-09",
+      "status": "active"
+    },
+    {
+      "id": "saltwater-ads",
+      "name": "Saltwater AI Ads Team",
+      "folder": "teams/saltwater-ads",
+      "member_count": 1,
+      "created": "2026-04-30",
       "status": "active"
     }
   ]
