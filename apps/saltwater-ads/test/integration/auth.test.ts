@@ -5,6 +5,7 @@ import { setSignedCookie } from 'hono/cookie';
 import { loadSecrets, secrets } from '@lib/services/secrets.ts';
 import { db } from '@db/client.ts';
 import { migrate } from '@db/migrate.ts';
+import { setFetchForTest } from '@lib/services/tw-connector.ts';
 import { createApp } from '../../src/server/app.ts';
 
 // Ensure tests use the in-memory DB and fixture secrets even when run individually.
@@ -182,13 +183,26 @@ describe('C-2 auth wiring', () => {
     });
 
     test('POST /api/settings/tw-sync writes audit_log without target', async () => {
+      // Stub TW so the test doesn't hit the real network. Lane D wired
+      // tw-sync to syncIncremental; the audit row writes regardless of
+      // sync result (success or graceful 502).
+      setFetchForTest(async (url) => {
+        if (url.endsWith('/summary-page/get-data')) {
+          return new Response('{"metrics":[]}', { status: 200, headers: { 'content-type': 'application/json' } });
+        }
+        return new Response(
+          '{"earliestDate":null,"count":0,"page":1,"ordersWithJourneys":[]}',
+          { status: 200, headers: { 'content-type': 'application/json' } },
+        );
+      });
       const cookie = await mintSessionCookie('sync@example.com');
       const res = await app.request('/api/settings/tw-sync', {
         method: 'POST',
         headers: { 'content-type': 'application/json', cookie },
         body: '{}',
       });
-      expect(res.status).toBe(501);
+      expect(res.status).toBe(200);
+      setFetchForTest(null);
 
       const row = db().query(
         `SELECT email, action FROM audit_log
