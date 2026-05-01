@@ -52,22 +52,33 @@ export function createApp(): Hono {
   // and the browser would silently fail).
   app.get('/assets/*', async (c) => {
     const file = Bun.file(`${staticRoot}${c.req.path}`);
-    if (!(await file.exists())) return c.json({ error: 'not_found', path: c.req.path }, 404);
+    if (!(await file.exists())) {
+      return c.json({ error: 'not_found', reason: 'asset_missing', path: c.req.path }, 404);
+    }
     return new Response(file);
   });
   app.get('/favicon.ico', async (c) => {
     const file = Bun.file(`${staticRoot}/favicon.ico`);
-    if (!(await file.exists())) return c.json({ error: 'not_found' }, 404);
+    if (!(await file.exists())) {
+      return c.json({ error: 'not_found', reason: 'asset_missing', path: '/favicon.ico' }, 404);
+    }
     return new Response(file);
   });
 
   // SPA fallback: anything that didn't match an API/auth/media/healthz route
   // and didn't match a static asset returns the SPA shell so React Router
   // can handle the route client-side. API 404s stay JSON.
+  //
+  // CQ1: 404 responses share a single shape — { error, reason, path } —
+  // so clients can branch on `reason` without parsing free-text:
+  //   reason: 'route_not_found' — API path with no handler (auth-gated paths
+  //                                still 401 before reaching here)
+  //   reason: 'asset_missing'   — /assets/* file doesn't exist
+  //   reason: 'spa_not_built'   — frontend hasn't been built (dev/fresh repo)
   app.notFound(async (c) => {
     const path = c.req.path;
     if (isApiPath(path)) {
-      return c.json({ error: 'not_found', path }, 404);
+      return c.json({ error: 'not_found', reason: 'route_not_found', path }, 404);
     }
     const file = Bun.file(spaIndex);
     if (await file.exists()) {
@@ -75,8 +86,7 @@ export function createApp(): Hono {
         headers: { 'content-type': 'text/html; charset=utf-8' },
       });
     }
-    // dist/web not built yet (dev or fresh checkout) — return JSON 404.
-    return c.json({ error: 'spa_not_built', path }, 404);
+    return c.json({ error: 'not_found', reason: 'spa_not_built', path }, 404);
   });
 
   return app;

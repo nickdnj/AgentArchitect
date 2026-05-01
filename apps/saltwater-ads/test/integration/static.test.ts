@@ -37,15 +37,17 @@ describe('H-4 static asset + SPA fallback', () => {
     test('GET / → 404 spa_not_built (graceful, not crash)', async () => {
       const res = await app.request('/');
       expect(res.status).toBe(404);
-      const body = (await res.json()) as { error: string };
-      expect(body.error).toBe('spa_not_built');
+      const body = (await res.json()) as { error: string; reason: string };
+      expect(body.error).toBe('not_found');
+      expect(body.reason).toBe('spa_not_built');
     });
 
     test('GET /some/spa/route → 404 spa_not_built (no crash)', async () => {
       const res = await app.request('/review-queue/42');
       expect(res.status).toBe(404);
-      const body = (await res.json()) as { error: string; path: string };
-      expect(body.error).toBe('spa_not_built');
+      const body = (await res.json()) as { error: string; reason: string; path: string };
+      expect(body.error).toBe('not_found');
+      expect(body.reason).toBe('spa_not_built');
       expect(body.path).toBe('/review-queue/42');
     });
 
@@ -58,16 +60,18 @@ describe('H-4 static asset + SPA fallback', () => {
       const cookie = await mintSessionCookie('test@example.com');
       const res = await app.request('/api/nonexistent', { headers: { cookie } });
       expect(res.status).toBe(404);
-      const body = (await res.json()) as { error: string; path: string };
+      const body = (await res.json()) as { error: string; reason: string; path: string };
       expect(body.error).toBe('not_found');
+      expect(body.reason).toBe('route_not_found');
       expect(body.path).toBe('/api/nonexistent');
     });
 
     test('GET /auth/nonexistent → 404 JSON (auth namespace stays JSON)', async () => {
       const res = await app.request('/auth/nonexistent');
       expect(res.status).toBe(404);
-      const body = (await res.json()) as { error: string };
+      const body = (await res.json()) as { error: string; reason: string };
       expect(body.error).toBe('not_found');
+      expect(body.reason).toBe('route_not_found');
     });
 
     test('GET /media/nonexistent → 401 (auth gate fires before notFound)', async () => {
@@ -79,8 +83,9 @@ describe('H-4 static asset + SPA fallback', () => {
     test('GET /healthz/nonexistent → 404 JSON', async () => {
       const res = await app.request('/healthz/nonexistent');
       expect(res.status).toBe(404);
-      const body = (await res.json()) as { error: string };
+      const body = (await res.json()) as { error: string; reason: string };
       expect(body.error).toBe('not_found');
+      expect(body.reason).toBe('route_not_found');
     });
   });
 
@@ -140,8 +145,9 @@ describe('H-4 static asset + SPA fallback', () => {
       const cookie = await mintSessionCookie('test@example.com');
       const res = await app.request('/api/nonexistent', { headers: { cookie } });
       expect(res.status).toBe(404);
-      const body = (await res.json()) as { error: string };
+      const body = (await res.json()) as { error: string; reason: string };
       expect(body.error).toBe('not_found');
+      expect(body.reason).toBe('route_not_found');
     });
 
     test('GET /healthz still works (200) — static config does not break health', async () => {

@@ -3,21 +3,39 @@ import { resolve } from 'node:path';
 
 // SAD §6 — secrets management.
 // Vendor keys never leave the server. Loaded at process boot.
+//
+// Format constraints (CQ3):
+//   - Lines: KEY=value (KEY = uppercase + underscores)
+//   - Comments: lines starting with #
+//   - Blank lines OK
+//   - Optional double-quote wrapping: KEY="value with spaces"
+//   - Multi-line values, escape chars, single-quote wrapping NOT supported.
+//     A future PEM/JSON-blob secret needs base64 encoding or a separate file.
+// Lines that don't match the KEY=VALUE regex log a warning and are skipped —
+// previously they were silently dropped, which made typos hard to debug.
 
-const DEFAULT_SECRETS_PATH = resolve(import.meta.dir, '../../data/secrets.env');
-const SECRETS_PATH = process.env.SECRETS_PATH ?? DEFAULT_SECRETS_PATH;
+function defaultSecretsPath(): string {
+  return resolve(import.meta.dir, '../../data/secrets.env');
+}
 
 export function loadSecrets(): void {
-  if (!existsSync(SECRETS_PATH)) {
-    console.warn(`[secrets] no ${SECRETS_PATH} found — relying on process.env only`);
+  const path = process.env.SECRETS_PATH ?? defaultSecretsPath();
+  if (!existsSync(path)) {
+    console.warn(`[secrets] no ${path} found — relying on process.env only`);
     return;
   }
-  const text = readFileSync(SECRETS_PATH, 'utf8');
+  const text = readFileSync(path, 'utf8');
+  let lineNumber = 0;
   for (const line of text.split('\n')) {
+    lineNumber++;
     const trimmed = line.trim();
     if (!trimmed || trimmed.startsWith('#')) continue;
     const m = trimmed.match(/^([A-Z_]+)=(.*)$/);
-    if (m && !process.env[m[1]]) {
+    if (!m) {
+      console.warn(`[secrets] ${path}:${lineNumber} ignored — does not match KEY=VALUE: ${trimmed.slice(0, 60)}${trimmed.length > 60 ? '...' : ''}`);
+      continue;
+    }
+    if (!process.env[m[1]]) {
       process.env[m[1]] = m[2].replace(/^"(.*)"$/, '$1');
     }
   }

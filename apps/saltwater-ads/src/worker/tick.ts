@@ -62,21 +62,57 @@ export function claimJobs(limit: number): ClaimedJob[] {
   }).immediate();
 }
 
+/**
+ * A1 fix: when a pipeline throws, the render_attempt is in a transit state
+ * (hooks_generating | vendor_pending | assembling) that is NOT in
+ * CLAIMABLE_STATES. Without an explicit transition, the row sits forever and
+ * blocks the variant.
+ *
+ * markFailed transitions the attempt to failed_recoverable with the error
+ * message recorded. Operator-action thresholds (24h with no retry → terminal)
+ * are enforced by a separate sweep job (deferred — see TODOS.md A1-followup).
+ */
+export function markFailed(attemptId: number, errorMessage: string): void {
+  const conn = db();
+  conn.run(
+    `UPDATE render_attempt
+     SET state = 'failed_recoverable',
+         error_message = ?,
+         finished_at = CURRENT_TIMESTAMP
+     WHERE id = ?`,
+    [errorMessage.slice(0, 1000), attemptId],
+  );
+}
+
 export async function tick(args: TickArgs): Promise<void> {
   const claimed = claimJobs(args.maxConcurrent);
   if (claimed.length === 0) return;
   await Promise.all(claimed.map((job) =>
     runPipeline(job).catch((err) => {
+      const message = (err as Error).message;
       log.error(
         {
           attempt_id: job.renderAttemptId,
           variant_id: job.variantId,
           from_state: job.fromState,
           to_state: job.state,
-          err: { message: (err as Error).message, stack: (err as Error).stack },
+          err: { message, stack: (err as Error).stack },
         },
         'pipeline_failed',
       );
+      try {
+        markFailed(job.renderAttemptId, message);
+      } catch (markErr) {
+        // If we can't even record the failure, log it loudly — but don't
+        // re-throw, the worker loop must keep going.
+        log.error(
+          {
+            attempt_id: job.renderAttemptId,
+            err: { message: (markErr as Error).message },
+          },
+          'mark_failed_failed',
+        );
+      }
     })
   ));
 }

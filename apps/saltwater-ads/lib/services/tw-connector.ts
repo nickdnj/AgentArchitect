@@ -25,9 +25,26 @@ function authHeaders(): HeadersInit {
   };
 }
 
+/**
+ * CQ5: TW errors used to throw bare status codes ("TW verifyKey failed: 403").
+ * The actual reason ({"error":"invalid_scope"} etc.) was in the response body
+ * and got dropped on the floor. Now we capture the first 200 chars so
+ * journalctl shows what TW actually said.
+ */
+async function twError(label: string, r: Response): Promise<Error> {
+  let bodySnippet = '';
+  try {
+    const text = await r.text();
+    bodySnippet = text.slice(0, 200);
+  } catch {
+    bodySnippet = '<unreadable response body>';
+  }
+  return new Error(`TW ${label} failed: ${r.status} ${r.statusText} — ${bodySnippet}`);
+}
+
 export async function verifyKey(): Promise<{ user_id: string; email: string }> {
   const r = await fetch(`${TW_BASE}/users/api-keys/me`, { headers: authHeaders() });
-  if (!r.ok) throw new Error(`TW verifyKey failed: ${r.status}`);
+  if (!r.ok) throw await twError('verifyKey', r);
   const data = (await r.json()) as { user: { user_id: string; email: string } };
   return data.user;
 }
@@ -47,7 +64,7 @@ export async function pullSummary(period: SummaryPeriod): Promise<unknown> {
       todayHour: null,
     }),
   });
-  if (!r.ok) throw new Error(`TW summary-page failed: ${r.status}`);
+  if (!r.ok) throw await twError('summary-page', r);
   return await r.json();
 }
 

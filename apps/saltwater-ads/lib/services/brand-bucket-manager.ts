@@ -1,6 +1,5 @@
 import { createHash } from 'node:crypto';
-import { appendFileSync } from 'node:fs';
-import { mkdir } from 'node:fs/promises';
+import { mkdir, appendFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { db } from '@db/client.ts';
 import type { BrandBucketSnapshot } from '@lib/llm/types.ts';
@@ -188,10 +187,14 @@ export interface JsonlHookEntry {
   logged_at: string;
 }
 
-export function appendWinner(entry: JsonlHookEntry): void {
-  appendFileSync(resolve(bucketDir(), FILES.hooksWinners.name), JSON.stringify(entry) + '\n');
+// CQ6: async appends so the event loop isn't blocked on Joe's "log this winner"
+// click. JSONL writes are atomic at the OS level for short lines, so
+// concurrent appendWinner calls don't corrupt — they may interleave order,
+// which is fine for a winner/loser log.
+export async function appendWinner(entry: JsonlHookEntry): Promise<void> {
+  await appendFile(resolve(bucketDir(), FILES.hooksWinners.name), JSON.stringify(entry) + '\n');
 }
 
-export function appendLoser(entry: JsonlHookEntry): void {
-  appendFileSync(resolve(bucketDir(), FILES.hooksLosers.name), JSON.stringify(entry) + '\n');
+export async function appendLoser(entry: JsonlHookEntry): Promise<void> {
+  await appendFile(resolve(bucketDir(), FILES.hooksLosers.name), JSON.stringify(entry) + '\n');
 }
