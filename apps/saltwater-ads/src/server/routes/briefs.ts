@@ -2,7 +2,9 @@ import { Hono } from 'hono';
 import { z } from 'zod';
 import { audit } from '../middleware/audit.ts';
 import { db } from '@db/client.ts';
+import { log } from '@lib/log.ts';
 import { snapshotBucket } from '@lib/services/brand-bucket-manager.ts';
+import { tick } from '../../worker/tick.ts';
 // SAD §3 — happy path: POST /briefs creates brief + hook_set + 3 variants + 3 render_attempts
 //   in one BEGIN IMMEDIATE transaction, returns 201 with variant IDs.
 //
@@ -141,6 +143,31 @@ app.post('/', audit('generate', 'brief'), async (c) => {
     sku_id: input.sku_id ?? null,
     brand_bucket_version_id: snap.versionId,
   });
+
+  // Lazy-driven worker: schedule a tick AFTER the response goes out so the
+  // brief response returns first, then the tick runs on the next event loop
+  // iteration. Eliminates the concurrent-DB issue we hit when setInterval(tick)
+  // fired between awaits in snapshotBucket(). For long-running progress
+  // (vendor polling, A3 sweep) deploy a separate worker process per SAD §12.1.
+  //
+  // Disabled in test mode so the unit assertions can read DB state before
+  // the lazy tick mutates it.
+  if (process.env.NODE_ENV !== 'test') {
+    setImmediate(() => {
+      tick({ maxConcurrent: 4 }).catch((err) => {
+        log.error({ err: { message: (err as Error).message } }, 'lazy_tick_failed');
+      });
+      // Schedule a few follow-up ticks at intervals to drain the cascade
+      // (queued → hooks_ready → vendor_pending → partial → assembling).
+      for (const delayMs of [2000, 4000, 8000, 16000]) {
+        setTimeout(() => {
+          tick({ maxConcurrent: 4 }).catch((err) => {
+            log.error({ err: { message: (err as Error).message } }, 'lazy_tick_delayed_failed');
+          });
+        }, delayMs);
+      }
+    });
+  }
 
   return c.json(
     {
