@@ -1,0 +1,106 @@
+# Saltwater AI Ads — production docker-compose.
+#
+# One web service + one worker service share a persistent volume for the
+# SQLite DB + media. Caddy fronts the web service for TLS termination + rate
+# limiting on /auth/magic.
+#
+# Bring up:
+#   docker compose --env-file .env up -d --build
+#
+# .env keys (NOT checked into git):
+#   ANTHROPIC_API_KEY=sk-ant-...
+#   HEYGEN_API_KEY=...
+#   FASHN_API_KEY=...
+#   TRIPLEWHALE_API_KEY=...
+#   RESEND_API_KEY=re_...
+#   SESSION_SECRET=$(openssl rand -hex 32)
+#   SIGNING_KEY=$(openssl rand -hex 32)
+#   ALLOWED_OPERATORS=joe@saltwaterlongisland.com,nickd@demarconet.com
+#   PUBLIC_BASE_URL=https://saltwater-ads.example.com
+#   DOMAIN=saltwater-ads.example.com
+
+services:
+  web:
+    build: .
+    image: saltwater-ai-ads:latest
+    container_name: saltwater-web
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3001:3001"
+    environment:
+      NODE_ENV: production
+      PROC_NAME: web
+      INLINE_WORKER: "false"
+      PORT: 3001
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
+      HEYGEN_API_KEY: ${HEYGEN_API_KEY}
+      HEYGEN_AVATAR_ID: ${HEYGEN_AVATAR_ID:-}
+      HEYGEN_VOICE_ID: ${HEYGEN_VOICE_ID:-}
+      FASHN_API_KEY: ${FASHN_API_KEY}
+      TRIPLEWHALE_API_KEY: ${TRIPLEWHALE_API_KEY}
+      RESEND_API_KEY: ${RESEND_API_KEY}
+      MAGIC_LINK_FROM: ${MAGIC_LINK_FROM:-Saltwater Ads <noreply@saltwater-ads.example.com>}
+      NICK_PAGE_TO: ${NICK_PAGE_TO:-nickd@demarconet.com}
+      SESSION_SECRET: ${SESSION_SECRET}
+      SIGNING_KEY: ${SIGNING_KEY}
+      ALLOWED_OPERATORS: ${ALLOWED_OPERATORS}
+      PUBLIC_BASE_URL: ${PUBLIC_BASE_URL}
+    volumes:
+      - saltwater-data:/app/data
+      - saltwater-media:/app/media
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://127.0.0.1:3001/healthz/ready"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+  worker:
+    build: .
+    image: saltwater-ai-ads:latest
+    container_name: saltwater-worker
+    restart: unless-stopped
+    command: ["bun", "run", "start:worker"]
+    environment:
+      NODE_ENV: production
+      PROC_NAME: worker
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
+      HEYGEN_API_KEY: ${HEYGEN_API_KEY}
+      HEYGEN_AVATAR_ID: ${HEYGEN_AVATAR_ID:-}
+      HEYGEN_VOICE_ID: ${HEYGEN_VOICE_ID:-}
+      FASHN_API_KEY: ${FASHN_API_KEY}
+      TRIPLEWHALE_API_KEY: ${TRIPLEWHALE_API_KEY}
+      RESEND_API_KEY: ${RESEND_API_KEY}
+      SESSION_SECRET: ${SESSION_SECRET}
+      SIGNING_KEY: ${SIGNING_KEY}
+      ALLOWED_OPERATORS: ${ALLOWED_OPERATORS}
+      POLL_INTERVAL_MS: 2000
+      MAX_CONCURRENT_RENDERS: 4
+    volumes:
+      - saltwater-data:/app/data
+      - saltwater-media:/app/media
+    depends_on:
+      web:
+        condition: service_healthy
+
+  caddy:
+    image: caddy:2-alpine
+    container_name: saltwater-caddy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    environment:
+      DOMAIN: ${DOMAIN}
+    depends_on:
+      - web
+
+volumes:
+  saltwater-data:
+  saltwater-media:
+  caddy-data:
+  caddy-config:

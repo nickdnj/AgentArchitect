@@ -180,48 +180,56 @@ The bucket is **snapshotted** (SHA-256 per file) at brief-create time. Even if J
 
 ---
 
-## Deployment (Sprint 1.5 — single VPS)
+## Deployment (Sprint 1.5 — Docker on a single VPS)
 
-Per SAD §12.1:
+Per SAD §12.1, but containerized:
 
 - **Host:** any Linux VPS, 2 vCPU / 4 GB RAM, 40 GB disk (Hetzner CX22, Linode shared 4 GB, etc.)
-- **Reverse proxy:** Caddy (auto HTTPS via Let's Encrypt)
-- **Process:** systemd unit running `bun src/server/index.ts`. The inline worker handles brief-to-render in the same process.
+- **Stack:** docker compose with three services
+  - `web` — Hono app (port 3001, internal)
+  - `worker` — separate worker process polling the same DB
+  - `caddy` — reverse proxy + auto-HTTPS + rate limit on `/auth/magic`
+- **Volumes:** `saltwater-data` (DB), `saltwater-media` (renders + b-roll)
 - **DNS:** point your subdomain at the VPS, Caddy handles TLS.
 
-```ini
-# /etc/systemd/system/saltwater-ads.service
-[Unit]
-Description=Saltwater AI Ads
-After=network.target
+### One-time setup on the VPS
 
-[Service]
-Type=simple
-User=saltwater
-WorkingDirectory=/srv/saltwater-ads
-Environment=NODE_ENV=production
-Environment=PROC_NAME=web
-ExecStart=/home/saltwater/.bun/bin/bun src/server/index.ts
-Restart=always
-RestartSec=5
+```bash
+# Install Docker
+curl -fsSL https://get.docker.com | sh
 
-[Install]
-WantedBy=multi-user.target
+# Clone + configure
+git clone https://github.com/nickdnj/saltwater-ai-ads.git /srv/saltwater
+cd /srv/saltwater
+cp .env.example .env
+# Edit .env to fill in vendor keys + secrets
+
+# Build + start
+docker compose up -d --build
+
+# Verify
+docker compose ps
+docker compose logs -f web
 ```
 
-```caddy
-# /etc/caddy/Caddyfile
-saltwater-ads.example.com {
-    reverse_proxy 127.0.0.1:3001
-    rate_limit @magic_link {
-        zone magic_link 5r/15m
-        key {http.request.remote.host}
-    }
-    @magic_link path /auth/magic
-}
+### Subsequent deploys
+
+```bash
+git pull
+docker compose up -d --build
 ```
 
-Backups: `bun run db:backup` runs nightly via cron, copies `data/saltwater.db` to `data/backups/YYYY-MM-DD.db`. Push to S3 or rclone for offsite.
+The Caddyfile, Dockerfile, and compose.yaml are all in this repo. The
+SAD §12.1 systemd-unit alternative is still valid for non-Docker hosts;
+see git history for that variant.
+
+Backups: `docker compose exec web bun run db:backup` runs on demand. Wire
+to a cron job on the host that mounts the volume + uploads to S3/rclone
+for offsite.
+
+### CI
+
+GitHub Actions runs typecheck + tests + SPA build on every push to `main`. See `.github/workflows/ci.yml`.
 
 ---
 

@@ -1,0 +1,12 @@
+node_modules
+.git
+.github
+data
+media
+dist
+*.log
+.DS_Store
+test
+SESSION-NOTES-*.md
+README.md
+TODOS.md

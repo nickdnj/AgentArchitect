@@ -1,0 +1,40 @@
+{$DOMAIN} {
+    # Per-IP rate limit on /auth/magic — 5 requests per 15 min per remote IP.
+    # Eng-review-3 architecture finding A3 (deferred to deploy time).
+    @magic_link path /auth/magic
+    rate_limit @magic_link {
+        zone magic_link 5r/15m
+        key {http.request.remote.host}
+    }
+
+    # Cap upload size at 250 MB (matches asset library b-roll cap + headroom).
+    request_body {
+        max_size 250MB
+    }
+
+    reverse_proxy web:3001 {
+        # Stream /api/* + /media/* responses (signed media URL files can be big).
+        flush_interval -1
+
+        # Pass real client IP for audit logs + rate-limit zone keying.
+        header_up X-Real-IP {http.request.remote.host}
+        header_up X-Forwarded-For {http.request.remote.host}
+        header_up X-Forwarded-Proto {http.request.scheme}
+    }
+
+    encode zstd gzip
+
+    # Security headers (the app sets some via secureHeaders middleware too;
+    # these are defense-in-depth at the proxy layer).
+    header {
+        Strict-Transport-Security "max-age=31536000; includeSubDomains"
+        X-Frame-Options "DENY"
+        X-Content-Type-Options "nosniff"
+        Referrer-Policy "no-referrer"
+    }
+
+    log {
+        output stdout
+        format console
+    }
+}
