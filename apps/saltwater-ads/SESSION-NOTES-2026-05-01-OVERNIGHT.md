@@ -16,9 +16,13 @@ Plan was: take the Sprint 1 prototype from ~30% UI buildout to demoable end-to-e
 
 | Commit | What |
 |---|---|
-| `ddbae98` | README rewrite — Joe-friendly, with quick-start, state machine ASCII, deploy block, troubleshooting |
-| `25cb646` | Assets library + favicon + PWA — fish logo, manifest, b-roll/brand/bucket tabs, file uploads |
-| `d6b2129` | Lazy-driven worker (single-process) + DB self-heal — fixes the bun:sqlite disk-IO issue |
+| `150bdb4` | Demo seed script (3 briefs + 9 real LLM hooks ready_for_review) + disk-IO root cause |
+| `2713739` | Docker + Caddy + GitHub Actions CI — one-command deploy via `docker compose up -d` |
+| `9d2022d` | Fix Assets render bug + bucket path + seed brand fish logos |
+| `568aae9` | Overnight session notes file |
+| `ddbae98` | README rewrite — Joe-friendly, with quick-start, state machine ASCII, deploy block |
+| `25cb646` | Assets library + favicon + PWA — fish logo, manifest, b-roll/brand/bucket tabs |
+| `d6b2129` | Lazy-driven worker (single-process) + DB self-heal |
 | `a2b8abb` | Sprint 1 SPA buildout — Settings/Generate/Login pages + auth gate + dev-bypass |
 
 Plus the private repo: created `nickdnj/saltwater-ai-ads` and force-pushed via `git subtree split` so it has the full history of the saltwater-ads/ directory.
@@ -60,9 +64,23 @@ Brand voice corrected mid-session (Buddy is dad not brother) and the hooks pulle
 - **Production deploy** — systemd unit + Caddy config + DNS not set up.
 - **Vendor-API verification (V-VERIFY in TODOS)** — Codex flagged that adapter request shapes may be stale. Verify against live API responses when keys are wired.
 
-## The disk-I/O bug (still occurs intermittently)
+## The disk-I/O bug — ROOT-CAUSED
 
-bun:sqlite throws `SQLITE_IOERR` under sustained load even single-process. The lazy-tick + self-heal pattern recovers — every IO error logs `resetting_db_connection_after_io_error` and the next request succeeds. Root cause not deep-debugged (likely bun-runtime quirk on macOS APFS). For Sprint 1 this is acceptable; if it turns into a deploy-blocker, swap bun:sqlite for better-sqlite3 (well-tested under WAL + multi-process). Tracked in TODOS as `V-WAL-EVAL`.
+After hours of suspecting bun:sqlite, it turned out to be **orphan worker
+processes** from earlier dev sessions. `bun src/worker/poll-jobs.ts` runs
+that didn't get cleaned up between iterations stayed running, holding file
+descriptors to `data/saltwater.db`. They competed with the active server
+for write locks. `lsof data/saltwater.db` showed three orphans (PIDs 25467,
+30725, 32531). After `kill -9` on all of them, every subsequent operation
+succeeded cleanly with no SQLITE_IOERR.
+
+Lesson: when starting/stopping dev workers in rapid succession, always
+`pkill -f "bun.*poll-jobs.ts"` before starting fresh. Or use the systemd
+unit / Docker compose model (now in repo) which handles process lifecycle
+cleanly.
+
+The lazy-tick + reset-on-EIO machinery from earlier is still useful as
+defense-in-depth, but the underlying bug was process leak, not bun.
 
 ## Test status
 
@@ -72,14 +90,42 @@ bun:sqlite throws `SQLITE_IOERR` under sustained load even single-process. The l
 
 ## What to look at when you wake up
 
-1. Pull main, run `bun install` then `bun run dev` from `apps/saltwater-ads/`
-2. `DEV_AUTH_BYPASS=true` should already be in your `data/secrets.env`. If not, add it.
-3. Open http://localhost:5173, click "Skip magic link"
-4. Generate a brief — watch the worker log roll past in the server terminal as it cascades through the state machine
-5. Open Review Queue — see your generated hooks
-6. Open Assets — upload a piece of b-roll if you have any handy; check the Brand bucket tab for the corrected voice file
-7. Open Settings — see the presence map; try the "Sync now" button (real TW pull)
+1. Pull main, run `bun install` then `bun run db:migrate` then
+   `bun scripts/seed-demo.ts --reset --count=3` to populate the DB.
+2. `DEV_AUTH_BYPASS=true` should already be in your `data/secrets.env`.
+3. Start: `DEV_AUTH_BYPASS=true bun src/server/index.ts` and `bun x vite`
+   in two terminals.
+4. Open http://localhost:5173, click "Skip magic link"
+5. Review Queue tab — click through the 9 ready-for-review variants. All
+   real LLM-generated, all on brand voice ("My dad and I were tired of
+   polos that failed on the water...").
+6. Generate tab — type a brief and post one yourself. The lazy-tick
+   pattern will pick it up and run hook generation in the background. New
+   variants appear in the bottom strip + Review Queue within ~10s.
+7. Assets tab — three sub-tabs: B-roll (upload form), Brand assets (the
+   two fish logos you already have), Brand bucket (read voice.md, etc.).
+8. Settings tab — try entering a fake key in any field, hit Save, see
+   the validation behavior. Try the "Sync now" button for live TW data.
 
-The private GH repo is at https://github.com/nickdnj/saltwater-ai-ads — clone it standalone if you want to send Joe a link.
+Screenshots from playwright dogfood are in `/tmp/saltwater-screenshots/`:
+generate, review, review-detail, assets-broll, assets-brand,
+assets-bucket, settings.
 
-If you want to ship this to a real VPS and onboard Joe, the README has a fully-spec'd deploy block (systemd unit + Caddyfile) ready to copy-paste.
+**Hygiene note:** if you ever see disk-I/O errors, run
+`pkill -f "bun.*poll-jobs.ts"` to clear orphan workers. The dev script
+should kill them on Ctrl+C but rapid restarts can leak.
+
+## Repos
+
+- Monorepo: https://github.com/nickdnj/AgentArchitect (apps/saltwater-ads/)
+- **Private standalone**: https://github.com/nickdnj/saltwater-ai-ads
+  (auto-synced from monorepo via `git subtree split`)
+
+## Deploy
+
+Docker compose ready. The repo has Dockerfile + compose.yaml + Caddyfile
++ .env.example. `git clone && cp .env.example .env && docker compose
+up -d --build` on any Linux VPS gets you a running app behind TLS.
+
+GitHub Actions CI runs typecheck + tests + SPA build on every push to
+main. Goes green automatically on push.
