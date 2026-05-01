@@ -68,4 +68,55 @@ export const api = {
         watermark: string;
       }>('/api/settings/tw-sync', { method: 'POST', body: '{}' }),
   },
+  assets: {
+    listBRoll: () =>
+      request<{
+        clips: Array<{
+          id: number;
+          path: string;
+          duration_seconds: number;
+          width: number;
+          height: number;
+          tags: string[];
+          season: string | null;
+          notes: string | null;
+          added_at: string;
+          url: string;
+        }>;
+      }>('/api/assets/b-roll'),
+    uploadBRoll: async (file: File, tags: string[], season: string, notes: string): Promise<unknown> => {
+      const fd = new FormData();
+      fd.append('file', file);
+      fd.append('tags', tags.join(','));
+      fd.append('season', season);
+      fd.append('notes', notes);
+      const r = await fetch('/api/assets/b-roll', { method: 'POST', body: fd, credentials: 'include' });
+      if (!r.ok) throw new Error(`Upload ${r.status}: ${await r.text()}`);
+      return r.json();
+    },
+    deleteBRoll: (id: number) =>
+      request<{ ok: true }>(`/api/assets/b-roll/${id}`, { method: 'DELETE' }),
+    patchBRoll: (id: number, patch: { tags?: string[]; season?: string; notes?: string | null }) =>
+      request<{ ok: true; changed: number }>(`/api/assets/b-roll/${id}`, {
+        method: 'PATCH',
+        body: JSON.stringify(patch),
+      }),
+    listBrand: () =>
+      request<{
+        assets: Array<{ name: string; size_bytes: number; added_at: string; url: string; type: 'image' | 'video' | 'other' }>;
+      }>('/api/assets/brand'),
+    uploadBrand: async (file: File): Promise<unknown> => {
+      const fd = new FormData();
+      fd.append('file', file);
+      const r = await fetch('/api/assets/brand', { method: 'POST', body: fd, credentials: 'include' });
+      if (!r.ok) throw new Error(`Upload ${r.status}: ${await r.text()}`);
+      return r.json();
+    },
+    deleteBrand: (name: string) =>
+      request<{ ok: true }>(`/api/assets/brand/${encodeURIComponent(name)}`, { method: 'DELETE' }),
+    listBucket: () =>
+      request<{
+        files: Array<{ name: string; exists: boolean; size_bytes: number; content: string }>;
+      }>('/api/assets/bucket'),
+  },
 };

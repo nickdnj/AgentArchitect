@@ -2,10 +2,11 @@ import { useEffect, useState } from 'react';
 import { Generate } from './pages/Generate.tsx';
 import { ReviewQueue } from './pages/ReviewQueue.tsx';
 import { Settings } from './pages/Settings.tsx';
+import { Assets } from './pages/Assets.tsx';
 import { Login } from './pages/Login.tsx';
 import { api } from './api.ts';
 
-type Page = 'generate' | 'review' | 'settings';
+type Page = 'generate' | 'review' | 'assets' | 'settings';
 type AuthState = 'checking' | 'authed' | 'anon';
 
 export function App(): JSX.Element {
@@ -40,9 +41,13 @@ export function App(): JSX.Element {
   return (
     <div className="app">
       <aside className="nav">
-        <div className="brand">Saltwater AI Ads</div>
+        <div className="brand">
+          <img src="/favicon.svg" alt="" width="24" height="24" style={{ verticalAlign: 'middle', marginRight: 8 }} />
+          Saltwater AI Ads
+        </div>
         <button className={page === 'generate' ? 'active' : ''} onClick={() => setPage('generate')}>Generate</button>
         <button className={page === 'review' ? 'active' : ''} onClick={() => setPage('review')}>Review Queue</button>
+        <button className={page === 'assets' ? 'active' : ''} onClick={() => setPage('assets')}>Assets</button>
         <button className={page === 'settings' ? 'active' : ''} onClick={() => setPage('settings')}>Settings</button>
         <div style={{ flex: 1 }} />
         <button onClick={handleLogout} style={{ fontSize: 12, color: 'var(--ink-3)' }}>Sign out</button>

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180" fill="none">
+  <!-- iOS home-screen icon — bigger fish with brand wordmark -->
+  <rect width="180" height="180" rx="40" fill="#1a3a5c"/>
+  <path d="M 30 95
+           Q 48 60, 84 60
+           Q 124 60, 140 80
+           L 158 64
+           L 158 122
+           L 140 110
+           Q 124 130, 84 130
+           Q 48 130, 30 95 Z"
+        fill="#faf7f2"/>
+  <circle cx="58" cy="86" r="6" fill="#c8102e"/>
+  <path d="M 76 75 Q 84 95 76 115" stroke="#1a3a5c" stroke-width="3" fill="none" opacity="0.4"/>
+  <text x="90" y="158" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-weight="700" font-size="14" fill="#faf7f2" letter-spacing="2">SALTWATER</text>
+</svg>

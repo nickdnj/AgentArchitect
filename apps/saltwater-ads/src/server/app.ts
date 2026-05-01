@@ -10,6 +10,7 @@ import authRoutes from './routes/auth.ts';
 import briefsRoutes from './routes/briefs.ts';
 import variantsRoutes from './routes/variants.ts';
 import settingsRoutes from './routes/settings.ts';
+import assetsRoutes from './routes/assets.ts';
 import mediaRoutes from './routes/media.ts';
 
 // In dev, Vite serves the SPA on :5173 and proxies /api|/auth|/media to Hono.
@@ -42,6 +43,7 @@ export function createApp(): Hono {
   app.route('/api/briefs', briefsRoutes);
   app.route('/api/variants', variantsRoutes);
   app.route('/api/settings', settingsRoutes);
+  app.route('/api/assets', assetsRoutes);
   app.route('/media', mediaRoutes);
 
   // Static assets (Vite build output). Bundled JS/CSS live under /assets/.
