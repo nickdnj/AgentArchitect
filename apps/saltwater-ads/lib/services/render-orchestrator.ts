@@ -2,7 +2,7 @@ import { resolve } from 'node:path';
 import { mkdir } from 'node:fs/promises';
 import { db } from '@db/client.ts';
 import { log } from '@lib/log.ts';
-import { VENDOR_TIMEOUTS_MS, withDeadline } from '../../src/worker/deadlines.ts';
+import { VENDOR_TIMEOUTS_MS, withDeadline, combineSignals } from '../../src/worker/deadlines.ts';
 import { createHookClip, downloadClip as downloadHeygen, setHeygenFetchForTest } from '@lib/vendors/heygen.ts';
 import { createShowcaseClip, downloadClip as downloadFashn, setFashnFetchForTest } from '@lib/vendors/fashn.ts';
 
@@ -88,42 +88,15 @@ export function pickBRoll(season: string | null, tags: string[]): BRollClipRow |
   return null;
 }
 
-/**
- * F-RO-2 idempotency: if a previous render_attempt for the same hook_text +
- * avatar combo already produced a HeyGen clip, reuse it. Saves the ~$1.50
- * per HeyGen call on regen flows where Joe re-renders with the same hook.
- */
-function findCachedHeygenClip(hookText: string): { clipId: string; localPath: string; cost: number } | null {
-  const conn = db();
-  const row = conn.query(
-    `SELECT ra.heygen_clip_id, ra.cost_credits_total, v.hook_text
-     FROM render_attempt ra
-     JOIN variant v ON v.id = ra.variant_id
-     WHERE v.hook_text = ?
-       AND ra.heygen_clip_id IS NOT NULL
-       AND ra.heygen_clip_id <> ''
-     ORDER BY ra.id ASC LIMIT 1`,
-  ).get(hookText) as { heygen_clip_id: string; cost_credits_total: number } | null;
-  if (!row || !row.heygen_clip_id) return null;
-  // Path convention: cache lookups assume the file persisted at the renders
-  // root. We don't currently track per-attempt local paths in the schema, so
-  // disable caching when the file isn't present. Sprint 1.5 fix: add
-  // asset.path lookup keyed by clip_id.
-  return null;
-}
-
+// F-RO-2 (HeyGen idempotency cache) deferred to Sprint 1.5 — needs asset.path
+// lookup keyed by clip_id which the current schema doesn't expose. See
+// TODOS.md "F-RO-2 idempotency cache" for the full design note.
 async function attemptHookClip(args: {
   hookText: string;
   subVariantLabel?: string;
   outputDir: string;
   jobSignal: AbortSignal;
 }): Promise<{ clipId: string; localPath: string; cost: number } | { error: string }> {
-  const cached = findCachedHeygenClip(args.hookText);
-  if (cached) {
-    log.info({ hook_text: args.hookText.slice(0, 40), reused: true }, 'heygen_cache_hit');
-    return cached;
-  }
-
   const dl = withDeadline(VENDOR_TIMEOUTS_MS.heygen);
   const signal = combineSignals(args.jobSignal, dl.signal);
   try {
@@ -167,25 +140,6 @@ async function attemptShowcaseClip(args: {
   } finally {
     dl.cancel();
   }
-}
-
-/**
- * Combine multiple AbortSignals into one — fires when any input fires.
- * AbortSignal.any() is Node 20.3+ but Bun supports it.
- */
-function combineSignals(...signals: AbortSignal[]): AbortSignal {
-  // Bun + modern Node have AbortSignal.any. Fall back to manual wiring otherwise.
-  const anyFn = (AbortSignal as unknown as { any?: (s: AbortSignal[]) => AbortSignal }).any;
-  if (typeof anyFn === 'function') return anyFn(signals);
-  const ctrl = new AbortController();
-  for (const s of signals) {
-    if (s.aborted) {
-      ctrl.abort(s.reason);
-      return ctrl.signal;
-    }
-    s.addEventListener('abort', () => ctrl.abort(s.reason), { once: true });
-  }
-  return ctrl.signal;
 }
 
 function dateFolder(now = new Date()): string {

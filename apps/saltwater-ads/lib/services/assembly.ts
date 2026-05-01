@@ -1,5 +1,6 @@
 import { resolve } from 'node:path';
 import { mkdir, writeFile } from 'node:fs/promises';
+import { combineSignals } from '../../src/worker/deadlines.ts';
 
 // PRD §6.1.5 + §7.4 — FFmpeg Assembly.
 // Concat HeyGen + Fashn + B-roll layers, burn captions, brand overlay.
@@ -59,12 +60,65 @@ const FFMPEG_BIN = process.env.FFMPEG_BIN ?? 'ffmpeg';
 const TIMEOUT_MS = 2 * 60 * 1000;
 
 /**
+ * Cross-platform font discovery (Codex eng-review-3 #2).
+ *
+ * Priority order:
+ *   1. CAPTION_FONT_PATH env (deploy-side override)
+ *   2. assets/fonts/*.{ttf,otf,ttc} bundled with the repo
+ *   3. Common Linux paths (Debian/Ubuntu DejaVu defaults)
+ *   4. macOS dev fallback (Helvetica)
+ *
+ * The original hardcoded /System/Library/Fonts/Helvetica.ttc only existed on
+ * macOS — first Linux deploy would fail at drawtext. Tests assert the resolved
+ * path is non-empty (so the filter graph is always shape-valid).
+ */
+function captionFontPath(): string {
+  const env = process.env.CAPTION_FONT_PATH;
+  if (env) return env;
+  const fs = require('node:fs') as typeof import('node:fs');
+  const candidates = [
+    // Repo-bundled (preferred — pin the brand font alongside the code).
+    resolve(import.meta.dir, '../../assets/fonts/saltwater.ttf'),
+    resolve(import.meta.dir, '../../assets/fonts/saltwater.otf'),
+    // Linux defaults (Debian/Ubuntu base systems include DejaVu).
+    '/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf',
+    '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf',
+    '/usr/share/fonts/dejavu/DejaVuSans-Bold.ttf',
+    // macOS dev fallback.
+    '/System/Library/Fonts/Helvetica.ttc',
+    '/System/Library/Fonts/Supplemental/Arial.ttf',
+  ];
+  for (const p of candidates) {
+    try { if (fs.existsSync(p)) return p; } catch { /* keep trying */ }
+  }
+  // No font found anywhere. Don't silently drop the caption; surface loudly.
+  throw new Error(
+    'assembly: no caption font found. Set CAPTION_FONT_PATH env, drop a font in assets/fonts/, or install fonts-dejavu (Linux).',
+  );
+}
+
+export interface AssemblyInput {
+  path: string;
+  layer: 'heygen' | 'fashn' | 'broll';
+  /** True iff this input has an audio stream we want to use. */
+  hasAudio?: boolean;
+}
+
+/**
  * Build the ffmpeg command for the concat-and-overlay pipeline. Exported for
  * testing: the test asserts the command shape (which inputs, which filter
  * graph, which output flags) without actually invoking ffmpeg.
+ *
+ * Codex eng-review-3 #1 fix: the previous filter graph assumed every input
+ * had an audio stream and ran loudnorm on the video. Both wrong. New design:
+ *   - Video: scale → concat (v=1:a=0) → drawtext → output
+ *   - Audio: take the first input that hasAudio=true (typically heygen
+ *     voiceover); apad to match concat duration, loudnorm normalize. If no
+ *     input has audio, generate silent track via anullsrc.
+ *   - loudnorm runs on the AUDIO chain, not video.
  */
 export function buildFfmpegCommand(input: {
-  inputs: Array<{ path: string; layer: string }>;
+  inputs: AssemblyInput[];
   hookText: string;
   outputPath: string;
   thumbPath: string;
@@ -77,31 +131,55 @@ export function buildFfmpegCommand(input: {
 
   const cmd: string[] = [FFMPEG_BIN, '-y', '-hide_banner', '-loglevel', 'warning'];
 
-  // -i for each input layer
+  // -i for each input layer.
   for (const layer of input.inputs) {
     cmd.push('-i', layer.path);
   }
 
-  // Filter graph: scale each layer to 1080×1920, concat them in order, drawtext caption,
-  // then output. Build dynamically based on input count.
+  // Determine the audio source: the FIRST input flagged as having audio.
+  // hasAudio defaults to true ONLY for heygen (founder voiceover is the
+  // standard ad audio); fashn and broll default to false unless explicitly set.
+  function hasAudioForInput(inp: AssemblyInput): boolean {
+    if (typeof inp.hasAudio === 'boolean') return inp.hasAudio;
+    return inp.layer === 'heygen';
+  }
+  const audioSourceIdx = input.inputs.findIndex(hasAudioForInput);
+  const audioFromInput = audioSourceIdx >= 0;
+
+  // Synthetic silent input if no real audio source. anullsrc with cl=stereo,r=48000.
+  if (!audioFromInput) {
+    cmd.push('-f', 'lavfi', '-i', 'anullsrc=channel_layout=stereo:sample_rate=48000');
+  }
+  const silentIdx = input.inputs.length; // index of the synthetic anullsrc input (only present if !audioFromInput)
+
+  // Video chain: scale each, concat, drawtext caption.
   const scales: string[] = [];
   for (let i = 0; i < input.inputs.length; i++) {
     scales.push(`[${i}:v]scale=1080:1920:force_original_aspect_ratio=decrease,pad=1080:1920:(ow-iw)/2:(oh-ih)/2,setsar=1,fps=30[v${i}]`);
-    scales.push(`[${i}:a]aresample=48000[a${i}]`);
   }
-  const concatInputs = input.inputs.map((_, i) => `[v${i}][a${i}]`).join('');
+  const videoConcatInputs = input.inputs.map((_, i) => `[v${i}]`).join('');
   const concatCount = input.inputs.length;
-  // Caption: white text on a translucent black strip in the lower third.
+
+  // Caption text: white on translucent black box, lower third.
   const safeText = input.hookText
     .replace(/\\/g, '\\\\')
     .replace(/'/g, "\\'")
     .replace(/:/g, '\\:')
     .slice(0, 140);
-  const drawtext = `drawtext=fontfile=/System/Library/Fonts/Helvetica.ttc:text='${safeText}':fontsize=48:fontcolor=white:box=1:boxcolor=black@0.6:boxborderw=20:x=(w-text_w)/2:y=h*0.78`;
+  const fontPath = captionFontPath();
+  const drawtext = `drawtext=fontfile=${fontPath}:text='${safeText}':fontsize=48:fontcolor=white:box=1:boxcolor=black@0.6:boxborderw=20:x=(w-text_w)/2:y=h*0.78`;
+
+  // Audio chain: from input source (apad to match video duration) or synthetic silence,
+  // then loudnorm. loudnorm runs on AUDIO not video — the previous code had this wrong.
+  const audioChain = audioFromInput
+    ? `[${audioSourceIdx}:a]aresample=48000,apad,loudnorm=I=-16:TP=-1.5:LRA=11[a]`
+    : `[${silentIdx}:a]loudnorm=I=-16:TP=-1.5:LRA=11[a]`;
+
   const filterComplex = [
     scales.join(';'),
-    `${concatInputs}concat=n=${concatCount}:v=1:a=1[vraw][a]`,
-    `[vraw]${drawtext},loudnorm=I=-16:TP=-1.5:LRA=11[v]`,
+    `${videoConcatInputs}concat=n=${concatCount}:v=1:a=0[vcat]`,
+    `[vcat]${drawtext}[v]`,
+    audioChain,
   ].join(';');
 
   cmd.push('-filter_complex', filterComplex);
@@ -112,6 +190,8 @@ export function buildFfmpegCommand(input: {
   cmd.push('-r', '30');
   cmd.push('-c:a', 'aac');
   cmd.push('-b:a', '128k');
+  // -shortest so video duration controls the cut (audio gets padded by apad).
+  cmd.push('-shortest');
   cmd.push('-movflags', '+faststart');
   // Embedded metadata for AI disclosure (F-AS-5).
   if (input.disclosureLayers.length > 0) {
@@ -166,10 +246,15 @@ function buildSimpleSrt(hookText: string, durationSeconds: number): string {
 }
 
 export async function assemble(args: AssembleArgs): Promise<AssembleResult> {
-  const inputs: Array<{ path: string; layer: string }> = [];
-  if (args.heygenMp4Path) inputs.push({ path: args.heygenMp4Path, layer: 'heygen' });
-  if (args.fashnMp4Path) inputs.push({ path: args.fashnMp4Path, layer: 'fashn' });
-  if (args.brollMp4Path) inputs.push({ path: args.brollMp4Path, layer: 'broll' });
+  // Codex eng-review-3 #1: only heygen carries usable audio for the founder
+  // voiceover. fashn animations are silent product showcases. broll may have
+  // ambient sound but at unpredictable levels — safer to drop it and let
+  // loudnorm-on-heygen carry the master audio. If heygen is missing entirely,
+  // assembly synthesizes silence via anullsrc.
+  const inputs: AssemblyInput[] = [];
+  if (args.heygenMp4Path) inputs.push({ path: args.heygenMp4Path, layer: 'heygen', hasAudio: true });
+  if (args.fashnMp4Path) inputs.push({ path: args.fashnMp4Path, layer: 'fashn', hasAudio: false });
+  if (args.brollMp4Path) inputs.push({ path: args.brollMp4Path, layer: 'broll', hasAudio: false });
   if (inputs.length === 0) {
     throw new Error('assembly: at least one layer required');
   }
@@ -215,16 +300,3 @@ export async function assemble(args: AssembleArgs): Promise<AssembleResult> {
   }
 }
 
-function combineSignals(...signals: AbortSignal[]): AbortSignal {
-  const anyFn = (AbortSignal as unknown as { any?: (s: AbortSignal[]) => AbortSignal }).any;
-  if (typeof anyFn === 'function') return anyFn(signals);
-  const ctrl = new AbortController();
-  for (const s of signals) {
-    if (s.aborted) {
-      ctrl.abort(s.reason);
-      return ctrl.signal;
-    }
-    s.addEventListener('abort', () => ctrl.abort(s.reason), { once: true });
-  }
-  return ctrl.signal;
-}

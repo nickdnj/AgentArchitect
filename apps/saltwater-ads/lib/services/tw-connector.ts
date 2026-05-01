@@ -181,7 +181,20 @@ export async function pullJourneys(period: JourneyPeriod): Promise<JourneyOrder[
     }
 
     pageCount++;
-    if (!page.earliestDate || pageCount >= MAX_JOURNEY_PAGES) break;
+    if (!page.earliestDate) break;
+    if (pageCount >= MAX_JOURNEY_PAGES) {
+      // Codex eng-review-3 #10: never silently truncate. If the cursor
+      // hasn't terminated by MAX_JOURNEY_PAGES (50 × 100 orders/page = 5000
+      // orders, way above Joe's monthly volume), something is wrong: a
+      // misbehaving cursor, an unusually busy window, or TW pagination drift.
+      // Throw so syncIncremental returns 502 → ops sees it instead of
+      // corrupting order_journey + ad_performance with partial data.
+      throw new Error(
+        `TW pullJourneys exceeded MAX_JOURNEY_PAGES=${MAX_JOURNEY_PAGES} ` +
+        `(start=${period.startDate} end=${period.endDate}, last cursor=${cursor}). ` +
+        `Refusing to silently truncate.`,
+      );
+    }
     cursor = page.earliestDate;
   }
 

@@ -96,6 +96,13 @@ export interface RunHookGeneratorArgs {
   brandBucketVersionId: number; // assigned at brief-create time, frozen for life of job
   /** Inject a clock for tests. */
   now?: Date;
+  /**
+   * Codex eng-review-3 #3: caller's totalJob abort signal. Threaded into
+   * generateHooks() so a stuck Anthropic call doesn't outlive the 15-min
+   * worker ceiling and corrupt rows after the A3 sweep marks the attempt
+   * failed_recoverable.
+   */
+  abortSignal?: AbortSignal;
 }
 
 export interface RunHookGeneratorResult {
@@ -128,6 +135,7 @@ export async function runHookGenerator(args: RunHookGeneratorArgs): Promise<RunH
       bucket,
       systemPrompt,
       userPrompt,
+      abortSignal: args.abortSignal,
     });
     lastRejected = findRejected(lastResult.hookSet, now);
     if (lastRejected.length === 0) {

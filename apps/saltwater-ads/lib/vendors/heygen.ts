@@ -1,4 +1,13 @@
 import { secrets } from '@lib/services/secrets.ts';
+import {
+  throwIfAborted,
+  abortableSleep,
+  vendorError,
+  downloadToFile,
+  type Fetcher,
+} from './_abort.ts';
+
+const VENDOR = 'HeyGen';
 
 // HeyGen Photo Avatar API adapter. PRD §6.1.4 F-RO-2.
 //
@@ -21,7 +30,6 @@ function pollIntervalMs(): number { return Number(process.env.HEYGEN_POLL_MS ?? 
 function defaultAvatarId(): string { return process.env.HEYGEN_AVATAR_ID ?? 'joe-demarco-photo-avatar'; }
 function defaultVoiceId(): string { return process.env.HEYGEN_VOICE_ID ?? 'joe-demarco-voice'; }
 
-type Fetcher = (url: string, init?: RequestInit) => Promise<Response>;
 let _fetch: Fetcher | null = null;
 export function setHeygenFetchForTest(f: Fetcher | null): void {
   _fetch = f;
@@ -35,12 +43,6 @@ function authHeaders(): HeadersInit {
     'X-Api-Key': secrets.heygen(),
     'content-type': 'application/json',
   };
-}
-
-async function heygenError(label: string, r: Response): Promise<Error> {
-  let snippet = '';
-  try { snippet = (await r.text()).slice(0, 200); } catch { snippet = '<unreadable>'; }
-  return new Error(`HeyGen ${label} failed: ${r.status} ${r.statusText} — ${snippet}`);
 }
 
 export interface CreateHookClipArgs {
@@ -71,32 +73,8 @@ interface StatusResponse {
   };
 }
 
-/**
- * Throw if the abort signal has fired. Used between async steps that don't
- * themselves accept a signal (the SDK polling loop).
- */
-function throwIfAborted(signal: AbortSignal, where: string): void {
-  if (signal.aborted) {
-    const reason = typeof signal.reason === 'string' ? signal.reason : 'aborted';
-    throw new Error(`HeyGen aborted at ${where}: ${reason}`);
-  }
-}
-
-async function abortableSleep(ms: number, signal: AbortSignal): Promise<void> {
-  if (signal.aborted) throw new Error('HeyGen aborted before sleep');
-  await new Promise<void>((resolve, reject) => {
-    const t = setTimeout(resolve, ms);
-    const onAbort = () => {
-      clearTimeout(t);
-      const reason = typeof signal.reason === 'string' ? signal.reason : 'aborted';
-      reject(new Error(`HeyGen aborted during sleep: ${reason}`));
-    };
-    signal.addEventListener('abort', onAbort, { once: true });
-  });
-}
-
 export async function createHookClip(args: CreateHookClipArgs): Promise<HeygenClip> {
-  throwIfAborted(args.abortSignal, 'before-create');
+  throwIfAborted(args.abortSignal, VENDOR, 'before-create');
 
   const create = await fetcher()(`${HEYGEN_BASE}/v2/video/generate`, {
     method: 'POST',
@@ -125,19 +103,19 @@ export async function createHookClip(args: CreateHookClipArgs): Promise<HeygenCl
     }),
     signal: args.abortSignal,
   });
-  if (!create.ok) throw await heygenError('video.generate', create);
+  if (!create.ok) throw await vendorError(VENDOR, 'video.generate', create);
   const createBody = (await create.json()) as CreateResponse;
   const videoId = createBody.data?.video_id;
   if (!videoId) throw new Error('HeyGen video.generate returned no video_id');
 
   // Poll until done OR aborted.
   for (let i = 0; ; i++) {
-    throwIfAborted(args.abortSignal, `poll-${i}`);
+    throwIfAborted(args.abortSignal, VENDOR, `poll-${i}`);
     const status = await fetcher()(
       `${HEYGEN_BASE}/v1/video_status.get?video_id=${encodeURIComponent(videoId)}`,
       { headers: authHeaders(), signal: args.abortSignal },
     );
-    if (!status.ok) throw await heygenError('video_status.get', status);
+    if (!status.ok) throw await vendorError(VENDOR, 'video_status.get', status);
     const body = (await status.json()) as StatusResponse;
     const s = body.data?.status;
 
@@ -158,19 +136,10 @@ export async function createHookClip(args: CreateHookClipArgs): Promise<HeygenCl
       throw new Error(`HeyGen video failed: ${detail}`);
     }
     // pending | processing | waiting — keep polling.
-    await abortableSleep(pollIntervalMs(), args.abortSignal);
+    await abortableSleep(pollIntervalMs(), args.abortSignal, VENDOR);
   }
 }
 
-/**
- * Download a HeyGen-signed URL to local disk. Returns absolute path.
- * Streams via Bun.write for memory efficiency on bigger clips.
- */
 export async function downloadClip(url: string, destPath: string, signal: AbortSignal): Promise<string> {
-  throwIfAborted(signal, 'download');
-  const r = await fetcher()(url, { signal });
-  if (!r.ok) throw await heygenError('download', r);
-  const buf = await r.arrayBuffer();
-  await Bun.write(destPath, buf);
-  return destPath;
+  return downloadToFile(fetcher(), url, destPath, signal, VENDOR);
 }

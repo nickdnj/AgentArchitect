@@ -40,6 +40,12 @@ export interface GenerateHooksArgs {
   bucket: BrandBucketSnapshot;
   systemPrompt: string;     // fully assembled (templates already substituted)
   userPrompt: string;       // fully assembled
+  /**
+   * Codex eng-review-3 #3: thread caller's totalJob signal into the SDK call
+   * so a stuck Anthropic request can be aborted before the worker's 15-min
+   * ceiling triggers a sweep + post-failure row mutation.
+   */
+  abortSignal?: AbortSignal;
 }
 
 interface AnthropicResponse {
@@ -112,7 +118,9 @@ export async function generateHooks(args: GenerateHooksArgs): Promise<Generation
     .update(args.userPrompt)
     .digest('hex');
 
-  const resp = (await client().messages.create({
+  // The Anthropic SDK forwards a `signal` option to the underlying fetch.
+  // When the signal aborts, the in-flight request is cancelled.
+  const createParams: Record<string, unknown> = {
     model: MODEL,
     max_tokens: llmConfig.maxTokens,
     temperature: llmConfig.temperature,
@@ -124,7 +132,11 @@ export async function generateHooks(args: GenerateHooksArgs): Promise<Generation
       },
     ],
     messages: [{ role: 'user', content: args.userPrompt }],
-  })) as AnthropicResponse;
+  };
+  if (args.abortSignal) {
+    createParams.signal = args.abortSignal;
+  }
+  const resp = (await client().messages.create(createParams)) as AnthropicResponse;
 
   const hookSet = parseHookSet(extractText(resp));
 

@@ -1,11 +1,12 @@
 import { resolve } from 'node:path';
+import { existsSync, readFileSync } from 'node:fs';
 import { db } from '@db/client.ts';
 import { log } from '@lib/log.ts';
 import type { ClaimedJob } from './tick.ts';
 import { runHookGenerator } from '@lib/services/hook-generator.ts';
 import { runRender } from '@lib/services/render-orchestrator.ts';
 import { assemble } from '@lib/services/assembly.ts';
-import { withDeadline, VENDOR_TIMEOUTS_MS } from './deadlines.ts';
+import { withDeadline, VENDOR_TIMEOUTS_MS, combineSignals } from './deadlines.ts';
 import type { BriefShape } from '@lib/llm/types.ts';
 
 // SAD §3 + §4 — runs one render_attempt through the state machine.
@@ -31,9 +32,13 @@ import type { BriefShape } from '@lib/llm/types.ts';
 // via tick.ts's markFailed catch handler. Don't try to handle errors here —
 // just let them propagate.
 
-// Read at call time so tests can override via env after module load.
-function hookLockPollMs(): number { return Number(process.env.HOOK_LOCK_POLL_MS ?? 1500); }
-function hookLockMaxWaitMs(): number { return Number(process.env.HOOK_LOCK_MAX_WAIT_MS ?? 90 * 1000); }
+// Note: A2 fix (eng-review-3) replaced the busy-wait poll-for-lock pattern
+// with "lock-loser transitions back to queued and tick.ts re-claims later".
+// That frees the worker concurrency slot. Polling no longer happens in the
+// hot path; these helpers are kept (no callers) only for future re-use if a
+// blocking-wait variant is needed. Codex #4 (lock timeout < 4-call regen
+// worst-case) is mooted by this change — losers don't time out, they just
+// re-queue and re-check on the next tick.
 
 interface VariantRow {
   id: number;
@@ -117,37 +122,39 @@ function tryAcquireHookSetLock(hookSetId: number): boolean {
   return res.changes === 1;
 }
 
-async function awaitHookSetReady(hookSetId: number, jobSignal: AbortSignal): Promise<HookSetRow> {
-  const maxWait = hookLockMaxWaitMs();
-  const pollMs = hookLockPollMs();
-  const start = Date.now();
-  while (Date.now() - start < maxWait) {
-    if (jobSignal.aborted) throw new Error('pipeline: aborted while awaiting hook_set lock');
-    const hs = loadHookSet(hookSetId);
-    if (hs.status === 'ready') return hs;
-    if (hs.status === 'failed') {
-      throw new Error(`hook_set ${hookSetId} failed during parallel hook generation`);
-    }
-    await new Promise<void>((resolve) => setTimeout(resolve, pollMs));
-  }
-  throw new Error(`hook_set ${hookSetId} did not finish hook generation within ${maxWait}ms`);
-}
+// awaitHookSetReady removed in eng-review-3 A2 fix. Lock losers now transition
+// self back to queued instead of polling. tick.ts re-claims them on the next
+// pass; if hook_set.status='ready' by then, the early-return path at the top
+// of runHooksGeneratingStep transitions self to hooks_ready without an LLM call.
 
 /**
- * Pick the (mainAngle, subVariant) entry for a given V1/V2/V3 sub-variant.
- * Sprint 1 uses main angle 0 only — the other two main angles are stored in
- * the hook_set for analytics but not surfaced. The sub-variant label maps
- * 1:1 to index 0/1/2 of variants[0].
+ * Pick the entry for a given V1/V2/V3 sub-variant by MATCHING the label
+ * field, NOT by array index.
+ *
+ * Codex eng-review-3 #6: previous implementation used array index, which
+ * silently mismatched if Anthropic returned [V2, V1, V3] order. Now the
+ * label field on each hook is the source of truth. Anthropic schema
+ * already validates label ∈ {V1, V2, V3} per anthropic.ts:88-103, so this
+ * search will always find a match if the LLM returned all three labels.
+ *
+ * Sprint 1 uses main angle 0 only — the other two main angles are stored
+ * in the hook_set for analytics but not surfaced.
  */
-function hookForSubVariant(hookSet: { variants: Array<Array<{ hook_text: string; pattern: string }>> }, label: string): { hookText: string; pattern: string } {
-  const idx = label === 'V1' ? 0 : label === 'V2' ? 1 : label === 'V3' ? 2 : -1;
-  if (idx < 0) throw new Error(`unknown sub_variant_label: ${label}`);
-  const v = hookSet.variants[0]?.[idx];
-  if (!v) throw new Error(`hookSet missing variants[0][${idx}]`);
-  return { hookText: v.hook_text, pattern: v.pattern };
+function hookForSubVariant(hookSet: { variants: Array<Array<{ label: string; hook_text: string; pattern: string }>> }, label: string): { hookText: string; pattern: string } {
+  if (label !== 'V1' && label !== 'V2' && label !== 'V3') {
+    throw new Error(`unknown sub_variant_label: ${label}`);
+  }
+  const mainAngle = hookSet.variants[0];
+  if (!mainAngle) throw new Error('hookSet missing variants[0]');
+  const match = mainAngle.find((h) => h.label === label);
+  if (!match) {
+    const haveLabels = mainAngle.map((h) => h.label).join(',');
+    throw new Error(`hookSet variants[0] missing label ${label} (have: ${haveLabels})`);
+  }
+  return { hookText: match.hook_text, pattern: match.pattern };
 }
 
-async function runHooksGeneratingStep(attempt: RenderAttemptRow): Promise<void> {
+async function runHooksGeneratingStep(attempt: RenderAttemptRow, jobSignal: AbortSignal): Promise<void> {
   const variant = loadVariant(attempt.variant_id);
   const hookSet = loadHookSet(variant.hook_set_id);
 
@@ -160,16 +167,28 @@ async function runHooksGeneratingStep(attempt: RenderAttemptRow): Promise<void> 
     return;
   }
 
+  if (hookSet.status === 'failed') {
+    // The lock-holder for this hook_set already failed. Don't re-queue
+    // forever — propagate the failure to this attempt too.
+    throw new Error(`hook_set ${variant.hook_set_id} failed during hook generation (lock-holder errored)`);
+  }
+
   const acquired = tryAcquireHookSetLock(variant.hook_set_id);
   if (!acquired) {
-    // Wait for the lock-holder to finish, then transition self.
-    const ready = await awaitHookSetReady(variant.hook_set_id, AbortSignal.timeout(hookLockMaxWaitMs()));
-    if (ready.status !== 'ready') {
-      throw new Error(`hook_set ${variant.hook_set_id} did not become ready`);
-    }
+    // Lock-loser path: a sibling attempt of this hook_set is running the LLM.
+    // Transition SELF back to 'queued' and free the worker concurrency slot.
+    // tick.ts will re-claim on the next pass; if hook_set.status='ready' by
+    // then, the early-return above transitions self without an LLM call.
+    // If hook_set.status='failed' on next pass, the early-return above
+    // throws and tick.markFailed transitions to failed_recoverable.
     db().run(
-      `UPDATE render_attempt SET state = 'hooks_ready' WHERE id = ? AND state = 'hooks_generating'`,
+      `UPDATE render_attempt SET state = 'queued', started_at = NULL
+       WHERE id = ? AND state = 'hooks_generating'`,
       [attempt.id],
+    );
+    log.info(
+      { attempt_id: attempt.id, hook_set_id: variant.hook_set_id },
+      'hook_lock_loss_requeue',
     );
     return;
   }
@@ -187,7 +206,23 @@ async function runHooksGeneratingStep(attempt: RenderAttemptRow): Promise<void> 
     const result = await runHookGenerator({
       brief: briefShape,
       brandBucketVersionId: hookSet.brand_bucket_version_id,
+      abortSignal: jobSignal,
     });
+
+    // Codex eng-review-3 #5: don't ship variants with validation rejections.
+    // runHookGenerator returns rejected[] when regens are exhausted but the
+    // hooks still violate validation rules. Promoting these = brand-rule
+    // violations ship to Joe's review queue. Treat as failure: hook_set
+    // marked failed, all attempts cascade to failed_recoverable.
+    if (result.rejected.length > 0) {
+      const detail = result.rejected
+        .slice(0, 3)
+        .map((r) => `${r.hook.label}: ${r.failures.map((f) => f.rule).join(',')}`)
+        .join('; ');
+      throw new Error(
+        `hook generation exhausted regens with ${result.rejected.length} rejected hooks: ${detail}`,
+      );
+    }
 
     // Populate all three variants of THIS hook_set + advance their attempts.
     const variants = db().query(
@@ -206,9 +241,13 @@ async function runHooksGeneratingStep(attempt: RenderAttemptRow): Promise<void> 
         `UPDATE hook_set SET status = 'ready', model = ?, prompt_hash = ? WHERE id = ?`,
         [result.generation.model, result.generation.promptHash, hookSet.id],
       );
-      // Advance THIS attempt to hooks_ready. Other attempts in queued state
-      // remain queued — tick.ts will pick them up on the next pass and they'll
-      // see hook_set.status='ready' (top-of-function early-return path).
+      // Advance THIS attempt to hooks_ready. Other attempts of the same
+      // hook_set are either:
+      //   - Already in 'queued' state (lock-loser path requeued them on this
+      //     same tick) → tick.ts re-claims them next pass; they hit the
+      //     status='ready' early-return at the top of this function.
+      //   - About to be claimed in a later tick (originally queued, never
+      //     claimed) → same path.
       db().run(
         `UPDATE render_attempt SET state = 'hooks_ready' WHERE id = ? AND state = 'hooks_generating'`,
         [attempt.id],
@@ -300,6 +339,9 @@ async function runVendorPendingStep(attempt: RenderAttemptRow, jobSignal: AbortS
     );
   })();
 
+  // Codex eng-review-3 #12: log the actual vendor failure strings, not just
+  // a count. On a partial render in prod, the error reason is the only
+  // actionable signal for ops debugging.
   log.info(
     {
       attempt_id: attempt.id,
@@ -307,7 +349,7 @@ async function runVendorPendingStep(attempt: RenderAttemptRow, jobSignal: AbortS
       partial: result.partial,
       layers: result.disclosureLayers,
       cost_credits: result.costCreditsTotal,
-      errors: result.errors.length,
+      errors: result.errors,
     },
     'render_complete',
   );
@@ -403,23 +445,18 @@ async function runAssemblingStep(attempt: RenderAttemptRow, jobSignal: AbortSign
   }
 }
 
-function lookupGarmentImage(skuId: string, attempt: RenderAttemptRow): string | null {
-  // The brand-bucket-manager owns the products.json read; for Sprint 1 we
-  // just look up the sku by id and pick the first image. If the products
-  // file isn't available or the sku isn't found, return null and Fashn
-  // will be skipped (no SKU = no showcase layer, by design).
+function lookupGarmentImage(skuId: string, _attempt: RenderAttemptRow): string | null {
+  // Sprint 1: look up the sku by id from products.json, pick the first image.
+  // If the products file isn't available or the sku isn't found, return null
+  // and Fashn will be skipped (no SKU = no showcase layer, by design).
   try {
-    // Lazy import to avoid circular deps if this grows.
-    void attempt;
-    const fs = require('node:fs') as typeof import('node:fs');
-    const path = require('node:path') as typeof import('node:path');
     const productsPath = process.env.SALTWATER_PRODUCTS_JSON
-      ?? path.resolve(
+      ?? resolve(
         import.meta.dir,
         '../../../../context-buckets/saltwater-brand/files/products.json',
       );
-    if (!fs.existsSync(productsPath)) return null;
-    const products = JSON.parse(fs.readFileSync(productsPath, 'utf8')) as {
+    if (!existsSync(productsPath)) return null;
+    const products = JSON.parse(readFileSync(productsPath, 'utf8')) as {
       skus?: Array<{ id?: string; image?: string; images?: string[] }>;
     };
     const sku = products.skus?.find((s) => s.id === skuId);
@@ -430,19 +467,6 @@ function lookupGarmentImage(skuId: string, attempt: RenderAttemptRow): string | 
   }
 }
 
-function combineSignals(...signals: AbortSignal[]): AbortSignal {
-  const anyFn = (AbortSignal as unknown as { any?: (s: AbortSignal[]) => AbortSignal }).any;
-  if (typeof anyFn === 'function') return anyFn(signals);
-  const ctrl = new AbortController();
-  for (const s of signals) {
-    if (s.aborted) {
-      ctrl.abort(s.reason);
-      return ctrl.signal;
-    }
-    s.addEventListener('abort', () => ctrl.abort(s.reason), { once: true });
-  }
-  return ctrl.signal;
-}
 
 export async function runPipeline(job: ClaimedJob): Promise<void> {
   const attempt = loadAttempt(job.renderAttemptId);
@@ -457,10 +481,13 @@ export async function runPipeline(job: ClaimedJob): Promise<void> {
 
   // A3 totalJob ceiling — wraps the whole step. tick.ts also has a sweep
   // that catches anything that escapes this (e.g., bun --hot restart mid-step).
+  // Codex eng-review-3 #3: total.signal now threads into hook generation too,
+  // so a stuck Anthropic call gets aborted by the deadline rather than
+  // outliving the sweep.
   const total = withDeadline(VENDOR_TIMEOUTS_MS.totalJob);
   try {
     if (attempt.state === 'hooks_generating') {
-      await runHooksGeneratingStep(attempt);
+      await runHooksGeneratingStep(attempt, total.signal);
     } else if (attempt.state === 'vendor_pending') {
       await runVendorPendingStep(attempt, total.signal);
     } else if (attempt.state === 'assembling') {

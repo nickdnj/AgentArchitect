@@ -250,6 +250,27 @@ describe('magic-link auth flow', () => {
       expect(row).toBeNull();
     });
 
+    test('concurrent verify with same token — only ONE succeeds (race fix)', async () => {
+      // T-VERIFY-RACE (eng-review-3): SELECT/DELETE was not atomic. Two
+      // simultaneous verifies with the same token both passed SELECT, both
+      // ran DELETE (one was a no-op), both minted sessions. Now using
+      // DELETE...RETURNING which guarantees at most one verify succeeds.
+      const token = await requestMagicLink('test@example.com');
+
+      const [r1, r2] = await Promise.all([
+        app.request(`/auth/verify?token=${encodeURIComponent(token)}`, { redirect: 'manual' }),
+        app.request(`/auth/verify?token=${encodeURIComponent(token)}`, { redirect: 'manual' }),
+      ]);
+
+      const statuses = [r1.status, r2.status].sort();
+      // One 302 (winner), one 401 (loser).
+      expect(statuses).toEqual([302, 401]);
+
+      // Token row deleted (atomically, by the winner).
+      const remaining = db().query('SELECT COUNT(*) AS n FROM auth_token').get() as { n: number };
+      expect(remaining.n).toBe(0);
+    });
+
     test('the issued cookie unlocks /api/* on subsequent requests', async () => {
       const token = await requestMagicLink('test@example.com');
       const verify = await app.request(`/auth/verify?token=${encodeURIComponent(token)}`, { redirect: 'manual' });

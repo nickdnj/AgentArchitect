@@ -162,6 +162,25 @@ describe('pullJourneys', () => {
     expect(new Set(orders.map((o) => o.order_id))).toEqual(new Set(['o1', 'o2', 'o3']));
   });
 
+  test('Codex #10: throws on MAX_JOURNEY_PAGES instead of silently truncating', async () => {
+    // Simulate a misbehaving cursor: every page returns earliestDate so
+    // pagination never terminates. pullJourneys must throw at MAX_JOURNEY_PAGES,
+    // NOT silently return partial data and corrupt order_journey/ad_performance.
+    let call = 0;
+    setFetchForTest(async () => {
+      call++;
+      return jsonResponse({
+        earliestDate: '2026-01-01', // never null → never terminates
+        count: 1,
+        page: call,
+        ordersWithJourneys: [orderFixture('ad-x', 1, `o${call}`)],
+      });
+    });
+    await expect(pullJourneys({ startDate: '2026-04-01', endDate: '2026-04-30' }))
+      .rejects.toThrow(/exceeded MAX_JOURNEY_PAGES/);
+    expect(call).toBe(50); // hit the cap exactly
+  });
+
   test('throws with response body snippet on error', async () => {
     setFetchForTest(async () =>
       new Response('{"error":"invalid_scope"}', {

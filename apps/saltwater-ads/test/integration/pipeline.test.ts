@@ -246,6 +246,132 @@ describe('end-to-end pipeline', () => {
     expect(finalVariants.every((v) => v.status === 'ready_for_review')).toBe(true);
   });
 
+  test('Codex #5: hooks with exhausted-regen rejections → fail, do NOT promote to ready', async () => {
+    // Simulate LLM that always returns hooks with too-long violations.
+    // hook-generator runs 1 + 3 regens, all fail validation → returns rejected[].
+    // Pipeline must FAIL the hook_set, not promote it.
+    setAnthropicClientForTest({
+      messages: {
+        create: async () => ({
+          content: [{ type: 'text', text: JSON.stringify({
+            variants: [
+              [
+                { label: 'V1', pattern: 'founder', hook_text: 'X'.repeat(150) }, // too_long
+                { label: 'V2', pattern: 'founder', hook_text: 'V2 hook ok' },
+                { label: 'V3', pattern: 'founder', hook_text: 'V3 hook ok' },
+              ],
+              [
+                { label: 'V1', pattern: 'founder', hook_text: 'a' },
+                { label: 'V2', pattern: 'founder', hook_text: 'b' },
+                { label: 'V3', pattern: 'founder', hook_text: 'c' },
+              ],
+              [
+                { label: 'V1', pattern: 'founder', hook_text: 'd' },
+                { label: 'V2', pattern: 'founder', hook_text: 'e' },
+                { label: 'V3', pattern: 'founder', hook_text: 'f' },
+              ],
+            ],
+          }) }],
+          usage: { input_tokens: 100, output_tokens: 50 },
+        }),
+      },
+    });
+    installVendorStubs();
+    const { hookSetId, attemptIds } = await seedBriefAndAttempts({ skuId: 'polo-navy' });
+
+    await tick({ maxConcurrent: 4 });
+
+    // Hook set marked failed because rejected[].length > 0 after exhausted regens.
+    const hs = db().query(`SELECT status FROM hook_set WHERE id = ?`).get(hookSetId) as { status: string };
+    expect(hs.status).toBe('failed');
+
+    // No variant got promoted with the bad hook (status stays 'queued' or 'failed').
+    // Cascade ticks to drain the failed_recoverable transitions.
+    for (let i = 0; i < 3; i++) await tick({ maxConcurrent: 4 });
+    const variantStatuses = db().query(
+      `SELECT status FROM variant WHERE hook_set_id = ?`,
+    ).all(hookSetId) as Array<{ status: string }>;
+    // Codex #11 fix: failed attempts flip variant.status='failed'
+    expect(variantStatuses.every((v) => v.status === 'failed')).toBe(true);
+
+    // All attempts → failed_recoverable
+    const finalStates = db().query(`SELECT state FROM render_attempt WHERE id IN (?, ?, ?)`)
+      .all(...attemptIds) as Array<{ state: string }>;
+    expect(finalStates.every((r) => r.state === 'failed_recoverable')).toBe(true);
+  });
+
+  test('Codex #6: sub-variant assignment uses LABEL not array index (model reorder safe)', async () => {
+    // LLM returns the 3 sub-variants in REVERSE order [V3, V2, V1].
+    // Old code used array index → V1 sub_variant got V3 hook text. Bug.
+    // New code matches by label → each sub_variant gets the right hook.
+    setAnthropicClientForTest({
+      messages: {
+        create: async () => ({
+          content: [{ type: 'text', text: JSON.stringify({
+            variants: [
+              [
+                // Reversed order: V3 first, V1 last.
+                { label: 'V3', pattern: 'founder', hook_text: 'this is V3 hook text' },
+                { label: 'V2', pattern: 'founder', hook_text: 'this is V2 hook text' },
+                { label: 'V1', pattern: 'founder', hook_text: 'this is V1 hook text' },
+              ],
+              [
+                { label: 'V1', pattern: 'founder', hook_text: 'm2 V1' },
+                { label: 'V2', pattern: 'founder', hook_text: 'm2 V2' },
+                { label: 'V3', pattern: 'founder', hook_text: 'm2 V3' },
+              ],
+              [
+                { label: 'V1', pattern: 'founder', hook_text: 'm3 V1' },
+                { label: 'V2', pattern: 'founder', hook_text: 'm3 V2' },
+                { label: 'V3', pattern: 'founder', hook_text: 'm3 V3' },
+              ],
+            ],
+          }) }],
+          usage: { input_tokens: 100, output_tokens: 50 },
+        }),
+      },
+    });
+    installVendorStubs();
+    const { hookSetId } = await seedBriefAndAttempts({ skuId: 'polo-navy' });
+
+    await tick({ maxConcurrent: 4 });
+
+    const variants = db().query(
+      `SELECT sub_variant_label, hook_text FROM variant WHERE hook_set_id = ? ORDER BY sub_variant_label ASC`,
+    ).all(hookSetId) as Array<{ sub_variant_label: string; hook_text: string }>;
+
+    // V1 must have V1 hook text, V2 must have V2 text, V3 must have V3 text —
+    // even though the model returned them in reverse order.
+    const map = Object.fromEntries(variants.map((v) => [v.sub_variant_label, v.hook_text]));
+    expect(map.V1).toBe('this is V1 hook text');
+    expect(map.V2).toBe('this is V2 hook text');
+    expect(map.V3).toBe('this is V3 hook text');
+  });
+
+  test('three SIMULTANEOUS hook_generating attempts → exactly ONE LLM call (lock pin)', async () => {
+    // T-LOCK-PARALLEL (eng-review-3): pins the lock-once guarantee directly
+    // by seeding 3 attempts already in hooks_generating state, calling the
+    // pipeline 3 times in parallel via the tick path, and asserting llm.calls
+    // never exceeds 1.
+    const llm = installLLMStub();
+    installVendorStubs();
+    const { variantIds } = await seedBriefAndAttempts({ skuId: 'polo-navy' });
+
+    // tick claims all 3 queued, dispatches Promise.all → all three runPipeline
+    // calls hit runHooksGeneratingStep simultaneously. CAS lock means only
+    // one calls the LLM; the other two re-queue.
+    await tick({ maxConcurrent: 4 });
+
+    expect(llm.calls).toBe(1);
+
+    // Lock winner advanced to hooks_ready, losers requeued back to queued.
+    const states = db().query(
+      `SELECT state FROM render_attempt WHERE variant_id IN (?, ?, ?) ORDER BY id`,
+    ).all(...variantIds) as Array<{ state: string }>;
+    const stateSet = states.map((s) => s.state).sort();
+    expect(stateSet).toEqual(['hooks_ready', 'queued', 'queued']);
+  });
+
   test('LLM failure → hook_set marked failed, all attempts → failed_recoverable on next tick', async () => {
     setAnthropicClientForTest({
       messages: {

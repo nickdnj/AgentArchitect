@@ -16,12 +16,12 @@ afterEach(async () => {
 });
 
 describe('buildFfmpegCommand', () => {
-  test('happy path: 3 layers → 3 inputs + concat=n=3 + 1080×1920 scale + drawtext caption', () => {
+  test('happy path: 3 layers → 3 inputs + video concat + drawtext + audio from heygen', () => {
     const cmd = buildFfmpegCommand({
       inputs: [
-        { path: '/m/heygen.mp4', layer: 'heygen' },
-        { path: '/m/fashn.mp4', layer: 'fashn' },
-        { path: '/m/broll.mp4', layer: 'broll' },
+        { path: '/m/heygen.mp4', layer: 'heygen', hasAudio: true },
+        { path: '/m/fashn.mp4', layer: 'fashn', hasAudio: false },
+        { path: '/m/broll.mp4', layer: 'broll', hasAudio: false },
       ],
       hookText: 'I built this for guys like my dad.',
       outputPath: '/m/master.mp4',
@@ -39,19 +39,70 @@ describe('buildFfmpegCommand', () => {
     const filterIdx = cmd.indexOf('-filter_complex');
     expect(filterIdx).toBeGreaterThan(0);
     const filter = cmd[filterIdx + 1];
-    expect(filter).toContain('concat=n=3:v=1:a=1');
+    // Codex #1 fix: video concat is a-less (a=0); audio chain is separate.
+    expect(filter).toContain('concat=n=3:v=1:a=0[vcat]');
     expect(filter).toContain('scale=1080:1920');
     expect(filter).toContain('fps=30');
     expect(filter).toContain('drawtext=');
-    expect(filter).toContain('loudnorm=I=-16:TP=-1.5:LRA=11');
+    // loudnorm runs on AUDIO (not video — Codex #1).
+    expect(filter).toContain('[0:a]aresample=48000,apad,loudnorm=I=-16:TP=-1.5:LRA=11[a]');
 
     expect(cmd).toContain('-c:v');
     expect(cmd).toContain('libx264');
     expect(cmd).toContain('-pix_fmt');
     expect(cmd).toContain('yuv420p');
+    expect(cmd).toContain('-shortest');
     expect(cmd).toContain('-movflags');
     expect(cmd).toContain('+faststart');
     expect(cmd[cmd.length - 1]).toBe('/m/master.mp4');
+  });
+
+  test('Codex #1: no input has audio → anullsrc synthetic silent track + loudnorm', () => {
+    const cmd = buildFfmpegCommand({
+      inputs: [
+        { path: '/m/fashn.mp4', layer: 'fashn', hasAudio: false },
+        { path: '/m/broll.mp4', layer: 'broll', hasAudio: false },
+      ],
+      hookText: 'silent variant',
+      outputPath: '/o.mp4', thumbPath: '/t.jpg', srtPath: '/s.srt',
+      disclosureLayers: ['fashn'],
+    });
+    expect(cmd).toContain('anullsrc=channel_layout=stereo:sample_rate=48000');
+    const filter = cmd[cmd.indexOf('-filter_complex') + 1];
+    // Audio chain should reference the synthetic input (index 2 = after the 2 video inputs).
+    expect(filter).toContain('[2:a]loudnorm=I=-16:TP=-1.5:LRA=11[a]');
+  });
+
+  test('Codex #1: silent broll no longer crashes (filter graph valid)', () => {
+    // Previously: [0:a]aresample assumed broll had audio → real ffmpeg would fail.
+    // Now: broll's audio stream is ignored entirely; heygen carries audio.
+    const cmd = buildFfmpegCommand({
+      inputs: [
+        { path: '/m/heygen.mp4', layer: 'heygen', hasAudio: true },
+        { path: '/m/silent-broll.mp4', layer: 'broll', hasAudio: false },
+      ],
+      hookText: 'h',
+      outputPath: '/o.mp4', thumbPath: '/t.jpg', srtPath: '/s.srt',
+      disclosureLayers: ['heygen'],
+    });
+    const filter = cmd[cmd.indexOf('-filter_complex') + 1];
+    // Only heygen's audio referenced.
+    expect(filter).not.toContain('[1:a]');
+    expect(filter).toContain('[0:a]aresample');
+  });
+
+  test('Codex #2: font path resolves via env override', () => {
+    const cmd = buildFfmpegCommand({
+      inputs: [{ path: '/m/h.mp4', layer: 'heygen', hasAudio: true }],
+      hookText: 'test',
+      outputPath: '/o.mp4', thumbPath: '/t.jpg', srtPath: '/s.srt',
+      disclosureLayers: ['heygen'],
+    });
+    const filter = cmd[cmd.indexOf('-filter_complex') + 1];
+    // We set CAPTION_FONT_PATH=/tmp/fake.ttf in the test runner env (see top of file).
+    expect(filter).toContain('fontfile=/tmp/fake.ttf');
+    // Old hardcoded macOS path no longer present.
+    expect(filter).not.toContain('/System/Library/Fonts/Helvetica.ttc');
   });
 
   test('disclosure metadata: ai_layers comment embedded when layers present', () => {

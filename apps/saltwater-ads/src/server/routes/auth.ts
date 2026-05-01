@@ -1,7 +1,7 @@
 import { Hono } from 'hono';
 import { setSignedCookie, deleteCookie } from 'hono/cookie';
 import { z } from 'zod';
-import { randomBytes, createHash, timingSafeEqual } from 'node:crypto';
+import { randomBytes, createHash } from 'node:crypto';
 import { db } from '@db/client.ts';
 import { secrets } from '@lib/services/secrets.ts';
 import { sendMagicLink } from '@lib/services/auth-email.ts';
@@ -98,28 +98,23 @@ app.get('/verify', audit('login'), async (c) => {
 
   const hash = tokenHash(raw);
 
-  // SELECT first so we can timingSafeEqual on the hash compare. SQL '=' is
-  // already constant-time-ish on hex strings, but the explicit compare
-  // keeps intent clear and lets us pivot to a different storage shape later.
+  // T-VERIFY-RACE fix (eng-review-3): atomic DELETE...RETURNING ensures only
+  // ONE concurrent verify of the same token wins. Two requests racing both
+  // tried to SELECT then DELETE; both passed and both minted sessions.
+  // SQLite supports RETURNING since 3.35 (bun:sqlite ships ≥ 3.45). The
+  // DELETE WHERE clause already proves the hash matched, so timingSafeEqual
+  // is redundant — only the winning DELETE returns a row.
   const row = db().query(
-    `SELECT token_hash, email, expires_at FROM auth_token WHERE token_hash = ?`,
-  ).get(hash) as { token_hash: string; email: string; expires_at: string } | null;
+    `DELETE FROM auth_token WHERE token_hash = ? RETURNING email, expires_at`,
+  ).get(hash) as { email: string; expires_at: string } | null;
 
   if (!row) {
-    log.warn({}, 'magic_link_verify_unknown_token');
+    log.warn({}, 'magic_link_verify_unknown_or_replayed_token');
     return c.json({ error: 'invalid_token' }, 401);
   }
 
-  // Timing-safe hash compare (defense-in-depth on SQL match).
-  const a = Buffer.from(row.token_hash, 'hex');
-  const b = Buffer.from(hash, 'hex');
-  if (a.length !== b.length || !timingSafeEqual(a, b)) {
-    return c.json({ error: 'invalid_token' }, 401);
-  }
-
-  // Single-use: delete BEFORE issuing the session, so a replay can't sneak
-  // another verify even if the cookie write fails.
-  db().run(`DELETE FROM auth_token WHERE token_hash = ?`, [hash]);
+  // No timingSafeEqual: the atomic DELETE WHERE token_hash = ? already
+  // proved hash equality at the storage layer. Race window is closed.
 
   // SQLite stores expires_at as 'YYYY-MM-DD HH:MM:SS'. Append Z to parse as UTC.
   const expiresAt = new Date(row.expires_at.replace(' ', 'T') + 'Z');

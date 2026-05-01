@@ -79,17 +79,31 @@ export function claimJobs(limit: number): ClaimedJob[] {
  * markFailed transitions the attempt to failed_recoverable with the error
  * message recorded. Operator-action thresholds (24h with no retry → terminal)
  * are enforced by a separate sweep job (deferred — see TODOS.md A1-followup).
+ *
+ * Codex eng-review-3 #11: also flips variant.status='failed' so Joe's review
+ * queue (filtered by variant.status) actually shows the failure. Previously
+ * variant.status stayed 'queued' on failure — no operator query surface.
  */
 export function markFailed(attemptId: number, errorMessage: string): void {
   const conn = db();
-  conn.run(
-    `UPDATE render_attempt
-     SET state = 'failed_recoverable',
-         error_message = ?,
-         finished_at = CURRENT_TIMESTAMP
-     WHERE id = ?`,
-    [errorMessage.slice(0, 1000), attemptId],
-  );
+  conn.transaction(() => {
+    conn.run(
+      `UPDATE render_attempt
+       SET state = 'failed_recoverable',
+           error_message = ?,
+           finished_at = CURRENT_TIMESTAMP
+       WHERE id = ?`,
+      [errorMessage.slice(0, 1000), attemptId],
+    );
+    // Flip the parent variant so the Review Queue surfaces the failure.
+    conn.run(
+      `UPDATE variant
+       SET status = 'failed'
+       WHERE id = (SELECT variant_id FROM render_attempt WHERE id = ?)
+         AND status NOT IN ('approved', 'rejected', 'ready_for_review')`,
+      [attemptId],
+    );
+  })();
 }
 
 /**
@@ -107,23 +121,36 @@ export function markFailed(attemptId: number, errorMessage: string): void {
 export function sweepStaleAttempts(): number {
   const ceilingMinutes = Math.ceil(TOTAL_JOB_MS / 60_000);
   const conn = db();
-  const res = conn.run(
-    `UPDATE render_attempt
-     SET state = 'failed_recoverable',
-         error_message = COALESCE(error_message, '') || 'swept: total-job ceiling exceeded',
-         finished_at = CURRENT_TIMESTAMP
-     WHERE state IN (${TRANSIT_STATES.map(() => '?').join(',')})
-       AND started_at IS NOT NULL
-       AND started_at < datetime('now', '-' || ? || ' minutes')`,
-    [...TRANSIT_STATES, ceilingMinutes],
-  );
-  if (res.changes > 0) {
-    log.warn(
-      { swept: res.changes, ceiling_minutes: ceilingMinutes },
-      'sweep_stale_attempts',
+  let swept = 0;
+  conn.transaction(() => {
+    const res = conn.run(
+      `UPDATE render_attempt
+       SET state = 'failed_recoverable',
+           error_message = COALESCE(error_message, '') || 'swept: total-job ceiling exceeded',
+           finished_at = CURRENT_TIMESTAMP
+       WHERE state IN (${TRANSIT_STATES.map(() => '?').join(',')})
+         AND started_at IS NOT NULL
+         AND started_at < datetime('now', '-' || ? || ' minutes')`,
+      [...TRANSIT_STATES, ceilingMinutes],
     );
+    swept = res.changes as number;
+    if (swept > 0) {
+      // Codex #11: also flip variant.status so Review Queue surfaces them.
+      conn.run(
+        `UPDATE variant
+         SET status = 'failed'
+         WHERE id IN (
+           SELECT variant_id FROM render_attempt
+           WHERE state = 'failed_recoverable' AND finished_at >= datetime('now', '-1 minute')
+         )
+         AND status NOT IN ('approved', 'rejected', 'ready_for_review')`,
+      );
+    }
+  })();
+  if (swept > 0) {
+    log.warn({ swept, ceiling_minutes: ceilingMinutes }, 'sweep_stale_attempts');
   }
-  return res.changes as number;
+  return swept;
 }
 
 export async function tick(args: TickArgs): Promise<void> {

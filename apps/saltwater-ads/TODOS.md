@@ -3,9 +3,129 @@
 Captured by `/plan-eng-review` (eng-review-2) on 2026-04-30 after the critical-path
 fixes (C-1, C-2, C-3, H-1, H-2, H-3, H-4, H-6, A1, T-3, CQ1, CQ2, CQ3, CQ5, CQ6) landed.
 
-Order of operations for the rest: pipeline implementation pass (Lane C in `/plan-eng-review`
-parallelization map) will close A2, A3, T-7-followup, and partially A4. The rest are
-either pre-ship hardening or Sprint 2+ scope.
+Refreshed 2026-05-01 after eng-review-3 (Codex outside voice on Lanes B+C+D+A).
+A3 closed. New deferred items: vendor-API verification (Codex #7/#8/#9), F-RO-2
+HeyGen idempotency cache, Sprint 2 hook-set redesign (Codex #13).
+
+Order of operations for the rest: vendor-API verification has to happen during
+the staging dogfood pass when real keys land. The rest are either pre-ship
+hardening or Sprint 2+ scope.
+
+---
+
+## V-VERIFY: Vendor-API contracts must be re-verified against live responses
+
+**What:** The HeyGen, Fashn, and Resend adapters in `lib/vendors/heygen.ts`,
+`lib/vendors/fashn.ts`, and `lib/services/auth-email.ts` were written from
+documented API shapes circa 2026-04-30. Codex eng-review-3 flagged that some
+of these may already be stale:
+- HeyGen: `character.type='photo_avatar'` + `photo_avatar_id` + `voice.input_text`
+  may need to be `talking_photo` + `talking_photo_id` + `script`. Status polling
+  may have moved from `/v1/video_status.get` to `GET /v2/videos/{id}`.
+- Fashn: separate `/v1/run` + `/v1/animate` endpoints may have collapsed into
+  the universal `/v1/run` with `model_name` + `inputs` parameters.
+- Resend: SDK returns `{ data, error }` shape. Current code only handles thrown
+  exceptions — silent failures slip through, leaving live token rows when the
+  email was rejected.
+
+**Why:** First contact with real vendors will return 4xx/400 today. Without this
+fix, the pipeline cannot complete any real render in staging.
+
+**Pros:** Real renders work. Codex P0.
+**Cons:** Cannot verify without real API keys; speculative fixes risk introducing
+new bugs against current docs.
+**Context:** Do this DURING staging dogfood when Joe's keys are wired. Read
+current vendor docs (links in the adapter file headers), POST a test request
+manually with curl, compare to the adapter's request shape. Update.
+- HeyGen check: `curl https://api.heygen.com/v2/avatars` with current X-Api-Key,
+  see what avatar identifiers come back. That tells you whether `photo_avatar_id`
+  vs `avatar_id` is current.
+- Fashn check: POST a minimal `/v1/run` with `model_name="tryon-v1.5"` and
+  see the response shape.
+- Resend check: send to a known-bad address (e.g., `nobody@invalid.test`) and
+  inspect the `{ data, error }` returned object — if `error` is non-null,
+  current code returns 200 OK to the user. Wrap with explicit check.
+**Depends on:** Real vendor API keys + staging deploy.
+
+---
+
+## F-RO-2: HeyGen idempotency cache (delete dead-code stub, implement properly)
+
+**What:** PRD F-RO-2 promised: "Cache identical hook+avatar pairs to avoid
+re-billing HeyGen." `findCachedHeygenClip()` was deleted in eng-review-3 (it
+was dead code returning null unconditionally). The clean implementation needs:
+- A schema column (or join) to look up `asset.path` for `type='mp4'` joined
+  with `render_attempt` where `heygen_clip_id` matches AND
+  `ai_disclosure_layers` includes 'heygen'. The current schema has the data
+  but the join is awkward.
+- Verify the local file still exists on disk before reuse (cache could have
+  been cleaned).
+
+**Why:** ~$1.50 per HeyGen call. Joe regenerates a hook 2-3x typical → 6-9
+duplicated calls per brief = ~$10/month wasted at his volume.
+
+**Pros:** F-RO-2 promise honored. Cost savings.
+**Cons:** Schema-touch (add a Sprint 1.5 migration). Cache invalidation
+edge cases (file deleted, hash mismatch).
+**Context:** New function `findCachedHeygenClip(hookText)` in
+`render-orchestrator.ts`. JOIN render_attempt → asset on render_attempt_id,
+filter to type='mp4' + ai_disclosure_layers contains 'heygen'. Verify
+`Bun.file(path).exists()` before reuse.
+**Depends on:** Sprint 1.5 — wait until first prod usage to see if this is
+actually needed (Joe may not regen as much as estimated).
+
+---
+
+## SPRINT-2-HOOK-REDESIGN: 9-hook generation overproduces; system uses 3
+
+**What:** Codex eng-review-3 #13: `lib/llm/anthropic.ts` enforces a 3×3
+hook matrix (3 main angles × 3 sub-variants = 9 hooks). `routes/briefs.ts`
+persists only 3 placeholders. `pipeline.ts` consumes only `variants[0]`.
+The system burns LLM tokens, validation passes, and latency on 6 hooks
+that get discarded.
+
+**Why:** With Anthropic prompt caching the per-call cost is small but not
+zero. At Joe's 3 briefs/week × 6 wasted hooks × ~$0.01 = ~$10/month.
+Latency: validation regen loops are LONGER because they have to validate
+all 9 hooks per round.
+
+**Pros:** Faster generation, lower vendor cost, simpler prompt.
+**Cons:** PRD §6.1.2 spec says 9 hooks. Reducing means rewriting the
+hook-system.md prompt + the parseHookSet validator. Sprint 2 territory:
+either commit to 3 (drop the matrix), or surface the other 6 to Joe (more
+review work).
+
+**Context:** Sprint 2 PRD revision needs to decide: ship 3 variants, or
+ship 9. Current scaffold ships 3 and wastes 6. Either:
+- Trim prompt to 3 hooks (simplest fix, ~30 min) → matches what we use
+- Surface 9 in Review Queue (UX redesign, Sprint 2)
+- Use the extra 6 as fallbacks during regen (medium effort)
+
+**Depends on:** Joe's first month of feedback — does he want more variety,
+or are 3 enough?
+
+---
+
+## RATE-LIMIT-MAGIC: /auth/magic needs per-IP rate limiting
+
+**What:** POST /auth/magic accepts unlimited requests. An attacker can fire
+1000+ emails (rejected by allowlist or accepted) → burns Resend quota,
+harms deliverability rep, fills auth_token table.
+
+**Why:** Public attack surface even though only Joe + Nick are allowlisted.
+Caddy/Nginx layer is the right place for rate-limiting (not in app code).
+
+**Pros:** Standard pattern. Defense-in-depth at the right layer.
+**Cons:** Requires Caddyfile edit at deploy time.
+**Context:** Add to SAD §12 deploy docs. Caddy directive:
+```
+@magic_link path /auth/magic
+rate_limit @magic_link {
+  zone magic_link 5r/15m
+  key {http.request.remote.host}
+}
+```
+**Depends on:** Sprint 1 deploy (Caddy + systemd unit per SAD §12.1).
 
 ---
 
@@ -50,22 +170,12 @@ lands with assembly.ts. See `src/worker/deadlines.ts:11` for the AbortSignal pat
 
 ---
 
-## A3: Total-job 15-minute hard ceiling enforcement
+## ~~A3: Total-job 15-minute hard ceiling enforcement~~ — CLOSED 2026-05-01
 
-**What:** `src/worker/deadlines.ts:8` exports `totalJob: 15 * 60 * 1000` but no
-caller composes it. PRD §7.2 promises a 15-minute hard ceiling; without enforcement
-a flaky network during sequential HeyGen→Fashn could blow past 30 minutes.
-
-**Why:** Joe's expectation is "submit, wait ~10min, check back." A job stuck for
-30 minutes blows past the wait-UX budget and Joe assumes something's broken.
-
-**Pros:** Honest UX. Failure is faster, recoverable.
-**Cons:** Aborting at 15min may kill a legitimate 14-minute render. Tradeoff
-already accepted by PRD.
-**Context:** The pattern is `pipeline.ts` wraps the entire `runPipeline(job)` in
-its own `withDeadline(VENDOR_TIMEOUTS_MS.totalJob)` that races against the inner
-per-vendor signals. On total-job-deadline timeout, call `markFailed` from A1.
-**Depends on:** Pipeline implementation (Lane C).
+Closed by Lane C / eng-review-3. `src/worker/tick.ts:sweepStaleAttempts()`
+runs at the start of every tick and transitions transit-state attempts older
+than 15min to `failed_recoverable`. Codex #3 also threaded the totalJob signal
+into hook generation so a stuck Anthropic call gets aborted before sweep.
 
 ---
 

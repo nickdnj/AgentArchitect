@@ -13,13 +13,22 @@ import type { BrandBucketSnapshot } from '@lib/llm/types.ts';
 // upload during a 12-minute generation flips the file Joe sees in his
 // hook_set's recorded version row, and the audit trail becomes a lie.
 //
-// Snapshot (called inside the brief-create transaction in routes/briefs.ts):
+// Snapshot (called BEFORE the brief-create transaction in routes/briefs.ts):
 //   1. Read all 6 bucket files from live FS
 //   2. Compute SHA-256 of each
 //   3. Write each content to data/bucket-cache/<sha>.<ext> if missing
 //      (content-addressed: if two snapshots share a hash, one cache entry)
-//   4. INSERT brand_bucket_version row, get versionId
+//   4. INSERT brand_bucket_version row inside snapshotBucket's OWN transaction
 //   5. Return snapshot { versionId, content... } for the route's response
+//
+// snapshotBucket runs its own transaction on brand_bucket_version. The brief
+// route then opens a SECOND transaction for brief + hook_set + variants +
+// render_attempts. They're sequential, not nested — bun:sqlite doesn't
+// support savepoint nesting cleanly. Failure mode: if the brief INSERT
+// throws after snapshotBucket commits, the bbv row + cache entries are
+// orphaned. That's harmless: cache is content-addressed (future briefs with
+// the same content reuse them), bbv rows are small (~200B each), and brief
+// INSERT essentially never fails in practice (zod-validated, no FKs).
 //
 // Load (called by worker mid-job through hook-generator):
 //   1. SELECT brand_bucket_version WHERE id = ?

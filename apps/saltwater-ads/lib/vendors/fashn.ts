@@ -1,4 +1,13 @@
 import { secrets } from '@lib/services/secrets.ts';
+import {
+  throwIfAborted,
+  abortableSleep,
+  vendorError,
+  downloadToFile,
+  type Fetcher,
+} from './_abort.ts';
+
+const VENDOR = 'Fashn';
 
 // Fashn.ai try-on + animate API adapter. PRD §6.1.4 F-RO-3.
 //
@@ -23,7 +32,6 @@ const FASHN_BASE = 'https://api.fashn.ai/v1';
 function pollIntervalMs(): number { return Number(process.env.FASHN_POLL_MS ?? 5000); }
 function archetypeRefUrl(): string { return process.env.FASHN_ARCHETYPE_REF_URL ?? 'https://saltwater-ads.test/fashn/older-joe-archetype.jpg'; }
 
-type Fetcher = (url: string, init?: RequestInit) => Promise<Response>;
 let _fetch: Fetcher | null = null;
 export function setFashnFetchForTest(f: Fetcher | null): void {
   _fetch = f;
@@ -39,32 +47,6 @@ function authHeaders(): HeadersInit {
   };
 }
 
-async function fashnError(label: string, r: Response): Promise<Error> {
-  let snippet = '';
-  try { snippet = (await r.text()).slice(0, 200); } catch { snippet = '<unreadable>'; }
-  return new Error(`Fashn ${label} failed: ${r.status} ${r.statusText} — ${snippet}`);
-}
-
-function throwIfAborted(signal: AbortSignal, where: string): void {
-  if (signal.aborted) {
-    const reason = typeof signal.reason === 'string' ? signal.reason : 'aborted';
-    throw new Error(`Fashn aborted at ${where}: ${reason}`);
-  }
-}
-
-async function abortableSleep(ms: number, signal: AbortSignal): Promise<void> {
-  if (signal.aborted) throw new Error('Fashn aborted before sleep');
-  await new Promise<void>((resolve, reject) => {
-    const t = setTimeout(resolve, ms);
-    const onAbort = () => {
-      clearTimeout(t);
-      const reason = typeof signal.reason === 'string' ? signal.reason : 'aborted';
-      reject(new Error(`Fashn aborted during sleep: ${reason}`));
-    };
-    signal.addEventListener('abort', onAbort, { once: true });
-  });
-}
-
 interface RunResponse { id?: string }
 interface StatusResponse {
   status?: 'starting' | 'in_queue' | 'processing' | 'completed' | 'failed';
@@ -74,12 +56,12 @@ interface StatusResponse {
 
 async function pollUntilDone(id: string, label: string, signal: AbortSignal): Promise<string> {
   for (let i = 0; ; i++) {
-    throwIfAborted(signal, `${label}-poll-${i}`);
+    throwIfAborted(signal, VENDOR, `${label}-poll-${i}`);
     const r = await fetcher()(`${FASHN_BASE}/status/${encodeURIComponent(id)}`, {
       headers: authHeaders(),
       signal,
     });
-    if (!r.ok) throw await fashnError(`${label}-status`, r);
+    if (!r.ok) throw await vendorError(VENDOR, `${label}-status`, r);
     const body = (await r.json()) as StatusResponse;
     if (body.status === 'completed') {
       const out = body.output;
@@ -91,7 +73,7 @@ async function pollUntilDone(id: string, label: string, signal: AbortSignal): Pr
       const msg = typeof body.error === 'string' ? body.error : body.error?.message ?? 'unknown';
       throw new Error(`Fashn ${label} failed: ${msg}`);
     }
-    await abortableSleep(pollIntervalMs(), signal);
+    await abortableSleep(pollIntervalMs(), signal, VENDOR);
   }
 }
 
@@ -118,7 +100,7 @@ export interface FashnClip {
 
 export async function createShowcaseClip(args: CreateShowcaseClipArgs): Promise<FashnClip> {
   // Step 1: try-on
-  throwIfAborted(args.abortSignal, 'before-tryon');
+  throwIfAborted(args.abortSignal, VENDOR, 'before-tryon');
   const tryonReq = await fetcher()(`${FASHN_BASE}/run`, {
     method: 'POST',
     headers: authHeaders(),
@@ -129,7 +111,7 @@ export async function createShowcaseClip(args: CreateShowcaseClipArgs): Promise<
     }),
     signal: args.abortSignal,
   });
-  if (!tryonReq.ok) throw await fashnError('tryon-run', tryonReq);
+  if (!tryonReq.ok) throw await vendorError(VENDOR, 'tryon-run', tryonReq);
   const tryonBody = (await tryonReq.json()) as RunResponse;
   const tryonId = tryonBody.id;
   if (!tryonId) throw new Error('Fashn try-on returned no id');
@@ -137,7 +119,7 @@ export async function createShowcaseClip(args: CreateShowcaseClipArgs): Promise<
   const tryonImageUrl = await pollUntilDone(tryonId, 'tryon', args.abortSignal);
 
   // Step 2: animate
-  throwIfAborted(args.abortSignal, 'before-animate');
+  throwIfAborted(args.abortSignal, VENDOR, 'before-animate');
   const animateReq = await fetcher()(`${FASHN_BASE}/animate`, {
     method: 'POST',
     headers: authHeaders(),
@@ -148,7 +130,7 @@ export async function createShowcaseClip(args: CreateShowcaseClipArgs): Promise<
     }),
     signal: args.abortSignal,
   });
-  if (!animateReq.ok) throw await fashnError('animate-run', animateReq);
+  if (!animateReq.ok) throw await vendorError(VENDOR, 'animate-run', animateReq);
   const animateBody = (await animateReq.json()) as RunResponse;
   const animateId = animateBody.id;
   if (!animateId) throw new Error('Fashn animate returned no id');
@@ -165,10 +147,5 @@ export async function createShowcaseClip(args: CreateShowcaseClipArgs): Promise<
 }
 
 export async function downloadClip(url: string, destPath: string, signal: AbortSignal): Promise<string> {
-  throwIfAborted(signal, 'download');
-  const r = await fetcher()(url, { signal });
-  if (!r.ok) throw await fashnError('download', r);
-  const buf = await r.arrayBuffer();
-  await Bun.write(destPath, buf);
-  return destPath;
+  return downloadToFile(fetcher(), url, destPath, signal, VENDOR);
 }
