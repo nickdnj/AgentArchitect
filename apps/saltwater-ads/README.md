@@ -6,6 +6,29 @@ Joe types a one-line brief ("spring drop teaser, navy polo, weekends on the wate
 
 Single-tenant. Single-operator (Joe). Built by Nick.
 
+## Screenshots
+
+### Generate — type a brief, pick a pattern, hit Generate
+![Generate screen](docs/screenshots/01-generate.png)
+
+### Review Queue — 9 hooks ready to approve
+![Review Queue](docs/screenshots/02-review-queue.png)
+
+### Review detail — hook + brief + AI disclosure gate + Approve/Regen/Reject
+![Review detail](docs/screenshots/03-review-detail.png)
+
+### Assets > B-roll — upload coastal footage, tag by season
+![Assets B-roll](docs/screenshots/04-assets-broll.png)
+
+### Assets > Brand assets — logos and reference images
+![Assets Brand](docs/screenshots/05-assets-brand.png)
+
+### Assets > Brand bucket — voice.md, customer.md, products.json (the source of truth for hook generation)
+![Assets Bucket](docs/screenshots/06-assets-bucket.png)
+
+### Settings — vendor key entry + Triple Whale sync
+![Settings](docs/screenshots/07-settings.png)
+
 ---
 
 ## Quick start (for Joe)
