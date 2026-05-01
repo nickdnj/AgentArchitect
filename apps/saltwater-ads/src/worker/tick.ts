@@ -1,6 +1,7 @@
 import { db } from '@db/client.ts';
 import { log } from '@lib/log.ts';
 import { runPipeline } from './pipeline.ts';
+import { VENDOR_TIMEOUTS_MS } from './deadlines.ts';
 
 // SAD §4 — one polling iteration.
 // Claims jobs atomically via BEGIN IMMEDIATE + compare-and-swap state precondition.
@@ -15,6 +16,13 @@ const NEXT_STATE: Record<ClaimableState, string> = {
   hooks_ready: 'vendor_pending',
   partial: 'assembling',
 };
+
+// Transit states that should NOT live longer than totalJob ceiling. Anything
+// older than 15 min in one of these states gets swept to failed_recoverable.
+// PRD §7.2 + A3 (deferred from eng-review-2): without this, a bun --hot
+// restart mid-render leaves attempts wedged forever.
+const TRANSIT_STATES = ['hooks_generating', 'vendor_pending', 'assembling'] as const;
+const TOTAL_JOB_MS = VENDOR_TIMEOUTS_MS.totalJob;
 
 export interface TickArgs {
   maxConcurrent: number;
@@ -84,7 +92,44 @@ export function markFailed(attemptId: number, errorMessage: string): void {
   );
 }
 
+/**
+ * A3: sweep render_attempts that have lived in a transit state past the
+ * totalJob ceiling (15 min). Likely caused by:
+ *   - worker crash / restart after the claim but before completion
+ *   - vendor hung past per-vendor timeout (shouldn't happen, defense-in-depth)
+ *   - hook-set lock holder died and parallel attempts kept polling
+ *
+ * Swept rows transition to failed_recoverable. Joe sees them as "needs
+ * attention" in the Review Queue and can retry. Operator-action sweep
+ * (failed_recoverable → failed_terminal at 24h) is still deferred — see
+ * TODOS.md A1-followup.
+ */
+export function sweepStaleAttempts(): number {
+  const ceilingMinutes = Math.ceil(TOTAL_JOB_MS / 60_000);
+  const conn = db();
+  const res = conn.run(
+    `UPDATE render_attempt
+     SET state = 'failed_recoverable',
+         error_message = COALESCE(error_message, '') || 'swept: total-job ceiling exceeded',
+         finished_at = CURRENT_TIMESTAMP
+     WHERE state IN (${TRANSIT_STATES.map(() => '?').join(',')})
+       AND started_at IS NOT NULL
+       AND started_at < datetime('now', '-' || ? || ' minutes')`,
+    [...TRANSIT_STATES, ceilingMinutes],
+  );
+  if (res.changes > 0) {
+    log.warn(
+      { swept: res.changes, ceiling_minutes: ceilingMinutes },
+      'sweep_stale_attempts',
+    );
+  }
+  return res.changes as number;
+}
+
 export async function tick(args: TickArgs): Promise<void> {
+  // Sweep wedged transit-state rows BEFORE claiming new work.
+  sweepStaleAttempts();
+
   const claimed = claimJobs(args.maxConcurrent);
   if (claimed.length === 0) return;
   await Promise.all(claimed.map((job) =>

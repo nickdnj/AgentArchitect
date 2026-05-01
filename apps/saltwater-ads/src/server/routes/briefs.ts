@@ -87,13 +87,15 @@ app.post('/', audit('generate', 'brief'), async (c) => {
       ).lastInsertRowid,
     );
 
-    // hook_set is created with status='generating'. The worker flips it to
-    // 'ready' (or 'failed') after the LLM call completes.
+    // hook_set is created with status='pending'. The first render_attempt to
+    // hit hooks_generating wins a CAS lock (UPDATE ... WHERE status='pending')
+    // and runs the LLM call. The other two attempts wait until status='ready'
+    // and then transition themselves. This avoids 3× LLM cost per brief.
     const hookSetId = Number(
       conn.run(
         `INSERT INTO hook_set (brief_id, brand_bucket_version_id, model, prompt_hash, status)
          VALUES (?, ?, ?, ?, ?)`,
-        [briefId, snap.versionId, '', '', 'generating'],
+        [briefId, snap.versionId, '', '', 'pending'],
       ).lastInsertRowid,
     );
 

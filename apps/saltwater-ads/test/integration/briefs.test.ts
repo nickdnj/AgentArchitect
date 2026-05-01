@@ -121,7 +121,7 @@ describe('POST /api/briefs', () => {
       .get(body.hook_set_id) as { brief_id: number; brand_bucket_version_id: number; status: string };
     expect(hs.brief_id).toBe(body.brief_id);
     expect(hs.brand_bucket_version_id).toBe(body.brand_bucket_version_id);
-    expect(hs.status).toBe('generating');
+    expect(hs.status).toBe('pending');
 
     // Verify 3 variants with V1/V2/V3 labels
     const variants = db().query('SELECT id, sub_variant_label, status, pattern FROM variant WHERE hook_set_id = ? ORDER BY id ASC')
@@ -280,7 +280,7 @@ describe('GET /api/briefs/:id', () => {
     expect(body.brief.id).toBe(brief_id);
     expect(body.brief.free_text).toBe('detail test');
     expect(body.hook_set).not.toBeNull();
-    expect(body.hook_set!.status).toBe('generating');
+    expect(body.hook_set!.status).toBe('pending');
     expect(body.variants.length).toBe(3);
     expect(body.variants.map((v) => v.sub_variant_label)).toEqual(['V1', 'V2', 'V3']);
   });
