@@ -6,6 +6,7 @@ import { loadSecrets, secrets } from '@lib/services/secrets.ts';
 import { db } from '@db/client.ts';
 import { migrate } from '@db/migrate.ts';
 import { setFetchForTest } from '@lib/services/tw-connector.ts';
+import { setResendClientForTest } from '@lib/services/auth-email.ts';
 import { createApp } from '../../src/server/app.ts';
 
 // Ensure tests use the in-memory DB and fixture secrets even when run individually.
@@ -30,6 +31,10 @@ describe('C-2 auth wiring', () => {
   beforeAll(async () => {
     loadSecrets();
     await migrate({ quiet: true });
+    // Stub Resend so the POST /auth/magic test doesn't hit the network.
+    setResendClientForTest({
+      emails: { send: async () => ({ id: 'stub' }) },
+    });
     app = createApp();
   });
 
@@ -47,18 +52,23 @@ describe('C-2 auth wiring', () => {
       expect([200, 503]).toContain(res.status);
     });
 
-    test('POST /auth/magic is open (returns 501 stub, not 401)', async () => {
+    test('POST /auth/magic is open (no session required)', async () => {
       const res = await app.request('/auth/magic', {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify({ email: 'test@example.com' }),
       });
-      expect(res.status).toBe(501);
+      // Lane A: route is implemented. Confirm it reaches the handler (not 401).
+      expect(res.status).not.toBe(401);
     });
 
     test('GET /auth/verify is open', async () => {
       const res = await app.request('/auth/verify?token=anything');
-      expect(res.status).toBe(501);
+      // Lane A: real handler returns 401 for invalid token. Important: that's
+      // a route-handler 401, not a middleware 401 — the route is open.
+      // (We can tell because there's no "unauthorized" body shape from middleware.)
+      const body = (await res.json()) as { error: string };
+      expect(body.error).toBe('invalid_token'); // not 'unauthorized'
     });
   });
 
