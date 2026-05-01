@@ -33,13 +33,19 @@ describe('H-2 server-side disclosure gate', () => {
     cookie = await mintSession('h2-test@example.com');
   });
 
-  test('approve with ai_disclosure_acknowledged: true → reaches handler (501 stub)', async () => {
+  test('approve with ai_disclosure_acknowledged: true → reaches handler', async () => {
     const res = await app.request('/api/variants/1/approve', {
       method: 'POST',
       headers: { 'content-type': 'application/json', cookie },
       body: JSON.stringify({ ai_disclosure_acknowledged: true }),
     });
-    expect(res.status).toBe(501);
+    // Approve handler is now real. Variant 1 may or may not exist depending
+    // on test execution order — could be 404 (no variant), 409 (wrong
+    // status), or 200 (ready_for_review). Importantly NOT 400 — that would
+    // mean the disclosure gate rejected, and we need to prove the gate
+    // LET IT THROUGH on ack=true.
+    expect(res.status).not.toBe(400);
+    expect([200, 404, 409]).toContain(res.status);
   });
 
   test('approve with ai_disclosure_acknowledged: false → 400 ai_disclosure_required', async () => {

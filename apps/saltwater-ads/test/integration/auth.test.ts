@@ -176,7 +176,9 @@ describe('C-2 auth wiring', () => {
         headers: { 'content-type': 'application/json', cookie },
         body: JSON.stringify({ ai_disclosure_acknowledged: true }),
       });
-      expect(res.status).toBe(501);
+      // Variant 42 doesn't exist → 404 from real approve handler.
+      // Audit row should still write because audit middleware fires after next().
+      expect(res.status).toBe(404);
 
       const row = db().query(
         `SELECT email, action, target_type, target_id
