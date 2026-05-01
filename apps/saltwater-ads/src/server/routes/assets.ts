@@ -298,8 +298,10 @@ const BUCKET_FILES = [
 ] as const;
 
 function bucketDir(): string {
+  // src/server/routes/assets.ts → repo root needs 5 ../ to reach
+  // /Users/nickd/Workspaces/AgentArchitect/, then context-buckets/...
   return process.env.SALTWATER_BUCKET_DIR
-    ?? resolve(import.meta.dir, '../../../../context-buckets/saltwater-brand/files');
+    ?? resolve(import.meta.dir, '../../../../../context-buckets/saltwater-brand/files');
 }
 
 app.get('/bucket', async (c) => {

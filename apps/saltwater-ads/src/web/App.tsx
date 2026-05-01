@@ -55,6 +55,7 @@ export function App(): JSX.Element {
       <main className="content">
         {page === 'generate' && <Generate />}
         {page === 'review' && <ReviewQueue />}
+        {page === 'assets' && <Assets />}
         {page === 'settings' && <Settings />}
       </main>
     </div>
