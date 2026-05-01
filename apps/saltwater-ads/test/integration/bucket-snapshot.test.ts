@@ -52,6 +52,11 @@ describe('H-1 bucket cache materialization + load isolation', () => {
     // Wipe per test so we observe cache writes from a clean slate.
     await rm(TEST_BUCKET, { recursive: true, force: true });
     await rm(TEST_CACHE, { recursive: true, force: true });
+    // FK order: dependents before parents.
+    db().run('DELETE FROM render_attempt');
+    db().run('DELETE FROM variant');
+    db().run('DELETE FROM hook_set');
+    db().run('DELETE FROM brief');
     db().run('DELETE FROM brand_bucket_version');
     await writeBucket(BUCKET_FILES);
   });

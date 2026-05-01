@@ -139,8 +139,8 @@ describe('C-2 auth wiring', () => {
         headers: { 'content-type': 'application/json', cookie },
         body: JSON.stringify({ free_text: 'audit test brief' }),
       });
-      // Stub still returns 501, but audit middleware fires after next().
-      expect(res.status).toBe(501);
+      // Lane B: brief creation now succeeds (201). Audit middleware fires after next().
+      expect(res.status).toBe(201);
 
       const row = db().query(
         `SELECT email, action, target_type
