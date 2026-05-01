@@ -20,9 +20,14 @@ export default defineConfig({
   server: {
     port: 5173,
     proxy: {
-      '/api': 'http://localhost:3001',
-      '/auth': 'http://localhost:3001',
-      '/media': 'http://localhost:3001',
+      // Regex patterns instead of bare prefixes: bare '/api' would also match
+      // '/api.ts' (the typed-fetch client file in src/web/) and proxy it to
+      // Hono, which returns spa_not_built 404. Discovered in eng-review-3
+      // dogfood. Trailing slash + ^ anchor avoids the collision.
+      '^/api/': 'http://localhost:3001',
+      '^/auth/': 'http://localhost:3001',
+      '^/media/': 'http://localhost:3001',
+      '/healthz': 'http://localhost:3001',
     },
   },
 });

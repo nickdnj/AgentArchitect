@@ -1,5 +1,6 @@
 import type { ErrorHandler } from 'hono';
 import { log } from '@lib/log.ts';
+import { resetDbConnection } from '@db/client.ts';
 
 export const errorHandler: ErrorHandler = (err, c) => {
   const requestId = c.get('requestId');
@@ -15,6 +16,14 @@ export const errorHandler: ErrorHandler = (err, c) => {
     },
     'unhandled_error',
   );
+  // eng-review-3 demo: bun:sqlite occasionally produces SQLITE_IOERR under
+  // sustained load. Self-heal by dropping the singleton DB connection — the
+  // next request gets a fresh one. Without this, one transient EIO would
+  // brick the server until restart.
+  if (err.message.includes('disk I/O error')) {
+    log.warn({ request_id: requestId }, 'resetting_db_connection_after_io_error');
+    resetDbConnection();
+  }
   return c.json({
     error: 'internal_error',
     message: 'Something went wrong',

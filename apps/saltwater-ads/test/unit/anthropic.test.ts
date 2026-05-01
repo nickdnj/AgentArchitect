@@ -98,6 +98,56 @@ describe('generateHooks', () => {
     expect(result.model).toBe('claude-sonnet-4-6');
   });
 
+  test('eng-review-3 dogfood: abortSignal goes to OPTIONS arg, NOT body params', async () => {
+    // Real bug caught during demo: putting `signal` on the body params caused
+    // Anthropic to return 400 "Extra inputs are not permitted". The SDK takes
+    // signal as the SECOND argument (request options).
+    let capturedParams: any;
+    let capturedOptions: any;
+    setAnthropicClientForTest({
+      messages: {
+        create: async (params, options) => {
+          capturedParams = params;
+          capturedOptions = options;
+          return fakeResponse(VALID_HOOKSET_JSON);
+        },
+      },
+    });
+
+    const ctrl = new AbortController();
+    await generateHooks({
+      brief: { free_text: 't' },
+      bucket: FAKE_BUCKET,
+      systemPrompt: 's',
+      userPrompt: 'u',
+      abortSignal: ctrl.signal,
+    });
+
+    // Body params must NOT contain signal (or Anthropic rejects with 400).
+    expect(capturedParams.signal).toBeUndefined();
+    // Options arg must contain the signal.
+    expect(capturedOptions?.signal).toBe(ctrl.signal);
+  });
+
+  test('no abortSignal → no options.signal threaded', async () => {
+    let capturedOptions: any;
+    setAnthropicClientForTest({
+      messages: {
+        create: async (_params, options) => {
+          capturedOptions = options;
+          return fakeResponse(VALID_HOOKSET_JSON);
+        },
+      },
+    });
+    await generateHooks({
+      brief: { free_text: 't' },
+      bucket: FAKE_BUCKET,
+      systemPrompt: 's',
+      userPrompt: 'u',
+    });
+    expect(capturedOptions?.signal).toBeUndefined();
+  });
+
   test('cache_control is applied to system block (so providers can cache by content)', async () => {
     setAnthropicClientForTest({
       messages: {

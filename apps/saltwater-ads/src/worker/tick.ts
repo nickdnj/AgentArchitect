@@ -155,7 +155,18 @@ export function sweepStaleAttempts(): number {
 
 export async function tick(args: TickArgs): Promise<void> {
   // Sweep wedged transit-state rows BEFORE claiming new work.
-  sweepStaleAttempts();
+  // Isolate sweep failures so a transient SQLite hiccup doesn't gate claims.
+  // Discovered in eng-review-3 dogfood: sweep was throwing "disk I/O error"
+  // on a long-running worker process and blocking the entire tick loop.
+  // Sweep is best-effort (it cleans up stale rows) — claim is the hot path.
+  try {
+    sweepStaleAttempts();
+  } catch (err) {
+    log.error(
+      { err: { message: (err as Error).message } },
+      'sweep_failed_continuing_to_claim',
+    );
+  }
 
   const claimed = claimJobs(args.maxConcurrent);
   if (claimed.length === 0) return;

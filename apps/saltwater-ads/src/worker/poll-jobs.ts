@@ -1,5 +1,6 @@
 import { loadSecrets } from '@lib/services/secrets.ts';
 import { log } from '@lib/log.ts';
+import { resetDbConnection } from '@db/client.ts';
 import { tick } from './tick.ts';
 
 // SAD §3 + §4 — worker process. Polls SQLite every 2s for queued render attempts.
@@ -25,10 +26,18 @@ async function loop(): Promise<void> {
     try {
       await tick({ maxConcurrent: MAX_CONCURRENT });
     } catch (err) {
+      const message = (err as Error).message;
       log.error(
-        { err: { message: (err as Error).message, stack: (err as Error).stack } },
+        { err: { message, stack: (err as Error).stack } },
         'worker_tick_failed',
       );
+      // eng-review-3 demo: bun:sqlite occasionally produces SQLITE_IOERR
+      // ('disk I/O error') under sustained load. Self-heal by dropping the
+      // singleton DB connection — next tick opens a fresh one.
+      if (message.includes('disk I/O error')) {
+        log.warn({}, 'resetting_db_connection_after_io_error');
+        resetDbConnection();
+      }
     }
     await Bun.sleep(POLL_INTERVAL_MS);
   }

@@ -16,7 +16,7 @@ const MODEL = 'claude-sonnet-4-6';
 
 interface AnthropicLike {
   messages: {
-    create: (params: unknown) => Promise<unknown>;
+    create: (params: unknown, options?: { signal?: AbortSignal }) => Promise<unknown>;
   };
 }
 
@@ -118,9 +118,12 @@ export async function generateHooks(args: GenerateHooksArgs): Promise<Generation
     .update(args.userPrompt)
     .digest('hex');
 
-  // The Anthropic SDK forwards a `signal` option to the underlying fetch.
-  // When the signal aborts, the in-flight request is cancelled.
-  const createParams: Record<string, unknown> = {
+  // The Anthropic SDK takes the body params as the first argument and
+  // request options (including AbortSignal) as the SECOND argument.
+  // Putting `signal` on the body params object causes a 400
+  // "Extra inputs are not permitted" because signal isn't an API field.
+  // First-contact bug discovered in eng-review-3 dogfood.
+  const createParams = {
     model: MODEL,
     max_tokens: llmConfig.maxTokens,
     temperature: llmConfig.temperature,
@@ -133,10 +136,11 @@ export async function generateHooks(args: GenerateHooksArgs): Promise<Generation
     ],
     messages: [{ role: 'user', content: args.userPrompt }],
   };
+  const requestOptions: { signal?: AbortSignal } = {};
   if (args.abortSignal) {
-    createParams.signal = args.abortSignal;
+    requestOptions.signal = args.abortSignal;
   }
-  const resp = (await client().messages.create(createParams)) as AnthropicResponse;
+  const resp = (await client().messages.create(createParams as unknown, requestOptions)) as AnthropicResponse;
 
   const hookSet = parseHookSet(extractText(resp));
 

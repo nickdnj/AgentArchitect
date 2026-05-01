@@ -124,12 +124,13 @@ describe('C-2 auth wiring', () => {
   });
 
   describe('protected routes — valid session', () => {
-    test('GET /api/variants with valid session reaches handler (501 stub)', async () => {
+    test('GET /api/variants with valid session returns variants list', async () => {
       const cookie = await mintSessionCookie('test@example.com');
       const res = await app.request('/api/variants', { headers: { cookie } });
-      expect(res.status).toBe(501);
-      const body = (await res.json()) as { step: string };
-      expect(body.step).toBe('variants.list');
+      // Eng-review-3 dogfood: variants list now implemented (no longer 501 stub).
+      expect(res.status).toBe(200);
+      const body = (await res.json()) as { variants: unknown[] };
+      expect(Array.isArray(body.variants)).toBe(true);
     });
 
     test('GET /api/settings with valid session returns presence map', async () => {

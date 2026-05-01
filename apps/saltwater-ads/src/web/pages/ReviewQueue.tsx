@@ -1,12 +1,19 @@
 // UXD §4 — Screen 2: Review Queue (master-detail inbox).
-// This pass wires the AI disclosure gate (H-2 from internal eng review v0.4):
-// real component state, Approve button properly disabled until checkbox is
-// actively checked, gate resets on every variant change, and the API call
-// sends the actual checkbox value (not the previous hardcoded `true`).
 //
-// Full master-detail layout (compare mode, signed thumbnails, regen modal,
-// caption editor, etc.) per UXD §4 is still TODO — this pass is scoped to
-// closing the disclosure-gate finding.
+// This is the primary screen for Joe's day-to-day flow. After eng-review-3
+// dogfood, the page does:
+//   - Fetches /api/variants?status=ready_for_review on mount + every 8s
+//   - Master-detail with status-pill chips + selection state
+//   - Loads /api/variants/:id detail (brief, attempt history, asset paths)
+//   - AI disclosure gate (H-2): hard-gate Approve via z.literal(true) on POST
+//   - Disclosure resets on every variant change (UXD §4.3)
+//   - Regen modal with feedback textarea
+//   - Reject with confirmation
+//
+// Things still NOT done (bigger Sprint 2 surfaces):
+//   - Compare-3-variants side-by-side toggle (UXD §4.5)
+//   - Inline caption editor before approval (UXD §4.4)
+//   - Signed video preview (needs /media + signed URL flow)
 
 import { useEffect, useState } from 'react';
 import { api } from '../api.ts';
@@ -19,38 +26,82 @@ interface VariantRow {
   hook_text: string;
   sub_variant_label: string;
   status: PillState;
+  pattern: string | null;
+  sku_id: string | null;
 }
+
+interface VariantDetail {
+  id: number;
+  hook_text: string;
+  sub_variant_label: string;
+  sku_id: string | null;
+  pattern: string | null;
+  status: PillState;
+  brief: { id: number; free_text: string; brand_bucket_version_id: number };
+  attempt: {
+    id: number;
+    state: string;
+    error: string | null;
+    master_path: string | null;
+    thumb_path: string | null;
+    ai_disclosure_layers: string[];
+  } | null;
+}
+
+const POLL_INTERVAL_MS = 8000;
 
 export function ReviewQueue(): JSX.Element {
   const [variants, setVariants] = useState<VariantRow[]>([]);
   const [selectedId, setSelectedId] = useState<number | null>(null);
+  const [detail, setDetail] = useState<VariantDetail | null>(null);
   const [aiDisclosureChecked, setAiDisclosureChecked] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [actionMessage, setActionMessage] = useState<string | null>(null);
+  const [showRegen, setShowRegen] = useState(false);
+  const [regenFeedback, setRegenFeedback] = useState('');
 
-  // On mount, fetch the queue. /api/variants is still a 501 stub — the catch
-  // path keeps the page usable until the real endpoint lands.
+  // Fetch list — initial + poll
   useEffect(() => {
     let cancelled = false;
-    api.variants
-      .list('ready_for_review')
-      .then((r) => {
+    async function load(): Promise<void> {
+      try {
+        const r = await api.variants.list('ready_for_review');
         if (cancelled) return;
         setVariants((r.variants as VariantRow[]) ?? []);
+        setError(null);
+      } catch (err) {
+        if (cancelled) return;
+        setError((err as Error).message.replace(/^API \d+ [^:]+:\s*/, ''));
+      }
+    }
+    load();
+    const t = setInterval(load, POLL_INTERVAL_MS);
+    return () => { cancelled = true; clearInterval(t); };
+  }, []);
+
+  // Reset disclosure gate on every variant change (UXD §4.3).
+  useEffect(() => {
+    setAiDisclosureChecked(false);
+    setShowRegen(false);
+    setRegenFeedback('');
+    setActionMessage(null);
+  }, [selectedId]);
+
+  // Fetch detail for the selected variant.
+  useEffect(() => {
+    if (selectedId === null) { setDetail(null); return; }
+    let cancelled = false;
+    api.variants.get(selectedId)
+      .then((r) => {
+        if (cancelled) return;
+        setDetail((r.variant as VariantDetail) ?? null);
       })
       .catch(() => {
         if (cancelled) return;
-        setError('Variants endpoint not implemented yet (501).');
+        setDetail(null);
       });
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
-  // UXD §4.3: checkbox is unchecked on every variant load — Joe must actively
-  // re-check it for each variant. Resetting here enforces that.
-  useEffect(() => {
-    setAiDisclosureChecked(false);
+    return () => { cancelled = true; };
   }, [selectedId]);
 
   const selected = variants.find((v) => v.id === selectedId) ?? null;
@@ -59,11 +110,14 @@ export function ReviewQueue(): JSX.Element {
     : false;
 
   async function handleApprove(): Promise<void> {
-    if (!selected) return;
-    if (!approveEnabled) return; // belt-and-suspenders; disabled button shouldn't fire
+    if (!selected || !approveEnabled) return;
     setBusy(true);
+    setActionMessage(null);
     try {
       await api.variants.approve(selected.id, aiDisclosureChecked);
+      setActionMessage('Approved. Download will be available shortly.');
+    } catch (err) {
+      setActionMessage(`Approve failed: ${(err as Error).message.replace(/^API \d+ [^:]+:\s*/, '')}`);
     } finally {
       setBusy(false);
     }
@@ -71,9 +125,32 @@ export function ReviewQueue(): JSX.Element {
 
   async function handleReject(): Promise<void> {
     if (!selected) return;
+    if (!confirm(`Reject variant #${selected.id}? This cannot be undone.`)) return;
     setBusy(true);
+    setActionMessage(null);
     try {
       await api.variants.reject(selected.id);
+      setActionMessage('Rejected.');
+      setSelectedId(null);
+    } catch (err) {
+      setActionMessage(`Reject failed: ${(err as Error).message.replace(/^API \d+ [^:]+:\s*/, '')}`);
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function handleRegen(): Promise<void> {
+    if (!selected) return;
+    if (regenFeedback.trim().length < 4) return;
+    setBusy(true);
+    setActionMessage(null);
+    try {
+      const r = await api.variants.regen(selected.id, regenFeedback.trim());
+      setActionMessage(`Regen queued (new variant #${r.new_variant_id}).`);
+      setShowRegen(false);
+      setRegenFeedback('');
+    } catch (err) {
+      setActionMessage(`Regen failed: ${(err as Error).message.replace(/^API \d+ [^:]+:\s*/, '')}`);
     } finally {
       setBusy(false);
     }
@@ -94,7 +171,9 @@ export function ReviewQueue(): JSX.Element {
               className={`variant-row ${selectedId === v.id ? 'is-selected' : ''}`}
               onClick={() => setSelectedId(v.id)}
             >
-              <code className="variant-hook">{v.hook_text.slice(0, 40)}{v.hook_text.length > 40 ? '…' : ''}</code>
+              <code className="variant-hook" title={v.hook_text}>
+                {v.hook_text.slice(0, 60)}{v.hook_text.length > 60 ? '…' : ''}
+              </code>
               <StatusPill state={v.status} />
             </article>
           ))}
@@ -107,7 +186,33 @@ export function ReviewQueue(): JSX.Element {
               <h2 className="variant-title">{selected.hook_text}</h2>
               <p className="variant-meta">
                 <StatusPill state={selected.status} /> · {selected.sub_variant_label}
+                {selected.pattern && ` · ${selected.pattern}`}
+                {selected.sku_id && ` · ${selected.sku_id}`}
               </p>
+
+              {detail?.brief && (
+                <div style={{ background: 'var(--sand-50)', padding: '10px 14px', borderRadius: 8, fontSize: 13, marginBottom: 16 }}>
+                  <strong style={{ fontSize: 12, textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--ink-3)' }}>Brief</strong>
+                  <p style={{ margin: '4px 0 0' }}>{detail.brief.free_text}</p>
+                </div>
+              )}
+
+              {detail?.attempt?.error && (
+                <div className="error-banner" style={{ marginBottom: 16 }}>
+                  <strong>Pipeline failure:</strong> {detail.attempt.error}
+                </div>
+              )}
+
+              {detail?.attempt?.master_path && (
+                <div style={{ marginBottom: 16, fontSize: 13, color: 'var(--ink-3)' }}>
+                  Master: <code style={{ fontFamily: 'var(--font-mono)', fontSize: 12 }}>{detail.attempt.master_path}</code>
+                  {detail.attempt.ai_disclosure_layers.length > 0 && (
+                    <div style={{ marginTop: 4 }}>
+                      AI layers: {detail.attempt.ai_disclosure_layers.join(', ')}
+                    </div>
+                  )}
+                </div>
+              )}
 
               <AiDisclosureGate
                 checked={aiDisclosureChecked}
@@ -124,9 +229,48 @@ export function ReviewQueue(): JSX.Element {
                 >
                   Approve <span className="red-accent">→</span> Download for Meta
                 </button>
-                <button className="btn-regen" disabled={busy}>Regen with feedback</button>
+                <button className="btn-regen" disabled={busy} onClick={() => setShowRegen(true)}>
+                  Regen with feedback
+                </button>
                 <button className="btn-reject" disabled={busy} onClick={handleReject}>Reject</button>
               </div>
+
+              {actionMessage && (
+                <p style={{ marginTop: 12, fontSize: 13, color: actionMessage.includes('failed') ? 'var(--red)' : 'var(--ok)' }}>
+                  {actionMessage}
+                </p>
+              )}
+
+              {showRegen && (
+                <div style={{ marginTop: 24, padding: 16, border: '1px solid var(--line)', borderRadius: 8 }}>
+                  <label style={{ display: 'block', marginBottom: 8, fontWeight: 600, fontSize: 13 }}>
+                    What should the regen do differently?
+                  </label>
+                  <textarea
+                    value={regenFeedback}
+                    onChange={(e) => setRegenFeedback(e.target.value)}
+                    placeholder="e.g. lean harder into the dock-shorts comfort angle, drop the ocean breeze line"
+                    style={{ width: '100%', minHeight: 80, padding: 10, fontFamily: 'var(--font-mono)', fontSize: 13, border: '1px solid var(--line)', borderRadius: 4 }}
+                    disabled={busy}
+                  />
+                  <div style={{ marginTop: 10, display: 'flex', gap: 8 }}>
+                    <button
+                      onClick={handleRegen}
+                      disabled={busy || regenFeedback.trim().length < 4}
+                      style={{ background: 'var(--navy)', color: 'white', border: 0, padding: '8px 14px', borderRadius: 4, cursor: 'pointer' }}
+                    >
+                      Send feedback
+                    </button>
+                    <button
+                      onClick={() => { setShowRegen(false); setRegenFeedback(''); }}
+                      disabled={busy}
+                      style={{ background: 'none', border: 0, color: 'var(--ink-3)', cursor: 'pointer' }}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              )}
             </>
           )}
         </div>

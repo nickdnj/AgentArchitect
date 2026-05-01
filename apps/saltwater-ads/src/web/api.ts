@@ -53,5 +53,19 @@ export const api = {
   },
   settings: {
     get: () => request<{ secrets: Record<string, boolean> }>('/api/settings'),
+    updateSecret: (key: string, value: string) =>
+      request<{ ok: true; key: string; presence: true }>('/api/settings/secrets', {
+        method: 'POST',
+        body: JSON.stringify({ key, value }),
+      }),
+    twSync: () =>
+      request<{
+        windowStart: string;
+        windowEnd: string;
+        metricsUpserted: number;
+        ordersUpserted: number;
+        adRowsUpserted: number;
+        watermark: string;
+      }>('/api/settings/tw-sync', { method: 'POST', body: '{}' }),
   },
 };

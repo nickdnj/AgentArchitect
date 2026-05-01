@@ -149,4 +149,36 @@ app.post('/logout', audit('logout'), async (c) => {
   return c.json({ ok: true });
 });
 
+// Dev-only bypass: GET /auth/dev-login?email=... mints a session and redirects
+// to /. Guarded by DEV_AUTH_BYPASS env (must be 'true') AND the email must be
+// in ALLOWED_OPERATORS. Lets local dev skip the magic-link round-trip when
+// Resend isn't wired with a real key.
+//
+// SAFETY: this route 404s in any env where DEV_AUTH_BYPASS !== 'true'.
+// Production deployments MUST NOT set that env var. The systemd unit
+// (SAD §12.1) doesn't set it.
+app.get('/dev-login', async (c) => {
+  if (process.env.DEV_AUTH_BYPASS !== 'true') {
+    return c.json({ error: 'not_found' }, 404);
+  }
+  const email = (c.req.query('email') ?? '').toLowerCase();
+  if (!email || !isAllowedOperator(email)) {
+    return c.json({ error: 'unauthorized', reason: 'email_not_in_allowlist' }, 403);
+  }
+  await setSignedCookie(
+    c,
+    'sw_session',
+    JSON.stringify({ email, iat: Date.now() }),
+    secrets.sessionSig(),
+    {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'Lax',
+      maxAge: SESSION_TTL_SECONDS,
+      path: '/',
+    },
+  );
+  return c.redirect('/', 302);
+});
+
 export default app;
