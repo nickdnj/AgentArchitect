@@ -107,11 +107,14 @@ function installVendorStubs(): void {
     throw new Error(`unexpected heygen url: ${url}`);
   });
 
-  setFashnFetchForTest(async (url) => {
-    if (url.endsWith('/v1/run')) return jsonResponse({ id: 'tryon-1' });
-    if (url.endsWith('/v1/animate')) return jsonResponse({ id: 'animate-1' });
-    if (url.includes('/v1/status/tryon-1')) return jsonResponse({ status: 'completed', output: ['https://fashn.test/tryon.jpg'] });
-    if (url.includes('/v1/status/animate-1')) return jsonResponse({ status: 'completed', output: ['https://fashn.test/animate.mp4'] });
+  setFashnFetchForTest(async (url, init) => {
+    if (url.endsWith('/v1/run')) {
+      const body = JSON.parse((init?.body as string) ?? '{}');
+      const id = body.model_name === 'tryon-max' ? 'tryon-1' : 'animate-1';
+      return jsonResponse({ id, error: null });
+    }
+    if (url.includes('/v1/status/tryon-1')) return jsonResponse({ status: 'completed', output: ['https://fashn.test/tryon.jpg'], error: null });
+    if (url.includes('/v1/status/animate-1')) return jsonResponse({ status: 'completed', output: ['https://fashn.test/animate.mp4'], error: null });
     if (url.includes('fashn.test/')) return binaryResponse();
     throw new Error(`unexpected fashn url: ${url}`);
   });
@@ -422,11 +425,14 @@ describe('end-to-end pipeline', () => {
   test('partial render (HeyGen fails, Fashn succeeds) still completes via assembly', async () => {
     installLLMStub();
     setHeygenFetchForTest(async () => new Response('hg-fail', { status: 500, statusText: 'Internal' }));
-    setFashnFetchForTest(async (url) => {
-      if (url.endsWith('/v1/run')) return jsonResponse({ id: 'tryon-1' });
-      if (url.endsWith('/v1/animate')) return jsonResponse({ id: 'animate-1' });
-      if (url.includes('/v1/status/tryon-1')) return jsonResponse({ status: 'completed', output: ['https://fashn.test/tryon.jpg'] });
-      if (url.includes('/v1/status/animate-1')) return jsonResponse({ status: 'completed', output: ['https://fashn.test/animate.mp4'] });
+    setFashnFetchForTest(async (url, init) => {
+      if (url.endsWith('/v1/run')) {
+        const body = JSON.parse((init?.body as string) ?? '{}');
+        const id = body.model_name === 'tryon-max' ? 'tryon-1' : 'animate-1';
+        return jsonResponse({ id, error: null });
+      }
+      if (url.includes('/v1/status/tryon-1')) return jsonResponse({ status: 'completed', output: ['https://fashn.test/tryon.jpg'], error: null });
+      if (url.includes('/v1/status/animate-1')) return jsonResponse({ status: 'completed', output: ['https://fashn.test/animate.mp4'], error: null });
       if (url.includes('fashn.test/')) return binaryResponse();
       throw new Error(`unexpected: ${url}`);
     });

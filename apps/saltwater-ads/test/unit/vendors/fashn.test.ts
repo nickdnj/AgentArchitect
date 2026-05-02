@@ -15,28 +15,32 @@ describe('Fashn createShowcaseClip', () => {
     setFashnFetchForTest(null);
   });
 
-  test('happy path: try-on → poll → animate → poll → return video url', async () => {
-    const calls: string[] = [];
+  test('happy path: tryon-max run → poll → image-to-video run → poll → return video url', async () => {
+    let runCount = 0;
     setFashnFetchForTest(async (url, init) => {
-      calls.push(`${init?.method ?? 'GET'} ${url.split('/').slice(-2).join('/')}`);
       if (url.endsWith('/v1/run')) {
         const body = JSON.parse(init!.body as string);
-        expect(body.model_image).toBeDefined();
-        expect(body.garment_image).toBe('https://saltwater.test/polo-navy.jpg');
-        expect(body.category).toBe('tops');
-        return new Response(JSON.stringify({ id: 'tryon-99' }), { status: 200 });
-      }
-      if (url.endsWith('/v1/animate')) {
-        const body = JSON.parse(init!.body as string);
-        expect(body.image_url).toBe('https://fashn.test/tryon.jpg');
-        expect(body.duration_seconds).toBe(8);
-        return new Response(JSON.stringify({ id: 'animate-99' }), { status: 200 });
+        if (body.model_name === 'tryon-max') {
+          // Step 1: try-on. Real Fashn API uses model_name + inputs envelope.
+          expect(body.inputs.product_image).toBe('https://saltwater.test/polo-navy.jpg');
+          expect(body.inputs.model_image).toBeDefined();
+          runCount++;
+          return new Response(JSON.stringify({ id: 'tryon-99', error: null }), { status: 200 });
+        }
+        if (body.model_name === 'image-to-video') {
+          // Step 2: animate via image-to-video. duration must be 5 or 10.
+          expect(body.inputs.image).toBe('https://fashn.test/tryon.jpg');
+          expect(body.inputs.duration).toBe(5);
+          runCount++;
+          return new Response(JSON.stringify({ id: 'animate-99', error: null }), { status: 200 });
+        }
+        throw new Error(`unexpected model_name: ${body.model_name}`);
       }
       if (url.includes('/v1/status/tryon-99')) {
-        return new Response(JSON.stringify({ status: 'completed', output: ['https://fashn.test/tryon.jpg'] }), { status: 200 });
+        return new Response(JSON.stringify({ status: 'completed', output: ['https://fashn.test/tryon.jpg'], error: null }), { status: 200 });
       }
       if (url.includes('/v1/status/animate-99')) {
-        return new Response(JSON.stringify({ status: 'completed', output: ['https://fashn.test/animate.mp4'] }), { status: 200 });
+        return new Response(JSON.stringify({ status: 'completed', output: ['https://fashn.test/animate.mp4'], error: null }), { status: 200 });
       }
       throw new Error(`unexpected: ${url}`);
     });
@@ -47,6 +51,7 @@ describe('Fashn createShowcaseClip', () => {
       abortSignal: new AbortController().signal,
     });
 
+    expect(runCount).toBe(2); // tryon-max + image-to-video, both via /v1/run
     expect(result.tryonId).toBe('tryon-99');
     expect(result.animateId).toBe('animate-99');
     expect(result.videoUrl).toBe('https://fashn.test/animate.mp4');
@@ -55,14 +60,19 @@ describe('Fashn createShowcaseClip', () => {
 
   test('try-on failed → throws (animate never called)', async () => {
     let animateCalled = false;
-    setFashnFetchForTest(async (url) => {
-      if (url.endsWith('/v1/run')) return new Response(JSON.stringify({ id: 'try-fail' }), { status: 200 });
-      if (url.endsWith('/v1/animate')) {
-        animateCalled = true;
-        return new Response(JSON.stringify({ id: 'should-not-happen' }), { status: 200 });
+    setFashnFetchForTest(async (url, init) => {
+      if (url.endsWith('/v1/run')) {
+        const body = JSON.parse(init!.body as string);
+        if (body.model_name === 'tryon-max') {
+          return new Response(JSON.stringify({ id: 'try-fail', error: null }), { status: 200 });
+        }
+        if (body.model_name === 'image-to-video') {
+          animateCalled = true;
+          return new Response(JSON.stringify({ id: 'should-not-happen' }), { status: 200 });
+        }
       }
       if (url.includes('/v1/status/try-fail')) {
-        return new Response(JSON.stringify({ status: 'failed', error: { message: 'garment image broken' } }), { status: 200 });
+        return new Response(JSON.stringify({ status: 'failed', error: { name: 'InputError', message: 'garment image broken' } }), { status: 200 });
       }
       throw new Error(`unexpected: ${url}`);
     });
@@ -76,10 +86,13 @@ describe('Fashn createShowcaseClip', () => {
   });
 
   test('animate failed → throws (try-on succeeded but downstream busted)', async () => {
-    setFashnFetchForTest(async (url) => {
-      if (url.endsWith('/v1/run')) return new Response(JSON.stringify({ id: 'tr' }), { status: 200 });
-      if (url.endsWith('/v1/animate')) return new Response(JSON.stringify({ id: 'an' }), { status: 200 });
-      if (url.includes('/v1/status/tr')) return new Response(JSON.stringify({ status: 'completed', output: ['https://x/img.jpg'] }), { status: 200 });
+    setFashnFetchForTest(async (url, init) => {
+      if (url.endsWith('/v1/run')) {
+        const body = JSON.parse(init!.body as string);
+        const id = body.model_name === 'tryon-max' ? 'tr' : 'an';
+        return new Response(JSON.stringify({ id, error: null }), { status: 200 });
+      }
+      if (url.includes('/v1/status/tr')) return new Response(JSON.stringify({ status: 'completed', output: ['https://x/img.jpg'], error: null }), { status: 200 });
       if (url.includes('/v1/status/an')) return new Response(JSON.stringify({ status: 'failed', error: 'downstream timeout' }), { status: 200 });
       throw new Error(`unexpected: ${url}`);
     });

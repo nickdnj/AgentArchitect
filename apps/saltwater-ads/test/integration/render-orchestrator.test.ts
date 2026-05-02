@@ -50,25 +50,24 @@ function heygenHappyFetch(videoId = 'hg-clip-1'): (url: string) => Promise<Respo
 }
 
 function fashnHappyFetch(): (url: string, init?: RequestInit) => Promise<Response> {
-  let runs = 0;
-  return async (url) => {
+  return async (url, init) => {
     if (url.endsWith('/v1/run')) {
-      runs++;
-      return jsonResponse({ id: 'tryon-1' });
-    }
-    if (url.endsWith('/v1/animate')) {
-      return jsonResponse({ id: 'animate-1' });
+      const body = JSON.parse((init?.body as string) ?? '{}');
+      // Fashn uses one POST /v1/run endpoint with model_name dispatching
+      // (V-VERIFY 2026-05-02: tryon-max + image-to-video).
+      if (body.model_name === 'tryon-max') return jsonResponse({ id: 'tryon-1', error: null });
+      if (body.model_name === 'image-to-video') return jsonResponse({ id: 'animate-1', error: null });
+      throw new Error(`unexpected model_name: ${body.model_name}`);
     }
     if (url.includes('/v1/status/tryon-1')) {
-      return jsonResponse({ status: 'completed', output: ['https://fashn.test/tryon.jpg'] });
+      return jsonResponse({ status: 'completed', output: ['https://fashn.test/tryon.jpg'], error: null });
     }
     if (url.includes('/v1/status/animate-1')) {
-      return jsonResponse({ status: 'completed', output: ['https://fashn.test/animate.mp4'] });
+      return jsonResponse({ status: 'completed', output: ['https://fashn.test/animate.mp4'], error: null });
     }
     if (url.includes('fashn.test/')) {
       return binaryResponse();
     }
-    void runs;
     throw new Error(`unexpected fashn url: ${url}`);
   };
 }

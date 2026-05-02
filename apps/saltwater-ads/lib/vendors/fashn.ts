@@ -11,18 +11,27 @@ const VENDOR = 'Fashn';
 
 // Fashn.ai try-on + animate API adapter. PRD §6.1.4 F-RO-3.
 //
-// Real flow (per fashn.ai/docs):
-//   1. POST /v1/run { model_image, garment_image, category }
-//      → returns { id }
+// V-VERIFY 2026-05-02: confirmed against docs.fashn.ai. All Fashn jobs
+// post to a single /v1/run endpoint with a {model_name, inputs} envelope.
+// Poll /v1/status/<id> until status='completed' or 'failed'.
+//
+//   1. POST /v1/run { model_name: 'tryon-max', inputs: { product_image, model_image } }
+//      → returns { id, error: null }
 //   2. Poll GET /v1/status/<id> until status='completed'
-//      → returns { output: [imageUrl] }
-//   3. POST /v1/animate { image_url, prompt, duration_seconds }
+//      → returns { id, status, output: [imageUrl], error: null }
+//   3. POST /v1/run { model_name: 'image-to-video', inputs: { image, prompt, duration } }
 //      → returns { id }
-//   4. Poll until completed → mp4 url
+//   4. Poll until completed → output: [mp4Url]
 //   5. Download
 //
+// Failure shape: { id, status: 'failed', error: { name, message } }
+//
 // Sprint 1 budget: 8 min (480s) end-to-end. Polling cadence: 5s.
-// Two-step (try-on → animate) is why budget is ~60% longer than HeyGen.
+// Two-step (try-on → image-to-video) is why budget is ~60% longer than HeyGen.
+//
+// duration: Fashn only accepts 5 or 10 seconds for image-to-video. We use
+// 5s (default) to keep cost down — a 5s hook is plenty for a TikTok loop.
+// Bump to 10 if Joe wants longer.
 //
 // Cost: Fashn Pro ~$99/mo for 1500 try-on credits (≈ $0.07/try-on) +
 // $0.20/animation. Caching by (sku_id + archetype_ref) avoids re-billing
@@ -54,6 +63,10 @@ interface StatusResponse {
   error?: { message?: string } | string | null;
 }
 
+interface StatusResponseV2 extends StatusResponse {
+  error?: { name?: string; message?: string } | string | null;
+}
+
 async function pollUntilDone(id: string, label: string, signal: AbortSignal): Promise<string> {
   for (let i = 0; ; i++) {
     throwIfAborted(signal, VENDOR, `${label}-poll-${i}`);
@@ -62,7 +75,7 @@ async function pollUntilDone(id: string, label: string, signal: AbortSignal): Pr
       signal,
     });
     if (!r.ok) throw await vendorError(VENDOR, `${label}-status`, r);
-    const body = (await r.json()) as StatusResponse;
+    const body = (await r.json()) as StatusResponseV2;
     if (body.status === 'completed') {
       const out = body.output;
       const url = Array.isArray(out) ? out[0] : out;
@@ -70,7 +83,9 @@ async function pollUntilDone(id: string, label: string, signal: AbortSignal): Pr
       return url;
     }
     if (body.status === 'failed') {
-      const msg = typeof body.error === 'string' ? body.error : body.error?.message ?? 'unknown';
+      const msg = typeof body.error === 'string'
+        ? body.error
+        : body.error?.message ?? body.error?.name ?? 'unknown';
       throw new Error(`Fashn ${label} failed: ${msg}`);
     }
     await abortableSleep(pollIntervalMs(), signal, VENDOR);
@@ -99,15 +114,17 @@ export interface FashnClip {
 }
 
 export async function createShowcaseClip(args: CreateShowcaseClipArgs): Promise<FashnClip> {
-  // Step 1: try-on
+  // Step 1: try-on (model_name=tryon-max)
   throwIfAborted(args.abortSignal, VENDOR, 'before-tryon');
   const tryonReq = await fetcher()(`${FASHN_BASE}/run`, {
     method: 'POST',
     headers: authHeaders(),
     body: JSON.stringify({
-      model_image: args.archetypeRefUrl ?? archetypeRefUrl(),
-      garment_image: args.garmentImageUrl,
-      category: 'tops',
+      model_name: 'tryon-max',
+      inputs: {
+        product_image: args.garmentImageUrl,
+        model_image: args.archetypeRefUrl ?? archetypeRefUrl(),
+      },
     }),
     signal: args.abortSignal,
   });
@@ -118,15 +135,18 @@ export async function createShowcaseClip(args: CreateShowcaseClipArgs): Promise<
 
   const tryonImageUrl = await pollUntilDone(tryonId, 'tryon', args.abortSignal);
 
-  // Step 2: animate
+  // Step 2: animate (model_name=image-to-video — same /v1/run endpoint)
   throwIfAborted(args.abortSignal, VENDOR, 'before-animate');
-  const animateReq = await fetcher()(`${FASHN_BASE}/animate`, {
+  const animateReq = await fetcher()(`${FASHN_BASE}/run`, {
     method: 'POST',
     headers: authHeaders(),
     body: JSON.stringify({
-      image_url: tryonImageUrl,
-      prompt: args.animatePrompt ?? 'coastal background, gentle ocean breeze, natural lighting',
-      duration_seconds: 8,
+      model_name: 'image-to-video',
+      inputs: {
+        image: tryonImageUrl,
+        prompt: args.animatePrompt ?? 'coastal background, gentle ocean breeze, natural lighting',
+        duration: 5,
+      },
     }),
     signal: args.abortSignal,
   });
