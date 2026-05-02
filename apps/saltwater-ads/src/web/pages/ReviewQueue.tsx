@@ -52,9 +52,16 @@ interface VariantDetail {
 
 const POLL_INTERVAL_MS = 8000;
 
+// Read the variant ID from #review/<id> if present. Lets the Generate page
+// (and other surfaces) deep-link to a specific variant in the queue.
+function selectedIdFromHash(): number | null {
+  const m = window.location.hash.match(/^#review\/(\d+)/);
+  return m ? Number(m[1]) : null;
+}
+
 export function ReviewQueue(): JSX.Element {
   const [variants, setVariants] = useState<VariantRow[]>([]);
-  const [selectedId, setSelectedId] = useState<number | null>(null);
+  const [selectedId, setSelectedId] = useState<number | null>(selectedIdFromHash());
   const [detail, setDetail] = useState<VariantDetail | null>(null);
   const [aiDisclosureChecked, setAiDisclosureChecked] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -90,6 +97,13 @@ export function ReviewQueue(): JSX.Element {
     setActionMessage(null);
   }, [selectedId]);
 
+  // Watch the hash for deep-link changes (Generate page → Recent Variants).
+  useEffect(() => {
+    const onHash = (): void => setSelectedId(selectedIdFromHash());
+    window.addEventListener('hashchange', onHash);
+    return () => window.removeEventListener('hashchange', onHash);
+  }, []);
+
   // Fetch detail for the selected variant.
   useEffect(() => {
     if (selectedId === null) { setDetail(null); return; }
@@ -106,7 +120,21 @@ export function ReviewQueue(): JSX.Element {
     return () => { cancelled = true; };
   }, [selectedId]);
 
-  const selected = variants.find((v) => v.id === selectedId) ?? null;
+  // Prefer the list row (when present) but fall back to the detail fetch
+  // when the user deep-linked to a variant not in the ready_for_review
+  // list (e.g., still in queued / vendor_pending). Both shapes share the
+  // fields the detail panel reads; we coerce to VariantRow for typing.
+  const selected: VariantRow | null = variants.find((v) => v.id === selectedId)
+    ?? (detail
+      ? {
+          id: detail.id,
+          hook_text: detail.hook_text,
+          sub_variant_label: detail.sub_variant_label,
+          status: detail.status,
+          pattern: detail.pattern,
+          sku_id: detail.sku_id,
+        }
+      : null);
   const approveEnabled = selected
     ? canApprove({ aiDisclosureChecked, variantStatus: selected.status })
     : false;

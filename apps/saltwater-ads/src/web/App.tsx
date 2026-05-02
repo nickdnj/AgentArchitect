@@ -9,9 +9,31 @@ import { api } from './api.ts';
 type Page = 'generate' | 'review' | 'assets' | 'settings';
 type AuthState = 'checking' | 'authed' | 'anon';
 
+// Hash routing: '#generate' | '#review' | '#review/123' | '#assets' | '#settings'.
+// The optional /<id> suffix on review hops the user straight to the variant
+// detail (used by the "Recent variants" rows on the Generate page).
+function pageFromHash(): Page {
+  const h = window.location.hash.replace(/^#/, '').split('/')[0];
+  if (h === 'review' || h === 'assets' || h === 'settings' || h === 'generate') return h;
+  return 'generate';
+}
+
 export function App(): JSX.Element {
-  const [page, setPage] = useState<Page>('generate');
+  const [page, setPageState] = useState<Page>(pageFromHash());
   const [auth, setAuth] = useState<AuthState>('checking');
+
+  function setPage(p: Page): void {
+    window.location.hash = p;
+    setPageState(p);
+  }
+
+  // Watch for external hash changes (e.g., the Generate page deep-linking
+  // into #review/123 when the user clicks a Recent Variants row).
+  useEffect(() => {
+    const onHash = (): void => setPageState(pageFromHash());
+    window.addEventListener('hashchange', onHash);
+    return () => window.removeEventListener('hashchange', onHash);
+  }, []);
 
   // Probe an authed endpoint at mount. /api/settings is the cheapest auth-
   // gated route and it always returns the presence map when authed. If it

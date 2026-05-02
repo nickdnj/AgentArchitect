@@ -211,11 +211,22 @@ export function Generate(): JSX.Element {
         {recent.length === 0 && <p className="empty" style={{ padding: 0 }}>None yet — generate a brief above.</p>}
         <div className="bottom-strip-rows">
           {recent.map((v) => (
-            <div key={v.id} className="bottom-strip-row">
+            <button
+              key={v.id}
+              type="button"
+              className="bottom-strip-row"
+              onClick={() => {
+                // Setting hash navigates the SPA: App.tsx watches hashchange
+                // and switches to review; ReviewQueue watches it too and
+                // selects the variant.
+                window.location.hash = `review/${v.id}`;
+              }}
+              title="Open in Review Queue"
+            >
               <span className="b-label">#{v.id} {v.sub_variant_label}</span>
               <span className="b-text">{v.hook_text || '(generating…)'}</span>
               <StatusPill state={v.status} />
-            </div>
+            </button>
           ))}
         </div>
       </section>
