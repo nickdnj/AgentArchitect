@@ -294,6 +294,14 @@ body {
   border-radius: var(--radius-md);
   font-size: 13px;
 }
+.success-banner {
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  color: #065f46;
+  padding: 10px 14px;
+  border-radius: var(--radius-md);
+  font-size: 13px;
+}
 .empty {
   color: var(--ink-3);
   padding: 24px 14px;

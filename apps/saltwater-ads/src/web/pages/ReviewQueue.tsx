@@ -148,9 +148,18 @@ export function ReviewQueue(): JSX.Element {
     setActionMessage(null);
     try {
       const r = await api.variants.regen(selected.id, regenFeedback.trim());
-      setActionMessage(`Regen queued (new variant #${r.new_variant_id}).`);
+      const ids = (r.new_variant_ids ?? [r.new_variant_id]).filter(Boolean);
+      setActionMessage(
+        `3 new variants generating with your feedback (#${ids.join(', #')}). They'll appear in the list above when ready (~90s).`,
+      );
       setShowRegen(false);
       setRegenFeedback('');
+      // Reject the parent variant so it stops cluttering the queue —
+      // the regen replaces it. We deliberately keep selectedId pointing at
+      // the (now-rejected) parent so the success banner stays visible.
+      // useEffect([selectedId]) clears actionMessage on selection change,
+      // so changing selection here would wipe the confirmation Joe needs.
+      try { await api.variants.reject(selected.id); } catch { /* swallow — not critical */ }
     } catch (err) {
       setActionMessage(`Regen failed: ${(err as Error).message.replace(/^API \d+ [^:]+:\s*/, '')}`);
     } finally {
@@ -162,6 +171,15 @@ export function ReviewQueue(): JSX.Element {
     <section className="page page-review">
       <h1>Review Queue</h1>
       {error && <p className="error-banner">{error}</p>}
+      {actionMessage && (
+        <div
+          className={actionMessage.toLowerCase().includes('failed') ? 'error-banner' : 'success-banner'}
+          role="status"
+          style={{ marginBottom: 16 }}
+        >
+          {actionMessage}
+        </div>
+      )}
 
       <div className="review-layout">
         <aside className="review-list">
@@ -256,11 +274,6 @@ export function ReviewQueue(): JSX.Element {
                 <button className="btn-reject" disabled={busy} onClick={handleReject}>Reject</button>
               </div>
 
-              {actionMessage && (
-                <p style={{ marginTop: 12, fontSize: 13, color: actionMessage.includes('failed') ? 'var(--red)' : 'var(--ok)' }}>
-                  {actionMessage}
-                </p>
-              )}
 
               {showRegen && (
                 <div style={{ marginTop: 24, padding: 16, border: '1px solid var(--line)', borderRadius: 8 }}>

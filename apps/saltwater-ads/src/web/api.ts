@@ -44,7 +44,12 @@ export const api = {
         body: JSON.stringify({ ai_disclosure_acknowledged: aiDisclosureAcknowledged }),
       }),
     regen: (id: number, feedback: string) =>
-      request<{ new_variant_id: number }>(`/api/variants/${id}/regen`, {
+      request<{
+        new_variant_id: number;
+        new_variant_ids?: number[];
+        new_attempt_ids?: number[];
+        new_hook_set_id?: number;
+      }>(`/api/variants/${id}/regen`, {
         method: 'POST',
         body: JSON.stringify({ feedback }),
       }),
