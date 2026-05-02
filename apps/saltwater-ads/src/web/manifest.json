@@ -4,8 +4,8 @@
   "description": "Brand-locked AI hook generator for Saltwater Clothing Co",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#faf7f2",
-  "theme_color": "#1a3a5c",
+  "background_color": "#ffffff",
+  "theme_color": "#3FCFD8",
   "icons": [
     {
       "src": "/favicon.svg",

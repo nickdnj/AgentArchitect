@@ -2,8 +2,12 @@ node_modules/
 dist/
 data/
 !data/.gitkeep
-media/
+# Runtime media (b-roll uploads, vendor renders) is local-only.
+# Brand assets (media/brand/) ARE source — they ship with the code so
+# git clone + docker compose up gives you a fully-branded app.
+media/*
 !media/.gitkeep
+!media/brand/
 *.log
 .DS_Store
 .env
