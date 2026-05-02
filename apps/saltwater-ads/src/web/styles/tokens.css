@@ -733,3 +733,154 @@ body {
   overflow-y: auto;
   border-top: 1px solid var(--line);
 }
+
+/* ======================================================================
+   RESPONSIVE — phone + small tablet
+   Breakpoints:
+     ≤ 900px  tablet portrait / large phone landscape — single-column layouts
+     ≤ 600px  phone — full mobile treatment (sidebar collapses to top bar)
+   ====================================================================== */
+
+@media (max-width: 900px) {
+  /* App: stack sidebar above content */
+  .app {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+  }
+
+  /* Sidebar becomes a horizontal top bar */
+  .nav {
+    flex-direction: row;
+    align-items: center;
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+    padding: 10px 14px;
+    gap: 4px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    position: sticky;
+    top: 0;
+    background: white;
+    z-index: 10;
+  }
+  .nav .brand {
+    margin-bottom: 0;
+    margin-right: 12px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .nav button {
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 13px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .nav > div { /* the flex spacer between nav links and Sign out */
+    flex-shrink: 0;
+  }
+
+  /* Content padding shrinks */
+  .content {
+    padding: 20px 16px 32px;
+  }
+
+  /* Generate: stack form + sidebar */
+  .generate-layout {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .generate-sidebar {
+    border-left: 0;
+    border-top: 1px solid var(--line);
+    padding-left: 0;
+    padding-top: 20px;
+  }
+
+  /* Review queue: stack list above detail */
+  .review-layout {
+    grid-template-columns: 1fr;
+  }
+  .review-detail {
+    padding-top: 12px;
+  }
+
+  /* Settings: stack label above input */
+  .settings-key-row {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  /* Asset grid: tighter min, single col on phones */
+  .asset-grid {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 12px;
+  }
+}
+
+@media (max-width: 600px) {
+  /* Headings shrink for small screens */
+  .page h1, .content h1 {
+    font-size: 24px;
+  }
+
+  /* Pattern chips: bigger tap targets, comfortable wrap */
+  .pattern-chip {
+    padding: 10px 16px;
+    font-size: 14px;
+  }
+
+  /* Generate sidebar — TW winners panel — keeps full width but tighter */
+  .generate-sidebar h3 { font-size: 12px; }
+  .generate-sidebar .sidebar-card { padding: 10px 12px; }
+
+  /* Bottom-strip rows: tighter on phone */
+  .bottom-strip-row { padding: 10px; gap: 8px; flex-wrap: wrap; }
+  .bottom-strip-row .b-label { min-width: auto; }
+
+  /* Review action buttons: stack vertically and full-width on phone so
+     thumb taps are reliable. Desktop keeps the inline row. */
+  .review-actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+  .btn-approve, .btn-regen, .btn-reject {
+    width: 100%;
+    text-align: center;
+  }
+
+  /* Variant row: bigger tap target */
+  .variant-row {
+    padding: 14px 14px;
+  }
+
+  /* Asset grid: single column on phones — cards become full-width strips */
+  .asset-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Settings input row: button below input on very narrow screens */
+  .settings-key-form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .settings-key-form button {
+    align-self: flex-start;
+  }
+
+  /* Login card: full width, less padding */
+  .login-card {
+    padding: 24px 20px;
+  }
+
+  /* Assets tabs: scroll horizontally if too wide instead of wrapping */
+  .assets-tabs {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    flex-wrap: nowrap;
+  }
+  .assets-tabs button {
+    flex-shrink: 0;
+  }
+}

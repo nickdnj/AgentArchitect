@@ -118,6 +118,7 @@ export function Generate(): JSX.Element {
             onChange={(e) => setFreeText(e.target.value)}
             placeholder="Spring drop teaser for the navy polo — focus on coastal comfort, weekend on the water, founder voice"
             disabled={submitting}
+            maxLength={MAX_BRIEF_LEN}
           />
 
           <label>Pattern</label>
