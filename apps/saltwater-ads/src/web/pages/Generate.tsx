@@ -34,6 +34,20 @@ const SKUS = [
   { id: 'hat-trucker', label: 'Trucker Hat — Navy/White' },
 ];
 
+// Audience archetypes seeded from customer.md "Older Joe DeMarco" profile +
+// patterns Joe identified. Combobox: surfaced as a datalist dropdown for
+// consistency, but the input still accepts free-text so Joe can introduce
+// new micro-segments without a code change. Sprint 2: pull from /api/audiences.
+const AUDIENCES = [
+  'older-joe',
+  'coastal-dad',
+  'weekend-warrior',
+  'first-time-buyer',
+  'irish-flag-loyalist',
+  'dad-with-boat',
+  'memorial-day-buyer',
+];
+
 const MAX_BRIEF_LEN = 400;
 
 interface RecentVariant {
@@ -149,11 +163,16 @@ export function Generate(): JSX.Element {
           <input
             id="audience"
             type="text"
+            list="audience-options"
             value={audienceTag}
             onChange={(e) => setAudienceTag(e.target.value)}
             placeholder="older-joe, coastal-dad, weekend-warrior"
             disabled={submitting}
+            autoComplete="off"
           />
+          <datalist id="audience-options">
+            {AUDIENCES.map((a) => <option key={a} value={a} />)}
+          </datalist>
 
           <button type="submit" disabled={!canSubmit}>
             {submitting ? 'Generating…' : 'Generate'}
