@@ -23,7 +23,7 @@ describe('buildFfmpegCommand', () => {
         { path: '/m/fashn.mp4', layer: 'fashn', hasAudio: false },
         { path: '/m/broll.mp4', layer: 'broll', hasAudio: false },
       ],
-      hookText: 'I built this for guys like my dad.',
+      captionTextPath: '/m/caption.txt',
       outputPath: '/m/master.mp4',
       thumbPath: '/m/thumb.jpg',
       srtPath: '/m/master.srt',
@@ -63,7 +63,7 @@ describe('buildFfmpegCommand', () => {
         { path: '/m/fashn.mp4', layer: 'fashn', hasAudio: false },
         { path: '/m/broll.mp4', layer: 'broll', hasAudio: false },
       ],
-      hookText: 'silent variant',
+      captionTextPath: '/m/caption.txt',
       outputPath: '/o.mp4', thumbPath: '/t.jpg', srtPath: '/s.srt',
       disclosureLayers: ['fashn'],
     });
@@ -81,7 +81,7 @@ describe('buildFfmpegCommand', () => {
         { path: '/m/heygen.mp4', layer: 'heygen', hasAudio: true },
         { path: '/m/silent-broll.mp4', layer: 'broll', hasAudio: false },
       ],
-      hookText: 'h',
+      captionTextPath: '/m/caption.txt',
       outputPath: '/o.mp4', thumbPath: '/t.jpg', srtPath: '/s.srt',
       disclosureLayers: ['heygen'],
     });
@@ -94,7 +94,7 @@ describe('buildFfmpegCommand', () => {
   test('Codex #2: font path resolves via env override', () => {
     const cmd = buildFfmpegCommand({
       inputs: [{ path: '/m/h.mp4', layer: 'heygen', hasAudio: true }],
-      hookText: 'test',
+      captionTextPath: '/m/caption.txt',
       outputPath: '/o.mp4', thumbPath: '/t.jpg', srtPath: '/s.srt',
       disclosureLayers: ['heygen'],
     });
@@ -108,7 +108,7 @@ describe('buildFfmpegCommand', () => {
   test('disclosure metadata: ai_layers comment embedded when layers present', () => {
     const cmd = buildFfmpegCommand({
       inputs: [{ path: '/m/h.mp4', layer: 'heygen' }],
-      hookText: 'short',
+      captionTextPath: '/m/caption.txt',
       outputPath: '/o.mp4', thumbPath: '/t.jpg', srtPath: '/s.srt',
       disclosureLayers: ['heygen', 'fashn'],
     });
@@ -120,47 +120,41 @@ describe('buildFfmpegCommand', () => {
   test('no AI layers (broll only) → no comment metadata embedded', () => {
     const cmd = buildFfmpegCommand({
       inputs: [{ path: '/m/b.mp4', layer: 'broll' }],
-      hookText: 'broll only',
+      captionTextPath: '/m/caption.txt',
       outputPath: '/o.mp4', thumbPath: '/t.jpg', srtPath: '/s.srt',
       disclosureLayers: [],
     });
     expect(cmd).not.toContain('-metadata');
   });
 
-  test('caption escaping: quote and backslash in hook do not break filter graph', () => {
+  test('drawtext uses textfile= (avoids the FFmpeg two-level escape bug for ,;[]\\)', () => {
     const cmd = buildFfmpegCommand({
       inputs: [{ path: '/m/h.mp4', layer: 'heygen' }],
-      hookText: "Joe's pick: don't \\settle\\.",
+      captionTextPath: '/var/x/caption.txt',
       outputPath: '/o.mp4', thumbPath: '/t.jpg', srtPath: '/s.srt',
       disclosureLayers: ['heygen'],
     });
     const filter = cmd[cmd.indexOf('-filter_complex') + 1];
-    expect(filter).toContain("\\'"); // single quote escaped
-    expect(filter).toContain('\\\\'); // backslash escaped
-    // The text='...' wrapper uses unescaped quotes (those are intentional);
-    // verify the INNER content has no bare quotes between the wrappers.
-    const inner = filter.match(/text='([^]*?)'(?=:fontsize)/)?.[1] ?? '';
-    expect(inner).not.toMatch(/(^|[^\\])'/); // every quote inside is preceded by backslash
+    expect(filter).toContain('textfile=');
+    expect(filter).not.toContain("text='"); // no inline text= path with quotes
+    expect(filter).toContain('/var/x/caption.txt');
   });
 
-  test('caption truncates at 140 chars (PRD §6.1.2 hook limit)', () => {
-    const longHook = 'x'.repeat(200);
+  test('caption path with colons is escaped (filter option separator)', () => {
     const cmd = buildFfmpegCommand({
       inputs: [{ path: '/m/h.mp4', layer: 'heygen' }],
-      hookText: longHook,
+      captionTextPath: '/Volumes/Data:Drive/caption.txt',
       outputPath: '/o.mp4', thumbPath: '/t.jpg', srtPath: '/s.srt',
       disclosureLayers: ['heygen'],
     });
     const filter = cmd[cmd.indexOf('-filter_complex') + 1];
-    const drawtextMatch = filter.match(/text='([^']+)'/);
-    expect(drawtextMatch).not.toBeNull();
-    expect(drawtextMatch![1].length).toBeLessThanOrEqual(140);
+    expect(filter).toContain('/Volumes/Data\\:Drive/caption.txt');
   });
 
   test('throws when no input layers provided', () => {
     expect(() => buildFfmpegCommand({
       inputs: [],
-      hookText: 'x',
+      captionTextPath: '/m/caption.txt',
       outputPath: '/o.mp4', thumbPath: '/t.jpg', srtPath: '/s.srt',
       disclosureLayers: [],
     })).toThrow(/at least one of heygen\/fashn\/broll/);
@@ -245,7 +239,7 @@ describe('assemble (with stubbed spawn)', () => {
     await expect(assemble({
       variantId: 3,
       attemptNumber: 1,
-      hookText: 'x',
+      hookText: 'sig',
       heygenMp4Path: null,
       fashnMp4Path: null,
       brollMp4Path: null,

@@ -119,7 +119,12 @@ export interface AssemblyInput {
  */
 export function buildFfmpegCommand(input: {
   inputs: AssemblyInput[];
-  hookText: string;
+  /** Path to a UTF-8 .txt file containing the caption text. Using textfile=
+   * avoids FFmpeg's two-level escaping bug for drawtext text= values, where
+   * filtergraph metachars (`,` `;` `[` `]`) inside single-quoted option values
+   * still split the chain — caused "No such filter: 'sun-bleached'" on hooks
+   * with commas/em-dashes/apostrophes. The caller writes the file. */
+  captionTextPath: string;
   outputPath: string;
   thumbPath: string;
   srtPath: string;
@@ -160,14 +165,12 @@ export function buildFfmpegCommand(input: {
   const videoConcatInputs = input.inputs.map((_, i) => `[v${i}]`).join('');
   const concatCount = input.inputs.length;
 
-  // Caption text: white on translucent black box, lower third.
-  const safeText = input.hookText
-    .replace(/\\/g, '\\\\')
-    .replace(/'/g, "\\'")
-    .replace(/:/g, '\\:')
-    .slice(0, 140);
+  // Caption text via textfile=. The path itself can contain `:` (filter option
+  // separator), so escape that one char. Spaces in paths are fine inside the
+  // filter description because FFmpeg's textfile= reads to the next `:` or end.
   const fontPath = captionFontPath();
-  const drawtext = `drawtext=fontfile=${fontPath}:text='${safeText}':fontsize=48:fontcolor=white:box=1:boxcolor=black@0.6:boxborderw=20:x=(w-text_w)/2:y=h*0.78`;
+  const safeTextfilePath = input.captionTextPath.replace(/\\/g, '\\\\').replace(/:/g, '\\:');
+  const drawtext = `drawtext=fontfile=${fontPath}:textfile=${safeTextfilePath}:fontsize=48:fontcolor=white:box=1:boxcolor=black@0.6:boxborderw=20:x=(w-text_w)/2:y=h*0.78`;
 
   // Audio chain: from input source (apad to match video duration) or synthetic silence,
   // then loudnorm. loudnorm runs on AUDIO not video — the previous code had this wrong.
@@ -263,6 +266,15 @@ export async function assemble(args: AssembleArgs): Promise<AssembleResult> {
   const masterPath = resolve(args.outputDir, 'master.mp4');
   const thumbPath = resolve(args.outputDir, 'thumb.jpg');
   const srtPath = resolve(args.outputDir, 'master.srt');
+  const captionTextPath = resolve(args.outputDir, 'caption.txt');
+
+  // Write the caption text to a file so drawtext can use textfile= rather
+  // than text=. Avoids the FFmpeg filtergraph escaping bug with commas,
+  // em-dashes, apostrophes (caused "No such filter: 'sun-bleached'" on
+  // hooks like "Sweat-stained, sun-bleached, brim half curled..."). The
+  // file is written before ffmpeg runs and stays in the output dir for
+  // debugging.
+  await writeFile(captionTextPath, args.hookText.slice(0, 140), 'utf8');
 
   // Hard ceiling. AbortController fires after TIMEOUT_MS regardless of
   // the caller's signal — combined into one signal for ffmpeg.
@@ -273,7 +285,7 @@ export async function assemble(args: AssembleArgs): Promise<AssembleResult> {
   try {
     const concatCmd = buildFfmpegCommand({
       inputs,
-      hookText: args.hookText,
+      captionTextPath,
       outputPath: masterPath,
       thumbPath,
       srtPath,
