@@ -1,5 +1,5 @@
 import { test, expect, describe, beforeEach, afterEach } from 'bun:test';
-import { Database } from 'bun:sqlite';
+import { openInMemoryDb, type Database } from '@db/client.ts';
 import { resolve } from 'node:path';
 import { readFileSync } from 'node:fs';
 
@@ -14,9 +14,7 @@ const MIGRATIONS_DIR = resolve(import.meta.dir, '../../db/migrations');
 let db: Database;
 
 beforeEach(() => {
-  db = new Database(':memory:');
-  db.exec('PRAGMA journal_mode = WAL;');
-  db.exec('PRAGMA foreign_keys = ON;');
+  db = openInMemoryDb();
   // Apply migrations in order
   db.exec(readFileSync(resolve(MIGRATIONS_DIR, '0001_init.sql'), 'utf8'));
   db.exec(readFileSync(resolve(MIGRATIONS_DIR, '0002_indexes.sql'), 'utf8'));
