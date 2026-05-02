@@ -90,14 +90,13 @@ New cyan fish + lime "Saltwater" wordmark across favicon, apple-touch-icon, mani
 
 **Fix proposal:** Wire `/api/skus` (probably 30 min — read products.json + cache + return JSON). Or 5-minute interim: hardcode all 3 SKUs from products.json into the Generate.tsx const.
 
-### ⚠️ Issue 2: Brand uploads write to disk but don't show in the list
-**Severity:** medium — brand uploads silently succeed-on-disk-fail-in-UI.
+### ✅ Issue 2 — RESOLVED (May 2 AM): false alarm + .avif fix
 
-**What I saw:** Test uploaded a 21KB JPG via the Brand assets tab. The file landed on disk at `media/brand/sample-product-polo.jpg` (21KB, correct size, mode 0644). But `/api/assets/brand` still returned only the 4 baked-in logos. So the **POST handler works**, but **the GET handler isn't picking up filesystem-only files** that don't have a matching DB row.
+**What was claimed:** Brand uploads landed on disk but didn't appear in `/api/assets/brand` list.
 
-**Where:** `src/server/routes/assets.ts` GET `/brand` — likely reads from a DB table (e.g., `brand_asset`) instead of `readdir(BRAND_ROOT)`. The POST may not be writing the matching DB row.
+**What was actually true:** Re-tested end-to-end via Playwright (`/tmp/sw-brand-upload-test.mjs`). Upload→list works perfectly: 4 cards before, 5 after, new file at top, no console errors. The original morning test was reading stale state (likely cached UI state from before login or wrong tab). The GET handler at `src/server/routes/assets.ts:193` correctly reads from disk via `readdir(BRAND_ROOT)` and returns everything.
 
-**Fix proposal:** Either (a) GET reads from disk via `readdir` (simpler, matches how the UI already shows the 4 baked-in SVGs/PNGs/AVIFs that are filesystem-only), or (b) POST writes a DB row + GET keeps reading from DB. Option (a) is closer to how it already works for the 4 packaged assets. ~15 min.
+**Real bug found while investigating:** `.avif` was missing from `ALLOWED_IMAGE_EXTS`, so `saltwater-wordmark.avif` rendered as a `📄` placeholder instead of an `<img>` element. Fixed at `src/server/routes/assets.ts:32`. Verified via Playwright (`/tmp/sw-avif-fix-check.mjs`): card now renders the actual avif image. 198 tests still pass.
 
 ### ⚠️ Issue 3: TOP HOOKS THIS WEEK panel still empty
 **Severity:** low — cosmetic, but Joe will notice. Empty state message reads "Sync to populate" — fine, but only because TW Sync hasn't run.

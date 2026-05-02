@@ -29,7 +29,7 @@ const BROLL_ROOT = resolve(MEDIA_ROOT, 'b-roll');
 const BRAND_ROOT = resolve(MEDIA_ROOT, 'brand');
 
 const ALLOWED_VIDEO_EXTS = new Set(['.mp4', '.mov', '.webm']);
-const ALLOWED_IMAGE_EXTS = new Set(['.png', '.jpg', '.jpeg', '.svg', '.webp']);
+const ALLOWED_IMAGE_EXTS = new Set(['.png', '.jpg', '.jpeg', '.svg', '.webp', '.avif']);
 const MAX_VIDEO_SIZE = 200 * 1024 * 1024; // 200 MB
 const MAX_IMAGE_SIZE = 10 * 1024 * 1024;  // 10 MB
 
