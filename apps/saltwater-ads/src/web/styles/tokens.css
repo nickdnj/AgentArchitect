@@ -91,7 +91,11 @@ body {
   resize: vertical;
 }
 
-.brief-form button {
+/* Direct-child selector: only the submit button gets the navy CTA treatment.
+   Pattern chips are nested under .pattern-chips and must keep their
+   own toggle styling (was leaking before — every chip rendered navy
+   because .brief-form button (specificity 0,1,1) beat .pattern-chip (0,1,0)). */
+.brief-form > button {
   margin-top: 16px;
   background: var(--navy);
   color: white;
@@ -102,7 +106,7 @@ body {
   font-weight: 600;
   cursor: pointer;
 }
-.brief-form button:disabled { opacity: 0.5; cursor: not-allowed; }
+.brief-form > button:disabled { opacity: 0.5; cursor: not-allowed; }
 
 .pill {
   display: inline-block;
