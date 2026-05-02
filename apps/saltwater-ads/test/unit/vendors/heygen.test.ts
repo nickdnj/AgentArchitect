@@ -55,7 +55,11 @@ describe('HeyGen createHookClip', () => {
     // Request shape
     expect(createBody.dimension).toEqual({ width: 1080, height: 1920 });
     expect(createBody.aspect_ratio).toBe('9:16');
-    expect(createBody.video_inputs[0].character.type).toBe('photo_avatar');
+    // V-VERIFY 2026-05-01: real HeyGen API uses type:'talking_photo' / talking_photo_id,
+    // not type:'photo_avatar' / photo_avatar_id. Live API returned 400 invalid_parameter
+    // on the old shape ("Input tag 'photo_avatar' does not match expected tags 'avatar', 'talking_photo'").
+    expect(createBody.video_inputs[0].character.type).toBe('talking_photo');
+    expect(createBody.video_inputs[0].character.talking_photo_id).toBeDefined();
     expect(createBody.video_inputs[0].voice.input_text).toBe('I built this for guys like my dad.');
   });
 

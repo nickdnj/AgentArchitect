@@ -76,6 +76,9 @@ interface StatusResponse {
 export async function createHookClip(args: CreateHookClipArgs): Promise<HeygenClip> {
   throwIfAborted(args.abortSignal, VENDOR, 'before-create');
 
+  // V-VERIFY 2026-05-01: live API rejected type:'photo_avatar' / photo_avatar_id.
+  // Real shape uses type:'talking_photo' / talking_photo_id (the Photo Avatar IDs
+  // returned by /v1/talking_photo.list and /v2/avatars.talking_photos[].talking_photo_id).
   const create = await fetcher()(`${HEYGEN_BASE}/v2/video/generate`, {
     method: 'POST',
     headers: authHeaders(),
@@ -83,8 +86,8 @@ export async function createHookClip(args: CreateHookClipArgs): Promise<HeygenCl
       video_inputs: [
         {
           character: {
-            type: 'photo_avatar',
-            photo_avatar_id: args.photoAvatarId ?? defaultAvatarId(),
+            type: 'talking_photo',
+            talking_photo_id: args.photoAvatarId ?? defaultAvatarId(),
             scale: 1,
             offset: { x: 0, y: 0 },
           },
@@ -98,8 +101,6 @@ export async function createHookClip(args: CreateHookClipArgs): Promise<HeygenCl
       ],
       dimension: { width: 1080, height: 1920 },
       aspect_ratio: '9:16',
-      // 'callback_id' would let HeyGen webhook-notify us instead of polling.
-      // Sprint 1.5 enhancement.
     }),
     signal: args.abortSignal,
   });
