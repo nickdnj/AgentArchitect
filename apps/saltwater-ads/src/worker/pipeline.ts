@@ -54,6 +54,7 @@ interface HookSetRow {
   brand_bucket_version_id: number;
   status: string;
   prompt_hash: string;
+  regen_feedback: string | null;
 }
 interface BriefRow {
   id: number;
@@ -94,7 +95,7 @@ function loadVariant(variantId: number): VariantRow {
 
 function loadHookSet(hookSetId: number): HookSetRow {
   const row = db().query(
-    `SELECT id, brief_id, brand_bucket_version_id, status, prompt_hash
+    `SELECT id, brief_id, brand_bucket_version_id, status, prompt_hash, regen_feedback
      FROM hook_set WHERE id = ?`,
   ).get(hookSetId) as HookSetRow | null;
   if (!row) throw new Error(`pipeline: hook_set ${hookSetId} not found`);
@@ -207,6 +208,7 @@ async function runHooksGeneratingStep(attempt: RenderAttemptRow, jobSignal: Abor
       brief: briefShape,
       brandBucketVersionId: hookSet.brand_bucket_version_id,
       abortSignal: jobSignal,
+      reviewerFeedback: hookSet.regen_feedback ?? undefined,
     });
 
     // Codex eng-review-3 #5: don't ship variants with validation rejections.

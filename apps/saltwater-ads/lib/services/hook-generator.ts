@@ -103,6 +103,13 @@ export interface RunHookGeneratorArgs {
    * failed_recoverable.
    */
   abortSignal?: AbortSignal;
+  /**
+   * Joe's "Regen with feedback" notes from the Review Queue. Injected into
+   * the FIRST user prompt so the new hooks address his critique. Distinct
+   * from the internal validation-regen feedback (which fires when hooks
+   * fail brand rules and is only used inside the validation loop).
+   */
+  reviewerFeedback?: string;
 }
 
 export interface RunHookGeneratorResult {
@@ -120,7 +127,14 @@ export async function runHookGenerator(args: RunHookGeneratorArgs): Promise<RunH
   const { system: systemTemplate, user: userTemplate } = await loadTemplates();
   const systemPrompt = buildSystemPrompt(systemTemplate, bucket);
 
-  let regenFeedback: string | undefined;
+  // Seed the regenFeedback channel with reviewerFeedback (Joe's "Regen with
+  // feedback" note). On attempt 0, that's the only feedback. If validation
+  // fails on attempt 0, attempt 1+ replaces this with the validation feedback
+  // (we don't accumulate — the validation rules take priority over Joe's
+  // wishes if they conflict, since brand-rule violations are non-negotiable).
+  let regenFeedback: string | undefined = args.reviewerFeedback
+    ? `Reviewer feedback (apply this on top of all brand rules):\n${args.reviewerFeedback}`
+    : undefined;
   let lastResult: GenerationResult | null = null;
   let lastRejected: RejectedEntry[] = [];
   let regenAttempts = 0;

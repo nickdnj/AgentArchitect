@@ -243,32 +243,55 @@ app.post('/:id/regen', audit('regen', 'variant'), async (c) => {
   ).get(id) as VariantRow | null;
   if (!variant) return c.json({ error: 'not_found', reason: 'variant_missing', id }, 404);
 
-  // Sprint 1: a regen creates a new variant + render_attempt under the same
-  // hook_set, with feedback stored as a note on the approval row. The next
-  // tick picks up the new attempt and runs hook generation again. Vendor
-  // pipeline reuse via cache means HeyGen won't double-bill if the hook
-  // text is identical.
+  // Look up the parent hook_set's brief + brand_bucket_version so the new
+  // hook_set inherits the same context (don't re-snapshot the brand bucket —
+  // Joe's feedback is the only thing that should change between generations).
+  const parentHookSet = conn.query(
+    `SELECT brief_id, brand_bucket_version_id FROM hook_set WHERE id = ?`,
+  ).get(variant.hook_set_id) as { brief_id: number; brand_bucket_version_id: number } | null;
+  if (!parentHookSet) {
+    return c.json({ error: 'not_found', reason: 'parent_hook_set_missing' }, 404);
+  }
+
+  // Create a NEW hook_set (so worker actually re-runs the LLM) seeded with
+  // Joe's feedback. Three new variants (V1/V2/V3) under the new hook_set,
+  // each with its own queued render_attempt. Joe's feedback is threaded
+  // into the LLM prompt via hook_set.regen_feedback (read by pipeline.ts).
+  const SUB_LABELS = ['V1', 'V2', 'V3'] as const;
   const result = conn.transaction(() => {
     conn.run(
       `INSERT INTO approval (variant_id, approved_by, decision, notes) VALUES (?, ?, 'regen', ?)`,
       [id, email, parsed.data.feedback],
     );
-    const newVariantId = Number(conn.run(
-      `INSERT INTO variant (hook_set_id, hook_text, sub_variant_label, sku_id, pattern, status)
-       VALUES (?, '', ?, ?, ?, 'queued')`,
-      [variant.hook_set_id, variant.sub_variant_label, variant.sku_id, variant.pattern, 'queued'],
+    const newHookSetId = Number(conn.run(
+      `INSERT INTO hook_set (brief_id, brand_bucket_version_id, model, prompt_hash, status, parent_hook_set_id, regen_feedback)
+       VALUES (?, ?, '', '', 'pending', ?, ?)`,
+      [parentHookSet.brief_id, parentHookSet.brand_bucket_version_id, variant.hook_set_id, parsed.data.feedback],
     ).lastInsertRowid);
-    const newAttemptId = Number(conn.run(
-      `INSERT INTO render_attempt (variant_id, attempt_number, state) VALUES (?, 1, 'queued')`,
-      [newVariantId],
-    ).lastInsertRowid);
-    return { newVariantId, newAttemptId };
+    const newVariantIds: number[] = [];
+    const newAttemptIds: number[] = [];
+    for (const label of SUB_LABELS) {
+      const vid = Number(conn.run(
+        `INSERT INTO variant (hook_set_id, hook_text, sub_variant_label, sku_id, pattern, status)
+         VALUES (?, '', ?, ?, ?, 'queued')`,
+        [newHookSetId, label, variant.sku_id, variant.pattern],
+      ).lastInsertRowid);
+      const aid = Number(conn.run(
+        `INSERT INTO render_attempt (variant_id, attempt_number, state) VALUES (?, 1, 'queued')`,
+        [vid],
+      ).lastInsertRowid);
+      newVariantIds.push(vid);
+      newAttemptIds.push(aid);
+    }
+    return { newHookSetId, newVariantIds, newAttemptIds };
   })();
 
   return c.json({
     ok: true,
-    new_variant_id: result.newVariantId,
-    new_attempt_id: result.newAttemptId,
+    new_hook_set_id: result.newHookSetId,
+    new_variant_id: result.newVariantIds[0], // legacy field for the existing UI
+    new_variant_ids: result.newVariantIds,
+    new_attempt_ids: result.newAttemptIds,
     feedback_recorded: parsed.data.feedback,
   });
 });
