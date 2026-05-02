@@ -186,6 +186,39 @@ body {
   margin: 0 0 16px;
 }
 
+/* Generated-ad preview (UXD §4.5) — 9:16 vertical video, capped width.
+   Center on phone, left-align on desktop. Black bg avoids white flash
+   while the file is buffering. */
+.variant-preview {
+  margin: 0 0 16px;
+  padding: 0;
+  display: inline-block;
+}
+.variant-preview video {
+  display: block;
+  width: 240px;
+  max-width: 100%;
+  aspect-ratio: 9 / 16;
+  background: #000;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--line);
+}
+.variant-preview figcaption {
+  margin-top: 6px;
+  font-size: 11px;
+  color: var(--ink-3);
+  letter-spacing: 0.02em;
+}
+.variant-preview-pending {
+  background: var(--sand-50);
+  border: 1px dashed var(--line);
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  color: var(--ink-3);
+  margin: 0 0 16px;
+}
+
 /* AI disclosure gate (UXD §4.3) — amber field per prototype lines 591–612 */
 .ai-disclosure {
   background: #fff8c5;

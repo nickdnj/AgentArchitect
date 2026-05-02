@@ -22,7 +22,9 @@ interface VariantDetailRow extends VariantRow {
   attempt_id: number | null;
   attempt_state: string | null;
   attempt_error: string | null;
+  master_asset_id: number | null;
   master_path: string | null;
+  thumb_asset_id: number | null;
   thumb_path: string | null;
   ai_disclosure_layers: string | null;
 }
@@ -54,7 +56,7 @@ app.get('/', (c) => {
   return c.json({ variants: rows });
 });
 
-app.get('/:id', (c) => {
+app.get('/:id', async (c) => {
   const id = Number(c.req.param('id'));
   if (!Number.isFinite(id)) return c.json({ error: 'invalid_id' }, 400);
 
@@ -62,8 +64,11 @@ app.get('/:id', (c) => {
     `SELECT v.id, v.hook_set_id, v.hook_text, v.sub_variant_label, v.sku_id, v.pattern, v.status,
             hs.brief_id, b.free_text AS brief_free_text, hs.brand_bucket_version_id,
             ra.id AS attempt_id, ra.state AS attempt_state, ra.error_message AS attempt_error,
+            (SELECT id FROM asset WHERE render_attempt_id = ra.id AND type = 'mp4'
+              AND ai_disclosure_layers IS NOT NULL ORDER BY id DESC LIMIT 1) AS master_asset_id,
             (SELECT path FROM asset WHERE render_attempt_id = ra.id AND type = 'mp4'
               AND ai_disclosure_layers IS NOT NULL ORDER BY id DESC LIMIT 1) AS master_path,
+            (SELECT id FROM asset WHERE render_attempt_id = ra.id AND type = 'jpg' ORDER BY id DESC LIMIT 1) AS thumb_asset_id,
             (SELECT path FROM asset WHERE render_attempt_id = ra.id AND type = 'jpg' ORDER BY id DESC LIMIT 1) AS thumb_path,
             (SELECT ai_disclosure_layers FROM asset WHERE render_attempt_id = ra.id AND type = 'mp4'
               AND ai_disclosure_layers IS NOT NULL ORDER BY id DESC LIMIT 1) AS ai_disclosure_layers
@@ -80,6 +85,24 @@ app.get('/:id', (c) => {
   let aiLayers: string[] = [];
   if (row.ai_disclosure_layers) {
     try { aiLayers = JSON.parse(row.ai_disclosure_layers) as string[]; } catch { /* ignore */ }
+  }
+
+  // Mint 1h preview URLs for the master mp4 + thumb (when present). The
+  // signed URL works alongside session auth on /media/* — both are required.
+  // Joe's browser will hit /media/blob?asset_id=...&sig=... and stream the file.
+  let previewUrl: string | null = null;
+  let thumbUrl: string | null = null;
+  if (row.master_asset_id != null) {
+    try {
+      const { sign } = await import('../signing.ts');
+      previewUrl = sign({ assetId: String(row.master_asset_id), ttlSeconds: 3600 }).url;
+    } catch { /* secrets missing in CI tests — fall through */ }
+  }
+  if (row.thumb_asset_id != null) {
+    try {
+      const { sign } = await import('../signing.ts');
+      thumbUrl = sign({ assetId: String(row.thumb_asset_id), ttlSeconds: 3600 }).url;
+    } catch { /* fall through */ }
   }
 
   return c.json({
@@ -102,6 +125,8 @@ app.get('/:id', (c) => {
             error: row.attempt_error,
             master_path: row.master_path,
             thumb_path: row.thumb_path,
+            preview_url: previewUrl,
+            thumb_url: thumbUrl,
             ai_disclosure_layers: aiLayers,
           }
         : null,

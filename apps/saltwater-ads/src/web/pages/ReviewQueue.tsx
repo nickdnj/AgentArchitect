@@ -44,6 +44,8 @@ interface VariantDetail {
     error: string | null;
     master_path: string | null;
     thumb_path: string | null;
+    preview_url: string | null;
+    thumb_url: string | null;
     ai_disclosure_layers: string[];
   } | null;
 }
@@ -203,14 +205,33 @@ export function ReviewQueue(): JSX.Element {
                 </div>
               )}
 
+              {detail?.attempt?.preview_url && (
+                <figure className="variant-preview">
+                  <video
+                    key={detail.attempt.preview_url}
+                    src={detail.attempt.preview_url}
+                    poster={detail.attempt.thumb_url ?? undefined}
+                    controls
+                    playsInline
+                    preload="metadata"
+                  />
+                  <figcaption>
+                    Preview · 9:16 · {detail.attempt.ai_disclosure_layers.length > 0
+                      ? `AI layers: ${detail.attempt.ai_disclosure_layers.join(', ')}`
+                      : 'no AI layers'}
+                  </figcaption>
+                </figure>
+              )}
+
+              {detail?.attempt && !detail.attempt.preview_url && !detail.attempt.error && (
+                <p className="variant-preview-pending">
+                  Render not ready yet. Pipeline state: <code>{detail.attempt.state}</code>.
+                </p>
+              )}
+
               {detail?.attempt?.master_path && (
-                <div style={{ marginBottom: 16, fontSize: 13, color: 'var(--ink-3)' }}>
-                  Master: <code style={{ fontFamily: 'var(--font-mono)', fontSize: 12 }}>{detail.attempt.master_path}</code>
-                  {detail.attempt.ai_disclosure_layers.length > 0 && (
-                    <div style={{ marginTop: 4 }}>
-                      AI layers: {detail.attempt.ai_disclosure_layers.join(', ')}
-                    </div>
-                  )}
+                <div style={{ marginBottom: 16, fontSize: 12, color: 'var(--ink-3)' }}>
+                  Master: <code style={{ fontFamily: 'var(--font-mono)', fontSize: 11 }}>{detail.attempt.master_path}</code>
                 </div>
               )}
 
