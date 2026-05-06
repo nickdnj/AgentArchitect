@@ -1,0 +1,49 @@
+{
+  "id": "concurrent-3280",
+  "title": "The Concurrent 3280 — Jersey's Last Great Pre-RISC Mini",
+  "type": "youtube-jersey-stack-candidate-plus-museum-report",
+  "status": "planning",
+  "created": "2026-05-06",
+  "owner": "Nick DeMarco (personal-source primary)",
+  "scope": "Option B — full museum report + Jersey Stack-style YouTube video",
+  "deliverables": [
+    "Museum-grade research report (wiki-publishable, exhibit-ready) for InfoAge / VCF Computer Museum",
+    "Jersey Stack-style YouTube video (~10-15 min, primary-source heavy)",
+    "Wiki entry on VCF wiki (Concurrent 3280 page that does not yet exist)"
+  ],
+  "primary_sources": [
+    "Nick's personal photos taken inside the 3280 lab over Christmas 1985 (NJ, Perkin-Elmer era)",
+    "Facebook archive in 'Concurrent Computer Corp Employees Past and Present' group (https://www.facebook.com/groups/316610718571/) — Mike Martone has shared substantial 3280 content",
+    "Nick's first-person memory: was a co-op there, shared an office with Rich Cholumbolo and Rocco Brescia"
+  ],
+  "secondary_sources": [
+    "Tech Monitor Jan 1988 announcement (3280SP)",
+    "Tech Monitor Nov 1988 announcement (3280E MPS)",
+    "Patent DE3722458A1 (S-Bus, Yeager, priority 1986)",
+    "Wikipedia: Interdata 7/32 and 8/32, Concurrent Computer Corporation",
+    "Yeager R10000 paper (1996)"
+  ],
+  "key_engineers": [
+    {"name": "Ken Yeager", "role": "Architect", "status": "deceased Aug 2017", "next_act": "SGI/MIPS — architect of R10000"},
+    {"name": "Rich Chirumbolo", "role": "FETCH board", "next_act": "Cypress Semi → garage door opener business", "linkedin": "https://www.linkedin.com/in/richjc/", "contact": "Nick's 1st-degree LinkedIn connection — direct DM"},
+    {"name": "Rocco Brescia", "role": "Senior cross-team", "status": "unknown — no public footprint"},
+    {"name": "Brent Bush", "role": "ALU board", "next_act": "Cypress Semi → unknown"},
+    {"name": "Ron Smith", "role": "On loan", "status": "unknown — no public footprint"},
+    {"name": "Mike Martone", "role": "Technician", "status": "alive, active in Facebook alumni group — PRIMARY OUTREACH TARGET"}
+  ],
+  "five_beat_outline": [
+    "1. Lineage: Interdata 1966 → P-E 1973 → Concurrent spinoff Nov 1985",
+    "2. Machine: 3280SP Jan 26 1988, 3280E Nov 29 1988, the last great pre-RISC scalar mini ($1.8M, 76.8 MIPS)",
+    "3. People: Yeager, Cholumbolo, Bush, Brescia, Smith, Martone — and Nick the co-op",
+    "4. Legacy: Yeager → SGI → R10000 → the silicon revolution. Yeager dies Aug 2017.",
+    "5. Personal frame: Nick at InfoAge in 2026, staring at one of the few survivors — write the history before it disappears"
+  ],
+  "next_actions": [
+    "Reach Mike Martone via Facebook group (PRIMARY)",
+    "Pull Nick's Christmas 1985 lab photos into assets/images/nick-1985-lab-photos/",
+    "Pull Mike's Facebook archive content into assets/images/facebook-archive-martone/",
+    "Write museum report draft v1",
+    "Write Jersey Stack episode storyboard v1 (~10-15 min target)",
+    "Create early thumbnail concept for inspiration"
+  ]
+}
