@@ -25,8 +25,14 @@ APP_DIR = Path(__file__).resolve().parent
 # The projects live at the sibling directory: .../teams/youtube-content/projects
 DEFAULT_PROJECTS_DIR = APP_DIR.parent / "projects"
 PROJECTS_DIR = Path(os.environ.get("PROJECTS_DIR", str(DEFAULT_PROJECTS_DIR))).resolve()
+# When running in a container, PROJECTS_DIR is the in-container path (e.g. /projects),
+# but the picker UI shows the host-side path so users can copy/paste into Finder.
+HOST_PROJECTS_DIR = os.environ.get("HOST_PROJECTS_DIR", str(PROJECTS_DIR))
+ARCHIVE_DIR_NAME = "_archive"  # soft-delete target inside PROJECTS_DIR
+RESERVED_SLUGS = {ARCHIVE_DIR_NAME}
 
-PORT = 8500
+BIND_HOST = os.environ.get("BIND_HOST", "127.0.0.1")
+PORT = int(os.environ.get("PORT", "8500"))
 MAX_UPLOAD_BYTES = 500 * 1024 * 1024  # 500 MB
 IMAGE_EXTS = {".png", ".jpg", ".jpeg"}
 VIDEO_EXTS = {".mp4", ".mov", ".webm"}
@@ -281,6 +287,7 @@ def discover_projects():
             "asset_count": asset_count,
             "notes_count": notes_count,
             "last_modified": last_modified,
+            "host_path": str(Path(HOST_PROJECTS_DIR) / slug),
         })
     return out
 
@@ -294,6 +301,56 @@ def picker():
 @app.route("/api/projects")
 def api_projects():
     return jsonify(discover_projects())
+
+
+@app.route("/api/host-info")
+def api_host_info():
+    return jsonify({
+        "host_projects_dir": str(HOST_PROJECTS_DIR),
+        "container_projects_dir": str(PROJECTS_DIR),
+        "in_container": str(HOST_PROJECTS_DIR) != str(PROJECTS_DIR),
+    })
+
+
+@app.route("/api/projects/<slug>/delete", methods=["POST"])
+def api_projects_delete(slug):
+    """Soft-delete a project by moving it under <PROJECTS_DIR>/_archive/<slug>-<timestamp>/.
+
+    Reversible (just `mv` it back). Never recursively deletes.
+    """
+    if not valid_slug(slug):
+        return jsonify({"error": "invalid slug"}), 400
+    src = (PROJECTS_DIR / slug).resolve()
+    try:
+        src.relative_to(PROJECTS_DIR)
+    except ValueError:
+        return jsonify({"error": "invalid slug"}), 400
+    if not src.is_dir():
+        return jsonify({"error": "project not found"}), 404
+    if not (src / "storyboard-app" / "storyboard-data.json").is_file():
+        return jsonify({"error": "not a storyboard project"}), 400
+
+    archive_root = PROJECTS_DIR / ARCHIVE_DIR_NAME
+    archive_root.mkdir(parents=True, exist_ok=True)
+    ts = datetime.now().strftime("%Y%m%d-%H%M%S")
+    dest = archive_root / f"{slug}-{ts}"
+    # Extreme edge case: same-second collision
+    n = 1
+    while dest.exists():
+        dest = archive_root / f"{slug}-{ts}-{n}"
+        n += 1
+    try:
+        os.replace(str(src), str(dest))
+    except OSError as e:
+        return jsonify({"error": f"archive failed: {e}"}), 500
+
+    host_dest = str(Path(HOST_PROJECTS_DIR) / ARCHIVE_DIR_NAME / dest.name)
+    return jsonify({
+        "status": "archived",
+        "slug": slug,
+        "archived_to": str(dest),
+        "host_archived_to": host_dest,
+    })
 
 
 @app.route("/api/projects/new", methods=["POST"])
@@ -496,10 +553,12 @@ def handle_400(e):
 
 
 if __name__ == "__main__":
-    print(f"Storyboard Review Server (multi-tenant) at http://localhost:{PORT}")
+    print(f"Storyboard Review Server (multi-tenant) at http://{BIND_HOST}:{PORT}")
     print(f"Projects dir: {PROJECTS_DIR}")
+    if str(HOST_PROJECTS_DIR) != str(PROJECTS_DIR):
+        print(f"Host projects dir (for picker UI): {HOST_PROJECTS_DIR}")
     found = discover_projects()
     print(f"Discovered {len(found)} project(s):")
     for p in found:
         print(f"  - {p['slug']}  ({p['scene_count']} scenes, {p['asset_count']} assets)")
-    app.run(host="127.0.0.1", port=PORT, debug=False, use_reloader=False)
+    app.run(host=BIND_HOST, port=PORT, debug=False, use_reloader=False)

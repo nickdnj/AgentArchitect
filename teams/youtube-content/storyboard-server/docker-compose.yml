@@ -1,0 +1,19 @@
+services:
+  storyboard:
+    build: .
+    container_name: storyboard-server
+    restart: unless-stopped
+    ports:
+      - "0.0.0.0:8500:8500"
+    volumes:
+      - ../projects:/projects
+    environment:
+      PROJECTS_DIR: /projects
+      HOST_PROJECTS_DIR: /Users/nickd/Workspaces/AgentArchitect/teams/youtube-content/projects
+      TZ: America/New_York
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request,sys; urllib.request.urlopen('http://127.0.0.1:8500/api/projects', timeout=5); sys.exit(0)"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s

@@ -56,13 +56,16 @@
   }
   .card {
     background: var(--card); border: 1px solid var(--border); border-radius: 12px;
-    padding: 18px 20px; text-decoration: none; color: inherit;
+    padding: 18px 20px;
     display: flex; flex-direction: column; gap: 10px;
-    transition: border-color 0.2s, background 0.2s, transform 0.12s;
-    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    position: relative;
   }
   .card:hover { border-color: var(--accent); background: var(--card-hover); }
-  .card:active { transform: translateY(1px); }
+  .card .open-link {
+    text-decoration: none; color: inherit;
+    display: flex; flex-direction: column; gap: 10px;
+  }
   .card h3 {
     font-size: 15px; font-weight: 600; line-height: 1.35;
     overflow: hidden; text-overflow: ellipsis;
@@ -75,7 +78,6 @@
   .card .stats {
     display: flex; gap: 14px; flex-wrap: wrap;
     font-size: 12px; color: var(--text-muted);
-    border-top: 1px solid var(--border); padding-top: 10px; margin-top: 2px;
   }
   .card .stat { display: flex; align-items: center; gap: 5px; }
   .card .stat .dot { width: 6px; height: 6px; border-radius: 50%; }
@@ -83,6 +85,37 @@
   .card .stat .dot.green { background: var(--green); }
   .card .stat .dot.orange { background: var(--orange); }
   .card .modified { font-size: 11px; color: var(--text-muted); }
+
+  .card-footer {
+    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+    border-top: 1px solid var(--border); padding-top: 10px; margin-top: 4px;
+    font-size: 12px;
+  }
+  .card-footer .path-display {
+    color: var(--text-muted);
+    font-family: 'SF Mono', 'Fira Code', monospace; font-size: 11px;
+    word-break: break-all; flex: 1; min-width: 0;
+    user-select: text;
+  }
+  .card-footer .copy-btn,
+  .card-footer .delete-btn {
+    background: transparent; color: var(--text-muted); border: 1px solid var(--border);
+    padding: 4px 10px; border-radius: 5px; cursor: pointer; font-size: 11px;
+    flex-shrink: 0;
+    transition: color 0.15s, border-color 0.15s, background 0.15s;
+  }
+  .card-footer .copy-btn:hover {
+    color: var(--accent); border-color: var(--accent);
+    background: rgba(59,130,246,0.08);
+  }
+  .card-footer .copy-btn.copied {
+    color: var(--green); border-color: var(--green);
+    background: rgba(34,197,94,0.10);
+  }
+  .card-footer .delete-btn:hover {
+    color: var(--red); border-color: var(--red);
+    background: rgba(239,68,68,0.08);
+  }
 
   /* Modal */
   .modal-backdrop {
@@ -110,6 +143,13 @@
     font-size: 11px; color: var(--text-muted); margin-top: 4px; margin-bottom: 14px;
     font-family: 'SF Mono', 'Fira Code', monospace;
   }
+  .modal .body-text {
+    font-size: 13px; color: var(--text); margin-bottom: 8px;
+  }
+  .modal .body-text strong { color: var(--accent); }
+  .modal .body-text-muted {
+    font-size: 12px; color: var(--text-muted); margin-bottom: 14px;
+  }
   .modal .error {
     margin-top: 10px; padding: 8px 12px;
     background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3);
@@ -128,6 +168,10 @@
   }
   .modal .actions button.primary:hover { background: var(--accent-dim); }
   .modal .actions button.primary:disabled { opacity: 0.5; cursor: not-allowed; }
+  .modal .actions button.danger {
+    background: var(--red); border-color: var(--red); color: #fff;
+  }
+  .modal .actions button.danger:hover { background: #c52b2b; }
 </style>
 </head>
 <body>
@@ -150,6 +194,7 @@
   </div>
 </main>
 
+<!-- New project modal -->
 <div class="modal-backdrop" id="modal-backdrop" onclick="onBackdropClick(event)">
   <div class="modal" onclick="event.stopPropagation()">
     <h2>New Project</h2>
@@ -167,8 +212,26 @@
   </div>
 </div>
 
+<!-- Delete confirmation modal -->
+<div class="modal-backdrop" id="delete-backdrop" onclick="onDeleteBackdropClick(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <h2>Archive project?</h2>
+    <div class="body-text">Archive <strong id="delete-slug-label"></strong>?</div>
+    <div class="body-text-muted">
+      The project folder will be moved to <code>_archive/</code> with a timestamp.
+      Nothing is deleted — you can move it back manually if needed.
+    </div>
+    <div class="error" id="delete-error" hidden></div>
+    <div class="actions">
+      <button onclick="closeDeleteModal()">Cancel</button>
+      <button class="danger" id="delete-btn" onclick="confirmDelete()">Archive</button>
+    </div>
+  </div>
+</div>
+
 <script>
 const SLUG_RE = /^[a-z0-9-]+$/;
+let pendingDeleteSlug = null;
 
 async function loadProjects() {
   const grid = document.getElementById('grid');
@@ -195,17 +258,69 @@ function renderCard(p) {
   const title = escHtml(p.title || p.slug);
   const slug = escHtml(p.slug);
   const mod = p.last_modified ? `Updated ${formatDate(p.last_modified)}` : '';
+  const hostPath = p.host_path || '';
+  const pathBlock = hostPath
+    ? `<span class="path-display" title="${escHtml(hostPath)}">&#x1f4c1; ${escHtml(hostPath)}</span>
+       <button class="copy-btn" onclick="copyPath(this, '${escAttr(hostPath)}')" title="Copy folder path">Copy</button>`
+    : '';
   return `
-    <a class="card" href="/p/${slug}/">
-      <h3>${title}</h3>
-      <div class="slug">${slug}</div>
-      <div class="stats">
-        <span class="stat"><span class="dot blue"></span>${p.scene_count} scenes</span>
-        <span class="stat"><span class="dot green"></span>${p.asset_count} assets</span>
-        <span class="stat"><span class="dot orange"></span>${p.notes_count} notes</span>
+    <div class="card" data-slug="${slug}">
+      <a class="open-link" href="/p/${slug}/">
+        <h3>${title}</h3>
+        <div class="slug">${slug}</div>
+        <div class="stats">
+          <span class="stat"><span class="dot blue"></span>${p.scene_count} scenes</span>
+          <span class="stat"><span class="dot green"></span>${p.asset_count} assets</span>
+          <span class="stat"><span class="dot orange"></span>${p.notes_count} notes</span>
+        </div>
+        ${mod ? `<div class="modified">${escHtml(mod)}</div>` : ''}
+      </a>
+      <div class="card-footer">
+        ${pathBlock}
+        <button class="delete-btn" onclick="askDelete('${slug}')" title="Archive project">Archive</button>
       </div>
-      ${mod ? `<div class="modified">${escHtml(mod)}</div>` : ''}
-    </a>`;
+    </div>`;
+}
+
+async function copyPath(btn, path) {
+  const original = btn.textContent;
+  let ok = false;
+  try {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(path);
+      ok = true;
+    } else {
+      // Fallback for http://Tailscale-IP origin (not a secure context)
+      const ta = document.createElement('textarea');
+      ta.value = path;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      ok = document.execCommand('copy');
+      document.body.removeChild(ta);
+    }
+  } catch (e) {
+    ok = false;
+  }
+  btn.classList.add('copied');
+  btn.textContent = ok ? 'Copied!' : 'Press ⌘C';
+  if (!ok) {
+    // Leave path selected so user can copy manually
+    const sel = window.getSelection();
+    sel.removeAllRanges();
+    const r = document.createRange();
+    r.selectNodeContents(btn.previousElementSibling);
+    sel.addRange(r);
+  }
+  setTimeout(() => {
+    btn.classList.remove('copied');
+    btn.textContent = original;
+  }, 1500);
+}
+
+function escAttr(s) {
+  return String(s ?? '').replace(/\\/g, '\\\\').replace(/'/g, "\\'");
 }
 
 function formatDate(iso) {
@@ -221,7 +336,7 @@ function formatDate(iso) {
   }
 }
 
-// Modal
+// --- New project modal -----------------------------------------------------
 function openModal() {
   document.getElementById('modal-backdrop').classList.add('open');
   document.getElementById('modal-error').hidden = true;
@@ -283,8 +398,56 @@ async function createProject() {
   }
 }
 
+// --- Delete (archive) modal ------------------------------------------------
+function askDelete(slug) {
+  pendingDeleteSlug = slug;
+  document.getElementById('delete-slug-label').textContent = slug;
+  document.getElementById('delete-error').hidden = true;
+  document.getElementById('delete-backdrop').classList.add('open');
+  const btn = document.getElementById('delete-btn');
+  btn.disabled = false;
+  btn.textContent = 'Archive';
+}
+function closeDeleteModal() {
+  document.getElementById('delete-backdrop').classList.remove('open');
+  pendingDeleteSlug = null;
+}
+function onDeleteBackdropClick(e) {
+  if (e.target.id === 'delete-backdrop') closeDeleteModal();
+}
+async function confirmDelete() {
+  const slug = pendingDeleteSlug;
+  if (!slug) return;
+  const err = document.getElementById('delete-error');
+  const btn = document.getElementById('delete-btn');
+  err.hidden = true;
+  btn.disabled = true;
+  btn.textContent = 'Archiving...';
+  try {
+    const resp = await fetch(`/api/projects/${encodeURIComponent(slug)}/delete`, { method: 'POST' });
+    const body = await resp.json().catch(() => ({}));
+    if (!resp.ok) {
+      err.textContent = body.error || `Archive failed (HTTP ${resp.status}).`;
+      err.hidden = false;
+      btn.disabled = false;
+      btn.textContent = 'Archive';
+      return;
+    }
+    closeDeleteModal();
+    loadProjects();
+  } catch (e) {
+    err.textContent = `Archive error: ${e.message}`;
+    err.hidden = false;
+    btn.disabled = false;
+    btn.textContent = 'Archive';
+  }
+}
+
 document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') closeModal();
+  if (e.key === 'Escape') {
+    closeModal();
+    closeDeleteModal();
+  }
   if (e.key === 'Enter' && document.getElementById('modal-backdrop').classList.contains('open')) {
     const btn = document.getElementById('create-btn');
     if (!btn.disabled) createProject();
