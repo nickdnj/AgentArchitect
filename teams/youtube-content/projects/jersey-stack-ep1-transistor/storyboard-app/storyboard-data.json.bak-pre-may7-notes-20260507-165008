@@ -155,35 +155,30 @@
       "transition": "Crossfade 1s",
       "image_path": "assets/images/scene-07-floor-plan-corridor.png",
       "audio_status": "Gate 2 RE-RECORD — trimmed 'Kelly designed it that way on purpose' sentence + 'inside that building' + 'solid-state physics group' compressed",
-      "notes": "",
+      "notes": "I need to add an AI image as image 1 in this scene. Something inspired by this part of the narration, \"next revolution in communications would be solid-state — no moving parts, no glowing filaments. \"",
       "assets": [
         {
-          "path": "assets/images/scene-07-solid-state-revolution.png",
+          "path": "assets/images/scene-07-floor-plan-corridor.png",
           "type": "image",
           "order": 0
         },
         {
-          "path": "assets/images/scene-07-floor-plan-corridor.png",
+          "path": "assets/images/scene-07.png",
           "type": "image",
           "order": 1
         },
         {
-          "path": "assets/images/scene-07.png",
+          "path": "assets/images/scene-07-murray-hill-head-house-I-1942.jpg",
           "type": "image",
           "order": 2
         },
         {
-          "path": "assets/images/scene-07-murray-hill-head-house-I-1942.jpg",
+          "path": "assets/images/scene-07-murray-hill-cafeteria-1942.jpg",
           "type": "image",
           "order": 3
         },
         {
-          "path": "assets/images/scene-07-murray-hill-cafeteria-1942.jpg",
-          "type": "image",
-          "order": 4
-        },
-        {
-          "order": 5,
+          "order": 4,
           "path": "assets/images/scene-07-from-scene-23.png",
           "type": "image"
         }
@@ -375,7 +370,7 @@
       "transition": "Slower crossfade 1.5s (chapter weight)",
       "image_path": "assets/images/scene-13-shockley-portrait.png",
       "audio_status": "Gate 2 RE-RECORD — dropped 'directly into the bulk of the crystal,' qualifier",
-      "notes": "",
+      "notes": "Need an AI image inpried by this narration: \"electrons were getting trapped on the surface of the germanium crystal — that the surface itself was acting as a shield, blocking the effect Shockley had been chasing. If they could get underneath that surface, with the right kind of contact, they might have an amplifier.\" and another AI image inspired by this. Through November and into December of nineteen forty-seven, Bardeen and Brattain, in Lab One-E-four-fifty-five at Murray Hill, worked their way toward the device. ",
       "assets": [
         {
           "order": 0,
@@ -389,17 +384,12 @@
         },
         {
           "order": 2,
-          "path": "assets/images/scene-13-bardeen-surface-insight.png",
-          "type": "image"
-        },
-        {
-          "order": 3,
           "path": "assets/images/scene-13-bardeen-insight.png",
           "type": "image"
         },
         {
-          "order": 4,
-          "path": "assets/images/scene-13-bardeen-brattain-bench-1947.png",
+          "order": 3,
+          "path": "assets/images/scene-13-shockley-bench.png",
           "type": "image"
         }
       ]
@@ -428,11 +418,6 @@
         },
         {
           "order": 1,
-          "path": "assets/images/scene-14-scene-12-brattain-portrait-c19fda.png",
-          "type": "image"
-        },
-        {
-          "order": 2,
           "path": "assets/images/scene-14.png",
           "type": "image"
         }
@@ -698,22 +683,17 @@
       "motion": "ken-burns-zoom",
       "music": "Warms — a quiet pride note.",
       "transition": "Crossfade 1s",
-      "image_path": "assets/images/scene-22-project-diana-antenna-1946.jpg",
+      "image_path": "assets/images/scene-22-img-0659-a0b542.png",
       "audio_status": "Gate 1 WAV OK — no re-record (locked InfoAge callback)",
-      "notes": "",
+      "notes": "I need to find a 1940s picture of Camp Evans, what can you find in the archives?",
       "assets": [
         {
           "order": 0,
-          "path": "assets/images/scene-22-project-diana-antenna-1946.jpg",
-          "type": "image"
-        },
-        {
-          "order": 1,
           "path": "assets/images/scene-22-img-0659-a0b542.png",
           "type": "image"
         },
         {
-          "order": 2,
+          "order": 1,
           "path": "assets/images/scene-22-img-0658-2-4d11d6.png",
           "type": "image"
         }
@@ -756,9 +736,9 @@
       "motion": "ken-burns-zoom",
       "music": "Swells — this is the turning point.",
       "transition": "Hard cut (no crossfade) — energy shift into diaspora",
-      "image_path": "assets/images/scene-24-federal-courtroom.png",
+      "image_path": "assets/images/scene-24.png",
       "audio_status": "Gate 2 RE-RECORD — compressed 'the more consequential thing' meta-framing; AT&T/Justice-Department framing tightened",
-      "notes": "",
+      "notes": "Need an AI image inspired by: a federal courtroom. To settle a seven-year antitrust case, AT&T signed a consent decree:",
       "panels": [
         {
           "path": "assets/images/scene-24a.mp4",
@@ -775,19 +755,14 @@
       ],
       "assets": [
         {
-          "path": "assets/images/scene-24-federal-courtroom.png",
-          "type": "image",
-          "order": 0
-        },
-        {
           "path": "assets/images/scene-24a.mp4",
           "type": "video",
-          "order": 1
+          "order": 0
         },
         {
           "path": "assets/images/scene-24.png",
           "type": "image",
-          "order": 2
+          "order": 1
         }
       ]
     },
