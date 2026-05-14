@@ -65,5 +65,16 @@
     "context": "fork",
     "max_turns": 15,
     "model": "sonnet"
+  },
+  "wiki_access": {
+    "repo_root": "${WIKI_REPO}",
+    "read": [
+      "spine/preferences/"
+    ],
+    "write_via_ingest": [],
+    "session_log": "_sessions/utilities/chrome-browser/",
+    "always_load": [
+      "spine/preferences/seven-habits-of-effective-agents.md"
+    ]
   }
 }

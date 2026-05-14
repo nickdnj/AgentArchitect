@@ -26,7 +26,8 @@
     "assigned": [
       "wharfside-docs"
     ],
-    "access_level": "read-only"
+    "access_level": "read-only",
+    "_note": "Kept alongside wiki_access by design. RAG/context bucket bytes do not duplicate into the wiki."
   },
   "output": {
     "folder": "reports/",
@@ -86,5 +87,18 @@
     "context": "fork",
     "max_turns": 20,
     "model": "sonnet"
+  },
+  "wiki_access": {
+    "repo_root": "${WIKI_REPO}",
+    "read": [
+      "spine/preferences/",
+      "teams/wharfside/"
+    ],
+    "write_via_ingest": [],
+    "session_log": "teams/wharfside/_sessions/email-research/",
+    "always_load": [
+      "spine/preferences/seven-habits-of-effective-agents.md",
+      "teams/wharfside/_team.md"
+    ]
   }
 }

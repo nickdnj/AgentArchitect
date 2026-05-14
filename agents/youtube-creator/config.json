@@ -40,7 +40,8 @@
     "assigned": [
       "ai-journey"
     ],
-    "access_level": "read-only"
+    "access_level": "read-only",
+    "_note": "Kept alongside wiki_access by design. RAG/context bucket bytes do not duplicate into the wiki."
   },
   "output": {
     "folder": "~/Desktop/youtube-projects/",
@@ -116,5 +117,18 @@
     "model": "opus"
   },
   "status": "archived",
-  "archived_reason": "Replaced by 4 focused specialists: video-script-writer, video-asset-generator, video-assembler, video-publisher"
+  "archived_reason": "Replaced by 4 focused specialists: video-script-writer, video-asset-generator, video-assembler, video-publisher",
+  "wiki_access": {
+    "repo_root": "${WIKI_REPO}",
+    "read": [
+      "spine/preferences/",
+      "teams/youtube-content/"
+    ],
+    "write_via_ingest": [],
+    "session_log": "teams/youtube-content/_sessions/youtube-creator/",
+    "always_load": [
+      "spine/preferences/seven-habits-of-effective-agents.md",
+      "teams/youtube-content/_team.md"
+    ]
+  }
 }

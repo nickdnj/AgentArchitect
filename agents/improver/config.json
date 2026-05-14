@@ -4,8 +4,17 @@
   "description": "Meta-agent that reads agent feedback logs and proposes improvements to SKILL.md files. The core of the self-improving agent loop.",
   "version": "1.0",
   "expertise": {
-    "domains": ["agent-design", "behavioral-analysis", "instruction-engineering"],
-    "capabilities": ["feedback-analysis", "skill-editing", "pattern-recognition", "diff-generation"]
+    "domains": [
+      "agent-design",
+      "behavioral-analysis",
+      "instruction-engineering"
+    ],
+    "capabilities": [
+      "feedback-analysis",
+      "skill-editing",
+      "pattern-recognition",
+      "diff-generation"
+    ]
   },
   "mcp_servers": [],
   "context_buckets": {
@@ -14,7 +23,9 @@
   },
   "output": {
     "folder": "outputs/",
-    "formats": ["markdown"]
+    "formats": [
+      "markdown"
+    ]
   },
   "collaboration": {
     "can_request_from": [],
@@ -30,5 +41,16 @@
     "context": "fork",
     "max_turns": 30,
     "model": "opus"
+  },
+  "wiki_access": {
+    "repo_root": "${WIKI_REPO}",
+    "read": [
+      "spine/preferences/"
+    ],
+    "write_via_ingest": [],
+    "session_log": "_sessions/utilities/improver/",
+    "always_load": [
+      "spine/preferences/seven-habits-of-effective-agents.md"
+    ]
   }
 }

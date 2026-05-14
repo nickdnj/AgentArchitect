@@ -128,5 +128,16 @@
     "context": "fork",
     "max_turns": 15,
     "model": "haiku"
+  },
+  "wiki_access": {
+    "repo_root": "${WIKI_REPO}",
+    "read": [
+      "spine/preferences/"
+    ],
+    "write_via_ingest": [],
+    "session_log": "_sessions/utilities/pdf-scribe/",
+    "always_load": [
+      "spine/preferences/seven-habits-of-effective-agents.md"
+    ]
   }
 }
