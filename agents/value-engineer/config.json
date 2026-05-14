@@ -33,7 +33,8 @@
     "assigned": [
       "altium-playbook"
     ],
-    "access_level": "read-only"
+    "access_level": "read-only",
+    "_note": "Kept alongside wiki_access by design. RAG/context bucket bytes do not duplicate into the wiki."
   },
   "output": {
     "folder": "outputs/",
@@ -69,5 +70,18 @@
     "context": "fork",
     "max_turns": 25,
     "model": "sonnet"
+  },
+  "wiki_access": {
+    "repo_root": "${WIKI_REPO}",
+    "read": [
+      "spine/preferences/",
+      "teams/altium/"
+    ],
+    "write_via_ingest": [],
+    "session_log": "teams/altium/_sessions/value-engineer/",
+    "always_load": [
+      "spine/preferences/seven-habits-of-effective-agents.md",
+      "teams/altium/_team.md"
+    ]
   }
 }

@@ -3,15 +3,12 @@
   "name": "MCAD Engineer",
   "description": "Mechanical design engineer using FreeCAD for enclosures, mounting systems, and mechanical assemblies",
   "version": "1.0",
-
   "agent_type": "specialist",
-
   "execution": {
     "context": "fork",
     "max_turns": 25,
     "model": "sonnet"
   },
-
   "expertise": {
     "domains": [
       "mechanical-design",
@@ -31,19 +28,22 @@
       "assembly-design"
     ]
   },
-
   "mcp_servers": [],
-
   "context_buckets": {
-    "assigned": ["hardware-projects"],
-    "access_level": "read-write"
+    "assigned": [
+      "hardware-projects"
+    ],
+    "access_level": "read-write",
+    "_note": "Kept alongside wiki_access by design. RAG/context bucket bytes do not duplicate into the wiki."
   },
-
   "output": {
     "folder": "outputs/",
-    "formats": ["markdown", "step", "stl"]
+    "formats": [
+      "markdown",
+      "step",
+      "stl"
+    ]
   },
-
   "collaboration": {
     "can_request_from": [
       "pcb-designer",
@@ -56,15 +56,28 @@
     ],
     "handoff_format": "structured-summary"
   },
-
   "workflow_position": {
     "stage": "Design",
     "order": 2,
-    "parallel_with": ["pcb-designer"]
+    "parallel_with": [
+      "pcb-designer"
+    ]
   },
-
   "trigger": {
     "type": "on-demand",
     "description": "Invoked when PCB dimensions are available and enclosure design can begin"
+  },
+  "wiki_access": {
+    "repo_root": "${WIKI_REPO}",
+    "read": [
+      "spine/preferences/",
+      "teams/hardware-dev/"
+    ],
+    "write_via_ingest": [],
+    "session_log": "teams/hardware-dev/_sessions/mcad-engineer/",
+    "always_load": [
+      "spine/preferences/seven-habits-of-effective-agents.md",
+      "teams/hardware-dev/_team.md"
+    ]
   }
 }

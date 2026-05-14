@@ -3,15 +3,12 @@
   "name": "Systems Engineering Manager",
   "description": "Systems engineering manager coordinating electronics, mechanical, and software disciplines through V-model lifecycle management, requirements decomposition, interface specification, and cross-team integration",
   "version": "1.0",
-
   "agent_type": "specialist",
-
   "execution": {
     "context": "fork",
     "max_turns": 40,
     "model": "opus"
   },
-
   "expertise": {
     "domains": [
       "systems-engineering",
@@ -28,7 +25,7 @@
     ],
     "capabilities": [
       "Concept of Operations development",
-      "Requirements decomposition (source → system → subsystem → component)",
+      "Requirements decomposition (source \u2192 system \u2192 subsystem \u2192 component)",
       "System architecture definition (logical and physical)",
       "Interface specification (ECAD-MCAD, ECAD-FW, FW-SW, MCAD-SW)",
       "Verification and validation planning",
@@ -41,21 +38,23 @@
       "Cross-team coordination (hardware-dev + software-project)"
     ]
   },
-
   "mcp_servers": [
     "github"
   ],
-
   "context_buckets": {
-    "assigned": ["hardware-projects", "session-logs"],
-    "access_level": "read-write"
+    "assigned": [
+      "hardware-projects",
+      "session-logs"
+    ],
+    "access_level": "read-write",
+    "_note": "Kept alongside wiki_access by design. RAG/context bucket bytes do not duplicate into the wiki."
   },
-
   "output": {
     "folder": "docs/systems-engineering/",
-    "formats": ["markdown"]
+    "formats": [
+      "markdown"
+    ]
   },
-
   "collaboration": {
     "can_request_from": [
       "pcb-designer",
@@ -82,9 +81,21 @@
     ],
     "handoff_format": "structured-summary"
   },
-
   "trigger": {
     "type": "on-demand",
     "description": "Invoked for new product initiatives, requirements changes, design reviews, integration planning, or any cross-discipline coordination need. Should be the first agent engaged for any new multi-discipline product."
+  },
+  "wiki_access": {
+    "repo_root": "${WIKI_REPO}",
+    "read": [
+      "spine/preferences/",
+      "teams/hardware-dev/"
+    ],
+    "write_via_ingest": [],
+    "session_log": "teams/hardware-dev/_sessions/systems-engineer/",
+    "always_load": [
+      "spine/preferences/seven-habits-of-effective-agents.md",
+      "teams/hardware-dev/_team.md"
+    ]
   }
 }

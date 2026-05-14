@@ -3,15 +3,12 @@
   "name": "DFM & Test Engineer",
   "description": "Design-for-manufacturing review, production test design, and compliance preparation for hardware products",
   "version": "1.0",
-
   "agent_type": "specialist",
-
   "execution": {
     "context": "fork",
     "max_turns": 25,
     "model": "sonnet"
   },
-
   "expertise": {
     "domains": [
       "manufacturing-engineering",
@@ -32,19 +29,21 @@
       "first-article-inspection"
     ]
   },
-
   "mcp_servers": [],
-
   "context_buckets": {
-    "assigned": ["hardware-projects"],
-    "access_level": "read-write"
+    "assigned": [
+      "hardware-projects"
+    ],
+    "access_level": "read-write",
+    "_note": "Kept alongside wiki_access by design. RAG/context bucket bytes do not duplicate into the wiki."
   },
-
   "output": {
     "folder": "outputs/",
-    "formats": ["markdown", "csv"]
+    "formats": [
+      "markdown",
+      "csv"
+    ]
   },
-
   "collaboration": {
     "can_request_from": [
       "pcb-designer",
@@ -58,15 +57,26 @@
     ],
     "handoff_format": "structured-summary"
   },
-
   "workflow_position": {
     "stage": "Validation",
     "order": 4,
     "parallel_with": []
   },
-
   "trigger": {
     "type": "on-demand",
     "description": "Invoked when design files are ready for manufacturing review"
+  },
+  "wiki_access": {
+    "repo_root": "${WIKI_REPO}",
+    "read": [
+      "spine/preferences/",
+      "teams/hardware-dev/"
+    ],
+    "write_via_ingest": [],
+    "session_log": "teams/hardware-dev/_sessions/dfm-test-engineer/",
+    "always_load": [
+      "spine/preferences/seven-habits-of-effective-agents.md",
+      "teams/hardware-dev/_team.md"
+    ]
   }
 }

@@ -3,15 +3,12 @@
   "name": "Supply Chain Manager",
   "description": "BOM management, component sourcing, cost modeling, and contract manufacturer coordination",
   "version": "1.0",
-
   "agent_type": "specialist",
-
   "execution": {
     "context": "fork",
     "max_turns": 25,
     "model": "sonnet"
   },
-
   "expertise": {
     "domains": [
       "supply-chain",
@@ -30,19 +27,21 @@
       "vendor-management"
     ]
   },
-
   "mcp_servers": [],
-
   "context_buckets": {
-    "assigned": ["hardware-projects"],
-    "access_level": "read-write"
+    "assigned": [
+      "hardware-projects"
+    ],
+    "access_level": "read-write",
+    "_note": "Kept alongside wiki_access by design. RAG/context bucket bytes do not duplicate into the wiki."
   },
-
   "output": {
     "folder": "outputs/",
-    "formats": ["markdown", "csv"]
+    "formats": [
+      "markdown",
+      "csv"
+    ]
   },
-
   "collaboration": {
     "can_request_from": [
       "pcb-designer",
@@ -55,15 +54,26 @@
     ],
     "handoff_format": "structured-summary"
   },
-
   "workflow_position": {
     "stage": "Planning",
     "order": 3,
     "parallel_with": []
   },
-
   "trigger": {
     "type": "on-demand",
     "description": "Invoked when BOM data is available for sourcing and cost analysis"
+  },
+  "wiki_access": {
+    "repo_root": "${WIKI_REPO}",
+    "read": [
+      "spine/preferences/",
+      "teams/hardware-dev/"
+    ],
+    "write_via_ingest": [],
+    "session_log": "teams/hardware-dev/_sessions/supply-chain-manager/",
+    "always_load": [
+      "spine/preferences/seven-habits-of-effective-agents.md",
+      "teams/hardware-dev/_team.md"
+    ]
   }
 }

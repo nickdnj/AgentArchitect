@@ -1,7 +1,7 @@
 {
   "id": "social-distributor",
   "name": "Social Distributor",
-  "description": "Plans and executes social media launch campaigns for each published video — pre-premiere buzz, launch day posts, and follow-up across YouTube Community, Facebook groups, Reddit, Instagram, and TikTok.",
+  "description": "Plans and executes social media launch campaigns for each published video \u2014 pre-premiere buzz, launch day posts, and follow-up across YouTube Community, Facebook groups, Reddit, Instagram, and TikTok.",
   "version": "1.0",
   "expertise": {
     "domains": [
@@ -33,7 +33,8 @@
     "assigned": [
       "ai-journey"
     ],
-    "access_level": "read-only"
+    "access_level": "read-only",
+    "_note": "Kept alongside wiki_access by design. RAG/context bucket bytes do not duplicate into the wiki."
   },
   "output": {
     "folder": "teams/youtube-content/projects/{project}/social/",
@@ -60,5 +61,18 @@
     "context": "fork",
     "max_turns": 30,
     "model": "sonnet"
+  },
+  "wiki_access": {
+    "repo_root": "${WIKI_REPO}",
+    "read": [
+      "spine/preferences/",
+      "teams/youtube-content/"
+    ],
+    "write_via_ingest": [],
+    "session_log": "teams/youtube-content/_sessions/social-distributor/",
+    "always_load": [
+      "spine/preferences/seven-habits-of-effective-agents.md",
+      "teams/youtube-content/_team.md"
+    ]
   }
 }

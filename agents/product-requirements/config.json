@@ -71,5 +71,18 @@
     "context": "fork",
     "max_turns": 30,
     "model": "opus"
+  },
+  "wiki_access": {
+    "repo_root": "${WIKI_REPO}",
+    "read": [
+      "spine/preferences/",
+      "teams/software-project/"
+    ],
+    "write_via_ingest": [],
+    "session_log": "teams/software-project/_sessions/product-requirements/",
+    "always_load": [
+      "spine/preferences/seven-habits-of-effective-agents.md",
+      "teams/software-project/_team.md"
+    ]
   }
 }

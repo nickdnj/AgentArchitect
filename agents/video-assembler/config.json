@@ -33,7 +33,8 @@
     "assigned": [
       "ai-journey"
     ],
-    "access_level": "read-only"
+    "access_level": "read-only",
+    "_note": "Kept alongside wiki_access by design. RAG/context bucket bytes do not duplicate into the wiki."
   },
   "output": {
     "folder": "~/Desktop/youtube-projects/",
@@ -59,5 +60,18 @@
     "context": "fork",
     "max_turns": 40,
     "model": "sonnet"
+  },
+  "wiki_access": {
+    "repo_root": "${WIKI_REPO}",
+    "read": [
+      "spine/preferences/",
+      "teams/youtube-content/"
+    ],
+    "write_via_ingest": [],
+    "session_log": "teams/youtube-content/_sessions/video-assembler/",
+    "always_load": [
+      "spine/preferences/seven-habits-of-effective-agents.md",
+      "teams/youtube-content/_team.md"
+    ]
   }
 }
