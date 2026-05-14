@@ -30,6 +30,7 @@ npm-debug.log*
 # Hand-crafted skills (not generated, should be committed)
 !.claude/skills/voice-local/SKILL.md
 !.claude/skills/end-voice-local/SKILL.md
+!.claude/skills/wrap/SKILL.md
 
 # Local settings (keep template, ignore local overrides)
 .claude/settings.local.json
