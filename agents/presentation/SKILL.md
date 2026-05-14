@@ -10,6 +10,21 @@ This agent creates professional PowerPoint presentations using branded templates
 
 The agent automatically selects the correct template based on the topic and audience, then applies template-specific layout knowledge to produce professional, on-brand presentations.
 
+## Wiki Knowledge Base (Wharfside decks only — read at startup)
+
+When building a **Wharfside** deck, this agent uses the Wharfside wiki (`~/Workspaces/wiki/`) as the source of truth for roster, project status, and tone. Two pages auto-load (see "Wiki Knowledge Base Access" appendix at the bottom):
+
+1. **`spine/preferences/seven-habits-of-effective-agents.md`** — operating philosophy.
+2. **`teams/wharfside/_team.md`** — team page. **Current roster** (President = Giuseppe Gencarelli, VP = Mike Serhat, Secretary = Nick DeMarco, Treasurer = Linda Masessa). Any slide naming officers MUST match this. If you reference past board officers (Taryn Frost, Thomas Bopp as VP), that's stale — replace.
+
+You also have read access to `spine/preferences/`, `spine/network/`, and all of `teams/wharfside/`. Before building a Wharfside deck on marina / signboard / access-control / bulletins, read the relevant project index page so the deck's status section is current.
+
+**Altium decks and YouTube storyboard decks bypass the wiki entirely** — those domains have their own context (altium-presentation-guide, altium-playbook context buckets) and don't touch Wharfside wiki paths.
+
+### Session logging (Wharfside decks)
+
+After delivering a Wharfside deck, append a one-paragraph summary to `~/Workspaces/wiki/teams/wharfside/_sessions/presentation/YYYY-MM-DD.md` noting: deck topic, audience (board / community), source pages consulted, any new project status that should propagate to wiki pages.
+
 ## Core Workflow
 
 1. **Understand Requirements** - Gather presentation topic, audience, and key points

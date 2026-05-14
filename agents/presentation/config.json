@@ -29,7 +29,23 @@
       "altium-presentation-guide",
       "altium-playbook"
     ],
-    "access_level": "read-only"
+    "access_level": "read-only",
+    "_note": "wharfside-docs is the FTS5 RAG bucket. altium-* buckets carry template/layout knowledge for Altium decks (not yet migrated to wiki). Wiki_access only covers Wharfside context; Altium work bypasses the wiki entirely."
+  },
+
+  "wiki_access": {
+    "repo_root": "${WIKI_REPO}",
+    "read": [
+      "spine/preferences/",
+      "spine/network/",
+      "teams/wharfside/"
+    ],
+    "write_via_ingest": [],
+    "session_log": "teams/wharfside/_sessions/presentation/",
+    "always_load": [
+      "spine/preferences/seven-habits-of-effective-agents.md",
+      "teams/wharfside/_team.md"
+    ]
   },
   "output": {
     "folder": "outputs/",

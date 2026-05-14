@@ -23,7 +23,23 @@
     "assigned": [
       "wharfside-docs"
     ],
-    "access_level": "read-only"
+    "access_level": "read-only",
+    "_note": "wharfside-docs is the FTS5 RAG bucket for governing-doc full-text search. Kept alongside wiki_access by design."
+  },
+
+  "wiki_access": {
+    "repo_root": "${WIKI_REPO}",
+    "read": [
+      "spine/network/",
+      "spine/infrastructure/",
+      "teams/wharfside/"
+    ],
+    "write_via_ingest": [],
+    "session_log": "teams/wharfside/_sessions/proposal-review/",
+    "always_load": [
+      "spine/preferences/seven-habits-of-effective-agents.md",
+      "teams/wharfside/_team.md"
+    ]
   },
   "output": {
     "folder": "outputs/",

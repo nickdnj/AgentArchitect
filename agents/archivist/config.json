@@ -33,7 +33,23 @@
     "assigned": [
       "wharfside-docs"
     ],
-    "access_level": "read-write"
+    "access_level": "read-write",
+    "_note": "wharfside-docs is the FTS5 RAG bucket — the archivist's CORE capability. Kept alongside wiki_access by design. RAG bucket bytes do not duplicate into the wiki; the wiki references them by URL/ID."
+  },
+
+  "wiki_access": {
+    "repo_root": "${WIKI_REPO}",
+    "read": [
+      "spine/",
+      "teams/wharfside/"
+    ],
+    "write_via_ingest": [],
+    "session_log": "teams/wharfside/_sessions/archivist/",
+    "always_load": [
+      "spine/preferences/seven-habits-of-effective-agents.md",
+      "teams/wharfside/_team.md",
+      "teams/wharfside/governing-documents/index.md"
+    ]
   },
   "output": {
     "folder": "outputs/",
