@@ -17,6 +17,20 @@
     "assigned": [],
     "access_level": "none"
   },
+
+  "wiki_access": {
+    "repo_root": "${WIKI_REPO}",
+    "read": [
+      "spine/preferences/",
+      "teams/personal-assistant/"
+    ],
+    "write_via_ingest": [],
+    "session_log": "teams/personal-assistant/_sessions/amazon-shopper/",
+    "always_load": [
+      "spine/preferences/seven-habits-of-effective-agents.md",
+      "spine/preferences/light-theme-emails.md"
+    ]
+  },
   "output": {
     "folder": "outputs/",
     "formats": ["markdown", "html-email"],

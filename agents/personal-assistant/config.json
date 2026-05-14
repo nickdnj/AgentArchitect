@@ -45,7 +45,23 @@
       "personal-notes",
       "ai-journey"
     ],
-    "access_level": "read-write"
+    "access_level": "read-write",
+    "_note": "Max's RAG buckets: research-cache (persistent cache for non-trivial research outputs, pgvector), personal-notes (Nick's running notes), ai-journey (Nick's AI/coding journey). Kept alongside wiki_access by design — the wiki is curated knowledge; these buckets are ephemeral working memory."
+  },
+
+  "wiki_access": {
+    "repo_root": "${WIKI_REPO}",
+    "read": [
+      "spine/",
+      "teams/personal-assistant/"
+    ],
+    "write_via_ingest": [],
+    "session_log": "teams/personal-assistant/_sessions/",
+    "always_load": [
+      "spine/preferences/seven-habits-of-effective-agents.md",
+      "teams/personal-assistant/_team.md",
+      "spine/preferences/email-account-routing.md"
+    ]
   },
   "output": {
     "folder": "outputs/",
