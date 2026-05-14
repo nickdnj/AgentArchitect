@@ -23,7 +23,27 @@
     "assigned": [
       "wharfside-docs"
     ],
-    "access_level": "read-only"
+    "access_level": "read-only",
+    "_note": "wharfside-docs is the FTS5 RAG bucket for governing-doc full-text search. Kept alongside wiki_access by design — RAG bucket bytes do not duplicate into the wiki; the wiki references them by URL/ID. See docs/architecture/wiki-knowledge-base.md."
+  },
+
+  "wiki_access": {
+    "repo_root": "${WIKI_REPO}",
+    "read": [
+      "spine/preferences/",
+      "spine/network/",
+      "spine/infrastructure/",
+      "teams/wharfside/"
+    ],
+    "write_via_ingest": [
+      "teams/wharfside/bulletins/"
+    ],
+    "session_log": "teams/wharfside/_sessions/monthly-bulletin/",
+    "always_load": [
+      "spine/preferences/seven-habits-of-effective-agents.md",
+      "teams/wharfside/_team.md",
+      "spine/preferences/bulletin-publishing-workflow.md"
+    ]
   },
   "output": {
     "folder": "outputs/",
