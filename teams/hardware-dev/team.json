@@ -4,7 +4,6 @@
   "description": "Hardware product development team covering schematic/PCB design, mechanical engineering, firmware, supply chain, and manufacturing readiness",
   "version": "1.0",
   "created": "2026-04-09",
-
   "members": [
     {
       "agent_id": "systems-engineer",
@@ -37,54 +36,116 @@
       "context_override": null
     }
   ],
-
   "workflow": {
     "description": "Hardware development flow from requirements through production-ready design",
     "stages": [
       {
         "name": "Systems Engineering",
-        "agents": ["systems-engineer"],
-        "outputs": ["ConOps", "System requirements", "System architecture", "Interface specifications", "V&V plan", "Traceability matrix"]
+        "agents": [
+          "systems-engineer"
+        ],
+        "outputs": [
+          "ConOps",
+          "System requirements",
+          "System architecture",
+          "Interface specifications",
+          "V&V plan",
+          "Traceability matrix"
+        ]
       },
       {
         "name": "Requirements Allocation",
-        "agents": ["systems-engineer"],
-        "inputs": ["System requirements", "System architecture"],
-        "outputs": ["Electronics requirements", "Mechanical requirements", "Firmware requirements", "Software requirements", "Pin mapping", "Interface specification"]
+        "agents": [
+          "systems-engineer"
+        ],
+        "inputs": [
+          "System requirements",
+          "System architecture"
+        ],
+        "outputs": [
+          "Electronics requirements",
+          "Mechanical requirements",
+          "Firmware requirements",
+          "Software requirements",
+          "Pin mapping",
+          "Interface specification"
+        ]
       },
       {
         "name": "Design",
-        "agents": ["pcb-designer", "mcad-engineer"],
+        "agents": [
+          "pcb-designer",
+          "mcad-engineer"
+        ],
         "parallel": true,
-        "inputs": ["Hardware requirements", "Pin mapping"],
-        "outputs": ["Schematic", "PCB layout", "Gerbers", "Enclosure STEP", "Board STEP"]
+        "inputs": [
+          "Hardware requirements",
+          "Pin mapping"
+        ],
+        "outputs": [
+          "Schematic",
+          "PCB layout",
+          "Gerbers",
+          "Enclosure STEP",
+          "Board STEP"
+        ]
       },
       {
         "name": "Sourcing",
-        "agents": ["supply-chain-manager"],
-        "inputs": ["Electronic BOM", "Mechanical BOM"],
-        "outputs": ["Costed BOM", "CM quotes", "Risk assessment"]
+        "agents": [
+          "supply-chain-manager"
+        ],
+        "inputs": [
+          "Electronic BOM",
+          "Mechanical BOM"
+        ],
+        "outputs": [
+          "Costed BOM",
+          "CM quotes",
+          "Risk assessment"
+        ]
       },
       {
         "name": "Implementation",
-        "agents": ["firmware-engineer"],
-        "inputs": ["Final schematic", "Pin mapping"],
-        "outputs": ["Firmware binary", "Test procedures", "Flash instructions"]
+        "agents": [
+          "firmware-engineer"
+        ],
+        "inputs": [
+          "Final schematic",
+          "Pin mapping"
+        ],
+        "outputs": [
+          "Firmware binary",
+          "Test procedures",
+          "Flash instructions"
+        ]
       },
       {
         "name": "Validation",
-        "agents": ["dfm-test-engineer"],
-        "inputs": ["Gerbers", "Enclosure design", "Firmware test mode", "CM capabilities"],
-        "outputs": ["DFM report", "Test strategy", "Test fixture spec", "Compliance checklist"]
+        "agents": [
+          "dfm-test-engineer"
+        ],
+        "inputs": [
+          "Gerbers",
+          "Enclosure design",
+          "Firmware test mode",
+          "CM capabilities"
+        ],
+        "outputs": [
+          "DFM report",
+          "Test strategy",
+          "Test fixture spec",
+          "Compliance checklist"
+        ]
       }
     ]
   },
-
   "shared_context": {
-    "buckets": ["hardware-projects"],
+    "buckets": [
+      "hardware-projects"
+    ],
     "outputs_folder": "teams/hardware-dev/outputs"
   },
-
   "project_output": {
     "base_path": "~/Workspaces",
     "structure": "{project_name}/hardware/",
@@ -98,68 +159,153 @@
       "docs/compliance"
     ]
   },
-
   "mcp_servers": [
     "github"
   ],
-
   "orchestration": {
     "mode": "thin-orchestrator",
-    "execution": { "model": "opus", "max_turns": 50 },
-    "routing": {
-      "new-product": ["systems-engineer"],
-      "conops": ["systems-engineer"],
-      "requirements": ["systems-engineer"],
-      "architecture": ["systems-engineer"],
-      "interface": ["systems-engineer"],
-      "integration": ["systems-engineer"],
-      "trade-study": ["systems-engineer"],
-      "v-model": ["systems-engineer"],
-      "verification": ["systems-engineer"],
-      "validation": ["systems-engineer"],
-      "systems-engineering": ["systems-engineer"],
-      "risk": ["systems-engineer"],
-      "change-impact": ["systems-engineer"],
-      "schematic": ["pcb-designer"],
-      "pcb": ["pcb-designer"],
-      "layout": ["pcb-designer"],
-      "kicad": ["pcb-designer"],
-      "circuit": ["pcb-designer"],
-      "enclosure": ["mcad-engineer"],
-      "mechanical": ["mcad-engineer"],
-      "mounting": ["mcad-engineer"],
-      "cad": ["mcad-engineer"],
-      "3d-print": ["mcad-engineer"],
-      "firmware": ["firmware-engineer"],
-      "embedded": ["firmware-engineer"],
-      "esp32": ["firmware-engineer"],
-      "jetson": ["firmware-engineer"],
-      "driver": ["firmware-engineer"],
-      "ota": ["firmware-engineer"],
-      "bom": ["supply-chain-manager"],
-      "sourcing": ["supply-chain-manager"],
-      "cost": ["supply-chain-manager"],
-      "component": ["supply-chain-manager"],
-      "manufacturer": ["supply-chain-manager"],
-      "dfm": ["dfm-test-engineer"],
-      "manufacturing": ["dfm-test-engineer"],
-      "test": ["dfm-test-engineer"],
-      "compliance": ["dfm-test-engineer"],
-      "fcc": ["dfm-test-engineer"],
-      "certification": ["dfm-test-engineer"],
-      "general": ["pcb-designer"]
+    "execution": {
+      "model": "opus",
+      "max_turns": 50
     },
-    "delegation_strategy": "Route hardware tasks to the appropriate specialist. For new product initiatives, start with systems-engineer for ConOps, requirements decomposition, system architecture, and interface specs. Systems-engineer then allocates requirements to specialists. For detailed design, fan out to pcb-designer and mcad-engineer in parallel, with firmware-engineer for pin mapping. Supply chain follows design. DFM is the final gate. Systems-engineer coordinates cross-team integration with software-project team for HW/SW products. For focused tasks on existing designs (e.g., 'update the schematic'), route directly to the specialist.\n\n**Claude 4.7 delegation note:** Opus 4.7 defaults to fewer subagents and fewer tool calls than prior models. Counteract that here — when a request matches a specialist's domain, delegate rather than answering from training knowledge. Handle inline ONLY for: routing/clarifying questions back to the user, trivial lookups in already-loaded context, or synthesizing specialist briefings into the final response. Everything else goes to a specialist.",
+    "routing": {
+      "new-product": [
+        "systems-engineer"
+      ],
+      "conops": [
+        "systems-engineer"
+      ],
+      "requirements": [
+        "systems-engineer"
+      ],
+      "architecture": [
+        "systems-engineer"
+      ],
+      "interface": [
+        "systems-engineer"
+      ],
+      "integration": [
+        "systems-engineer"
+      ],
+      "trade-study": [
+        "systems-engineer"
+      ],
+      "v-model": [
+        "systems-engineer"
+      ],
+      "verification": [
+        "systems-engineer"
+      ],
+      "validation": [
+        "systems-engineer"
+      ],
+      "systems-engineering": [
+        "systems-engineer"
+      ],
+      "risk": [
+        "systems-engineer"
+      ],
+      "change-impact": [
+        "systems-engineer"
+      ],
+      "schematic": [
+        "pcb-designer"
+      ],
+      "pcb": [
+        "pcb-designer"
+      ],
+      "layout": [
+        "pcb-designer"
+      ],
+      "kicad": [
+        "pcb-designer"
+      ],
+      "circuit": [
+        "pcb-designer"
+      ],
+      "enclosure": [
+        "mcad-engineer"
+      ],
+      "mechanical": [
+        "mcad-engineer"
+      ],
+      "mounting": [
+        "mcad-engineer"
+      ],
+      "cad": [
+        "mcad-engineer"
+      ],
+      "3d-print": [
+        "mcad-engineer"
+      ],
+      "firmware": [
+        "firmware-engineer"
+      ],
+      "embedded": [
+        "firmware-engineer"
+      ],
+      "esp32": [
+        "firmware-engineer"
+      ],
+      "jetson": [
+        "firmware-engineer"
+      ],
+      "driver": [
+        "firmware-engineer"
+      ],
+      "ota": [
+        "firmware-engineer"
+      ],
+      "bom": [
+        "supply-chain-manager"
+      ],
+      "sourcing": [
+        "supply-chain-manager"
+      ],
+      "cost": [
+        "supply-chain-manager"
+      ],
+      "component": [
+        "supply-chain-manager"
+      ],
+      "manufacturer": [
+        "supply-chain-manager"
+      ],
+      "dfm": [
+        "dfm-test-engineer"
+      ],
+      "manufacturing": [
+        "dfm-test-engineer"
+      ],
+      "test": [
+        "dfm-test-engineer"
+      ],
+      "compliance": [
+        "dfm-test-engineer"
+      ],
+      "fcc": [
+        "dfm-test-engineer"
+      ],
+      "certification": [
+        "dfm-test-engineer"
+      ],
+      "general": [
+        "pcb-designer"
+      ]
+    },
+    "delegation_strategy": "Route hardware tasks to the appropriate specialist. For new product initiatives, start with systems-engineer for ConOps, requirements decomposition, system architecture, and interface specs. Systems-engineer then allocates requirements to specialists. For detailed design, fan out to pcb-designer and mcad-engineer in parallel, with firmware-engineer for pin mapping. Supply chain follows design. DFM is the final gate. Systems-engineer coordinates cross-team integration with software-project team for HW/SW products. For focused tasks on existing designs (e.g., 'update the schematic'), route directly to the specialist.\n\n**Claude 4.7 delegation note:** Opus 4.7 defaults to fewer subagents and fewer tool calls than prior models. Counteract that here \u2014 when a request matches a specialist's domain, delegate rather than answering from training knowledge. Handle inline ONLY for: routing/clarifying questions back to the user, trivial lookups in already-loaded context, or synthesizing specialist briefings into the final response. Everything else goes to a specialist.",
     "session_summary": {
       "enabled": true,
       "output_path": "context-buckets/session-logs/files/"
-    }
+    },
+    "orchestrator_instructions": "\n\n## Wiki Session Log (MANDATORY)\n\nAfter every substantive interaction with Nick (anything that lasted more than a quick yes/no exchange OR produced an artifact, decision, or specialist briefing), append a one-paragraph summary to:\n\n`~/Workspaces/wiki/teams/hardware-dev/_sessions/YYYY-MM-DD.md`\n\n(Create the file if it does not exist. Append in chronological order \u2014 newest at the bottom of the day's file. Use today's date in YYYY-MM-DD format.)\n\nThe summary should cover:\n- **Asked:** one line \u2014 what Nick requested\n- **Specialists:** which agents invoked (if any)\n- **Output:** key artifacts produced, paths to files created, decisions made\n- **Wiki-ingest candidates:** any facts surfaced that should become permanent wiki pages (flag explicitly for next ingest pass)\n\nThis is the continuous session-logging surface that the `wiki-ingest` agent reads during the nightly lint to promote wiki-worthy content to permanent pages. **The wiki replaces the `/save` slash command for session continuity \u2014 but only if you write to it.**\n\nSkip the session log for trivial exchanges: pure yes/no answers, single-fact lookups, conversational meta-questions with no work product.\n"
   },
-
   "cross_team_collaboration": {
     "software-project": {
       "description": "Hardware-software integration for products with both custom hardware and application software",
-      "shared_buckets": ["hardware-projects"],
+      "shared_buckets": [
+        "hardware-projects"
+      ],
       "interfaces": [
         {
           "from": "firmware-engineer",
@@ -179,7 +325,6 @@
       ]
     }
   },
-
   "collaboration_rules": {
     "coordination_mode": "orchestrated",
     "handoff_protocol": "stage-based",

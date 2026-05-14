@@ -2,11 +2,10 @@
   "id": "altium-solutions",
   "skill_alias": "altium",
   "name": "Altium Solutions Team",
-  "description": "End-to-end customer lifecycle team for Altium sales and solutions, accelerating every phase: Lead → Qualification → Technical Sales → Business Sales → Deployment → Support → Expansion",
+  "description": "End-to-end customer lifecycle team for Altium sales and solutions, accelerating every phase: Lead \u2192 Qualification \u2192 Technical Sales \u2192 Business Sales \u2192 Deployment \u2192 Support \u2192 Expansion",
   "version": "2.0",
   "created": "2026-01-27",
   "updated": "2026-01-27",
-
   "members": [
     {
       "agent_id": "account-researcher",
@@ -89,47 +88,89 @@
       "context_override": null
     }
   ],
-
   "workflow": {
     "description": "Customer lifecycle from lead through deployment and ongoing support",
     "stages": [
       {
         "name": "Discovery",
-        "agents": ["account-researcher"],
-        "outputs": ["Account Brief"],
+        "agents": [
+          "account-researcher"
+        ],
+        "outputs": [
+          "Account Brief"
+        ],
         "entry_point": true
       },
       {
         "name": "Qualification",
-        "agents": ["qualification-analyst"],
-        "inputs": ["Account Brief"],
-        "outputs": ["Qualification Scorecard"]
+        "agents": [
+          "qualification-analyst"
+        ],
+        "inputs": [
+          "Account Brief"
+        ],
+        "outputs": [
+          "Qualification Scorecard"
+        ]
       },
       {
         "name": "Technical & Business Sales",
-        "agents": ["solution-architect", "value-engineer"],
+        "agents": [
+          "solution-architect",
+          "value-engineer"
+        ],
         "parallel": true,
-        "inputs": ["Qualification Scorecard"],
-        "outputs": ["Solution Design", "Business Case"]
+        "inputs": [
+          "Qualification Scorecard"
+        ],
+        "outputs": [
+          "Solution Design",
+          "Business Case"
+        ]
       },
       {
         "name": "Proposal",
-        "agents": ["proposal-writer"],
-        "inputs": ["Solution Design", "Business Case"],
-        "outputs": ["Proposal", "RFP Response"],
-        "supports": ["competitive-intel"]
+        "agents": [
+          "proposal-writer"
+        ],
+        "inputs": [
+          "Solution Design",
+          "Business Case"
+        ],
+        "outputs": [
+          "Proposal",
+          "RFP Response"
+        ],
+        "supports": [
+          "competitive-intel"
+        ]
       },
       {
         "name": "Close",
-        "agents": ["deal-strategist"],
-        "inputs": ["Proposal"],
-        "outputs": ["Deal Strategy", "Close Plan", "Salesforce Notes"]
+        "agents": [
+          "deal-strategist"
+        ],
+        "inputs": [
+          "Proposal"
+        ],
+        "outputs": [
+          "Deal Strategy",
+          "Close Plan",
+          "Salesforce Notes"
+        ]
       },
       {
         "name": "Deployment",
-        "agents": ["deployment-manager"],
-        "inputs": ["Deal Summary"],
-        "outputs": ["Deployment Plan", "Status Reports"],
+        "agents": [
+          "deployment-manager"
+        ],
+        "inputs": [
+          "Deal Summary"
+        ],
+        "outputs": [
+          "Deployment Plan",
+          "Status Reports"
+        ],
         "coordinates": [
           "ecad-specialist",
           "migration-specialist",
@@ -150,7 +191,9 @@
           "infrastructure-specialist"
         ],
         "parallel": true,
-        "inputs": ["Deployment Plan"],
+        "inputs": [
+          "Deployment Plan"
+        ],
         "outputs": [
           "ECAD Config",
           "Migration Report",
@@ -163,9 +206,17 @@
       },
       {
         "name": "Ongoing Support",
-        "agents": ["customer-support"],
-        "inputs": ["Deployment Summary"],
-        "outputs": ["Training Plan", "Health Reports", "Expansion Recommendations"],
+        "agents": [
+          "customer-support"
+        ],
+        "inputs": [
+          "Deployment Summary"
+        ],
+        "outputs": [
+          "Training Plan",
+          "Health Reports",
+          "Expansion Recommendations"
+        ],
         "loops_to": "Discovery"
       }
     ],
@@ -173,21 +224,30 @@
       {
         "agent_id": "competitive-intel",
         "description": "Available on-demand throughout the sales process",
-        "triggers": ["Competitive situation", "RFP with competitor mentions", "Objection handling needed"]
+        "triggers": [
+          "Competitive situation",
+          "RFP with competitor mentions",
+          "Objection handling needed"
+        ]
       },
       {
         "agent_id": "presentation",
         "description": "Available on-demand for creating Altium-branded presentations",
-        "triggers": ["Presentation needed", "Customer deck requested", "Internal briefing", "Deal review deck"]
+        "triggers": [
+          "Presentation needed",
+          "Customer deck requested",
+          "Internal briefing",
+          "Deal review deck"
+        ]
       }
     ]
   },
-
   "shared_context": {
-    "buckets": ["altium-playbook"],
+    "buckets": [
+      "altium-playbook"
+    ],
     "outputs_folder": "teams/altium-solutions/outputs"
   },
-
   "project_output": {
     "base_path": "~/Workspaces/Altium/Deals",
     "structure": "{company_name}/",
@@ -202,7 +262,6 @@
       "presentation"
     ]
   },
-
   "mcp_servers": [
     "gmail",
     "google-docs",
@@ -210,43 +269,79 @@
     "chrome",
     "powerpoint"
   ],
-
   "orchestration": {
     "mode": "thin-orchestrator",
-    "execution": { "model": "opus", "max_turns": 50 },
-    "routing": {
-      "account-research": ["account-researcher"],
-      "qualification": ["qualification-analyst"],
-      "solution-design": ["solution-architect"],
-      "roi-business-case": ["value-engineer"],
-      "competitive": ["competitive-intel"],
-      "proposal": ["proposal-writer"],
-      "deal-strategy": ["deal-strategist"],
-      "deployment": ["deployment-manager"],
-      "ecad": ["ecad-specialist"],
-      "migration": ["migration-specialist"],
-      "mcad": ["mcad-specialist"],
-      "plm": ["plm-specialist"],
-      "erp-supply": ["erp-supplychain-specialist"],
-      "infrastructure": ["infrastructure-specialist"],
-      "support": ["customer-support"],
-      "presentation": ["presentation"],
-      "general": ["account-researcher", "qualification-analyst"]
+    "execution": {
+      "model": "opus",
+      "max_turns": 50
     },
-    "delegation_strategy": "Follow customer lifecycle stages. Start with Discovery (account-researcher), then Qualification, then parallel Technical & Business Sales, etc. Always delegate deep work to specialists.\n\n**Claude 4.7 delegation note:** Opus 4.7 defaults to fewer subagents and fewer tool calls than prior models. Counteract that here — when a request matches a specialist's domain, delegate rather than answering from training knowledge. Handle inline ONLY for: routing/clarifying questions back to the user, trivial lookups in already-loaded context, or synthesizing specialist briefings into the final response. Everything else goes to a specialist.",
+    "routing": {
+      "account-research": [
+        "account-researcher"
+      ],
+      "qualification": [
+        "qualification-analyst"
+      ],
+      "solution-design": [
+        "solution-architect"
+      ],
+      "roi-business-case": [
+        "value-engineer"
+      ],
+      "competitive": [
+        "competitive-intel"
+      ],
+      "proposal": [
+        "proposal-writer"
+      ],
+      "deal-strategy": [
+        "deal-strategist"
+      ],
+      "deployment": [
+        "deployment-manager"
+      ],
+      "ecad": [
+        "ecad-specialist"
+      ],
+      "migration": [
+        "migration-specialist"
+      ],
+      "mcad": [
+        "mcad-specialist"
+      ],
+      "plm": [
+        "plm-specialist"
+      ],
+      "erp-supply": [
+        "erp-supplychain-specialist"
+      ],
+      "infrastructure": [
+        "infrastructure-specialist"
+      ],
+      "support": [
+        "customer-support"
+      ],
+      "presentation": [
+        "presentation"
+      ],
+      "general": [
+        "account-researcher",
+        "qualification-analyst"
+      ]
+    },
+    "delegation_strategy": "Follow customer lifecycle stages. Start with Discovery (account-researcher), then Qualification, then parallel Technical & Business Sales, etc. Always delegate deep work to specialists.\n\n**Claude 4.7 delegation note:** Opus 4.7 defaults to fewer subagents and fewer tool calls than prior models. Counteract that here \u2014 when a request matches a specialist's domain, delegate rather than answering from training knowledge. Handle inline ONLY for: routing/clarifying questions back to the user, trivial lookups in already-loaded context, or synthesizing specialist briefings into the final response. Everything else goes to a specialist.",
     "session_summary": {
       "enabled": true,
       "output_path": "context-buckets/session-logs/files/"
-    }
+    },
+    "orchestrator_instructions": "\n\n## Wiki Session Log (MANDATORY)\n\nAfter every substantive interaction with Nick (anything that lasted more than a quick yes/no exchange OR produced an artifact, decision, or specialist briefing), append a one-paragraph summary to:\n\n`~/Workspaces/wiki/teams/altium/_sessions/YYYY-MM-DD.md`\n\n(Create the file if it does not exist. Append in chronological order \u2014 newest at the bottom of the day's file. Use today's date in YYYY-MM-DD format.)\n\nThe summary should cover:\n- **Asked:** one line \u2014 what Nick requested\n- **Specialists:** which agents invoked (if any)\n- **Output:** key artifacts produced, paths to files created, decisions made\n- **Wiki-ingest candidates:** any facts surfaced that should become permanent wiki pages (flag explicitly for next ingest pass)\n\nThis is the continuous session-logging surface that the `wiki-ingest` agent reads during the nightly lint to promote wiki-worthy content to permanent pages. **The wiki replaces the `/save` slash command for session continuity \u2014 but only if you write to it.**\n\nSkip the session log for trivial exchanges: pure yes/no answers, single-fact lookups, conversational meta-questions with no work product.\n"
   },
-
   "collaboration_rules": {
     "coordination_mode": "orchestrated",
     "handoff_protocol": "stage-based",
     "output_sharing": "structured-summary",
     "notification_email": "nickd@demarconet.com"
   },
-
   "customernode_integration": {
     "enabled": false,
     "notes": "Agent team prepares content that could feed into CustomerNode journeys. Proposal Writer outputs can be formatted for CustomerNode sharing. Deal Strategist can generate CustomerNode journey recommendations.",

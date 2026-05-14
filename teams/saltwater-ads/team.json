@@ -8,7 +8,7 @@
   "members": [
     {
       "agent_id": "hook-generator",
-      "role": "The only LLM-driven agent. Generates 3 hook variants × 3 sub-variants per brief, validated against brand bucket rules before persist.",
+      "role": "The only LLM-driven agent. Generates 3 hook variants \u00d7 3 sub-variants per brief, validated against brand bucket rules before persist.",
       "context_override": null
     }
   ],
@@ -25,7 +25,7 @@
       "name": "Triple Whale Connector",
       "kind": "deterministic-service",
       "code_path": "apps/saltwater-ads/lib/services/tw-connector.ts",
-      "purpose": "Read-only access to TW Enterprise API. Account-level summary metrics via /summary-page/get-data; customer journeys via /attribution/get-orders-with-journeys-v2. Per-ad ROAS NOT exposed via key-auth — Joe's gut-call top 5 is the primary winner-seed source. Graceful degradation when TW unreachable."
+      "purpose": "Read-only access to TW Enterprise API. Account-level summary metrics via /summary-page/get-data; customer journeys via /attribution/get-orders-with-journeys-v2. Per-ad ROAS NOT exposed via key-auth \u2014 Joe's gut-call top 5 is the primary winner-seed source. Graceful degradation when TW unreachable."
     },
     {
       "id": "render-orchestrator",
@@ -50,26 +50,32 @@
     }
   ],
   "shared_context": {
-    "buckets": ["saltwater-brand"],
+    "buckets": [
+      "saltwater-brand"
+    ],
     "outputs_folder": "teams/saltwater-ads/outputs"
   },
   "orchestration": {
     "mode": "implementation-app",
-    "execution": { "model": "sonnet", "max_turns": 50 },
+    "execution": {
+      "model": "sonnet",
+      "max_turns": 50
+    },
     "delegation_strategy": "Unlike most AA teams, the saltwater-ads team is implemented as a standalone web app at apps/saltwater-ads/. The Hook Generator agent is invoked from inside that app via lib/llm/anthropic.ts; the five companion services are TypeScript modules in lib/services/. The team.json registration documents the conceptual roster but day-to-day execution happens inside the Bun + Hono + worker process, not via Task() delegation.",
     "session_summary": {
       "enabled": true,
       "output_path": "context-buckets/session-logs/files/"
-    }
+    },
+    "orchestrator_instructions": "\n\n## Wiki Session Log (MANDATORY)\n\nAfter every substantive interaction with Nick (anything that lasted more than a quick yes/no exchange OR produced an artifact, decision, or specialist briefing), append a one-paragraph summary to:\n\n`~/Workspaces/wiki/teams/saltwater-ads/_sessions/YYYY-MM-DD.md`\n\n(Create the file if it does not exist. Append in chronological order \u2014 newest at the bottom of the day's file. Use today's date in YYYY-MM-DD format.)\n\nThe summary should cover:\n- **Asked:** one line \u2014 what Nick requested\n- **Specialists:** which agents invoked (if any)\n- **Output:** key artifacts produced, paths to files created, decisions made\n- **Wiki-ingest candidates:** any facts surfaced that should become permanent wiki pages (flag explicitly for next ingest pass)\n\nThis is the continuous session-logging surface that the `wiki-ingest` agent reads during the nightly lint to promote wiki-worthy content to permanent pages. **The wiki replaces the `/save` slash command for session continuity \u2014 but only if you write to it.**\n\nSkip the session log for trivial exchanges: pure yes/no answers, single-fact lookups, conversational meta-questions with no work product.\n"
   },
   "operator_model": {
-    "primary": "Joe DeMarco (joe@saltwaterclothingco.com) — daily user via web app",
-    "builder_maintainer": "Nick DeMarco (nickd@demarconet.com) — Sprint 1.5 maintainer at 5-10 hr/month through month 6",
-    "secondary": "Buddy DeMarco — Sprint 2 signed-link review only (no account in Sprint 1)"
+    "primary": "Joe DeMarco (joe@saltwaterclothingco.com) \u2014 daily user via web app",
+    "builder_maintainer": "Nick DeMarco (nickd@demarconet.com) \u2014 Sprint 1.5 maintainer at 5-10 hr/month through month 6",
+    "secondary": "Buddy DeMarco \u2014 Sprint 2 signed-link review only (no account in Sprint 1)"
   },
   "deployment_target": {
     "sprint_1": "local + Tailscale",
-    "sprint_1_5": "TBD per PRD §12 Q6 — single VPS / Fly.io / Railway, NOT serverless (FFmpeg + persistent SQLite required)",
+    "sprint_1_5": "TBD per PRD \u00a712 Q6 \u2014 single VPS / Fly.io / Railway, NOT serverless (FFmpeg + persistent SQLite required)",
     "may_export_via": "scripts/build-starter.js (Apr 17, 2026 starter kit)"
   },
   "spec_locations": {

@@ -4,7 +4,6 @@
   "description": "Full-stack product development team covering requirements, architecture, UX, development planning, QA, marketing, sales, and legal",
   "version": "1.0",
   "created": "2026-01-19",
-
   "members": [
     {
       "agent_id": "product-requirements",
@@ -52,57 +51,108 @@
       "context_override": null
     }
   ],
-
   "workflow": {
     "description": "Standard product development flow with parallel design phases",
     "stages": [
       {
         "name": "Discovery",
-        "agents": ["product-requirements"],
-        "outputs": ["PRD"]
+        "agents": [
+          "product-requirements"
+        ],
+        "outputs": [
+          "PRD"
+        ]
       },
       {
         "name": "Design",
-        "agents": ["software-architecture", "ux-design"],
+        "agents": [
+          "software-architecture",
+          "ux-design"
+        ],
         "parallel": true,
-        "inputs": ["PRD"],
-        "outputs": ["Architecture Doc", "UX Spec"]
+        "inputs": [
+          "PRD"
+        ],
+        "outputs": [
+          "Architecture Doc",
+          "UX Spec"
+        ]
       },
       {
         "name": "Planning",
-        "agents": ["dev-planning", "qa-strategy"],
+        "agents": [
+          "dev-planning",
+          "qa-strategy"
+        ],
         "parallel": true,
-        "inputs": ["PRD", "Architecture Doc", "UX Spec"],
-        "outputs": ["GitHub Issues", "Test Plan"]
+        "inputs": [
+          "PRD",
+          "Architecture Doc",
+          "UX Spec"
+        ],
+        "outputs": [
+          "GitHub Issues",
+          "Test Plan"
+        ]
       },
       {
         "name": "Implementation",
-        "agents": ["software-developer"],
-        "inputs": ["PRD", "Architecture Doc", "UX Spec", "GitHub Issues", "Test Plan"],
-        "outputs": ["Code", "Pull Requests", "Implementation Notes"]
+        "agents": [
+          "software-developer"
+        ],
+        "inputs": [
+          "PRD",
+          "Architecture Doc",
+          "UX Spec",
+          "GitHub Issues",
+          "Test Plan"
+        ],
+        "outputs": [
+          "Code",
+          "Pull Requests",
+          "Implementation Notes"
+        ]
       },
       {
         "name": "Go-to-Market",
-        "agents": ["marketing", "sales"],
+        "agents": [
+          "marketing",
+          "sales"
+        ],
         "parallel": true,
-        "inputs": ["PRD"],
-        "outputs": ["Marketing Brief", "Launch Plan", "Sales Playbook"]
+        "inputs": [
+          "PRD"
+        ],
+        "outputs": [
+          "Marketing Brief",
+          "Launch Plan",
+          "Sales Playbook"
+        ]
       },
       {
         "name": "Support",
-        "agents": ["legal"],
+        "agents": [
+          "legal"
+        ],
         "parallel_with_any": true,
-        "inputs": ["PRD", "Architecture Doc"],
-        "outputs": ["Risk Assessment", "Compliance Checklist", "Policy Drafts"]
+        "inputs": [
+          "PRD",
+          "Architecture Doc"
+        ],
+        "outputs": [
+          "Risk Assessment",
+          "Compliance Checklist",
+          "Policy Drafts"
+        ]
       }
     ]
   },
-
   "shared_context": {
-    "buckets": ["hardware-projects"],
+    "buckets": [
+      "hardware-projects"
+    ],
     "outputs_folder": "teams/software-project/outputs"
   },
-
   "project_output": {
     "base_path": "~/Workspaces",
     "structure": "{project_name}/",
@@ -116,7 +166,6 @@
       "docs/legal"
     ]
   },
-
   "mcp_servers": [
     "google-docs",
     "gmail-personal",
@@ -124,39 +173,62 @@
     "firebase",
     "google-cloud"
   ],
-
   "orchestration": {
     "mode": "thin-orchestrator",
-    "execution": { "model": "opus", "max_turns": 50 },
-    "routing": {
-      "requirements": ["product-requirements"],
-      "architecture": ["software-architecture"],
-      "ux-design": ["ux-design"],
-      "dev-planning": ["dev-planning"],
-      "qa": ["qa-strategy"],
-      "marketing": ["marketing"],
-      "sales": ["sales"],
-      "legal": ["legal"],
-      "implementation": ["software-developer"],
-      "general": ["product-requirements"]
+    "execution": {
+      "model": "opus",
+      "max_turns": 50
     },
-    "delegation_strategy": "Follow workflow stages. For new projects, start with Discovery (product-requirements). Respect stage dependencies and run parallel stages simultaneously. Always delegate deep work to specialists.\n\n**Claude 4.7 delegation note:** Opus 4.7 defaults to fewer subagents and fewer tool calls than prior models. Counteract that here — when a request matches a specialist's domain, delegate rather than answering from training knowledge. Handle inline ONLY for: routing/clarifying questions back to the user, trivial lookups in already-loaded context, or synthesizing specialist briefings into the final response. Everything else goes to a specialist.",
+    "routing": {
+      "requirements": [
+        "product-requirements"
+      ],
+      "architecture": [
+        "software-architecture"
+      ],
+      "ux-design": [
+        "ux-design"
+      ],
+      "dev-planning": [
+        "dev-planning"
+      ],
+      "qa": [
+        "qa-strategy"
+      ],
+      "marketing": [
+        "marketing"
+      ],
+      "sales": [
+        "sales"
+      ],
+      "legal": [
+        "legal"
+      ],
+      "implementation": [
+        "software-developer"
+      ],
+      "general": [
+        "product-requirements"
+      ]
+    },
+    "delegation_strategy": "Follow workflow stages. For new projects, start with Discovery (product-requirements). Respect stage dependencies and run parallel stages simultaneously. Always delegate deep work to specialists.\n\n**Claude 4.7 delegation note:** Opus 4.7 defaults to fewer subagents and fewer tool calls than prior models. Counteract that here \u2014 when a request matches a specialist's domain, delegate rather than answering from training knowledge. Handle inline ONLY for: routing/clarifying questions back to the user, trivial lookups in already-loaded context, or synthesizing specialist briefings into the final response. Everything else goes to a specialist.",
     "session_summary": {
       "enabled": true,
       "output_path": "context-buckets/session-logs/files/"
-    }
+    },
+    "orchestrator_instructions": "\n\n## Wiki Session Log (MANDATORY)\n\nAfter every substantive interaction with Nick (anything that lasted more than a quick yes/no exchange OR produced an artifact, decision, or specialist briefing), append a one-paragraph summary to:\n\n`~/Workspaces/wiki/teams/software-project/_sessions/YYYY-MM-DD.md`\n\n(Create the file if it does not exist. Append in chronological order \u2014 newest at the bottom of the day's file. Use today's date in YYYY-MM-DD format.)\n\nThe summary should cover:\n- **Asked:** one line \u2014 what Nick requested\n- **Specialists:** which agents invoked (if any)\n- **Output:** key artifacts produced, paths to files created, decisions made\n- **Wiki-ingest candidates:** any facts surfaced that should become permanent wiki pages (flag explicitly for next ingest pass)\n\nThis is the continuous session-logging surface that the `wiki-ingest` agent reads during the nightly lint to promote wiki-worthy content to permanent pages. **The wiki replaces the `/save` slash command for session continuity \u2014 but only if you write to it.**\n\nSkip the session log for trivial exchanges: pure yes/no answers, single-fact lookups, conversational meta-questions with no work product.\n"
   },
-
   "collaboration_rules": {
     "coordination_mode": "orchestrated",
     "handoff_protocol": "stage-based",
     "output_sharing": "summarized",
     "notification_email": "nickd@demarconet.com"
   },
-
   "feedback_loop": {
     "enabled": true,
-    "agents": ["software-developer"],
+    "agents": [
+      "software-developer"
+    ],
     "feedback_path": "agents/{agent_id}/feedback.jsonl",
     "improver_agent": "improver",
     "min_entries_before_improve": 3,

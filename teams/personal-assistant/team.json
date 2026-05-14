@@ -5,7 +5,6 @@
   "description": "Nick's personal assistant team led by Max. Handles research with persistent caching, email management, document creation, knowledge management, and task tracking.",
   "version": "1.0",
   "created": "2026-02-01",
-
   "members": [
     {
       "agent_id": "personal-assistant",
@@ -23,31 +22,49 @@
       "context_override": null
     }
   ],
-
   "shared_context": {
-    "buckets": ["research-cache", "personal-notes"],
+    "buckets": [
+      "research-cache",
+      "personal-notes"
+    ],
     "outputs_folder": "teams/personal-assistant/outputs"
   },
-
   "orchestration": {
     "mode": "thin-orchestrator",
-    "execution": { "model": "opus", "max_turns": 50 },
-    "routing": {
-      "garage-sales": ["garage-sale-planner"],
-      "amazon-shopping": ["amazon-shopper"],
-      "web-research": ["web-research"],
-      "browser-tasks": ["chrome-browser"],
-      "document-search": ["rag-search"],
-      "pdf-work": ["pdf-scribe"],
-      "general": ["web-research"]
+    "execution": {
+      "model": "opus",
+      "max_turns": 50
     },
-    "delegation_strategy": "Max handles simple tasks directly (email, notes, calendar). For deep research, PDF processing, or browser automation, delegate to specialist subagents. Keep context lean by offloading heavy analysis.\n\n**Claude 4.7 delegation note:** Opus 4.7 defaults to fewer subagents and fewer tool calls than prior models. Counteract that here — when a request matches a specialist's domain, delegate rather than answering from training knowledge. Handle inline ONLY for: routing/clarifying questions back to the user, trivial lookups in already-loaded context, or synthesizing specialist briefings into the final response. Everything else goes to a specialist.",
+    "routing": {
+      "garage-sales": [
+        "garage-sale-planner"
+      ],
+      "amazon-shopping": [
+        "amazon-shopper"
+      ],
+      "web-research": [
+        "web-research"
+      ],
+      "browser-tasks": [
+        "chrome-browser"
+      ],
+      "document-search": [
+        "rag-search"
+      ],
+      "pdf-work": [
+        "pdf-scribe"
+      ],
+      "general": [
+        "web-research"
+      ]
+    },
+    "delegation_strategy": "Max handles simple tasks directly (email, notes, calendar). For deep research, PDF processing, or browser automation, delegate to specialist subagents. Keep context lean by offloading heavy analysis.\n\n**Claude 4.7 delegation note:** Opus 4.7 defaults to fewer subagents and fewer tool calls than prior models. Counteract that here \u2014 when a request matches a specialist's domain, delegate rather than answering from training knowledge. Handle inline ONLY for: routing/clarifying questions back to the user, trivial lookups in already-loaded context, or synthesizing specialist briefings into the final response. Everything else goes to a specialist.",
     "session_summary": {
       "enabled": true,
       "output_path": "context-buckets/session-logs/files/"
-    }
+    },
+    "orchestrator_instructions": "\n\n## Wiki Session Log (MANDATORY)\n\nAfter every substantive interaction with Nick (anything that lasted more than a quick yes/no exchange OR produced an artifact, decision, or specialist briefing), append a one-paragraph summary to:\n\n`~/Workspaces/wiki/teams/personal-assistant/_sessions/YYYY-MM-DD.md`\n\n(Create the file if it does not exist. Append in chronological order \u2014 newest at the bottom of the day's file. Use today's date in YYYY-MM-DD format.)\n\nThe summary should cover:\n- **Asked:** one line \u2014 what Nick requested\n- **Specialists:** which agents invoked (if any)\n- **Output:** key artifacts produced, paths to files created, decisions made\n- **Wiki-ingest candidates:** any facts surfaced that should become permanent wiki pages (flag explicitly for next ingest pass)\n\nThis is the continuous session-logging surface that the `wiki-ingest` agent reads during the nightly lint to promote wiki-worthy content to permanent pages. **The wiki replaces the `/save` slash command for session continuity \u2014 but only if you write to it.**\n\nSkip the session log for trivial exchanges: pure yes/no answers, single-fact lookups, conversational meta-questions with no work product.\n"
   },
-
   "collaboration_rules": {
     "coordination_mode": "orchestrated",
     "handoff_protocol": "task-delegation",
