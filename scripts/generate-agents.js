@@ -23,6 +23,14 @@ const TEAMS_DIR = path.join(__dirname, '..', 'teams');
 const OUTPUT_AGENTS_DIR = path.join(__dirname, '..', '.claude', 'agents');
 const OUTPUT_SKILLS_DIR = path.join(__dirname, '..', '.claude', 'skills');
 
+// Wiki knowledge base root. Resolves WIKI_REPO env var, then ~/Workspaces/wiki.
+function resolveWikiRoot() {
+  if (process.env.WIKI_REPO) return process.env.WIKI_REPO;
+  const home = process.env.HOME || process.env.USERPROFILE || '';
+  return path.join(home, 'Workspaces', 'wiki');
+}
+const WIKI_ROOT = resolveWikiRoot();
+
 // MCP Server mapping: Agent Architect config -> Claude Code tools
 // All external services are accessed via Bash CLI commands (gog, python, curl).
 // No MCP tool patterns needed. The mcp_servers field in config.json still
@@ -30,6 +38,55 @@ const OUTPUT_SKILLS_DIR = path.join(__dirname, '..', '.claude', 'skills');
 const MCP_SERVER_MAPPING = {
   // All map to Bash (already in BASE_TOOLS) — no special tool patterns.
 };
+
+// ============================================================================
+// Agentskills.io spec validation (https://agentskills.io)
+// Borrowed from badlogic/pi-mono packages/coding-agent/src/core/skills.ts
+// ============================================================================
+
+const MAX_AGENT_ID_LENGTH = 64;
+const MAX_DESCRIPTION_LENGTH = 1024;
+
+/**
+ * Validate that config.json + parent directory satisfy the agentskills.io
+ * skill spec. Per spec: name (our config.id) must be lowercase kebab-case,
+ * match parent directory, ≤ 64 chars; description required, ≤ 1024 chars.
+ *
+ * Lenient: returns warning strings, does not fail generation.
+ */
+function validateAgentSpec(config, parentDirName) {
+  const warnings = [];
+  const id = config.id;
+
+  if (!id || typeof id !== 'string') {
+    warnings.push(`config.id is missing or not a string`);
+  } else {
+    if (id !== parentDirName) {
+      warnings.push(`config.id "${id}" does not match parent directory "${parentDirName}"`);
+    }
+    if (id.length > MAX_AGENT_ID_LENGTH) {
+      warnings.push(`config.id exceeds ${MAX_AGENT_ID_LENGTH} characters (${id.length})`);
+    }
+    if (!/^[a-z0-9-]+$/.test(id)) {
+      warnings.push(`config.id "${id}" contains invalid characters (must be lowercase a-z, 0-9, hyphens only)`);
+    }
+    if (id.startsWith('-') || id.endsWith('-')) {
+      warnings.push(`config.id "${id}" must not start or end with a hyphen`);
+    }
+    if (id.includes('--')) {
+      warnings.push(`config.id "${id}" must not contain consecutive hyphens`);
+    }
+  }
+
+  const desc = config.description;
+  if (!desc || typeof desc !== 'string' || !desc.trim()) {
+    warnings.push('config.description is required and must be non-empty');
+  } else if (desc.length > MAX_DESCRIPTION_LENGTH) {
+    warnings.push(`config.description exceeds ${MAX_DESCRIPTION_LENGTH} characters (${desc.length})`);
+  }
+
+  return warnings;
+}
 
 // CLI tool documentation injected into generated skills/agents based on mcp_servers list.
 // These tell agents HOW to use each service via CLI commands.
@@ -471,10 +528,81 @@ function extractEmailConfig(config) {
 }
 
 /**
+ * Extract wiki_access block and emit read paths, write_via_ingest paths,
+ * session_log location, and inline always_load file contents. Replaces
+ * context_buckets.assigned during the wiki migration; both may coexist
+ * (wiki_access wins with a compat warning logged).
+ */
+function extractWikiAccess(config) {
+  const wiki = config.wiki_access;
+  if (!wiki) return null;
+
+  const lines = ['### Wiki Knowledge Base Access', ''];
+
+  const repoRoot = wiki.repo_root && wiki.repo_root.includes('${WIKI_REPO}')
+    ? wiki.repo_root.replace('${WIKI_REPO}', WIKI_ROOT)
+    : (wiki.repo_root || WIKI_ROOT);
+  lines.push(`**Wiki root:** \`${repoRoot}\``);
+  lines.push('');
+
+  if (Array.isArray(wiki.read) && wiki.read.length > 0) {
+    lines.push('**Read paths (prefix-scoped):**');
+    for (const p of wiki.read) {
+      lines.push(`- \`${p}\``);
+    }
+    lines.push('');
+  }
+
+  if (Array.isArray(wiki.write_via_ingest) && wiki.write_via_ingest.length > 0) {
+    lines.push('**Write paths (via wiki-ingest only):**');
+    for (const p of wiki.write_via_ingest) {
+      lines.push(`- \`${p}\``);
+    }
+    lines.push('');
+    lines.push('When you need to write to these paths, do NOT write directly. Produce a structured briefing and delegate to the **wiki-ingest** specialist with operation `query-as-write` or `ingest`.');
+    lines.push('');
+  }
+
+  if (wiki.session_log) {
+    lines.push(`**Session log:** Append a brief summary of non-trivial work to \`${wiki.session_log}<YYYY-MM-DD>.md\`. Orchestrators do this after a specialist returns.`);
+    lines.push('');
+  }
+
+  // Inline always_load file contents so philosophy/team docs are in the agent's prompt.
+  if (Array.isArray(wiki.always_load) && wiki.always_load.length > 0) {
+    lines.push('**Always loaded (read at every invocation):**');
+    for (const relPath of wiki.always_load) {
+      const absPath = path.join(repoRoot, relPath);
+      lines.push('');
+      lines.push(`#### \`${relPath}\``);
+      lines.push('');
+      try {
+        const content = fs.readFileSync(absPath, 'utf-8');
+        // Trim leading frontmatter for clarity but keep the body intact.
+        lines.push('```markdown');
+        lines.push(content.trim());
+        lines.push('```');
+      } catch (e) {
+        lines.push(`*(file not found at generation time: \`${absPath}\`)*`);
+      }
+    }
+    lines.push('');
+  }
+
+  return lines.join('\n');
+}
+
+/**
  * Generate the complete Operational Configuration appendix
  */
 function generateOperationalAppendix(config, allAgents) {
+  // Migration compat: warn if both wiki_access and context_buckets.assigned exist.
+  if (config.wiki_access && config.context_buckets?.assigned?.length > 0) {
+    console.warn(`Warning: Agent "${config.id}" defines both wiki_access and context_buckets.assigned — wiki_access takes precedence. Remove context_buckets.assigned once migration is verified.`);
+  }
+
   const sections = [
+    extractWikiAccess(config),
     extractRagConfig(config),
     extractGmailConfig(config),
     extractBehavioralDefaults(config),
@@ -543,6 +671,11 @@ function generateMetadataComments(config) {
   // Preserve context bucket assignments
   if (config.context_buckets) {
     lines.push(`<!-- context_buckets: ${JSON.stringify(config.context_buckets)} -->`);
+  }
+
+  // Preserve wiki_access block (wiki migration)
+  if (config.wiki_access) {
+    lines.push(`<!-- wiki_access: ${JSON.stringify(config.wiki_access)} -->`);
   }
 
   // Preserve delegation config (for orchestrators)
@@ -879,6 +1012,9 @@ function processAgent(agentId, allAgents = {}, dirs = {}) {
     return { skipped: true, reason: `archived: ${config.archived_reason || 'no reason given'}` };
   }
 
+  // Validate against agentskills.io spec — lenient (warnings only, never fails)
+  const specWarnings = validateAgentSpec(config, agentId);
+
   // Read SKILL.md
   const skillContent = readAgentSkill(agentDir);
   if (!skillContent) {
@@ -912,6 +1048,7 @@ function processAgent(agentId, allAgents = {}, dirs = {}) {
     agentOutputPath,
     skillGenerated,
     toolCount: mapMcpServersToTools(config.mcp_servers).length,
+    specWarnings,
   };
 }
 
@@ -1063,6 +1200,11 @@ function main() {
         agentResults.success.push(result);
         const skillLabel = result.skillGenerated ? ' + skill' : '';
         console.log(`  [OK] ${result.name} (${result.agentType}, ${result.model})${skillLabel}`);
+        if (result.specWarnings && result.specWarnings.length > 0) {
+          for (const w of result.specWarnings) {
+            console.log(`       [WARN] ${w}`);
+          }
+        }
       } else if (result.skipped) {
         agentResults.skipped.push({ agentId, ...result });
       } else {
@@ -1101,6 +1243,10 @@ function main() {
   const skillCount = agentResults.success.filter(r => r.skillGenerated).length;
   console.log(`  Skills generated: ${skillCount} (specialists/utilities)`);
   console.log(`  Team orchestrators: ${teamResults.success.length}`);
+  const totalSpecWarnings = agentResults.success.reduce((acc, r) => acc + (r.specWarnings?.length || 0), 0);
+  if (totalSpecWarnings > 0) {
+    console.log(`  Spec warnings: ${totalSpecWarnings} (agentskills.io compliance)`);
+  }
   if (agentResults.errors.length + teamResults.errors.length > 0) {
     console.log(`  Errors: ${agentResults.errors.length + teamResults.errors.length}`);
   }

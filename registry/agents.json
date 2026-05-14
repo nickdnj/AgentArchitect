@@ -1,7 +1,15 @@
 {
   "version": "1.0",
-  "last_updated": "2026-04-30",
+  "last_updated": "2026-05-14",
   "agents": [
+    {
+      "id": "wiki-ingest",
+      "name": "Wiki Ingest",
+      "folder": "agents/wiki-ingest",
+      "teams": [],
+      "created": "2026-05-14",
+      "status": "active"
+    },
     {
       "id": "monthly-bulletin",
       "name": "Monthly Bulletin",

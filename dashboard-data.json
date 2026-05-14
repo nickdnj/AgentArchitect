@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-23T17:32:33Z",
+  "generated_at": "2026-05-14T13:37:44Z",
   "version": "1.0",
   "teams": [
     {
@@ -737,9 +737,68 @@
         "output_sharing": "summarized",
         "notification_email": "nickd@demarconet.com"
       }
+    },
+    {
+      "id": "saltwater-ads",
+      "name": "Saltwater AI Ads Team",
+      "description": "Single-tenant AI ad generation system for Saltwater Clothing Co. One LLM agent (Hook Generator) plus five deterministic services (Brand Bucket Manager, Triple Whale Connector, Render Orchestrator, Assembly, Meta Pusher) generate brand-locked Meta video ads end-to-end. Implementation lives at apps/saltwater-ads/ as a Bun + Hono + Vite/React web app with bun:sqlite. May be exported via scripts/build-starter.js post-validation.",
+      "skill_alias": "saltwater-ads",
+      "created": "2026-04-30",
+      "status": "active",
+      "members": [
+        {
+          "agent_id": "hook-generator",
+          "role": "The only LLM-driven agent. Generates 3 hook variants \u00d7 3 sub-variants per brief, validated against brand bucket rules before persist.",
+          "context_override": null
+        }
+      ],
+      "orchestration": {
+        "mode": "implementation-app",
+        "execution": {
+          "model": "sonnet",
+          "max_turns": 50
+        },
+        "delegation_strategy": "Unlike most AA teams, the saltwater-ads team is implemented as a standalone web app at apps/saltwater-ads/. The Hook Generator agent is invoked from inside that app via lib/llm/anthropic.ts; the five companion services are TypeScript modules in lib/services/. The team.json registration documents the conceptual roster but day-to-day execution happens inside the Bun + Hono + worker process, not via Task() delegation.",
+        "session_summary": {
+          "enabled": true,
+          "output_path": "context-buckets/session-logs/files/"
+        }
+      },
+      "collaboration_rules": {}
     }
   ],
   "agents": [
+    {
+      "id": "wiki-ingest",
+      "name": "Wiki Ingest",
+      "description": "Sole writer to the wiki knowledge base. Owns ingest (raw to wiki), query-as-write (briefing to permanent page), and lint (contradictions, stale claims, orphans). Every operation produces a changelog or lint report.",
+      "agent_type": "specialist",
+      "execution": {
+        "context": "fork",
+        "max_turns": 30,
+        "model": "sonnet"
+      },
+      "expertise": {
+        "domains": [
+          "knowledge curation",
+          "wiki maintenance",
+          "cross-reference linking",
+          "drift detection"
+        ],
+        "capabilities": [
+          "ingest raw source material into curated pages",
+          "promote briefings to permanent wiki pages",
+          "lint for contradictions, stale claims, orphans",
+          "maintain changelog and lint audit trail",
+          "run 10-session sharpen-the-saw audits"
+        ]
+      },
+      "mcp_servers": [],
+      "teams": [],
+      "purpose": "You are the **archivist of the wiki** \u2014 the sole writer to `~/Workspaces/wiki/` (or wherever `WIKI_REPO` points). Every wiki page that is created, updated, or flagged passes through you. You exist so that the wiki has exactly one mind shaping it: knowledge that compounds across sessions instead of being re-derived every query.\n\nYou run on three operations \u2014 `ingest`, `query-as-write`, `lint` \u2014 and you carry one guarantee: nothing happens silently. Every write produces a changelog entry. Every lint pass produces a report. If you can't explain what you did, you didn't do it.\n\nThis is \"Sharpen the Saw\" as a job description.",
+      "status": "active",
+      "created": "2026-05-14"
+    },
     {
       "id": "monthly-bulletin",
       "name": "Monthly Bulletin",
@@ -2598,6 +2657,40 @@
       "purpose": "You are the migration specialist that brings an OpenClaw user's existing AgentSkills into Agent Architect's native format. OpenClaw's skill structure (`~/.openclaw/skills/<name>/SKILL.md` with YAML frontmatter + markdown body) maps cleanly to Agent Architect's `agents/<id>/SKILL.md` + `config.json` pattern, so most migration is a deterministic mapping exercise \u2014 but tool permissions, multi-agent coordination, and messaging-platform bridges need human judgment.\n\nYou are not a blind importer. You interview the user, propose a migration per skill, ask for confirmation, and write the result. Your goal: the user ends up with working Agent Architect agents that preserve the behavior of their original OpenClaw skills, with any lost functionality clearly surfaced rather than silently dropped.",
       "status": "active",
       "created": "2026-04-17"
+    },
+    {
+      "id": "hook-generator",
+      "name": "Hook Generator",
+      "description": "The only LLM-driven agent in the Saltwater AI Ads system. Takes a brief and a snapshotted brand bucket, returns 3 hook variants \u00d7 3 sub-variants for HeyGen lip-sync delivery. Validates output against vocabulary, anti-pattern, and trademark rules before persisting.",
+      "agent_type": "specialist",
+      "execution": {
+        "context": "fork",
+        "max_turns": 1,
+        "model": "sonnet"
+      },
+      "expertise": {
+        "domains": [
+          "ad copywriting",
+          "DTC brand voice",
+          "Saltwater Clothing Co brand language",
+          "hook generation for video ads",
+          "trademark enforcement"
+        ],
+        "capabilities": [
+          "brand-bucket-primed generation",
+          "pattern-locked hook creation (founder / problem_solution / limited_drop)",
+          "vocabulary and anti-pattern validation",
+          "date-gated rule enforcement (Veronica wife-rule, Memorial Day, etc.)",
+          "regen-on-validation-failure (up to 3 retries)"
+        ]
+      },
+      "mcp_servers": [],
+      "teams": [
+        "saltwater-ads"
+      ],
+      "purpose": "The single LLM-driven agent in the Saltwater AI Ads system. Takes a brief and a snapshot of the brand bucket; returns 3 hook variants \u00d7 3 sub-variants. Validates each output against vocabulary, anti-pattern, and trademark rules before persisting.",
+      "status": "active",
+      "created": "2026-04-30"
     }
   ],
   "buckets": [
@@ -2683,21 +2776,43 @@
       ],
       "created": "2026-04-09",
       "status": "active"
+    },
+    {
+      "id": "infoage-docent",
+      "name": "InfoAge Computer Museum Docent Resources",
+      "folder": "context-buckets/infoage-docent",
+      "content_type": "documents",
+      "assigned_to": [
+        "personal-assistant"
+      ],
+      "created": "2026-04-24",
+      "status": "active"
+    },
+    {
+      "id": "saltwater-brand",
+      "name": "Saltwater Brand Bucket",
+      "folder": "context-buckets/saltwater-brand",
+      "content_type": "mixed",
+      "assigned_to": [
+        "saltwater-ads"
+      ],
+      "created": "2026-04-30",
+      "status": "active"
     }
   ],
   "stats": {
-    "total_agents": 50,
-    "active_agents": 49,
+    "total_agents": 52,
+    "active_agents": 51,
     "archived_agents": 1,
-    "total_teams": 6,
-    "total_buckets": 7,
+    "total_teams": 7,
+    "total_buckets": 9,
     "agents_by_type": {
-      "specialist": 45,
+      "specialist": 47,
       "orchestrator": 1,
       "utility": 3
     },
     "agents_by_model": {
-      "sonnet": 36,
+      "sonnet": 38,
       "opus": 11,
       "haiku": 2
     },
@@ -2708,7 +2823,8 @@
       "personal-assistant": 3,
       "youtube-content": 6,
       "hardware-dev": 6,
-      "unaffiliated": 4
+      "saltwater-ads": 1,
+      "unaffiliated": 5
     }
   }
 }
