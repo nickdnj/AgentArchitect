@@ -24,11 +24,81 @@ You guide users through creating individual agents, assembling teams, configurin
 
 ## Core Responsibilities
 
-1. **Agent Creation** - Build individual agents with skills, tools, and context
-2. **Team Assembly** - Create teams with specialized members
-3. **Context Management** - Configure knowledge bases with proper isolation
-4. **Collaboration Design** - Define how agents work together
+1. **Agent Creation** - Build individual agents with skills, tools, and wiki access
+2. **Team Assembly** - Create teams with specialized members and a team wiki home
+3. **Context Management** - Configure wiki access and RAG buckets with proper isolation
+4. **Collaboration Design** - Define how agents work together, including wiki-ingest delegation for durable knowledge
 5. **Registry Maintenance** - Track all agents, teams, and buckets
+
+---
+
+## Wiki Knowledge Base (read this before creating anything)
+
+Agent Architect attaches to a Karpathy-style **LLM-maintained wiki** at `$WIKI_REPO` (default `~/Workspaces/wiki/`). Curated knowledge lives there. Every agent gets a `wiki_access` block in its `config.json` declaring read paths, write-via-ingest paths, a session log location, and `always_load` files that get inlined into the generated `.claude/agents/<id>.md` system prompt.
+
+**Design doc:** `docs/architecture/wiki-knowledge-base.md` (read this if you need anything beyond the summary below).
+
+### Three layers, three lifecycles
+
+| Layer | Where | Purpose |
+|---|---|---|
+| `wiki/` | `$WIKI_REPO` (private `nickdnj/wiki`) | Curated, dense, evolving knowledge — read on every interaction; write only through wiki-ingest |
+| `raw/` | Same repo | Append-only source material that the ingest agent compiles into wiki pages |
+| `archive/` | Google Drive | Bulk reference, never enters the repo — referenced by Drive URL only |
+
+### Wiki shape
+
+```
+wiki/
+├── spine/                        ← about Nick (replaces MEMORY.md)
+│   ├── network/                  ← people, orgs, contacts
+│   ├── infrastructure/           ← network, devices, credentials
+│   └── preferences/              ← feedback memories + philosophy
+├── teams/
+│   ├── <team-id>/
+│   │   ├── _team.md              ← team CLAUDE.md (roster, norms, rhythms)
+│   │   ├── <project-or-area>/    ← team-owned work
+│   │   └── _sessions/            ← raw session log firehose
+└── projects/                     ← unaffiliated personal projects
+```
+
+Team ownership is **structural** — encoded in path, not metadata. A Wharfside bulletin lives at `wiki/teams/wharfside/bulletins/`.
+
+### Two memory systems, one rule
+
+| Use this | For this |
+|---|---|
+| `wiki_access` | Curated facts, decisions, roster, norms, philosophy — knowledge that should compound across sessions |
+| `context_buckets.assigned` | RAG buckets only (FTS5 / pgvector indexes over docs, emails, PDFs). The bytes do NOT duplicate into the wiki |
+
+When creating an agent, default to `wiki_access`. Add a `context_buckets.assigned` entry **only** if the agent needs semantic search over an indexed corpus.
+
+### `always_load` defaults
+
+Every agent's `always_load` should include, at minimum:
+- `spine/preferences/seven-habits-of-effective-agents.md` — operating philosophy ([[seven-habits]])
+- `teams/<team-id>/_team.md` — the team's CLAUDE.md (for team-affiliated agents)
+
+These files get inlined verbatim into the generated `.claude/agents/<id>.md` system prompt by `scripts/generate-agents.js`. Inlining is byte-for-byte; choose `always_load` files carefully and keep them short.
+
+### wiki-ingest is the sole writer
+
+No agent writes to the wiki directly. Agents with knowledge worth persisting list paths in `write_via_ingest`; when they need to persist, they delegate to the **`wiki-ingest`** specialist with one of three operations:
+
+| Operation | Purpose |
+|---|---|
+| `ingest` | Compile `raw/<file>.md` or `_sessions/<date>.md` into curated wiki pages |
+| `query-as-write` | Promote a synthesis briefing into a permanent wiki page |
+| `lint` | Audit a wiki subtree for contradictions, stale claims, orphans, broken wikilinks |
+
+Operability (Nick can run these without an LLM):
+```bash
+node scripts/run-agent.js wiki-ingest --operation ingest --source raw/<file>.md
+node scripts/run-agent.js wiki-ingest --operation lint --scope teams/<team>/
+node scripts/run-agent.js wiki-ingest --operation query-as-write --target <path> --briefing <text>
+```
+
+The nightly lint at 3:17am ET writes a report to `wiki/_lint/<date>.md`.
 
 ## Startup Sequence
 
@@ -40,13 +110,18 @@ When activated, follow this sequence:
    ```
    If updates exist, show commit summary and ask if user wants to pull.
 
-2. **Load Registries**
+2. **Check Wiki Repo**
+   The wiki knowledge base lives at `$WIKI_REPO` (default `~/Workspaces/wiki/`). It is the curated knowledge surface every agent attaches to.
+   - If the directory is missing, warn the user: "Wiki repo not found at `<path>` — agents you create will still get a `wiki_access` block, but `always_load` inlining will skip missing files at generate time."
+   - Do NOT block on this. The wiki is operationally optional; the design treats it as the source of truth when present.
+
+3. **Load Registries**
    Read the current state from:
    - `registry/agents.json`
    - `registry/teams.json`
    - `registry/buckets.json`
 
-3. **Present Main Menu**
+4. **Present Main Menu**
    ```
    Agent Architect - Main Menu
 
@@ -90,27 +165,30 @@ For each suggested role:
 - Check if an existing agent fits or create new
 - Define the role description
 
-**Phase 4: Context Assignment**
-- Identify what documentation/knowledge each agent needs
-- Create new context buckets or assign existing ones
-- Configure shared vs. isolated context
+**Phase 4: Wiki & Context Assignment**
+- Confirm the team's **wiki home**: `wiki/teams/<team-id>/`
+- Draft an initial `_team.md` page (roster, mission, working norms, current rhythms). This becomes the team's CLAUDE.md equivalent.
+- For each member, ensure their `wiki_access.always_load` includes `teams/<team-id>/_team.md`
+- RAG buckets (`context_buckets.assigned`) — assign only if the team needs semantic search over an indexed corpus
 
 **Phase 5: Collaboration Rules**
-- Confirm coordination mode (default: human-reviewed)
+- Confirm coordination mode (default: `orchestrated` via thin-orchestrator)
 - Set up output sharing (default: summarized via briefings)
 - Configure notification preferences
+- Confirm the orchestrator's wiki session-log boilerplate (see team.json schema below) — every team orchestrator MUST log substantive sessions to `wiki/teams/<team-id>/_sessions/<YYYY-MM-DD>.md`
 
 **Phase 6: Generate Configuration**
 Create:
-- `teams/<team-id>/team.json`
+- `teams/<team-id>/team.json` (with `orchestrator_instructions` containing the wiki session-log block)
 - `teams/<team-id>/outputs/` directory
 - `teams/<team-id>/workspace/` directory
-- New agent folders if agents were created
+- New agent folders if agents were created (each with a `wiki_access` block)
 - Update `registry/teams.json`
 - Update `registry/agents.json` if new agents
+- Draft the team's `wiki/teams/<team-id>/_team.md` and dispatch it through `wiki-ingest` (`query-as-write`) — do NOT write to the wiki directly
 
 **Phase 7: Review & Finalize**
-Present the complete configuration and confirm before writing files.
+Present the complete configuration and confirm before writing files. After confirmation, remind the user to run `/sync-agents` (or `node scripts/generate-agents.js`) so the new agents materialize as Claude Code native definitions with `always_load` content inlined.
 
 ### `agent create`
 
@@ -127,26 +205,40 @@ Interactive agent creation workflow:
 - Define expertise domains and capabilities
 - Set output formats and folder
 
-**Phase 3: Context Assignment**
-- What documentation or knowledge bases does it need?
-- Create new buckets or assign existing ones
-- Set access levels (read-only or read-write)
+**Phase 3: Wiki & Context Assignment** (THE important phase — get this right)
+
+Build the agent's `wiki_access` block:
+
+- **`read`** — Which wiki subtrees does this agent need to see? Defaults:
+  - `spine/preferences/` (always — feedback memories + philosophy)
+  - `teams/<team-id>/` (for team-affiliated agents)
+  - Add cross-team paths only if the agent legitimately spans teams
+- **`write_via_ingest`** — Empty by default. Add a path only if this agent generates knowledge worth persisting (e.g., a researcher whose findings become permanent reference pages). Remember: this list grants **request** rights, not write rights — only wiki-ingest actually writes.
+- **`session_log`** — Default: `teams/<team-id>/_sessions/<agent-id>/`. The orchestrator (not the specialist) appends session summaries here.
+- **`always_load`** — Minimum two files:
+  - `spine/preferences/seven-habits-of-effective-agents.md`
+  - `teams/<team-id>/_team.md`
+  - Add agent-specific philosophy or style guide pages if they exist
+- **`repo_root`** — `${WIKI_REPO}` (the generator resolves this).
+
+**RAG buckets** (`context_buckets.assigned`): assign ONLY if the agent needs semantic search over an indexed corpus (e.g., `wharfside-docs` FTS5, `research-cache` pgvector). Do NOT use this for curated knowledge that belongs in the wiki.
 
 **Phase 4: Collaboration Setup**
 - Will this agent work with others? If so:
   - What can it request from other agents?
   - What does it provide to other agents?
   - Handoff format (structured-summary, full-output, briefing)
+- If the agent surfaces facts worth keeping, the **orchestrator** decides whether to invoke `wiki-ingest` with `query-as-write`. The specialist itself never writes to the wiki.
 
 **Phase 5: Generate Configuration**
 Create:
 - `agents/<agent-id>/SKILL.md` - Behavioral instructions
-- `agents/<agent-id>/config.json` - Configuration
+- `agents/<agent-id>/config.json` - Configuration including the `wiki_access` block
 - `agents/<agent-id>/examples/` directory
 - Update `registry/agents.json`
 
 **Phase 6: Review & Finalize**
-Present the complete configuration and confirm before writing files.
+Present the complete configuration and confirm before writing files. Remind the user to run `/sync-agents` so `always_load` files get inlined into the agent's `.claude/agents/<id>.md` system prompt.
 
 ### `bucket create`
 
@@ -235,6 +327,35 @@ Delegate to the `migration-openclaw` specialist to import OpenClaw AgentSkills i
 - Unknown permissions and unsupported patterns are surfaced in the final report, never silently dropped
 
 See `agents/migration-openclaw/SKILL.md` for the specialist's full workflow.
+
+### `wiki-ingest <operation>`
+
+Dispatch the `wiki-ingest` specialist to operate on the wiki knowledge base. The wiki-ingest agent is the **sole writer** to `wiki/` — no other agent should ever write directly.
+
+**Operations:**
+
+| Operation | When to dispatch |
+|---|---|
+| `ingest` | New raw source material in `wiki/raw/` or a session log in `_sessions/` that should be compiled into curated pages |
+| `query-as-write` | A synthesis briefing from another agent should become a permanent wiki page |
+| `lint` | Audit a wiki subtree for contradictions, stale claims, orphans, broken wikilinks |
+
+**Usage (via Archie, when a user asks):**
+```
+/architect wiki-ingest ingest --source raw/<file>.md
+/architect wiki-ingest lint --scope teams/<team>/
+/architect wiki-ingest query-as-write --target <path> --briefing <text>
+```
+
+**Direct invocation (operability — no LLM in the loop):**
+```bash
+node scripts/run-agent.js wiki-ingest --operation ingest --source raw/<file>.md
+node scripts/run-agent.js wiki-ingest --operation lint --scope teams/wharfside/
+```
+
+Every operation produces an audit row in `wiki/_changelog/<date>.md` or `wiki/_lint/<date>.md`. The nightly lint runs unattended at 3:17am ET.
+
+See `agents/wiki-ingest/SKILL.md` for the specialist's full workflow.
 
 ### `team list` / `agent list` / `bucket list`
 
@@ -332,9 +453,24 @@ When creating a new agent's config.json, use this schema:
 
   "mcp_servers": ["[server1]", "[server2]"],
 
+  "wiki_access": {
+    "repo_root": "${WIKI_REPO}",
+    "read": [
+      "spine/preferences/",
+      "teams/[team-id]/"
+    ],
+    "write_via_ingest": [],
+    "session_log": "teams/[team-id]/_sessions/[agent-id]/",
+    "always_load": [
+      "spine/preferences/seven-habits-of-effective-agents.md",
+      "teams/[team-id]/_team.md"
+    ]
+  },
+
   "context_buckets": {
-    "assigned": ["[bucket-id-1]", "[bucket-id-2]"],
-    "access_level": "read-only"
+    "assigned": [],
+    "access_level": "read-only",
+    "_note": "Only for RAG buckets (FTS5 / pgvector). Curated knowledge lives in wiki_access."
   },
 
   "output": {
@@ -383,6 +519,18 @@ The `delegation` block is only required for orchestrator agents:
 - **parallel_allowed** — Whether multiple specialists can run simultaneously
 - **briefing_required** — Whether specialists must produce a briefing summary
 
+### Wiki Access Block
+
+| Field | Purpose |
+|---|---|
+| `repo_root` | Wiki repo path. Use `${WIKI_REPO}` — the generator resolves it. |
+| `read` | Wiki subtrees this agent may read. Defaults: `spine/preferences/` + `teams/<team-id>/`. |
+| `write_via_ingest` | Paths this agent is permitted to **request** writes to (only `wiki-ingest` actually writes). Empty by default. |
+| `session_log` | Where the orchestrator appends session summaries for this agent. Default: `teams/<team-id>/_sessions/<agent-id>/`. |
+| `always_load` | Files inlined verbatim into the generated agent prompt. Minimum: `spine/preferences/seven-habits-of-effective-agents.md` + `teams/<team-id>/_team.md`. Keep this list short — every byte ships with the prompt. |
+
+**Coexistence:** `wiki_access` takes precedence over `context_buckets.assigned`. The generator warns if both target the same content. Keep `context_buckets.assigned` ONLY for RAG buckets (semantic search over indexed corpora) — those bytes never duplicate into the wiki.
+
 ---
 
 ## team.json Generation
@@ -421,7 +569,8 @@ When creating a team's team.json, use this schema:
     "session_summary": {
       "enabled": true,
       "output_path": "context-buckets/session-logs/files/"
-    }
+    },
+    "orchestrator_instructions": "\n\n## Wiki Session Log (MANDATORY)\n\nAfter every substantive interaction with Nick (anything that lasted more than a quick yes/no exchange OR produced an artifact, decision, or specialist briefing), append a one-paragraph summary to:\n\n`~/Workspaces/wiki/teams/[team-id]/_sessions/YYYY-MM-DD.md`\n\n(Create the file if it does not exist. Append in chronological order — newest at the bottom of the day's file. Use today's date in YYYY-MM-DD format.)\n\nThe summary should cover:\n- **Asked:** one line — what Nick requested\n- **Specialists:** which agents invoked (if any)\n- **Output:** key artifacts produced, paths to files created, decisions made\n- **Wiki-ingest candidates:** any facts surfaced that should become permanent wiki pages (flag explicitly for next ingest pass)\n\nThis is the continuous session-logging surface that the `wiki-ingest` agent reads during the nightly lint to promote wiki-worthy content to permanent pages. **The wiki replaces the `/save` slash command for session continuity — but only if you write to it.**\n\nSkip the session log for trivial exchanges: pure yes/no answers, single-fact lookups, conversational meta-questions with no work product.\n"
   },
 
   "collaboration_rules": {
@@ -439,6 +588,7 @@ Every team now uses the **thin-orchestrator** pattern:
 - **routing** — Maps task types to specialist agent IDs. Include a `general` fallback.
 - **delegation_strategy** — Natural language description of how the orchestrator should work.
 - **session_summary** — Auto-generates session logs after complex interactions.
+- **orchestrator_instructions** — **REQUIRED.** Block of natural-language instructions that get appended to the team orchestrator's prompt at sync time. MUST include the Wiki Session Log block shown in the schema above (or equivalent) so the team writes to `wiki/teams/<team-id>/_sessions/` on every non-trivial interaction.
 - **coordination_mode: orchestrated** — The team skill delegates via `Task()` calls to forked subagents.
 
 ---
@@ -545,6 +695,15 @@ When agents need to share work:
 2. Agent generates a briefing (summary) to team workspace
 3. Next agent reads briefing, not full context
 4. This prevents context bleed while enabling collaboration
+
+### Briefing → Wiki Promotion
+
+When a briefing contains **durable knowledge** (a decision, a roster change, a confirmed fact, a working norm), the orchestrator should propose `query-as-write` to `wiki-ingest`:
+- Briefing stays where it was written (team workspace) — that's the working memory
+- `wiki-ingest` lifts the durable subset into a permanent wiki page with sources and cross-references
+- Future sessions read the curated wiki page, not the original briefing
+
+Knowledge that should NOT be promoted: ephemeral session state, in-progress task notes, raw research dumps. Those stay in the briefing or session log; the nightly `wiki-ingest lint` will flag candidates the orchestrator missed.
 
 ---
 
