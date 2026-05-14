@@ -1,6 +1,6 @@
 # Project: Agent Architect Starter Kit
 
-**Status:** BUILT — shipped 2026-04-17
+**Status:** SHIPPED 2026-04-17 — wiki migration 2026-05-14
 **Opened:** 2026-04-17
 **Owner:** Nick + Archie
 **Approach:** Option B — build-starter script inside this repo
@@ -11,31 +11,46 @@
 - **Sample team:** Three agents in one team, not hello-world. Setup Concierge (first-run MCP onboarding), Researcher (web research), Writer (turns research into polished prose). Demonstrates real capability on day one plus specialist-to-specialist delegation.
 - **MCP credential story:** The Setup Concierge handles it interactively — walks user through Google Cloud project, OAuth consent, credentials download, MCP config, and test query. Starter ships with no credentials (as expected); user gets guided through installing their first MCP from inside the starter itself.
 
-## What shipped
+## Wiki migration (2026-05-14)
+
+The upstream repo migrated to a Karpathy-style wiki knowledge layer (Phases 1-4 LIVE per [Wiki Knowledge Base Migration](../../wiki/projects/wiki-knowledge-base/_index.md) — replaces the old `context_buckets` + `MEMORY.md` pattern). The starter was on the OLD architecture and is now migrated:
+
+- **Wiki seed shipped at `starter-seed/wiki/`** — Home.md, CLAUDE.md (conventions), README.md, `_templates/` (page/person/team/daily), `spine/preferences/seven-habits-of-effective-agents.md` (universal philosophy, every agent loads it), placeholders for `spine/network`, `spine/infrastructure`, `teams/starter/_team.md`, `projects/`, `raw/`, `_changelog/`, `_lint/`, `_sessions/`.
+- **Wiki Ingest seed agent added** — `starter-seed/agents/wiki-ingest/` with the three operations (ingest, query-as-write, lint), changelog audit trail, 10-session sharpen-the-saw audit. Sanitized version of the upstream agent (no Nick/Wharfside specifics).
+- **All four starter agents migrated to `wiki_access` schema** — setup-concierge, researcher, writer, migration-openclaw. Each one's `always_load` inlines the seven-habits page at generation time.
+- **STARTER_CLAUDE_MD rewritten** with a wiki-first preamble + wiki routing + `WIKI_REPO` env-var instructions.
+- **STARTER_README + setup.sh updated** — `export WIKI_REPO="$(pwd)/wiki"` is now step 1 of the quickstart.
+- **EMPTY_AGENTS_JSON / EMPTY_TEAMS_JSON / team.json** all updated for 5-agent roster (added `wiki-ingest`, also fixed a prior gap where `migration-openclaw` wasn't in the registry).
+- **Coexistence:** `context-buckets/` still copied as an optional RAG/FTS layer per the upstream design — the wiki is for curated stable knowledge, RAG buckets are for ephemeral working memory.
+
+## What shipped (post-migration)
 
 - `LICENSE` — MIT, copyright 2026 Nick DeMarco
-- `starter-seed/` — source files for the starter's example team
-  - `agents/setup-concierge/` (SKILL + config)
-  - `agents/researcher/` (SKILL + config)
-  - `agents/writer/` (SKILL + config)
-  - `teams/starter-team/team.json` (orchestrator with 4.7 delegation note)
-- `scripts/build-starter.js` — the generator (~450 lines)
-  - Copies allowlisted boilerplate (Architect, templates, scripts, MCP scaffolding, docs)
-  - Applies sanitization (emails, absolute paths, maintainer-specific team keywords)
-  - Seeds from `starter-seed/` into `agents/` and `teams/`
-  - Writes clean generated files: README.md, CLAUDE.md, setup.sh, empty registries, mcp-servers/SETUP.md
-  - Runs a leak scanner and reports before finishing
+- `starter-seed/` — source files for the starter
+  - `agents/setup-concierge/` (SKILL teaches wiki bootstrap + MCP setup; `wiki_access` config)
+  - `agents/researcher/` (`wiki_access` config)
+  - `agents/writer/` (`wiki_access` config)
+  - `agents/wiki-ingest/` (NEW — sole writer to the wiki)
+  - `agents/migration-openclaw/` (`wiki_access` config)
+  - `teams/starter-team/team.json` (5-agent roster, wiki routing keywords added)
+  - `wiki/` (NEW — full seed of the knowledge layer)
+- `scripts/build-starter.js` — the generator (now ~470 lines)
+  - Phase 1: copies allowlisted boilerplate (Architect, templates, scripts, MCP scaffolding, docs)
+  - Phase 2: seeds from `starter-seed/` into `agents/`, `teams/`, **and `wiki/`**
+  - Phase 3: writes generated files (README.md, CLAUDE.md with wiki-first preamble, setup.sh with WIKI_REPO export, empty registries, mcp-servers/SETUP.md)
+  - Phase 4: creates empty output dirs
+  - Phase 5: leak scanner
 
-## Tested end to end (2026-04-17)
+## Tested end to end
 
 ```bash
-node scripts/build-starter.js --output /tmp/aa-starter-test
-cd /tmp/aa-starter-test
+node scripts/build-starter.js --output /tmp/aa-starter-wiki-test
+cd /tmp/aa-starter-wiki-test
+export WIKI_REPO="$(pwd)/wiki"
 node scripts/generate-agents.js
-# → 3 agents generated, 1 orchestrator (/starter) generated, scanner clean
+# → 5 agents generated, 1 orchestrator (/starter) generated, scanner clean
+# → wiki/ seeded with Home + CLAUDE + templates + seven-habits
 ```
-
-Result: clean starter workspace that generates working Claude Code native agents from the seeded team.
 
 ## Usage
 
@@ -43,8 +58,9 @@ Result: clean starter workspace that generates working Claude Code native agents
 node scripts/build-starter.js --output ~/my-agent-architect
 cd ~/my-agent-architect
 ./setup.sh
+export WIKI_REPO="$(pwd)/wiki"   # also printed by setup.sh
 claude .
-# then: /starter help me set up Gmail
+# then: /starter help me get set up
 ```
 
 ## Future enhancements (v2)

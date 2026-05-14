@@ -59,6 +59,25 @@ const LINE_SANITIZERS = [
     pattern: /Wharfside/g,
     replacement: 'YourTeam',
   },
+  {
+    // Strip maintainer first-name references in comments/strings (run-agent.js etc.)
+    pattern: /\bNick can\b/g,
+    replacement: 'the user can',
+  },
+  {
+    pattern: /\bNick's\b/g,
+    replacement: "the user's",
+  },
+  {
+    // run-agent.js default WIKI_REPO falls back to the maintainer's wiki path.
+    // In the starter, fall back to the bundled ./wiki instead.
+    pattern: /return path\.join\(os\.homedir\(\), 'Workspaces', 'wiki'\);/g,
+    replacement: "return path.join(REPO_ROOT, 'wiki');",
+  },
+  {
+    pattern: /default: ~\/Workspaces\/wiki/g,
+    replacement: 'default: ./wiki',
+  },
 ];
 
 const TEXT_EXTENSIONS = new Set(['.md', '.json', '.js', '.py', '.sh', '.yml', '.yaml', '.txt', '.html', '.css', '.sql']);
@@ -145,6 +164,7 @@ const COPY_PATHS = [
   'scripts/generate-cowork.js',
   'scripts/build-starter.js',
   'scripts/init-pgvector.sql',
+  'scripts/run-agent.js',
   // Templates (agent + team + bucket)
   'agents/_templates',
   'teams/_templates',
@@ -191,9 +211,11 @@ Welcome. You've cloned a starter kit for **Agent Architect** — a master AI age
 This starter is intentionally minimal. It ships with:
 - **Archie** — the Agent Architect himself, who helps you design new agents and teams
 - **Starter Team** — one example team showing how specialists collaborate:
-  - **Setup Concierge** — walks you through connecting your first MCP server (Gmail by default)
+  - **Setup Concierge** — walks you through bootstrapping the wiki and connecting your first MCP server (Gmail by default)
   - **Researcher** — web research specialist
   - **Writer** — turns research into polished documents
+  - **Wiki Ingest** — sole writer to the wiki knowledge layer; compiles raw source material into curated pages
+- **Wiki knowledge layer** — a Karpathy-style ([gist](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f)) LLM-maintained markdown wiki seeded at \`wiki/\`. Replaces the older \`MEMORY.md\` + \`context_buckets\` pattern. Every agent reads from here at startup.
 
 From here, you're meant to add your own teams. That's the whole point.
 
@@ -206,22 +228,29 @@ From here, you're meant to add your own teams. That's the whole point.
    npm install
    \`\`\`
 
-2. **Generate Claude Code native agent files:**
+2. **Point at the bundled wiki:**
+   \`\`\`bash
+   export WIKI_REPO="$(pwd)/wiki"
+   # add this to your shell rc to persist
+   \`\`\`
+   All starter agents resolve \`wiki_access.repo_root\` from this env var. Without it, they can't read the knowledge layer.
+
+3. **Generate Claude Code native agent files:**
    \`\`\`bash
    node scripts/generate-agents.js
    \`\`\`
 
-3. **Open this directory in Claude Code:**
+4. **Open this directory in Claude Code:**
    \`\`\`bash
    claude .
    \`\`\`
 
-4. **Say hello to the Setup Concierge:**
-   > /starter set up my first MCP server
+5. **Say hello to the Setup Concierge:**
+   > /starter help me get set up
 
-   The concierge will walk you through connecting Gmail (or another service) end-to-end.
+   The concierge will walk you through (a) the wiki layout + seeding your first spine entry, then (b) connecting Gmail (or another service) end-to-end.
 
-5. **Or start designing your own team:**
+6. **Or start designing your own team:**
    > /architect build me a team for [your use case]
 
 ---
@@ -231,14 +260,26 @@ From here, you're meant to add your own teams. That's the whole point.
 \`\`\`
 .
 ├── Architect/              # Archie — the meta-agent that designs other agents
-├── agents/                 # Agent definitions (starts with 3 example agents)
+├── agents/                 # Agent definitions (starts with 4 example agents)
 │   ├── _templates/         # Templates for creating new agents
 │   ├── setup-concierge/
 │   ├── researcher/
-│   └── writer/
+│   ├── writer/
+│   └── wiki-ingest/        # Sole writer to the wiki knowledge layer
 ├── teams/                  # Team definitions (starts with 1 example team)
 │   └── starter-team/
-├── context-buckets/        # Assignable knowledge bases (starts empty)
+├── wiki/                   # LLM-maintained markdown knowledge base (set WIKI_REPO to point here)
+│   ├── Home.md             # Landing index
+│   ├── CLAUDE.md           # Conventions agents follow when reading/writing the wiki
+│   ├── README.md           # Human-facing overview of the layered model
+│   ├── _templates/         # Page, person, team, daily templates
+│   ├── spine/              # About you: network, infrastructure, preferences
+│   ├── teams/              # Per-team pages and session logs
+│   ├── projects/           # Standalone projects
+│   ├── raw/                # Append-only intake; wiki-ingest consumes from here
+│   ├── _changelog/         # Every wiki write logged with date
+│   └── _lint/              # Contradiction + stale-claim + orphan reports
+├── context-buckets/        # Optional RAG buckets for ephemeral working memory (coexists with wiki)
 ├── scripts/                # Generators that sync sources → Claude Code native files
 ├── mcp-servers/            # MCP server configuration scaffolding
 ├── docs/                   # Architecture documentation
@@ -251,7 +292,9 @@ From here, you're meant to add your own teams. That's the whole point.
 |---|---|
 | **Agent** | Individual AI assistant defined by \`SKILL.md\` + \`config.json\` |
 | **Team** | Collection of agents that collaborate through an orchestrator |
-| **Context Bucket** | Assignable knowledge base (docs, code, reference material) |
+| **Wiki** | LLM-maintained markdown knowledge layer; agents attach via \`wiki_access\` in their config |
+| **Raw** | Append-only intake folder under \`wiki/raw/\`; \`wiki-ingest\` compiles into curated pages |
+| **Context Bucket** | Optional RAG / FTS bucket for ephemeral working memory (coexists with wiki) |
 | **MCP Server** | External tool integration (Gmail, Drive, GitHub, etc.) |
 
 ## Agent Architect Pattern
@@ -272,10 +315,12 @@ agents/<agent-id>/              (SOURCE OF TRUTH — edit these)
 
 ## Next Steps
 
-1. Connect an MCP server (the Setup Concierge handles this)
-2. Try the Researcher: *"Researcher, what's the current state of X?"*
-3. Try the Writer: *"Writer, turn that briefing into a one-page memo"*
-4. Open \`/architect\` and design your first custom team
+1. Set \`WIKI_REPO\` and seed your first spine entry (the Setup Concierge walks you through this)
+2. Connect an MCP server (the Setup Concierge handles this too)
+3. Try the Researcher: *"Researcher, what's the current state of X?"*
+4. Try the Writer: *"Writer, turn that briefing into a one-page memo"*
+5. Promote useful findings to permanent pages: \`node scripts/run-agent.js wiki-ingest --operation ingest --source raw/<file>.md\`
+6. Open \`/architect\` and design your first custom team
 
 ## License
 
@@ -290,6 +335,20 @@ const STARTER_CLAUDE_MD = `# CLAUDE.md
 
 This file provides guidance to Claude Code when working with this repository.
 
+## Wiki First (load-bearing)
+
+This repo ships with a **wiki knowledge layer** at \`wiki/\`. It is the authoritative source for:
+- About you: people, networks, infrastructure, accumulated preferences (\`wiki/spine/\`)
+- Team norms: each team's \`_team.md\` page (\`wiki/teams/<team>/_team.md\`)
+- Project state: standalone projects (\`wiki/projects/<slug>/\`) and team-owned ones (\`wiki/teams/<team>/<project>/\`)
+- Universal operating philosophy: \`wiki/spine/preferences/seven-habits-of-effective-agents.md\`
+
+**Before answering a substantive question, check the wiki.** Every agent's \`config.json\` declares a \`wiki_access\` block with prefix-scoped read paths and \`always_load\` pages inlined into its prompt. Do not invent wiki pages that don't exist; verify with \`ls wiki/<path>\` or by reading the file.
+
+Sole writer: only the **Wiki Ingest** agent writes to the wiki. Drop source material into \`wiki/raw/\` and invoke \`wiki-ingest\` to compile it. Hand-editing is acceptable for \`_team.md\` files, \`spine/preferences/\`, and one-off corrections — everything else flows through ingest.
+
+The \`WIKI_REPO\` env var must resolve to the wiki root (typically \`$(pwd)/wiki\`). If unset, agents can't read; set it before running anything: \`export WIKI_REPO="$(pwd)/wiki"\`.
+
 ## Smart Routing
 
 When the user starts a conversation without invoking a specific agent or team, route to the appropriate orchestrator. Do NOT bypass the orchestrator by calling specialist agents directly.
@@ -298,9 +357,10 @@ When the user starts a conversation without invoking a specific agent or team, r
 
 | Topic Signals | Invoke Skill |
 |---|---|
-| Setup, onboarding, connect MCP, install server, first run | \`Skill(skill: "starter")\` → Setup Concierge |
+| Setup, onboarding, connect MCP, install server, first run, bootstrap wiki | \`Skill(skill: "starter")\` → Setup Concierge |
 | Research, look up, find information, search | \`Skill(skill: "starter")\` → Researcher |
 | Write, draft, report, proposal, memo, email | \`Skill(skill: "starter")\` → Writer |
+| Ingest, curate, lint wiki, promote briefing to permanent page | \`Skill(skill: "starter")\` → Wiki Ingest |
 | Build agent, create team, manage agents, new specialist | \`Skill(skill: "architect")\` |
 
 ### Routing Rules
@@ -315,16 +375,16 @@ When the user starts a conversation without invoking a specific agent or team, r
 
 On your first run, say:
 
-> /starter help me set up my first MCP server
+> /starter help me get set up
 
-The Setup Concierge will walk you through connecting Gmail (or another service) end-to-end. Once that's working, you'll have a real capability and can move on to research, writing, or designing your own agents.
+The Setup Concierge will walk you through (a) the wiki layer (set \`WIKI_REPO\`, read the conventions, seed your first spine entry) and (b) connecting Gmail (or another service) end-to-end. Once both are done, you have a curated knowledge layer and real tool access — the floor under everything else.
 
 ## Agent Management
 
 To create or manage agents, load the Architect with \`/architect\`. Archie will guide you through:
 1. Discovering what you need
 2. Designing the agent or team
-3. Writing the SKILL.md and config.json
+3. Writing the SKILL.md and config.json (including the \`wiki_access\` block)
 4. Syncing to Claude Code native format
 
 Do not directly create agents or teams without the Architect's guidance.
@@ -335,14 +395,16 @@ See \`README.md\` for the full overview. Key points:
 
 - \`agents/<agent-id>/\` — source of truth for agent definitions
 - \`teams/<team-id>/\` — source of truth for team definitions
+- \`wiki/\` — the knowledge layer every agent reads from (set \`WIKI_REPO\` to point here)
 - \`.claude/agents/\` and \`.claude/skills/\` — **generated**, do not edit directly
-- Run \`scripts/generate-agents.js\` after any change to regenerate
+- Run \`scripts/generate-agents.js\` after any change to regenerate (inlines \`always_load\` wiki pages into each agent's system prompt)
 
 ## Commands
 
 - \`/architect\` — load Archie to design new agents or teams
-- \`/starter\` — invoke the Starter Team (Setup Concierge, Researcher, Writer)
+- \`/starter\` — invoke the Starter Team (Setup Concierge, Researcher, Writer, Wiki Ingest)
 - \`/sync-agents\` or \`node scripts/generate-agents.js\` — regenerate Claude Code native files
+- \`node scripts/run-agent.js wiki-ingest --operation <ingest|lint|query-as-write> ...\` — run wiki maintenance from the terminal (no LLM-in-the-loop required for the routine path)
 `;
 
 const STARTER_SETUP_SH = `#!/usr/bin/env bash
@@ -381,13 +443,16 @@ echo "================================================"
 echo ""
 echo "Next steps:"
 echo ""
-echo "1. Open this directory in Claude Code:"
+echo "1. Point WIKI_REPO at the bundled wiki (add to your shell rc to persist):"
+echo "     export WIKI_REPO=\\"\\$(pwd)/wiki\\""
+echo ""
+echo "2. Open this directory in Claude Code:"
 echo "   claude ."
 echo ""
-echo "2. Meet the Setup Concierge and connect your first MCP server:"
-echo "   /starter help me set up Gmail"
+echo "3. Meet the Setup Concierge - they will bootstrap the wiki and connect your first MCP server:"
+echo "   /starter help me get set up"
 echo ""
-echo "3. Or design your own team with Archie:"
+echo "4. Or design your own team with Archie:"
 echo "   /architect"
 echo ""
 `;
@@ -420,6 +485,22 @@ const EMPTY_AGENTS_JSON = {
       created: '2026-04-17',
       status: 'active',
     },
+    {
+      id: 'wiki-ingest',
+      name: 'Wiki Ingest',
+      folder: 'agents/wiki-ingest',
+      teams: ['starter-team'],
+      created: '2026-05-14',
+      status: 'active',
+    },
+    {
+      id: 'migration-openclaw',
+      name: 'OpenClaw Migration',
+      folder: 'agents/migration-openclaw',
+      teams: [],
+      created: '2026-04-17',
+      status: 'active',
+    },
   ],
 };
 
@@ -431,7 +512,7 @@ const EMPTY_TEAMS_JSON = {
       id: 'starter-team',
       name: 'Starter Team',
       folder: 'teams/starter-team',
-      member_count: 3,
+      member_count: 5,
       created: '2026-04-17',
       status: 'active',
     },
@@ -582,6 +663,11 @@ function main() {
       .filter(e => e.isDirectory())
       .map(e => e.name);
     console.log(`  [seeded teams] ${teams.join(', ')}`);
+  }
+  const seedWiki = path.join(SEED, 'wiki');
+  if (fs.existsSync(seedWiki)) {
+    copyDir(seedWiki, path.join(output, 'wiki'), args.dryRun);
+    console.log('  [seeded wiki] Home.md, CLAUDE.md, README.md, _templates/, spine/, teams/, projects/, raw/, _changelog/, _lint/, _sessions/');
   }
 
   // -------------------------------------------------------------------------

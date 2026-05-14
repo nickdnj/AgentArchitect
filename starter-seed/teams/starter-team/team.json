@@ -2,14 +2,14 @@
   "id": "starter-team",
   "skill_alias": "starter",
   "name": "Starter Team",
-  "description": "Example team shipped with Agent Architect — Setup Concierge for first-run onboarding, Researcher and Writer pair that demonstrates delegation, and an OpenClaw Migration specialist for users coming from OpenClaw",
-  "version": "1.1",
+  "description": "Example team shipped with Agent Architect — Setup Concierge for first-run onboarding (wiki bootstrap + first MCP), Researcher and Writer pair that demonstrates delegation, Wiki Ingest as sole writer to the wiki knowledge layer, and an OpenClaw Migration specialist for users coming from OpenClaw",
+  "version": "1.2",
   "created": "2026-04-17",
 
   "members": [
     {
       "agent_id": "setup-concierge",
-      "role": "First-run onboarding — walks the user through connecting their first MCP server",
+      "role": "First-run onboarding — walks the user through wiki bootstrap and connecting their first MCP server",
       "context_override": null
     },
     {
@@ -20,6 +20,11 @@
     {
       "agent_id": "writer",
       "role": "Writing specialist — turns briefings and notes into polished documents",
+      "context_override": null
+    },
+    {
+      "agent_id": "wiki-ingest",
+      "role": "Sole writer to the wiki — ingest raw material, promote briefings, lint for drift",
       "context_override": null
     },
     {
@@ -40,16 +45,21 @@
     "routing": {
       "onboarding": ["setup-concierge"],
       "mcp-setup": ["setup-concierge"],
+      "wiki-bootstrap": ["setup-concierge"],
       "first-run": ["setup-concierge"],
       "research": ["researcher"],
       "writing": ["writer"],
       "research-and-write": ["researcher", "writer"],
+      "wiki-ingest": ["wiki-ingest"],
+      "wiki-lint": ["wiki-ingest"],
+      "promote-to-wiki": ["wiki-ingest"],
+      "ingest": ["wiki-ingest"],
       "openclaw-migration": ["migration-openclaw"],
       "migrate": ["migration-openclaw"],
       "import-openclaw": ["migration-openclaw"],
       "general": ["researcher"]
     },
-    "delegation_strategy": "Route first-run and MCP setup requests to the Setup Concierge. Route pure research questions to the Researcher. Route pure writing tasks to the Writer. For combined 'research this and turn it into a [report/proposal/email]' requests, run Researcher first and pass the briefing to the Writer. Route any 'migrate from OpenClaw', 'import my OpenClaw skills', or similar requests to the OpenClaw Migration specialist.\n\n**Claude 4.7 delegation note:** Opus 4.7 defaults to fewer subagents and fewer tool calls than prior models. Counteract that here — when a request matches a specialist's domain, delegate rather than answering from training knowledge. Handle inline ONLY for: routing/clarifying questions back to the user, trivial lookups in already-loaded context, or synthesizing specialist briefings into the final response. Everything else goes to a specialist.",
+    "delegation_strategy": "Route first-run, wiki-bootstrap, and MCP setup requests to the Setup Concierge. Route pure research questions to the Researcher. Route pure writing tasks to the Writer. For combined 'research this and turn it into a [report/proposal/email]' requests, run Researcher first and pass the briefing to the Writer. Route any wiki ingest, lint, or 'promote this to a permanent page' request to Wiki Ingest. Route any 'migrate from OpenClaw', 'import my OpenClaw skills', or similar requests to the OpenClaw Migration specialist.\n\n**Claude 4.7 delegation note:** Opus 4.7 defaults to fewer subagents and fewer tool calls than prior models. Counteract that here — when a request matches a specialist's domain, delegate rather than answering from training knowledge. Handle inline ONLY for: routing/clarifying questions back to the user, trivial lookups in already-loaded context, or synthesizing specialist briefings into the final response. Everything else goes to a specialist.",
     "session_summary": {
       "enabled": false,
       "output_path": "context-buckets/session-logs/files/"

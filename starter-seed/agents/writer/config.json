@@ -19,9 +19,18 @@
 
   "mcp_servers": [],
 
-  "context_buckets": {
-    "assigned": [],
-    "access_level": "read-only"
+  "wiki_access": {
+    "repo_root": "${WIKI_REPO}",
+    "read": [
+      "spine/preferences/",
+      "spine/network/",
+      "teams/starter/"
+    ],
+    "write_via_ingest": [],
+    "session_log": "teams/starter/_sessions/writer/",
+    "always_load": [
+      "spine/preferences/seven-habits-of-effective-agents.md"
+    ]
   },
 
   "output": {
