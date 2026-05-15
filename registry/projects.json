@@ -29,6 +29,23 @@
       "created": "2026-05-06",
       "migrated_from_aa": "2026-05-15",
       "description": "Museum-grade research report (InfoAge / VCF) plus Jersey Stack-style YouTube video on Concurrent's last great pre-RISC mini. Primary-source heavy; Nick co-op'd at Concurrent in 1985."
+    },
+    {
+      "id": "monmouth-beach-history",
+      "name": "Monmouth Beach: Sand, Scandal, and the Shore",
+      "tier": "archived",
+      "repo": null,
+      "url": "https://youtu.be/FlWXi3aNOxA",
+      "drive_folder": "https://drive.google.com/drive/folders/1avPKt3b-mva302gIa63OeFhygY7Qib1F",
+      "local_path": null,
+      "team": "youtube-content",
+      "wiki_index": "wiki/_archive/youtube/monmouth-beach-history.md",
+      "status": "archived",
+      "created": "2026-03-02",
+      "archived_date": "2026-05-15",
+      "archived_size_mb": 405,
+      "youtube_id": "FlWXi3aNOxA",
+      "description": "7:51 documentary on Monmouth Beach NJ history (Lenape, land pirates, Life-Saving Service, Robeson scandal, Galilee, rum-runners, Hurricane Sandy). Shipped unlisted; archived to Drive."
     }
   ]
 }
