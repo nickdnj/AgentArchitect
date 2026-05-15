@@ -1,0 +1,20 @@
+{
+  "version": "1.0",
+  "last_updated": "2026-05-15",
+  "_note": "Project registry per docs/architecture/project-vault.md. Tracks every project Nick owns — AA-managed and external. Each entry maps to a repo and (optionally) a team. The single index of 'what projects exist'.",
+  "projects": [
+    {
+      "id": "workspaces",
+      "name": "Shared Workspaces",
+      "tier": "workspace",
+      "repo": "git@github.com:nickdnj/workspaces.git",
+      "url": "https://github.com/nickdnj/workspaces",
+      "local_path": "~/Workspaces/workspaces/",
+      "team": null,
+      "wiki_index": "wiki/projects/workspaces.md",
+      "status": "active",
+      "created": "2026-05-15",
+      "description": "Shared lightweight repo. Sub-folders by team or topic (wharfside-bulletins/, personal-assistant/, etc)."
+    }
+  ]
+}
