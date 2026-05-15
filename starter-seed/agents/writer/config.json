@@ -29,7 +29,8 @@
     "write_via_ingest": [],
     "session_log": "teams/starter/_sessions/writer/",
     "always_load": [
-      "spine/preferences/seven-habits-of-effective-agents.md"
+      "spine/preferences/seven-habits-of-effective-agents.md",
+      "teams/starter/_team.md"
     ]
   },
 

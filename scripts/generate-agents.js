@@ -1254,13 +1254,16 @@ function main() {
   console.log('  Agents: .claude/agents/');
   console.log('  Skills: .claude/skills/');
 
-  // Refresh dashboard data
-  try {
-    const { execSync } = require('child_process');
-    console.log('\nRefreshing dashboard data...');
-    execSync('python3 scripts/refresh-dashboard.py', { cwd: path.join(__dirname, '..'), stdio: 'inherit' });
-  } catch (e) {
-    console.log('  [WARN] Dashboard refresh failed (non-fatal):', e.message);
+  // Refresh dashboard data (skipped silently if the script isn't bundled — e.g. starter kit)
+  const dashboardScript = path.join(__dirname, 'refresh-dashboard.py');
+  if (fs.existsSync(dashboardScript)) {
+    try {
+      const { execSync } = require('child_process');
+      console.log('\nRefreshing dashboard data...');
+      execSync('python3 scripts/refresh-dashboard.py', { cwd: path.join(__dirname, '..'), stdio: 'inherit' });
+    } catch (e) {
+      console.log('  [WARN] Dashboard refresh failed (non-fatal):', e.message);
+    }
   }
   console.log('');
 

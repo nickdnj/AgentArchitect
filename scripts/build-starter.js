@@ -267,7 +267,7 @@ From here, you're meant to add your own teams. That's the whole point.
 │   ├── writer/
 │   └── wiki-ingest/        # Sole writer to the wiki knowledge layer
 ├── teams/                  # Team definitions (starts with 1 example team)
-│   └── starter-team/
+│   └── starter/
 ├── wiki/                   # LLM-maintained markdown knowledge base (set WIKI_REPO to point here)
 │   ├── Home.md             # Landing index
 │   ├── CLAUDE.md           # Conventions agents follow when reading/writing the wiki
@@ -432,8 +432,13 @@ fi
 echo "Installing dependencies..."
 npm install
 
+# Point at the bundled wiki for this run so always_load inlining works on first run
+# even before the user persists WIKI_REPO in their shell rc.
+export WIKI_REPO="$(pwd)/wiki"
+
 echo ""
 echo "Generating Claude Code native agent files..."
+echo "  WIKI_REPO=\\$WIKI_REPO"
 node scripts/generate-agents.js
 
 echo ""
@@ -465,7 +470,7 @@ const EMPTY_AGENTS_JSON = {
       id: 'setup-concierge',
       name: 'Setup Concierge',
       folder: 'agents/setup-concierge',
-      teams: ['starter-team'],
+      teams: ['starter'],
       created: '2026-04-17',
       status: 'active',
     },
@@ -473,7 +478,7 @@ const EMPTY_AGENTS_JSON = {
       id: 'researcher',
       name: 'Researcher',
       folder: 'agents/researcher',
-      teams: ['starter-team'],
+      teams: ['starter'],
       created: '2026-04-17',
       status: 'active',
     },
@@ -481,7 +486,7 @@ const EMPTY_AGENTS_JSON = {
       id: 'writer',
       name: 'Writer',
       folder: 'agents/writer',
-      teams: ['starter-team'],
+      teams: ['starter'],
       created: '2026-04-17',
       status: 'active',
     },
@@ -489,7 +494,7 @@ const EMPTY_AGENTS_JSON = {
       id: 'wiki-ingest',
       name: 'Wiki Ingest',
       folder: 'agents/wiki-ingest',
-      teams: ['starter-team'],
+      teams: ['starter'],
       created: '2026-05-14',
       status: 'active',
     },
@@ -509,9 +514,9 @@ const EMPTY_TEAMS_JSON = {
   last_updated: new Date().toISOString().slice(0, 10),
   teams: [
     {
-      id: 'starter-team',
+      id: 'starter',
       name: 'Starter Team',
-      folder: 'teams/starter-team',
+      folder: 'teams/starter',
       member_count: 5,
       created: '2026-04-17',
       status: 'active',

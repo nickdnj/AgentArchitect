@@ -49,9 +49,10 @@
       "_lint/",
       "_archive/"
     ],
-    "session_log": "_sessions/wiki-ingest/",
+    "session_log": "teams/starter/_sessions/wiki-ingest/",
     "always_load": [
-      "spine/preferences/seven-habits-of-effective-agents.md"
+      "spine/preferences/seven-habits-of-effective-agents.md",
+      "CLAUDE.md"
     ]
   },
 
