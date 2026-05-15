@@ -15,6 +15,20 @@
       "status": "active",
       "created": "2026-05-15",
       "description": "Shared lightweight repo. Sub-folders by team or topic (wharfside-bulletins/, personal-assistant/, etc)."
+    },
+    {
+      "id": "concurrent-3280",
+      "name": "Concurrent 3280 — Museum Report + Jersey Stack Video",
+      "tier": "heavy",
+      "repo": "git@github.com:nickdnj/concurrent-3280.git",
+      "url": "https://github.com/nickdnj/concurrent-3280",
+      "local_path": "~/Workspaces/concurrent-3280/",
+      "team": "youtube-content",
+      "wiki_index": "wiki/projects/concurrent-3280.md",
+      "status": "active",
+      "created": "2026-05-06",
+      "migrated_from_aa": "2026-05-15",
+      "description": "Museum-grade research report (InfoAge / VCF) plus Jersey Stack-style YouTube video on Concurrent's last great pre-RISC mini. Primary-source heavy; Nick co-op'd at Concurrent in 1985."
     }
   ]
 }
