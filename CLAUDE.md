@@ -2,6 +2,23 @@
 
 This file provides guidance to Claude Code when working with this repository.
 
+## Cloud / iOS Mode (read FIRST)
+
+If you are running in a Claude Code sandbox **without** access to `~/Workspaces/wiki/` on Nick's Mac (i.e. anywhere other than Nick's MacBook — including claude.ai/code on iOS, web, or a fresh remote sandbox), bootstrap the wiki before doing anything else:
+
+```bash
+bash scripts/bootstrap-cloud.sh
+```
+
+This clones `nickdnj/wiki` to `$HOME/Workspaces/wiki/`, sets `WIKI_REPO`, and regenerates `.claude/agents/*.md` with `always_load` content inlined. Idempotent — safe to run repeatedly; only clones when the wiki is missing.
+
+**Check before bootstrapping:** `test -d "$HOME/Workspaces/wiki/.git" && echo present || echo missing`
+
+**If clone fails** (private repo, auth required): run `gh auth login` then re-run bootstrap.
+
+**Teams that work in cloud mode** (OAuth-only MCPs): wharfside, personal-assistant (Max), architect, account-researcher, web-research, proposal-review, software-project (research/planning phase).
+**Teams that DO NOT work in cloud mode** (need local hardware/host MCPs): hardware-dev (KiCad/FreeCAD), youtube-content asset gen + assembly + publish (ffmpeg/chrome), anything using `apple-mcp` (Reminders/Calendar via EventKit), `chrome` (host browser), `voice-local` (local Whisper/Kokoro), or local Ollama.
+
 ## User Preferences
 
 ### Contact Information
