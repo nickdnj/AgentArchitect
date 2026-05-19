@@ -14,7 +14,19 @@ This clones `nickdnj/wiki` to `$HOME/Workspaces/wiki/`, sets `WIKI_REPO`, and re
 
 **Check before bootstrapping:** `test -d "$HOME/Workspaces/wiki/.git" && echo present || echo missing`
 
-**If clone fails** (private repo, auth required): run `gh auth login` then re-run bootstrap.
+### Required environment (cloud sandboxes only)
+
+The wiki is private and the sandbox shell has no GitHub credentials by default. The claude.ai **GitHub Connector** authorizes the MCP layer (the `github__*` tools) but does NOT install credentials for shell `git`. To make the wiki both **clonable and pushable**, add these to the AgentArchitect environment config on claude.ai (Code → environment → secrets / env vars):
+
+| Name | Required? | Purpose |
+|---|---|---|
+| `WIKI_GH_TOKEN` | **yes** | Fine-grained GitHub PAT, resource owner `nickdnj`, repository `nickdnj/wiki`, permissions **Contents: Read and write** + **Metadata: Read**. Used only via a git credential helper — never written to `.git/config`. |
+| `WIKI_GIT_USER_NAME` | recommended | Commit author name for wiki commits (e.g. `Nick D`). Falls back to `GIT_AUTHOR_NAME`, then to global git config. |
+| `WIKI_GIT_USER_EMAIL` | recommended | Commit author email (e.g. `nickd@demarconet.com`). |
+
+Also expand the **GitHub Connector repo scope** to include `nickdnj/wiki` so the `mcp__github__*` tools can read/write wiki files via the API as a second path (useful for sessions that haven't bootstrapped yet, or for one-off edits).
+
+**If clone fails** with no `WIKI_GH_TOKEN`: add the secret as above and restart the session. On a Mac with `gh auth login` already done, no token is needed — the script falls through to your existing credentials.
 
 **Teams that work in cloud mode** (OAuth-only MCPs): wharfside, personal-assistant (Max), architect, account-researcher, web-research, proposal-review, software-project (research/planning phase).
 **Teams that DO NOT work in cloud mode** (need local hardware/host MCPs): hardware-dev (KiCad/FreeCAD), youtube-content asset gen + assembly + publish (ffmpeg/chrome), anything using `apple-mcp` (Reminders/Calendar via EventKit), `chrome` (host browser), `voice-local` (local Whisper/Kokoro), or local Ollama.
