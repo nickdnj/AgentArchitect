@@ -1,0 +1,37 @@
+# Example site: a 6 m wide flagship entrance covered by two overlapping
+# overhead depth cameras. Coordinates are metres in the shared site frame:
+#   X = across the doorway (0 .. 6), Y = into the store (negative = outside).
+name: Flagship Main Entrance
+
+cameras:
+  - camera_id: cam_left
+    mount_height_m: 3.2
+    origin_xy_m: [1.75, 0.0]      # optical axis position in site frame
+    footprint_m: [4.0, 4.0]       # floor area seen (width x depth)
+    resolution_px: [320, 240]
+  - camera_id: cam_right
+    mount_height_m: 3.2
+    origin_xy_m: [4.25, 0.0]
+    footprint_m: [4.0, 4.0]
+    resolution_px: [320, 240]
+
+# The counting line spans the doorway; inbound_normal points into the store.
+line:
+  point_a_m: [0.0, 0.0]
+  point_b_m: [6.0, 0.0]
+  inbound_normal: [0.0, 1.0]
+
+# Detection band (metres) — filters carts/bags (too short) and noise.
+min_head_height_m: 1.0
+max_head_height_m: 2.2
+
+# Cameras overlap near x=3.0; detections within this radius are one person.
+# Keep below the min head-to-head separation (~0.45 m) or side-by-side people merge.
+fusion_radius_m: 0.30
+
+# Tracker.
+track_gate_m: 0.6
+track_min_hits: 3
+track_max_age: 8
+
+fps: 15.0
