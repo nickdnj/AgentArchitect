@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Comdyna GP-6 — Projectile Demonstration Exhibit Kit</title>
+<style>
+  :root{
+    --ink:#1d2433; --muted:#5b6577; --line:#e4e8f0; --bg:#ffffff;
+    --accent:#1f6feb; --accent2:#0b8a5b; --warn:#b4690e; --soft:#f5f8fc;
+    --code:#0f172a; --codebg:#f3f5f9;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:#eef1f6;color:var(--ink);
+    font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+  .wrap{max-width:880px;margin:0 auto;background:var(--bg);}
+  header.hero{padding:38px 40px 30px;background:linear-gradient(135deg,#13294b,#1f6feb);color:#fff;}
+  header.hero .kicker{text-transform:uppercase;letter-spacing:.14em;font-size:12px;opacity:.85;margin:0 0 10px;}
+  header.hero h1{margin:0 0 8px;font-size:30px;line-height:1.2;font-weight:800;}
+  header.hero p{margin:6px 0 0;font-size:16px;opacity:.95;}
+  main{padding:8px 40px 48px;}
+  h2{margin:40px 0 6px;font-size:23px;border-bottom:2px solid var(--line);padding-bottom:8px;}
+  h2 .num{color:var(--accent);font-weight:800;margin-right:8px;}
+  h3{margin:26px 0 6px;font-size:18px;color:#13294b;}
+  h4{margin:18px 0 4px;font-size:15px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;}
+  p{margin:10px 0;}
+  ul,ol{margin:10px 0 10px 4px;padding-left:22px;}
+  li{margin:5px 0;}
+  a{color:var(--accent);}
+  .lead{font-size:17px;color:#2b3650;}
+  .toc{background:var(--soft);border:1px solid var(--line);border-radius:12px;padding:16px 22px;margin:22px 0;}
+  .toc h4{margin:0 0 8px;color:#13294b;}
+  .toc ol{margin:0;}
+  blockquote{margin:16px 0;padding:12px 18px;background:var(--soft);
+    border-left:4px solid var(--accent);border-radius:0 8px 8px 0;color:#23304a;font-style:italic;}
+  blockquote.payoff{border-left-color:var(--accent2);background:#eefaf3;font-weight:600;font-style:normal;}
+  .warn{border-left-color:var(--warn);background:#fff7ec;font-style:normal;}
+  pre{background:var(--codebg);border:1px solid var(--line);border-radius:10px;padding:14px 16px;
+    overflow:auto;font:13px/1.5 "SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;color:var(--code);}
+  code{background:var(--codebg);border-radius:5px;padding:1px 5px;font-size:13px;color:#0b3d91;}
+  pre code{background:none;padding:0;color:inherit;}
+  table{border-collapse:collapse;width:100%;margin:14px 0;font-size:14.5px;}
+  th,td{border:1px solid var(--line);padding:8px 11px;text-align:left;vertical-align:top;}
+  th{background:#13294b;color:#fff;font-weight:600;}
+  tr:nth-child(even) td{background:#f7f9fc;}
+  .card{border:1px solid var(--line);border-radius:12px;padding:4px 22px 18px;margin:18px 0;background:#fff;
+    box-shadow:0 1px 0 rgba(16,42,80,.03);}
+  .pill{display:inline-block;background:#e7f0ff;color:#13294b;border-radius:999px;padding:3px 11px;font-size:12px;font-weight:600;margin:2px 6px 2px 0;}
+  .stage{color:var(--accent2);font-style:italic;}
+  hr{border:0;border-top:1px solid var(--line);margin:36px 0;}
+  footer{padding:24px 40px 40px;color:var(--muted);font-size:13px;background:var(--soft);}
+  .two{display:flex;gap:18px;flex-wrap:wrap;}
+  .two>div{flex:1 1 320px;}
+  @media print{body{background:#fff}.wrap{max-width:100%}header.hero{color:#000;background:#fff;border-bottom:3px solid #13294b}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <p class="kicker">Museum Exhibit · Docent & Demo Package</p>
+  <h1>Comdyna GP‑6 — Projectile Demonstration</h1>
+  <p>An analog computer that flies a cannonball with wires, op‑amps, and capacitors — paired with an HP 1200B oscilloscope.</p>
+  <p style="margin-top:14px;font-size:14px;opacity:.9;">Demo script · Schematic→Equation→Wiring explainer · Exhibit placard · Operator setup card · Visitor FAQ</p>
+</header>
+
+<main>
+
+  <p class="lead">The throughline of the whole exhibit is one idea: <strong>the picture of the circuit <em>is</em> the math, and the wired‑up machine <em>is</em> the solution being drawn in front of you.</strong> This document contains everything needed to present, explain, run, and label the exhibit.</p>
+
+  <div class="toc">
+    <h4>Contents</h4>
+    <ol>
+      <li><a href="#overview">Overview &amp; the 20‑second version</a></li>
+      <li><a href="#explainer">From Schematic → Equation → Wiring (the core explainer)</a></li>
+      <li><a href="#script">Demo Script (timed, for presenters)</a></li>
+      <li><a href="#placard">Exhibit Placard (print &amp; mount)</a></li>
+      <li><a href="#setup">Operator Setup Card (run it / fix it)</a></li>
+      <li><a href="#faq">Visitor FAQ</a></li>
+      <li><a href="#sources">Hardware &amp; Sources</a></li>
+    </ol>
+  </div>
+
+  <!-- ============ OVERVIEW ============ -->
+  <h2 id="overview"><span class="num">1</span>Overview &amp; the 20‑second version</h2>
+  <p>This machine has <strong>no CPU and runs no software.</strong> It solves the projectile equation <code>a = −g</code> by <em>being</em> the equation:</p>
+  <ul>
+    <li><strong>Gravity</strong> is a steady voltage (set by a knob).</li>
+    <li>An <strong>integrator</strong> adds that up over time to get <strong>velocity</strong> (a straight, falling line).</li>
+    <li>A <strong>second integrator</strong> adds velocity up over time to get <strong>height</strong> (a parabola — the flight arc).</li>
+    <li>The <strong>oscilloscope</strong> plots height vs. time, so you literally watch the projectile fly.</li>
+  </ul>
+  <p>Turn the GRAVITY knob and the arc changes <em>instantly</em> — because the wires are doing the calculus continuously, not step‑by‑step.</p>
+  <blockquote class="payoff">That is the charm of analog computing — math you can feel with your fingertips.</blockquote>
+
+  <!-- ============ EXPLAINER ============ -->
+  <h2 id="explainer"><span class="num">2</span>From Schematic → Equation → Wiring</h2>
+  <p>This is the core teaching piece. It walks the same path an engineer walked in 1965 to make an analog computer solve a problem:</p>
+  <blockquote><strong>1.</strong> Write the physics as an equation → <strong>2.</strong> Re‑draw the equation as a block diagram (the schematic) → <strong>3.</strong> Translate each block into a patch‑cord connection on the machine.</blockquote>
+
+  <h3>Part 1 — The Physics</h3>
+  <p>Throw a ball straight up; ignore air resistance. One force acts on it: <strong>gravity</strong>, a constant downward acceleration <strong>g</strong> (≈9.8 m/s²). Three quantities describe the flight, linked like a chain:</p>
+  <table>
+    <tr><th>Quantity</th><th>Symbol</th><th>In plain words</th></tr>
+    <tr><td>Acceleration</td><td>a</td><td>How fast velocity changes. Constant here: <code>a = −g</code> (down).</td></tr>
+    <tr><td>Velocity</td><td>v</td><td>Speed &amp; direction. Starts at launch speed, drops steadily.</td></tr>
+    <tr><td>Position (height)</td><td>y</td><td>How high the ball is right now.</td></tr>
+  </table>
+  <p>The whole problem is <strong>one second‑order differential equation</strong>:</p>
+  <pre><code>     d²y
+     ───  =  −g        with:  y(0)  = y₀   (launch height)
+     dt²                      y'(0) = v₀   (launch velocity)</code></pre>
+  <p>Solved on paper it gives the familiar formulas — but <strong>the analog computer never uses them.</strong> It works straight from <code>d²y/dt² = −g</code> and builds the answer by integrating, the way nature does:</p>
+  <pre><code>v(t) = v₀ − g·t            →  a straight line sloping down
+y(t) = y₀ + v₀·t − ½·g·t²  →  a parabola (the flight arc)</code></pre>
+
+  <h3>Part 2 — The Big Trick: integrate twice</h3>
+  <p>Read the chain backward — the engineer's key insight:</p>
+  <pre><code>START:   acceleration  =  −g          (a constant — just a steady voltage)
+           │  integrate (add up over time)
+           ▼
+         velocity      =  v₀ − g·t     (a falling straight line)
+           │  integrate (add up over time)
+           ▼
+         position      =  y₀ + v₀·t − ½g·t²   (a parabola — the flight)</code></pre>
+  <p>So if we have a block that can <strong>integrate</strong>, we: (1) feed a constant “−g” in → out comes <strong>velocity</strong>; (2) feed velocity in → out comes <strong>position</strong>; (3) display position → watch it fly. That block is an <strong>op‑amp integrator</strong>, and the GP‑6 has four.</p>
+
+  <h3>Part 3 — The Building Blocks</h3>
+  <p>Each block performs <strong>one math operation on voltages</strong>. A voltage stands for a number (±10 V = ±full scale; the red readout shows “percent of 10 V”, so −0.588 = −5.88 V).</p>
+  <h4>Block A — Coefficient Potentiometer (a knob = multiply by a constant)</h4>
+  <p>A voltage divider: feed it +10 V, get back any fraction 0–1 — that fraction <em>is</em> a number in your equation, like <code>g</code>. Here: <strong>Pot #2 = GRAVITY</strong>, <strong>Pot #5 = INITIAL VELOCITY</strong>. Turning them changes the equation’s numbers while it runs.</p>
+  <h4>Block B — Inverter (multiply by −1)</h4>
+  <p>An op‑amp with equal resistors flips a voltage’s sign: <code>out = −in</code>. Sign‑juggling is half the job of patching. Here: <strong>Amps #7 and #8</strong>.</p>
+  <h4>Block C — Integrator (the star)</h4>
+  <p>An op‑amp with a <strong>capacitor</strong> in feedback performs calculus — its output is the <strong>running total of its input over time</strong>:</p>
+  <pre><code>                ┌──────────┐ capacitor (C)
+                │          │
+ input ──[ R ]───┤−   op    ├──── output = −(1/RC)·∫ input dt + (initial value)
+                 │    amp   │
+           ┌─────┤+         │
+       IC ─┘     └──────────┘</code></pre>
+  <ul>
+    <li><strong>It accumulates.</strong> A steady input makes the output ramp — and that ramp <em>is</em> an integral.</li>
+    <li><strong>It starts from an Initial Condition (IC).</strong> You preload the capacitor to a starting voltage. <em>This is how launch velocity and launch height enter the problem.</em></li>
+    <li><strong>It inverts as it integrates</strong> (note the minus sign). Every integrator flips the sign of what it computes — which is why the schematic has extra inverters.</li>
+  </ul>
+  <blockquote class="warn"><strong>⚠ The single most important idea for the wiring:</strong> an op‑amp integrator computes the <em>negative</em> integral, so a chain of two integrators flips the sign twice. The “extra” amplifiers (inverters #7/#8/#3) are <strong>not</strong> doing physics — they’re <strong>bookkeeping for the minus signs</strong> so velocity falls and the arc points the right way. See that, and the patch panel stops looking like spaghetti.</blockquote>
+
+  <h3>Part 4 — The Schematic: the equation as a wiring plan</h3>
+  <p>Redraw <code>d²y/dt² = −g</code> as those blocks (this is the museum’s tan handout). Read left to right, following the signal:</p>
+  <pre><code>┌──────────┐    ┌──────────┐    ┌─────────────┐    ┌─────────────┐
+│ Pot #2   │    │ Amp #7   │    │ Amp #1      │    │ Amp #2      │
+│ GRAVITY  │───▶│ invert   │───▶│ INTEGRATOR  │───▶│ INTEGRATOR  │──▶ SCOPE (Y)
+│ (= g)    │    │ (= −g)   │    │ "gravity"   │    │ "velocity"  │   = POSITION
+└──────────┘    └──────────┘    │  → velocity │    │  → position │   (parabola)
+ from +10V                      └─────▲───────┘    └─────────────┘
+                                      │ IC input
+                                ┌─────┴──────┐   ┌──────────┐
+                                │ Pot #5     │──▶│ Amp #8   │
+                                │ INIT VEL   │   │ invert   │
+                                │ (= v₀)     │   │ (= +v₀)  │
+                                └────────────┘   └──────────┘
+                                 from −10V
+
+                    ┌──────────┐
+    velocity ──────▶│ Amp #3   │──▶ SCOPE (Y, alt.)
+    (from Amp #1)   │ invert   │   = VELOCITY (falling straight line)
+                    └──────────┘</code></pre>
+  <table>
+    <tr><th>Schematic block</th><th>What it represents in <code>d²y/dt² = −g</code></th></tr>
+    <tr><td>Pot #2 (GRAVITY) from +10 V</td><td>the constant <strong>g</strong></td></tr>
+    <tr><td>Amp #7 (inverter)</td><td>makes it <strong>−g</strong> (gravity pulls down)</td></tr>
+    <tr><td>Amp #1 (integrator)</td><td>first integral: −g → <strong>velocity</strong>, <code>v = v₀ − g·t</code></td></tr>
+    <tr><td>Pot #5 → Amp #1 IC input</td><td>the starting condition <strong>v₀</strong> (launch speed)</td></tr>
+    <tr><td>Amp #8 (inverter)</td><td>fixes the sign of v₀ so launch is upward</td></tr>
+    <tr><td>Amp #2 (integrator)</td><td>second integral: velocity → <strong>position</strong> y</td></tr>
+    <tr><td>Amp #2 output → scope</td><td>the <strong>flight arc</strong> (parabola), height vs. time</td></tr>
+    <tr><td>Amp #3 (inverter)</td><td>display helper: flips velocity to read as a falling line</td></tr>
+  </table>
+  <p>Every term in the equation has become a block; every arrow is a wire. <strong>The schematic <em>is</em> the equation.</strong></p>
+
+  <h3>Part 5 — The Wiring: diagram → patch cords</h3>
+  <p>On the GP‑6, every block’s connections are brought out to color‑coded jacks. “Programming” means plugging cords to make the diagram real. Each arrow above becomes one patch cord:</p>
+  <ol>
+    <li><strong>Reference → Gravity pot.</strong> Patch <strong>+10 V</strong> to <strong>Pot #2</strong>. Dialing it sets <code>g</code>.</li>
+    <li><strong>Gravity pot → inverter (#7).</strong> Now you have a steady <strong>−g</strong> — a downward pull.</li>
+    <li><strong>−g → Integrator #1.</strong> Amp #1 accumulates −g → output ramps. <strong>That ramp is velocity.</strong></li>
+    <li><strong>Set launch speed (IC).</strong> Patch <strong>−10 V → Pot #5 → Amp #8 → Amp #1 IC jack.</strong> Preloads integrator #1 so at t=0 its output already equals <strong>v₀</strong>.</li>
+    <li><strong>Velocity → Integrator #2.</strong> Amp #2 accumulates velocity → output is <strong>position (height)</strong>.</li>
+    <li><strong>Position → Scope Y.</strong> Scope X = time, so it draws <strong>height vs. time — the parabola.</strong></li>
+    <li><strong>Velocity → inverter #3 → scope (optional).</strong> Flip the display to show velocity as a falling line; <em>zero velocity = apogee.</em></li>
+  </ol>
+  <blockquote><strong>Why color‑coded cords?</strong> Red carry signals; black are grounds/references; each amplifier’s inputs, summing junction (SJ), and output are grouped together. Once patched, the “program” is visible — you can trace the equation with your finger.</blockquote>
+
+  <h3>Part 6 — Running it: IC, OP, and why the curve is alive</h3>
+  <p>A digital computer would step through tiny time slices. The GP‑6 doesn’t step — its capacitors integrate <strong>continuously</strong>, at the speed of electricity. The whole flight is solved all at once, all the time. The MODE controls run the show:</p>
+  <table>
+    <tr><th>Mode</th><th>What happens</th><th>Projectile meaning</th></tr>
+    <tr><td><strong>PS</strong> (Pot Set)</td><td>Reference applied so you can dial &amp; read pots on the DVM.</td><td>Set <code>g</code> and <code>v₀</code>.</td></tr>
+    <tr><td><strong>IC</strong> (Reset)</td><td>Integrators forced to starting values.</td><td>Load the launch — ball in hand.</td></tr>
+    <tr><td><strong>OP</strong> (Operate)</td><td>Integrators integrate; the solution runs.</td><td><strong>Launch!</strong> The ball flies.</td></tr>
+    <tr><td><strong>HD</strong> (Hold)</td><td>Integration freezes.</td><td>Pause the ball mid‑air.</td></tr>
+    <tr><td><strong>RO</strong> (Repetitive Op)</td><td>Auto‑cycles IC→OP many times/sec (rate = COMPUTE TIME).</td><td>Re‑launches continuously → stable live trace.</td></tr>
+  </table>
+  <p>Because of <strong>Repetitive Operation</strong>, the machine re‑flies the projectile dozens of times a second and redraws the arc. So turning the <strong>GRAVITY</strong> knob reshapes the whole parabola in real time — flatter on the “Moon,” steeper with more gravity. Turn <strong>INITIAL VELOCITY</strong> and the arc grows or shrinks. Nothing is recomputed in steps; the wires simply <em>are</em> the new equation the instant you turn the knob.</p>
+  <blockquote class="payoff">THIS is the charm of analog computing.</blockquote>
+
+  <h4>One‑paragraph summary (for memorizing)</h4>
+  <p>A projectile obeys <code>d²y/dt² = −g</code>. Read backward, it says: integrate a constant (gravity) once to get velocity, integrate again to get height. The schematic redraws that as blocks — a knob for gravity, an integrator for velocity, a second for position, plus inverters to keep the minus signs honest. The wiring makes each block real with patch cords: reference → gravity pot → inverter → integrator #1 (velocity) → integrator #2 (position) → oscilloscope. Set launch speed by preloading integrator #1’s initial condition. Run it in repetitive mode and the scope draws the flight arc live — change gravity or launch speed by hand and watch the trajectory respond instantly, because the circuit isn’t <em>calculating</em> the motion, it <em>is</em> the motion.</p>
+
+  <!-- ============ DEMO SCRIPT ============ -->
+  <h2 id="script"><span class="num">3</span>Demo Script</h2>
+  <p><span class="pill">Runtime ~5–7 min</span><span class="pill">All ages</span><span class="pill">Stage directions in italics</span></p>
+  <p><strong>Presenter needs:</strong> GP‑6 powered on and patched (see §5), HP 1200B on and showing the trace, machine in <strong>Repetitive Operation (RO)</strong>.</p>
+
+  <div class="card">
+    <h3>⏱ 90‑Second Short Version (walk‑up)</h3>
+    <p><span class="stage">[Point at the scope’s parabola.]</span> “See that curve? That’s a ball flying through the air — being calculated <strong>right now</strong> by this machine. But here’s the thing: there’s <strong>no computer chip in here, and no software.</strong> No ones and zeros.</p>
+    <p>This is an <strong>analog</strong> computer. Instead of counting, it uses <strong>electricity to act out the physics.</strong> Gravity is just a steady voltage — set by <em>this</em> knob. The machine adds that up over time to get the ball’s speed, adds <em>that</em> up to get its height, and paints the height on the scope. That’s the flight.</p>
+    <p>Watch what happens when I change gravity. <span class="stage">[Slowly turn the GRAVITY knob.]</span> <strong>The whole trajectory reshapes — instantly.</strong> Less gravity, the ball sails — that’s the Moon. More gravity, it slams down. I didn’t re‑run any program. The wires just <em>are</em> the new equation the moment I turn the knob.</p>
+    <p><strong>That’s the charm of analog computing — math you can feel with your fingertips.”</strong></p>
+  </div>
+
+  <h3>1. The Hook (30 sec)</h3>
+  <p><span class="stage">[Stand beside the scope; wait for the parabola.]</span> “Take a look at this green curve. It’s an arc — like a ball thrown across a field, going up, peaking, coming back down. <strong>And this machine is drawing it because it’s computing the ball’s flight in real time.</strong> Here’s what surprises people: <strong>this is a computer with no chip, no code, and no software.</strong> It’s called an <strong>analog computer.</strong>”</p>
+
+  <h3>2. Digital vs. Analog — the core idea (60 sec)</h3>
+  <p>“Your phone is a <strong>digital</strong> computer — it solves problems by <strong>counting</strong>, billions of yes/no steps a second. To draw this arc it would chop the flight into thousands of slices. This machine is <strong>analog</strong>. It doesn’t count — it uses <strong>voltages to physically stand in for real quantities.</strong> A voltage here <em>is</em> gravity, another <em>is</em> the ball’s speed, another <em>is</em> its height. Instead of running a program, it’s <strong>wired</strong> so the electricity obeys the same physics the real ball obeys. <strong>It doesn’t calculate the motion — it <em>becomes</em> the motion.</strong>” <span class="stage">[Gesture to the patch cords.]</span> “Those wires are the ‘program.’ Re‑plug them and you’ve changed the equation.”</p>
+
+  <h3>3. The physics, in three steps (75 sec)</h3>
+  <p><span class="stage">[Mime a ball arcing.]</span> “Only one thing acts on a thrown ball: <strong>gravity</strong>, pulling down steadily. So: <strong>One</strong> — gravity is a steady voltage, set by this knob marked <strong>GRAVITY.</strong> <span class="stage">[Tap Pot #2.]</span> <strong>Two</strong> — add up that pull over time and you get the ball’s <strong>speed</strong>; the block that adds up over time is an <strong>integrator</strong>, and this machine has four. <span class="stage">[Point to amps 1–4.]</span> <strong>Three</strong> — add up the <em>speed</em> over time and you get the ball’s <strong>height</strong>; that takes a <em>second</em> integrator, and its output is the arc on the screen. So the recipe is: <strong>gravity → integrate → speed → integrate → height → draw it.</strong>”</p>
+
+  <h3>4. Read the wiring like a sentence (60 sec)</h3>
+  <p><span class="stage">[Point to the tan schematic.]</span> “This diagram is the equation drawn as a wiring plan, and the panel matches it. Follow my finger: start at the <strong>GRAVITY knob</strong> → into the <strong>first integrator</strong> → out comes <strong>speed</strong>. This other knob, <strong>INITIAL VELOCITY</strong>, sets how hard we throw it. <span class="stage">[Tap Pot #5.]</span> Into the <strong>second integrator</strong> → out comes <strong>height</strong> → to the <strong>scope</strong>, plotted against time. That’s your arc.” <span class="stage">[Optional]</span> “Those extra amps labeled ‘invert’ don’t do physics — they just <strong>flip plus and minus signs</strong> so gravity pulls down and the throw goes up.”</p>
+
+  <h3>5. The Payoff — make it live (90 sec)</h3>
+  <p>“Here’s the magic. This machine is <strong>re‑flying the ball dozens of times a second</strong>, so I can change the world <strong>while the ball is in flight.</strong>” <span class="stage">[Slowly turn GRAVITY down.]</span> “Watch as I <strong>weaken gravity</strong>… the arc <strong>stretches</strong> — the ball sails and hangs longer. <strong>That’s a throw on the Moon.</strong>” <span class="stage">[Turn GRAVITY up past normal.]</span> “Now <strong>crank gravity up</strong> — the arc <strong>collapses.</strong> Heavy planet.” <span class="stage">[Turn INITIAL VELOCITY up.]</span> “Throw it harder — bigger arc.” <span class="stage">[Pause.]</span> “I never typed anything or re‑ran a program. <strong>The trajectory changes the instant I turn the knob — because the wiring <em>is</em> the equation.</strong>” <span class="stage">[Optional, switch to velocity view.]</span> “This straight line falling through zero is the ball’s <strong>speed.</strong> Where it crosses zero, the ball has stopped rising — <strong>that instant is the apogee, the very top.</strong> After that, it falls.”</p>
+
+  <h3>6. The Close (30 sec)</h3>
+  <p>“For about thirty years — through the Apollo program, aircraft and missile design — <strong>this</strong> is how engineers solved the hardest equations: not by counting, but by building a little electrical model and watching it run. Digital eventually won on precision and flexibility. But for <em>feeling</em> how a system behaves, nothing beats it. <strong>That’s the charm of analog computing.</strong>”</p>
+
+  <h3>Presenter notes &amp; recovery lines</h3>
+  <ul>
+    <li><strong>Flat / off‑screen trace:</strong> likely in IC/HOLD or a pot at zero — confirm RO/Operate and that GRAVITY &amp; INIT VEL aren’t fully down (see §5).</li>
+    <li><strong>“Is it broken? Where’s the screen/keyboard?”</strong> — “There isn’t one. You program it with <strong>wires</strong>, and the answer comes out as a <strong>picture</strong> on the scope. The wires are the keyboard.”</li>
+    <li><strong>“Why does the readout say −0.588?”</strong> — “A voltmeter you can point at any wire; it reads in <em>percent of full scale</em>, so −0.588 ≈ −59%.”</li>
+    <li><strong>“Could I build one?”</strong> — “Yes — the heart is an op‑amp and a capacitor, a few dollars of parts.”</li>
+    <li>Keep hands <strong>slow</strong> on the knobs — the magic is watching the curve morph. Don’t re‑patch cords mid‑tour unless confident.</li>
+  </ul>
+  <blockquote class="payoff">The one line to never skip: “It doesn’t calculate the motion — it <em>becomes</em> the motion. That’s the charm of analog computing.”</blockquote>
+
+  <!-- ============ PLACARD ============ -->
+  <h2 id="placard"><span class="num">4</span>Exhibit Placard <span style="font-size:14px;font-weight:400;color:var(--muted)">(print &amp; mount)</span></h2>
+  <div class="card">
+    <h3 style="font-size:22px;margin-top:14px;">Watch a Cannonball Fly — Computed by Wires, Not Code</h3>
+    <p style="color:var(--muted);margin-top:0;"><strong>Comdyna GP‑6 Analog Computer</strong> · with HP 1200B Oscilloscope</p>
+    <p>The green arc on the screen is a <strong>projectile in flight</strong> — and this machine is computing it <strong>right now.</strong> But look closer: there is <strong>no microchip and no software</strong> inside. This is an <strong>analog computer.</strong> Instead of counting in ones and zeros, it uses <strong>voltage</strong> to stand in for real things. One voltage <em>is</em> gravity. Another <em>is</em> the projectile’s speed. Another <em>is</em> its height. The machine is <strong>wired</strong> so the electricity obeys the very same physics a real cannonball obeys.</p>
+    <p>It solves the motion by <strong>integrating</strong> — continuously adding gravity up into speed, and speed up into height — using op‑amps and capacitors. The answer is drawn live on the oscilloscope: <strong>height versus time, the flight arc.</strong></p>
+    <h4>How it thinks</h4>
+    <pre><code>GRAVITY (a knob = a voltage)
+     │  add up over time  (integrate)
+     ▼
+SPEED  (a falling straight line)
+     │  add up over time  (integrate)
+     ▼
+HEIGHT (a parabola — the flight on the screen)</code></pre>
+    <p><strong>The wiring <em>is</em> the equation.</strong> Re‑plug the patch cords and you’ve changed the physics.</p>
+    <h4>Try this (docent‑assisted)</h4>
+    <p><strong>Turn the GRAVITY knob and watch the arc change shape — instantly.</strong> Weaker gravity → the projectile sails (the Moon). Stronger gravity → it slams down. Nothing is re‑run; the trajectory simply <em>becomes</em> the new equation the moment you turn the knob.</p>
+    <blockquote class="payoff">That is the charm of analog computing — math you can feel with your fingertips.</blockquote>
+    <h4>Did you know?</h4>
+    <p>For about <strong>30 years</strong> — through the Apollo program, aircraft and missile design — analog computers like this solved the hardest equations: not by counting, but by building a small <strong>electrical model</strong> of the problem and watching it run, at the speed of electricity.</p>
+    <p style="font-size:12.5px;color:var(--muted);"><em>Analog computers represent numbers as voltages (here, ±10 V = full scale) and solve differential equations with op‑amp integrators. The Comdyna GP‑6 was a widely used teaching machine of the 1970s–80s, programmed entirely by patch cords — the visible tangle of wires is the “source code.”</em></p>
+  </div>
+
+  <!-- ============ SETUP CARD ============ -->
+  <h2 id="setup"><span class="num">5</span>Operator Setup Card</h2>
+  <blockquote class="warn"><strong>Authority:</strong> the museum’s <strong>tan schematic handout</strong> is the master wiring diagram for this specific patch. If anything here disagrees with the physical panel or that sheet, trust the sheet. The jack list below reconstructs that schematic block‑for‑block — verify against the panel before re‑patching.</blockquote>
+
+  <h3>A. Power‑up &amp; display</h3>
+  <ol>
+    <li>Power on the GP‑6 and the <strong>HP 1200B</strong>; warm up ~1 min.</li>
+    <li>Scope: computed signal on <strong>vertical (Y)</strong>, <strong>time on horizontal (X)</strong>. Start ~<strong>1 V/div</strong>, sweep so one flight fills the screen; adjust intensity/focus.</li>
+    <li>Confirm the red <strong>OVLD</strong> lamp is <strong>off.</strong> If lit, an amp is railed — back off the GRAVITY/INIT‑VEL pots and recheck patching.</li>
+  </ol>
+
+  <h3>B. Front‑panel settings (the photographed configuration)</h3>
+  <table>
+    <tr><th>Control</th><th>Setting</th><th>Why</th></tr>
+    <tr><td>MODE SELECTOR knob</td><td><strong>OPR</strong></td><td>Lets run modes / repetitive operation drive the solution.</td></tr>
+    <tr><td>Run mode</td><td><strong>RO</strong> (Repetitive)</td><td>Auto‑cycles IC→OP → live, stable trace.</td></tr>
+    <tr><td>COMPUTE TIME knob</td><td>mid (~<strong>20–50</strong>)</td><td>Repeat rate / run length. Tune so the arc is steady and fills the screen.</td></tr>
+    <tr><td>GRAVITY — Pot <strong>#2</strong></td><td>~<strong>0.16</strong> (≈ −0.160 DVM)</td><td>The value of <code>g</code>. The “hero” knob.</td></tr>
+    <tr><td>INITIAL VELOCITY — Pot <strong>#5</strong></td><td>~<strong>0.66</strong> (≈ −0.660 DVM)</td><td>Launch speed v₀. Second demo knob.</td></tr>
+  </table>
+  <h4>DVM addressing (as labeled on the panel tape) — reads percent of 10 V</h4>
+  <table>
+    <tr><th>Selector</th><th>Setting</th><th>Reads / means</th></tr>
+    <tr><td>X ADDRESS</td><td>TIME</td><td>Horizontal = time base (drives sweep).</td></tr>
+    <tr><td>Y / POT ADDRESS</td><td>7 = GRAVITY, 5 = G×V</td><td>Meter at the gravity term / gravity×velocity node.</td></tr>
+    <tr><td>Solution address</td><td>3 = VELOCITY, 2 = POSITION</td><td>Amp #3 = velocity line; Amp #2 = position parabola.</td></tr>
+  </table>
+  <p style="font-size:14px;color:var(--muted)">To switch the scope between parabola (position, Amp #2) and falling line (velocity, via Amp #3), move the Y display selector to that amplifier — the schematic calls this “Select 4 on the Y switch” to view the descending velocity line. Confirm your scope’s Y‑address once and mark it.</p>
+
+  <h3>C. Patch list (block‑for‑block)</h3>
+  <p>Each line = one signal hop. Jack groups: each amp has <strong>SJ</strong> (input), <strong>IC</strong> (initial‑condition input), <strong>output</strong>; pots have input + wiper/output; references are <strong>+REF / −REF (±10 V)</strong>.</p>
+  <table>
+    <tr><th>#</th><th>From</th><th>To</th><th>Represents</th></tr>
+    <tr><td>1</td><td>+10 V REF</td><td>Pot #2 input (GRAVITY)</td><td>constant to scale into <code>g</code></td></tr>
+    <tr><td>2</td><td>Pot #2 output</td><td>Amp #7 input (inverter)</td><td>makes <strong>−g</strong></td></tr>
+    <tr><td>3</td><td>Amp #7 output</td><td>Amp #1 SJ (integrator)</td><td>−g → 1st integrator → velocity</td></tr>
+    <tr><td>4</td><td>−10 V REF</td><td>Pot #5 input (INIT VEL)</td><td>constant to scale into v₀</td></tr>
+    <tr><td>5</td><td>Pot #5 output</td><td>Amp #8 input (inverter)</td><td>makes <strong>+v₀</strong> (upward)</td></tr>
+    <tr><td>6</td><td>Amp #8 output</td><td>Amp #1 <strong>IC</strong> input</td><td>preload integrator #1 → start vel = v₀</td></tr>
+    <tr><td>7</td><td>Amp #1 output</td><td>Amp #2 SJ (integrator)</td><td>velocity → 2nd integrator → position</td></tr>
+    <tr><td>8</td><td>Amp #2 output</td><td>Scope vertical (Y)</td><td>height vs time = the parabola</td></tr>
+    <tr><td>9</td><td>Amp #1 output</td><td>Amp #3 input (inverter)</td><td>sign‑flip velocity for display</td></tr>
+    <tr><td>10</td><td>Amp #3 output</td><td>Scope vertical (Y, alt.)</td><td>velocity = falling straight line</td></tr>
+    <tr><td>—</td><td>Time base / ramp</td><td>Scope horizontal (X)</td><td>sweep = time axis</td></tr>
+  </table>
+  <p><strong>Grounds:</strong> black cords tie scope and computer references together as shown on the sheet — don’t remove them thinking they’re spares.</p>
+
+  <h3>D. Run sequence (each demo)</h3>
+  <ol>
+    <li>MODE SELECTOR → <strong>POT SET</strong>; confirm GRAVITY (#2) and INIT VEL (#5) on the DVM; return → <strong>OPR.</strong></li>
+    <li>Ensure run mode is <strong>RO</strong>; the scope shows a steady arc.</li>
+    <li>Demo the <strong>GRAVITY</strong> knob (slow turns): arc stretches (Moon) / collapses (heavy planet).</li>
+    <li>Demo the <strong>INITIAL VELOCITY</strong> knob: bigger/smaller arc.</li>
+    <li>To freeze for discussion: tap <strong>HD</strong>; resume with <strong>OP/RO.</strong></li>
+  </ol>
+
+  <h3>E. Troubleshooting</h3>
+  <table>
+    <tr><th>Symptom</th><th>Likely cause</th><th>Fix</th></tr>
+    <tr><td>OVLD lit, trace pinned to edge</td><td>pot too high / amp saturated / mis‑patch</td><td>Lower GRAVITY &amp; INIT‑VEL; verify cords 1–7 vs. sheet.</td></tr>
+    <tr><td>Flat line, no arc</td><td>in IC/HOLD, pot at zero, or scope on wrong node</td><td>Set RO/OPR; raise pots; confirm scope Y on Amp #2.</td></tr>
+    <tr><td>Arc drifts / won’t sit still</td><td>COMPUTE TIME or scope sweep mismatched</td><td>Re‑tune COMPUTE TIME &amp; time/div until one flight fills screen.</td></tr>
+    <tr><td>Curve frozen, ignores knobs</td><td>stuck in HOLD, or MODE in POT SET</td><td>Return to OPR + RO.</td></tr>
+    <tr><td>Wrong trace (line vs. parabola)</td><td>scope Y on wrong amp</td><td>Amp #2 = parabola; Amp #3 = velocity line.</td></tr>
+    <tr><td>Readout ~0 for a live signal</td><td>DVM addressed to idle node</td><td>Re‑address Y/POT or Solution selector (2=position, 3=velocity).</td></tr>
+  </table>
+
+  <h3>F. Numbers cheat‑sheet</h3>
+  <ul>
+    <li><strong>Full scale:</strong> ±10 V = ±100%. DVM shows percent of 10 V (−0.160 → −16% → −1.60 V).</li>
+    <li><strong>Integrator law:</strong> output = −(1/RC) × (running total of input) + initial condition. The minus sign is why inverters (#7, #8, #3) exist.</li>
+    <li><strong>Apogee:</strong> where the velocity line crosses zero = the top of the flight.</li>
+  </ul>
+
+  <!-- ============ FAQ ============ -->
+  <h2 id="faq"><span class="num">6</span>Visitor FAQ</h2>
+  <p><strong>Q: Where’s the screen and keyboard? Is it broken?</strong><br>Nothing’s broken — there isn’t one. You program it with <strong>patch cords</strong>, and the answer is a <strong>picture on the oscilloscope.</strong> The wires are the keyboard; the scope is the screen.</p>
+  <p><strong>Q: Is there a computer chip in here?</strong><br>No. No chip, no memory, no software, no ones and zeros. The brains are <strong>op‑amps and capacitors</strong> wired to act out the physics directly. It’s an <em>analog</em> computer.</p>
+  <p><strong>Q: Analog vs. digital, really?</strong><br>Digital <strong>counts</strong> — billions of tiny yes/no steps. Analog <strong>measures</strong> — a smoothly varying voltage stands for a real quantity. Here a voltage <em>is</em> gravity, <em>is</em> speed, <em>is</em> height. Digital approximates by counting fast; analog mirrors the real thing continuously.</p>
+  <p><strong>Q: What is it computing?</strong><br>The flight of a projectile under gravity. The green arc is its <strong>height over time;</strong> switch the view to see its <strong>speed.</strong></p>
+  <p><strong>Q: How does it do math without code?</strong><br>By <strong>integrating</strong> — continuously adding up. Gravity (a steady voltage) adds up over time into <strong>speed;</strong> speed adds up into <strong>height.</strong> Two integrations, done by op‑amp‑and‑capacitor <strong>integrators.</strong></p>
+  <p><strong>Q: Why does turning the knob change the curve instantly?</strong><br>The <strong>wiring itself is the equation</strong>, and it re‑flies the projectile dozens of times a second. Turn a knob and you’ve changed a number in the live equation, so the arc reshapes immediately and smoothly.</p>
+  <p><strong>Q: What do the two knobs do?</strong><br><strong>GRAVITY</strong> sets how strong gravity is (down = arc stretches like the Moon; up = drops fast). <strong>INITIAL VELOCITY</strong> sets how hard you throw it.</p>
+  <p><strong>Q: What’s the red number?</strong><br>A built‑in voltmeter you aim at any wire. It reads in <strong>percent of full scale</strong> (full scale = 10 V), so −0.588 ≈ −59%.</p>
+  <p><strong>Q: What are the triangles labeled “invert”?</strong><br>Sign‑flippers. Each integrator flips plus/minus as a side effect, so little <strong>inverter</strong> amps put the signs back — gravity pulls down, the throw goes up.</p>
+  <p><strong>Q: Where’s the top of the flight?</strong><br>Switch to the <strong>velocity</strong> view — the straight line falling through zero. <strong>The zero‑crossing is the apogee.</strong></p>
+  <p><strong>Q: Real work, or a teaching toy?</strong><br>Both. This model (GP‑6) was a teaching machine, but big analog computers were serious tools for ~30 years — <strong>Apollo, aircraft and spacecraft design, missile guidance, control systems</strong> — because they solve differential equations instantly and let you feel a system respond.</p>
+  <p><strong>Q: Why did digital win?</strong><br>Precision, repeatability, memory, flexibility. But for <strong>intuition</strong> — watching a whole system breathe as you turn a knob — analog is still wonderful, which is why people build them today.</p>
+  <p><strong>Q: Could I build one at home?</strong><br>The core is just an <strong>op‑amp and a capacitor</strong> — a few dollars of parts. This box simply packages eight amplifiers, multipliers, and a tidy patch panel.</p>
+  <p><strong>Q: How accurate is it?</strong><br>Roughly a percent — enough to see the physics, not to do banking. Trading some precision for <strong>speed and insight</strong> was the whole point.</p>
+  <blockquote class="payoff">Leave them with: “It doesn’t <em>calculate</em> the motion — it <em>becomes</em> the motion. That’s the charm of analog computing.”</blockquote>
+
+  <!-- ============ SOURCES ============ -->
+  <h2 id="sources"><span class="num">7</span>Hardware &amp; Sources</h2>
+  <p><strong>Comdyna GP‑6</strong> general‑purpose analog computer (≈1970s–80s teaching machine): 4 integrator/summer amplifiers (top, labeled 1–4), 2 inverter amplifiers (7–8), 2 multipliers, 8 coefficient potentiometers, ±10 V &amp; ±15 V references, built‑in addressable digital voltmeter (the red readout), capacitor‑shorting for zeroing integrators, overload protection. Paired with an <strong>HP 1200B oscilloscope</strong> (X = time, Y = computed quantity). The “program” is the patch cords.</p>
+  <ul>
+    <li><a href="https://carleton.ca/scs/vintage-computing/item/vin99/">Comdyna GP‑6 — Carleton University, Vintage Computing</a></li>
+    <li><a href="https://vtda.org/docs/computing/Comdyna/Comdyna_GP6AnalogComputerOperatorsManual.pdf">GP‑6 Analog Computer Operator’s Manual (VTDA, PDF)</a></li>
+    <li><a href="http://www.bitsavers.org/pdf/comdyna/Comdyna-GP6-AnalogComputer.pdf">Comdyna GP‑6 Operator’s Manual (bitsavers, PDF)</a></li>
+    <li><a href="https://oldcomputermuseum.com/comdyna_gp6.html">Comdyna GP‑6 — Old Computer Museum</a></li>
+    <li><a href="https://djjondent.blogspot.com/2022/05/comdyna-gp-6-introduction-to-patch-bay.html">JonDent — Comdyna GP‑6: introduction to the patch bay</a></li>
+    <li><a href="http://wa6pzb.blogspot.com/2018/08/projectile-motion-with-analog-computers.html">WA6PZB — Projectile Motion with Analog Computers</a></li>
+    <li><a href="https://www.allaboutcircuits.com/textbook/experiments/chpt-6/integrator/">All About Circuits — Op‑Amp Integrator lab</a></li>
+  </ul>
+
+</main>
+
+<footer>
+  <p><strong>Comdyna GP‑6 Projectile Demonstration — Exhibit Kit.</strong> Prepared for the museum exhibit pairing the GP‑6 analog computer with the HP 1200B oscilloscope. The patch list reconstructs the museum’s tan schematic block‑for‑block; verify against the physical panel and that sheet before re‑patching.</p>
+</footer>
+
+</div>
+</body>
+</html>
