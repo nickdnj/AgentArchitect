@@ -9,7 +9,8 @@
 
 ## ⚙️ Before You Roll — Gear & Setup
 
-- [ ] **Lav mic on Bob + deadcat windscreen — NON-NEGOTIABLE.** River wind will wreck on-camera audio.
+- [ ] **AUDIO: iPhone in Bob's button-down chest pocket → Voice Memos (Lossless), Airplane Mode + Do Not Disturb.** This is the primary voice track; the pocket fabric is the windscreen — no lav/deadcat. Camera's onboard mic = scratch track for sync.
+- [ ] **CLAP once at the head of EVERY take** (Bob claps on camera) so the Voice Memo snaps to the video in post — non-negotiable.
 - [ ] Grab 2–3 min of clean ambient **shore/gull sound** separately for the bed.
 - [ ] **Tripod** — lock it off for all demo/insert shots; handheld only for hooks & to-camera CTAs.
 - [ ] Chimney starter · 2+ bags charcoal briquettes · newspaper · long lighter/matches · long tongs · spatula · **heat gloves**.
@@ -90,7 +91,7 @@ A charcoal fire only runs one way: **unlit → lighting → gray-ready → cooki
 | [ ] | **2F** | 2 | MS | Handheld, Bob to cam | Thumbs up over set fire | "The trick that turns a scary fire into one you control." | — | 12s | Best over FIRE 1; can batch clean |
 | [ ] | **4F-alt** | 4 | MS | Handheld, Bob to cam (safety backup, no fire) | Flat-hand cardinal rule (backup of 4F) | "NEVER add fluid to lit coals—it runs right up at you." | — | 26s | Optional clean backup if 4F take fails |
 | [ ] | **5F** | 5 | MWS | Handheld, Bob to cam, water behind | Gestures to steady fire, relaxed close | "A little spin and the wind's on your side." | — | 15s | Best over a lit fire; can batch clean |
-| [ ] | **CTA-VO** | 1–5 | audio | Lav, audio only — all five end-card VO lines | Reads each "picnic.vistter.com" CTA | "Full steps at picnic dot vistter dot com." | — | 5× ~6s | No fire — record while a fire burns down |
+| [ ] | **CTA-VO** | 1–5 | audio | Voice Memos, audio only — all five end-card VO lines | Reads each "picnic.vistter.com" CTA | "Full steps at picnic dot vistter dot com." | — | 5× ~6s | No fire — record while a fire burns down |
 
 ## BLOCK F — B-roll, Inserts & End Cards (NO fire required)
 
