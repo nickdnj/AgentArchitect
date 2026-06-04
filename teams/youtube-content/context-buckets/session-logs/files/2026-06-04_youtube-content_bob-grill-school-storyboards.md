@@ -69,3 +69,29 @@ aerials. Added (via the same Video Script Writer agent):
 - App: added **🚁 Drone Shots tab** + a 🚁 badge on drone pages.
 
 Commits: f294e35 (storyboards + ground shot list + app), then drone follow-up commit.
+
+---
+
+## Follow-up: audio + multi-cam rig finalized
+
+- **Audio decision:** iPhone-in-pocket → Voice Memos (Lossless, Airplane Mode) as
+  primary voice track; pocket fabric = windscreen (no lav/deadcat). Camera onboard =
+  scratch. Clap at head of every take to sync. (Earlier options weighed: bare lav
+  w/o deadcat, DIY faux-fur deadcat, AirPods Pro 3 as iOS-26 studio mic.)
+- **3-camera rig added:** A-cam iPhone tripod (landscape 16:9 master) · B-cam Meta
+  Ray-Ban glasses POV on Bob (portrait → crop-to-16:9/PiP for the master, native for
+  9:16 Shorts; glasses double as the vertical-grab machine) · audio = pocket iPhone.
+- **Flagged 18 hand-work/critical-move shots + 18 storyboard pages** with `pov:true`
+  (📷); NOT the to-camera hooks/CTAs or wide beauty/B-roll. Added `shotList.rigNote`,
+  CAMERA A/B gear items. PDF generator + app show 📷 POV chips/badges + rig banner.
+- Commits: 096d283 (audio switch), b43e9fe (glasses POV rig). shot-list.pdf,
+  drone-shot-list.pdf, shot-list.md, app all current.
+
+---
+
+## Follow-up: ingested Jun-4 test footage + recovered clobbered drone data
+
+- **Test shots reviewed** (in ~/Downloads): 1 iPhone clip `IMG_0802.MOV` (1080p landscape HEVC, on-cam mic mean −46 dB = distant → confirms pocket-mic plan) + 6 DJI clips (1 free-flight + 5 QuickShots, all 1080p h264). Confirmed location = real Kay Park SF163.5 grills in the Wharfside complex; drone shows grills + pool + parking + condos + marina/water. Harsh midday sun → golden hour. Drone tests were 1080p (Mini 4K can do 4K → shoot finals in 4K). QuickShots are complex-wide; still need grill-centric orbit/flyover/reveal.
+- **Ingested into storyboard app:** copied all 7 to `assets/videos/` (gitignored, local-only) with clean names; wired 5 onto pages (Ep1 1A iPhone; Ep1 D-2 + Ep5 D-3 drone establisher; Ep1/Ep5 D-11 end-card backdrop), `test:true` + reference notes. Unused (topdown-picnic, topdown-2, reveal-1, reveal-pool) sit in assets ready to drag.
+- **DATA-LOSS RECOVERY:** drone pages (Ep1 D-2/D-11, Ep5 D-3/D-9/D-11) and the entire `droneShotList` (11 shots) had been wiped from storyboard-data.json — cause: storyboard app autosave from a stale browser tab (left open from before the drone work) POSTing its old DATA over the file. Restored from commit 8f283f2 and merged with current rig/POV/audio edits. **Hardened `server.py` /save:** timestamped rolling backups (keep 15) before every write + reject empty-episodes payloads. Added project `.gitignore` (assets/videos, assets/images, storyboard-app/backups). **Lesson: always reload the app tab after editing storyboard-data.json out-of-band.**
+- Commits: def4bc5 (ingest + recovery + server hardening). PDFs regenerated; both current.
