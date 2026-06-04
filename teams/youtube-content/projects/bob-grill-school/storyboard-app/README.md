@@ -20,14 +20,20 @@ python3 server.py            # http://localhost:8510
   by shooting block, with Done checkboxes. **🖨 Print / Save PDF** button uses the
   browser print dialog.
 
-## Printable shot list (standalone, no server needed)
+## Printable shot lists (standalone, no server needed)
 
 ```bash
 cd teams/youtube-content/projects/bob-grill-school
-python3 generate-shot-list-pdf.py     # → shot-list.pdf (Letter landscape)
+python3 generate-shot-list-pdf.py            # → shot-list.pdf (ground call sheet)
+python3 generate-shot-list-pdf.py drone      # → drone-shot-list.pdf (aerial call sheet)
+python3 generate-shot-list-pdf.py all        # → both
 ```
 
-This is the file Nick prints and hands to Bob in the field.
+Two separate field call sheets: the **ground** shot list (`shot-list.pdf`, 35 shots
+by fire-block) and the **drone** shot list (`drone-shot-list.pdf`, 11 aerials with a
+DJI Mini 4K pre-flight/airspace checklist). Drone shots also appear as
+`drone:true` pages inside the relevant episode storyboards (Ep 1, Ep 5) and under
+the **🚁 Drone Shots** tab in the app.
 
 ## Data
 

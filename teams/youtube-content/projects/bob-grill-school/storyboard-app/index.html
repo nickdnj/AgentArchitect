@@ -167,12 +167,20 @@ function buildTabs(){
     s.onclick=()=>{CUR="shotlist";render()};
     t.appendChild(s);
   }
+  if(DATA.droneShotList){
+    const s=document.createElement("button");
+    s.textContent="🚁 Drone Shots";
+    s.className="shotlist"; s.dataset.k="dronelist";
+    s.onclick=()=>{CUR="dronelist";render()};
+    t.appendChild(s);
+  }
 }
 
 function render(){
   [...document.querySelectorAll("nav.tabs button")].forEach(b=>b.classList.toggle("active",b.dataset.k===CUR));
   window.scrollTo(0,0);
-  if(CUR==="shotlist") return renderShotList();
+  if(CUR==="shotlist") return renderShotList(DATA.shotList||{},"📋 Master Shot List");
+  if(CUR==="dronelist") return renderShotList(DATA.droneShotList||{},"🚁 Drone Shot List");
   const num=parseInt(CUR.replace("ep",""),10);
   const ep=DATA.episodes.find(e=>e.num===num);
   if(!ep){document.getElementById("view").innerHTML='<div class="empty">Episode not found.</div>';return}
@@ -221,6 +229,7 @@ function pageCard(ep,pg,idx){
   bar.appendChild(sid);
   const vb=document.createElement("span"); vb.className="vbadge"+(pg.vertical?" on":""); vb.textContent="9:16 grab";
   bar.appendChild(vb);
+  if(pg.drone){const db=document.createElement("span");db.className="vbadge on";db.style.background="#cfe6ff";db.style.color="#0b3a63";db.textContent="🚁 drone";bar.appendChild(db);}
   const act=document.createElement("div"); act.className="pg-actions";
   const up=mkbtn("↑",()=>{if(idx>0){[ep.pages[idx-1],ep.pages[idx]]=[ep.pages[idx],ep.pages[idx-1]];renumber(ep);queueSave();renderEpisode(ep)}});
   const dn=mkbtn("↓",()=>{if(idx<ep.pages.length-1){[ep.pages[idx+1],ep.pages[idx]]=[ep.pages[idx],ep.pages[idx+1]];renumber(ep);queueSave();renderEpisode(ep)}});
@@ -320,11 +329,11 @@ function fields(ep,pg){
 function renumber(ep){ep.pages.forEach((p,i)=>p.page=i+1)}
 
 /* ---------- Master shot list ---------- */
-function renderShotList(){
+function renderShotList(sl,title){
   const v=document.getElementById("view"); v.innerHTML="";
-  const sl=DATA.shotList||{};
+  sl=sl||{};
   const head=document.createElement("div"); head.className="sl-head";
-  head.innerHTML=`<div><h2>📋 Master Shot List</h2><div style="color:var(--muted);font-size:14px">${esc(DATA.location||"")} · ${esc(DATA.host||"")}</div></div>`;
+  head.innerHTML=`<div><h2>${esc(title)}</h2><div style="color:var(--muted);font-size:14px">${esc(DATA.location||"")} · ${esc(DATA.host||"")}</div></div>`;
   const pb=document.createElement("button"); pb.className="printbtn"; pb.textContent="🖨 Print / Save PDF";
   pb.onclick=()=>window.print(); head.appendChild(pb);
   v.appendChild(head);

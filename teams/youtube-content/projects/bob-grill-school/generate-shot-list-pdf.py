@@ -34,8 +34,8 @@ def e(s):
     return html.escape(str("" if s is None else s))
 
 
-def build_html(d):
-    sl = d.get("shotList", {}) or {}
+def build_html(d, sl, heading, count_noun, extra_meta):
+    sl = sl or {}
     blocks = sl.get("blocks", []) or []
     total = sum(len(b.get("shots", []) or []) for b in blocks)
 
@@ -47,7 +47,7 @@ def build_html(d):
         shots = blk.get("shots", []) or []
         title = f"BLOCK {e(blk.get('id',''))} — {e(blk.get('title',''))}"
         gs = blk.get("grillState", "")
-        if gs:
+        if gs and gs != "n/a":
             title += f" · {e(GS.get(gs, gs))}"
         cards = []
         for sh in shots:
@@ -107,7 +107,8 @@ body {{ font-family:-apple-system,"Segoe UI",Helvetica,Arial,sans-serif; color:#
 .head .meta {{ color:#0b2c42; font-size:13pt; margin-top:6px; font-weight:600; }}
 .head .meta .star {{ color:#1f9d6b; }}
 
-.callout {{ background:#f4ede3; border:1px solid #e6dccd; border-radius:10px; padding:14px 18px; margin-bottom:14px; break-inside:avoid; }}
+.callout {{ background:#f4ede3; border:1px solid #e6dccd; border-radius:10px; padding:14px 18px; margin-bottom:14px; }}
+.callout li {{ break-inside:avoid; }}
 .callout.order {{ background:#fff3ec; border-color:#f3d6c4; }}
 .callout h3 {{ font-size:14pt; color:#0b2c42; margin:0 0 8px; }}
 .callout ul {{ margin:0; padding-left:24px; }} .callout li {{ margin-bottom:5px; }}
@@ -138,9 +139,9 @@ body {{ font-family:-apple-system,"Segoe UI",Helvetica,Arial,sans-serif; color:#
 .foot {{ margin-top:18px; text-align:center; color:#5f7386; font-size:11pt; border-top:1px solid #e3e8ee; padding-top:10px; }}
 </style></head><body>
 <div class="head">
-  <h1>🔥 Bob's Grill School — Shot List</h1>
+  <h1>{heading}</h1>
   <div class="sub">{e(d.get('location',''))}</div>
-  <div class="meta">{e(d.get('host',''))} &nbsp;·&nbsp; {e(d.get('date',''))} &nbsp;·&nbsp; {total} shots, 5 episodes &nbsp;·&nbsp; <span class="star">★ = also grab a vertical 9:16</span></div>
+  <div class="meta">{e(d.get('host',''))} &nbsp;·&nbsp; {e(d.get('date',''))} &nbsp;·&nbsp; {total} {count_noun} &nbsp;·&nbsp; {extra_meta} &nbsp;·&nbsp; <span class="star">★ = also grab a vertical 9:16</span></div>
 </div>
 {gear_html}{order_html}
 {''.join(sections)}
@@ -159,22 +160,47 @@ def find_chrome():
     return None
 
 
+# mode -> (data key, out html, out pdf, heading, count noun, extra meta)
+MODES = {
+    "ground": ("shotList", HERE / "shot-list-print.html", HERE / "shot-list.pdf",
+               "🔥 Bob's Grill School — Shot List", "shots", "5 episodes"),
+    "drone": ("droneShotList", HERE / "drone-shot-list-print.html", HERE / "drone-shot-list.pdf",
+              "🚁 Bob's Grill School — Drone Shot List", "aerials", "DJI Mini 4K · recreational"),
+}
+
+
+def render(mode, d, chrome):
+    key, out_html, out_pdf, heading, noun, extra = MODES[mode]
+    sl = d.get(key, {}) or {}
+    if not sl.get("blocks"):
+        print(f"(skip {mode}: no '{key}' in data)")
+        return
+    out_html.write_text(build_html(d, sl, heading, noun, extra), encoding="utf-8")
+    print(f"wrote {out_html}")
+    cmd = [chrome, "--headless", "--disable-gpu", "--no-pdf-header-footer",
+           f"--print-to-pdf={out_pdf}", "--no-margins", out_html.as_uri()]
+    r = subprocess.run(cmd, capture_output=True, text=True, timeout=90)
+    if not out_pdf.exists():
+        sys.exit(f"ERROR: PDF not produced for {mode}.\n{r.stderr}")
+    print(f"wrote {out_pdf}  ({out_pdf.stat().st_size//1024} KB)")
+
+
 def main():
     if not DATA.exists():
         sys.exit(f"ERROR: {DATA} not found. Run the Script Writer first.")
     d = json.loads(DATA.read_text(encoding="utf-8"))
-    OUT_HTML.write_text(build_html(d), encoding="utf-8")
-    print(f"wrote {OUT_HTML}")
+
+    arg = sys.argv[1].lower() if len(sys.argv) > 1 else "ground"
+    modes = ["ground", "drone"] if arg == "all" else [arg]
+    for m in modes:
+        if m not in MODES:
+            sys.exit(f"ERROR: unknown mode '{m}'. Use: ground | drone | all")
 
     chrome = find_chrome()
     if not chrome:
         sys.exit("ERROR: no Chrome/Chromium found to render PDF. HTML written; open and print manually.")
-    cmd = [chrome, "--headless", "--disable-gpu", "--no-pdf-header-footer",
-           f"--print-to-pdf={OUT_PDF}", "--no-margins", OUT_HTML.as_uri()]
-    r = subprocess.run(cmd, capture_output=True, text=True, timeout=90)
-    if not OUT_PDF.exists():
-        sys.exit(f"ERROR: PDF not produced.\n{r.stderr}")
-    print(f"wrote {OUT_PDF}  ({OUT_PDF.stat().st_size//1024} KB)")
+    for m in modes:
+        render(m, d, chrome)
 
 
 if __name__ == "__main__":

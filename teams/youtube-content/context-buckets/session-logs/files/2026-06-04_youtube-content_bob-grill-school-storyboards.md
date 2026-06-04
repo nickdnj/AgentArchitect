@@ -49,3 +49,23 @@ assets[] arrays). Captured footage uploads back onto pages via /upload (episode+
 - Field rule of thumb for charcoal how-to shoots: plan around fire lifecycle —
   one chimney fire covers light→ready→cook; lighter-fluid and wind demos each need
   their own fresh unlit grill (≈3 fires for a 5-episode beginner series).
+
+---
+
+## Follow-up: drone shots added (separate call sheet)
+
+Nick has his DJI Mini 4K (TRUST-certified, Aloft/LAANC, recreational) and wanted
+aerials. Added (via the same Video Script Writer agent):
+- **`droneShotList`** in storyboard-data.json — 11 aerials in 5 blocks (establishers/
+  reveals, top-downs, orbits/moving hero, Ep5 wind-context, beauty/end-card backdrops).
+  D-4 & D-5 (top-downs) flagged vertical. Pre-flight `gearReminder` covers Aloft/LAANC
+  airspace + TFR check (coastal), TRUST cert, sub-250g wind sensitivity (with the Ep5
+  irony: shoot aerials on a CALMER pass, not the gusty ground-shoot day), VLOS, no
+  flying over people, batteries, no low-over-water, 4K + hold time.
+- **Drone pages inserted** into Ep1 (9→11) and Ep5 (7→10), `type:video drone:true`.
+- **Separate `drone-shot-list.pdf`** (kept out of the already-printed ground shot list).
+  Refactored generate-shot-list-pdf.py to a MODES dict: `python3 generate-shot-list-pdf.py
+  [ground|drone|all]`. Ground output unchanged.
+- App: added **🚁 Drone Shots tab** + a 🚁 badge on drone pages.
+
+Commits: f294e35 (storyboards + ground shot list + app), then drone follow-up commit.
