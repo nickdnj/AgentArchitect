@@ -99,6 +99,7 @@
   .gs-unlit{background:#eef1f4;color:#5f7386}.gs-lighting{background:#fde9d9;color:#b25a25}
   .gs-ready-gray{background:#e7e4ec;color:#6b5e86}.gs-cooking{background:#fce1df;color:#b23b34}
   .gs-cooldown{background:#dff1ea;color:#1f7d5e}.gs-na{background:#eef3f7;color:#7e8a96}
+  .povtag{font-size:10px;font-weight:800;color:#fff;background:#6a3fb0;border-radius:999px;padding:2px 7px;white-space:nowrap}
 
   .empty{padding:60px 20px;text-align:center;color:var(--muted)}
   .hidden{display:none!important}
@@ -230,6 +231,7 @@ function pageCard(ep,pg,idx){
   const vb=document.createElement("span"); vb.className="vbadge"+(pg.vertical?" on":""); vb.textContent="9:16 grab";
   bar.appendChild(vb);
   if(pg.drone){const db=document.createElement("span");db.className="vbadge on";db.style.background="#cfe6ff";db.style.color="#0b3a63";db.textContent="🚁 drone";bar.appendChild(db);}
+  if(pg.pov){const pb=document.createElement("span");pb.className="vbadge on";pb.style.background="#ead9f7";pb.style.color="#5a3a86";pb.textContent="📷 glasses POV";bar.appendChild(pb);}
   const act=document.createElement("div"); act.className="pg-actions";
   const up=mkbtn("↑",()=>{if(idx>0){[ep.pages[idx-1],ep.pages[idx]]=[ep.pages[idx],ep.pages[idx-1]];renumber(ep);queueSave();renderEpisode(ep)}});
   const dn=mkbtn("↓",()=>{if(idx<ep.pages.length-1){[ep.pages[idx+1],ep.pages[idx]]=[ep.pages[idx],ep.pages[idx+1]];renumber(ep);queueSave();renderEpisode(ep)}});
@@ -338,6 +340,11 @@ function renderShotList(sl,title){
   pb.onclick=()=>window.print(); head.appendChild(pb);
   v.appendChild(head);
 
+  if(sl.rigNote){
+    const c=document.createElement("div"); c.className="callout";
+    c.innerHTML=`<h3>🎥 Camera rig</h3><div class="note">${esc(sl.rigNote)}</div>`;
+    v.appendChild(c);
+  }
   if(sl.gearReminder&&sl.gearReminder.length){
     const c=document.createElement("div"); c.className="callout";
     c.innerHTML="<h3>Before you roll</h3><ul>"+sl.gearReminder.map(g=>`<li>${esc(g)}</li>`).join("")+"</ul>";
@@ -364,7 +371,7 @@ function renderShotList(sl,title){
         <td class="id">${esc(sh.shotId||"")}</td>
         <td>${esc(String(eps))}</td>
         <td>${esc(sh.shotType||"")}</td>
-        <td>${esc(sh.framing||"")}</td>
+        <td>${sh.pov?'<span class="povtag">📷 POV</span> ':''}${esc(sh.framing||"")}</td>
         <td>${esc(sh.action||"")}${sh.dependsOn?`<br><small style="color:var(--warn)">⚠ ${esc(sh.dependsOn)}</small>`:""}</td>
         <td><i>${esc(sh.line||"")}</i></td>
         <td class="v">${sh.vertical?"⭐":"—"}</td>

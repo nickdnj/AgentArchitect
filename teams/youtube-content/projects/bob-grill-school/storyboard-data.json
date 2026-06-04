@@ -58,7 +58,8 @@
           "onScreenText": "Chimney starter — ~$15, no fluid needed",
           "vertical": false,
           "grillState": "unlit",
-          "notes": "Lock the tripod for the demo. BLOCK A."
+          "notes": "Lock the tripod for the demo. BLOCK A.",
+          "pov": true
         },
         {
           "page": 4,
@@ -72,7 +73,8 @@
           "onScreenText": "",
           "vertical": false,
           "grillState": "unlit",
-          "notes": "Critical cut-in #1. BLOCK A insert."
+          "notes": "Critical cut-in #1. BLOCK A insert.",
+          "pov": true
         },
         {
           "page": 5,
@@ -86,7 +88,8 @@
           "onScreenText": "",
           "vertical": false,
           "grillState": "lighting",
-          "notes": "Critical cut-in #2 — the ignition. BLOCK B. Get the flame catching on camera."
+          "notes": "Critical cut-in #2 — the ignition. BLOCK B. Get the flame catching on camera.",
+          "pov": true
         },
         {
           "page": 6,
@@ -100,7 +103,8 @@
           "onScreenText": "~15 minutes → gray = ready",
           "vertical": true,
           "grillState": "lighting",
-          "notes": "THE money shot. Vertical 9:16 grab for Shorts. Shoot a real timelapse or grab start + end and speed-ramp in post. BLOCK B."
+          "notes": "THE money shot. Vertical 9:16 grab for Shorts. Shoot a real timelapse or grab start + end and speed-ramp in post. BLOCK B.",
+          "pov": true
         },
         {
           "page": 7,
@@ -114,7 +118,8 @@
           "onScreenText": "Use the glove — the handle gets HOT",
           "vertical": false,
           "grillState": "ready-gray",
-          "notes": "Safety beat baked in (glove). BLOCK C. Great wide dump shot."
+          "notes": "Safety beat baked in (glove). BLOCK C. Great wide dump shot.",
+          "pov": true
         },
         {
           "page": 8,
@@ -199,7 +204,8 @@
           "onScreenText": "Gray ash + orange glow = GO",
           "vertical": false,
           "grillState": "ready-gray",
-          "notes": "Beauty insert of readiness. BLOCK C / F."
+          "notes": "Beauty insert of readiness. BLOCK C / F.",
+          "pov": true
         },
         {
           "page": 4,
@@ -213,7 +219,8 @@
           "onScreenText": "Hand test: pull back at 3 Mississippi = hot & ready",
           "vertical": true,
           "grillState": "ready-gray",
-          "notes": "THE teach moment + vertical 9:16 grab. Make the count readable. BLOCK C."
+          "notes": "THE teach moment + vertical 9:16 grab. Make the count readable. BLOCK C.",
+          "pov": true
         },
         {
           "page": 5,
@@ -227,7 +234,8 @@
           "onScreenText": "Two-zone fire = hot side + cool 'safe zone'",
           "vertical": false,
           "grillState": "ready-gray",
-          "notes": "Defines the term on screen per tone rule. BLOCK C."
+          "notes": "Defines the term on screen per tone rule. BLOCK C.",
+          "pov": true
         },
         {
           "page": 6,
@@ -312,7 +320,8 @@
           "onScreenText": "Dimple the center · season just before grilling",
           "vertical": false,
           "grillState": "cooking",
-          "notes": "Prep insert. Can be shot tableside while coals hold. BLOCK D."
+          "notes": "Prep insert. Can be shot tableside while coals hold. BLOCK D.",
+          "pov": true
         },
         {
           "page": 4,
@@ -326,7 +335,8 @@
           "onScreenText": "",
           "vertical": false,
           "grillState": "cooking",
-          "notes": "BLOCK D. Establishes two-zone use from Ep 2."
+          "notes": "BLOCK D. Establishes two-zone use from Ep 2.",
+          "pov": true
         },
         {
           "page": 5,
@@ -340,7 +350,8 @@
           "onScreenText": "Flip ONCE · never press",
           "vertical": true,
           "grillState": "cooking",
-          "notes": "THE critical move + vertical 9:16 grab. Get the single clean flip. BLOCK D."
+          "notes": "THE critical move + vertical 9:16 grab. Get the single clean flip. BLOCK D.",
+          "pov": true
         },
         {
           "page": 6,
@@ -354,7 +365,8 @@
           "onScreenText": "Burgers 160°F · dogs hot through",
           "vertical": false,
           "grillState": "cooking",
-          "notes": "Get the 160°F readout CLEAR on camera — the safety beat. BLOCK D."
+          "notes": "Get the 160°F readout CLEAR on camera — the safety beat. BLOCK D.",
+          "pov": true
         },
         {
           "page": 7,
@@ -439,7 +451,8 @@
           "onScreenText": "Fluid on UNLIT coals only",
           "vertical": false,
           "grillState": "unlit",
-          "notes": "Critical demo on a fresh unlit grill. BLOCK A."
+          "notes": "Critical demo on a fresh unlit grill. BLOCK A.",
+          "pov": true
         },
         {
           "page": 4,
@@ -453,7 +466,8 @@
           "onScreenText": "Wait ~1 min · move the can away",
           "vertical": false,
           "grillState": "unlit",
-          "notes": "Safety detail — can away from flame. BLOCK A."
+          "notes": "Safety detail — can away from flame. BLOCK A.",
+          "pov": true
         },
         {
           "page": 5,
@@ -467,7 +481,8 @@
           "onScreenText": "Light from the SIDE",
           "vertical": false,
           "grillState": "lighting",
-          "notes": "The ignition. BLOCK B. Keep Bob's body back from the flare."
+          "notes": "The ignition. BLOCK B. Keep Bob's body back from the flare.",
+          "pov": true
         },
         {
           "page": 6,
@@ -552,7 +567,8 @@
           "onScreenText": "360° rotation — put your back to the wind",
           "vertical": true,
           "grillState": "unlit",
-          "notes": "THE signature move of this episode + vertical 9:16 grab. Make the rotation obvious. BLOCK A."
+          "notes": "THE signature move of this episode + vertical 9:16 grab. Make the rotation obvious. BLOCK A.",
+          "pov": true
         },
         {
           "page": 4,
@@ -566,7 +582,8 @@
           "onScreenText": "",
           "vertical": false,
           "grillState": "lighting",
-          "notes": "Payoff shot. BLOCK B — wind-blocked lighting. Pairs with whichever fire you light here."
+          "notes": "Payoff shot. BLOCK B — wind-blocked lighting. Pairs with whichever fire you light here.",
+          "pov": true
         },
         {
           "page": 5,
@@ -580,7 +597,8 @@
           "onScreenText": "Wind shifts → re-spin",
           "vertical": false,
           "grillState": "cooking",
-          "notes": "Can shoot over the cooking fire (BLOCK D) or the lit fire. BLOCK D/B."
+          "notes": "Can shoot over the cooking fire (BLOCK D) or the lit fire. BLOCK D/B.",
+          "pov": true
         },
         {
           "page": 6,
@@ -617,6 +635,8 @@
     "gearReminder": [
       "AUDIO: iPhone in Bob's (button-down) chest pocket recording Voice Memos = primary voice track. Set Voice Memos to Lossless; phone in Airplane Mode + Do Not Disturb. Pocket fabric is the windscreen — no lav/deadcat needed. Camera's onboard mic = scratch track for syncing.",
       "CLAP once at the head of EVERY take (Bob claps on camera) so the Voice Memo snaps to the video in post — non-negotiable.",
+      "CAMERA A (master): iPhone on the TRIPOD, LANDSCAPE 1080p = your 16:9 YouTube master. Lock it off for demos/inserts; handheld only for hooks & CTAs.",
+      "CAMERA B (POV): Meta Ray-Ban glasses on Bob for first-person hand-work + vertical Shorts. Glasses shoot PORTRAIT/square — for the landscape master use as cropped-to-16:9 inserts or a PiP punch-in; for 9:16 Shorts it's basically native. Coach Bob: keep gaze ON the task, slow deliberate head moves, don't look at the operator. Check the clip-length cap; charge + clear storage. (📷 on a shot = roll the glasses.)",
       "Grab 2–3 min of clean ambient shore/gull sound separately for the audio bed",
       "Tripod — lock it off for all demo/insert shots; handheld only for hooks & to-camera CTAs",
       "Chimney starter, 2+ bags charcoal briquettes, newspaper, long lighter/matches, long tongs, spatula, heat gloves",
@@ -643,7 +663,8 @@
             "line": "Best three bucks you'll spend—fill the top with charcoal.",
             "vertical": false,
             "duration": "17s",
-            "dependsOn": "FIRE 1 — fresh unlit grill (chimney)"
+            "dependsOn": "FIRE 1 — fresh unlit grill (chimney)",
+            "pov": true
           },
           {
             "shotId": "1D",
@@ -657,7 +678,8 @@
             "vertical": false,
             "duration": "12s",
             "dependsOn": "FIRE 1 — same unlit grill, before lighting",
-            "done": false
+            "done": false,
+            "pov": true
           },
           {
             "shotId": "4A",
@@ -683,7 +705,8 @@
             "line": "Squirt it on the cold, unlit pile—a few seconds, not the whole can.",
             "vertical": false,
             "duration": "22s",
-            "dependsOn": "FIRE 2 — same fresh unlit grill"
+            "dependsOn": "FIRE 2 — same fresh unlit grill",
+            "pov": true
           },
           {
             "shotId": "4D",
@@ -696,7 +719,8 @@
             "line": "Wait about a minute—let it soak. Set the can far away.",
             "vertical": false,
             "duration": "17s",
-            "dependsOn": "FIRE 2 — before lighting"
+            "dependsOn": "FIRE 2 — before lighting",
+            "pov": true
           },
           {
             "shotId": "5A",
@@ -722,7 +746,8 @@
             "line": "They spin a full 360—turn the firebox so YOU block the wind.",
             "vertical": true,
             "duration": "27s",
-            "dependsOn": "FIRE 3 — same fresh unlit grill (rotation demo before lighting)"
+            "dependsOn": "FIRE 3 — same fresh unlit grill (rotation demo before lighting)",
+            "pov": true
           }
         ]
       },
@@ -742,7 +767,8 @@
             "line": "Light the paper through these holes… and walk away.",
             "vertical": false,
             "duration": "13s",
-            "dependsOn": "FIRE 1 — ignition (start the 15-min clock here)"
+            "dependsOn": "FIRE 1 — ignition (start the 15-min clock here)",
+            "pov": true
           },
           {
             "shotId": "1F",
@@ -755,7 +781,8 @@
             "line": "See the tops turning gray and ashy? That means ready.",
             "vertical": true,
             "duration": "speed-ramp",
-            "dependsOn": "FIRE 1 — the 15-min burn; shoot start+end, ramp in post"
+            "dependsOn": "FIRE 1 — the 15-min burn; shoot start+end, ramp in post",
+            "pov": true
           },
           {
             "shotId": "4E",
@@ -768,7 +795,8 @@
             "line": "Light it from the side—never over the top.",
             "vertical": false,
             "duration": "20s",
-            "dependsOn": "FIRE 2 — ignition after the 1-min soak"
+            "dependsOn": "FIRE 2 — ignition after the 1-min soak",
+            "pov": true
           },
           {
             "shotId": "4F",
@@ -794,7 +822,8 @@
             "line": "Out of the wind it lights first try and burns even.",
             "vertical": false,
             "duration": "25s",
-            "dependsOn": "FIRE 3 — wind-blocked ignition"
+            "dependsOn": "FIRE 3 — wind-blocked ignition",
+            "pov": true
           }
         ]
       },
@@ -814,7 +843,8 @@
             "line": "Use the glove—it's hot—dump them in, spread out, you're grilling.",
             "vertical": false,
             "duration": "20s",
-            "dependsOn": "FIRE 1 — chimney top gone gray (~15 min after 1E)"
+            "dependsOn": "FIRE 1 — chimney top gone gray (~15 min after 1E)",
+            "pov": true
           },
           {
             "shotId": "2A",
@@ -840,7 +870,8 @@
             "line": "Glowing and covered in gray ash—you're good to go.",
             "vertical": false,
             "duration": "22s",
-            "dependsOn": "FIRE 1 — readiness beauty insert"
+            "dependsOn": "FIRE 1 — readiness beauty insert",
+            "pov": true
           },
           {
             "shotId": "2D",
@@ -853,7 +884,8 @@
             "line": "Hold your hand five inches up—pull back at 3 Mississippi.",
             "vertical": true,
             "duration": "30s",
-            "dependsOn": "FIRE 1 — hot ready fire"
+            "dependsOn": "FIRE 1 — hot ready fire",
+            "pov": true
           },
           {
             "shotId": "2E",
@@ -866,7 +898,8 @@
             "line": "Hot zone to cook, cool side to slide food to if it flares.",
             "vertical": false,
             "duration": "35s",
-            "dependsOn": "FIRE 1 — builds two-zone (do BEFORE Ep 3 cook)"
+            "dependsOn": "FIRE 1 — builds two-zone (do BEFORE Ep 3 cook)",
+            "pov": true
           }
         ]
       },
@@ -886,7 +919,8 @@
             "line": "Dimple the middle so they don't puff; season just before.",
             "vertical": false,
             "duration": "29s",
-            "dependsOn": "FIRE 1 — can prep tableside while two-zone holds"
+            "dependsOn": "FIRE 1 — can prep tableside while two-zone holds",
+            "pov": true
           },
           {
             "shotId": "3D",
@@ -899,7 +933,8 @@
             "line": "Burgers over the hot side, dogs over the cooler side—leave them.",
             "vertical": false,
             "duration": "18s",
-            "dependsOn": "FIRE 1 — two-zone fire from 2E"
+            "dependsOn": "FIRE 1 — two-zone fire from 2E",
+            "pov": true
           },
           {
             "shotId": "3E",
@@ -912,7 +947,8 @@
             "line": "Once—that's it. Pressing squeezes the juice out.",
             "vertical": true,
             "duration": "25s",
-            "dependsOn": "FIRE 1 — mid-cook"
+            "dependsOn": "FIRE 1 — mid-cook",
+            "pov": true
           },
           {
             "shotId": "3F",
@@ -925,7 +961,8 @@
             "line": "Burgers to 160; dogs just need color. Thermometer ends the guessing.",
             "vertical": false,
             "duration": "25s",
-            "dependsOn": "FIRE 1 — get the 160°F readout clean"
+            "dependsOn": "FIRE 1 — get the 160°F readout clean",
+            "pov": true
           },
           {
             "shotId": "3A",
@@ -964,7 +1001,8 @@
             "line": "Wind shifts? Don't fight it—spin the grill again.",
             "vertical": false,
             "duration": "25s",
-            "dependsOn": "FIRE 1 or 3 — 'during cook' re-spin; grab over any lit/cooking fire"
+            "dependsOn": "FIRE 1 or 3 — 'during cook' re-spin; grab over any lit/cooking fire",
+            "pov": true
           }
         ]
       },
@@ -1149,6 +1187,7 @@
           }
         ]
       }
-    ]
+    ],
+    "rigNote": "3-camera kit — A-cam: iPhone on tripod (LANDSCAPE 1080p, the 16:9 YouTube master) · B-cam: Meta glasses POV on Bob (PORTRAIT — crop-to-16:9 or PiP for the master, native for 9:16 Shorts) · Audio: iPhone-in-pocket Voice Memos. 📷 = roll the glasses on this shot. Clap every take to sync all three."
   }
 }

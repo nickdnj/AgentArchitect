@@ -62,6 +62,8 @@ def build_html(d, sl, heading, count_noun, extra_meta):
                 chips.append(f'<span class="chip ty">{e(sh.get("shotType"))}</span>')
             if sh.get("duration"):
                 chips.append(f'<span class="chip len">{e(sh.get("duration"))}</span>')
+            if sh.get("pov"):
+                chips.append('<span class="chip pov">📷 GLASSES POV</span>')
             if vert:
                 chips.append('<span class="chip vrt">★ VERTICAL 9:16</span>')
 
@@ -76,7 +78,7 @@ def build_html(d, sl, heading, count_noun, extra_meta):
                 lines.append(f'<div class="dep">⚠ {e(dep)}</div>')
 
             cards.append(
-                f'<div class="card{" vcard" if vert else ""}">'
+                f'<div class="card{" vcard" if vert else (" povcard" if sh.get("pov") else "")}">'
                 '<div class="chk">☐</div>'
                 '<div class="body">'
                 f'<div class="cardhead"><span class="sid">{e(sh.get("shotId",""))}</span>'
@@ -96,6 +98,12 @@ def build_html(d, sl, heading, count_noun, extra_meta):
     order_html = ""
     if order:
         order_html = f'<div class="callout order"><h3>🔥 Shooting order</h3><p>{e(order)}</p></div>'
+    rig_html = ""
+    if sl.get("rigNote"):
+        rig_html = f'<div class="callout rig"><h3>🎥 Camera rig</h3><p>{e(sl.get("rigNote"))}</p></div>'
+    legend = "★ = grab a vertical 9:16"
+    if any(s.get("pov") for b in blocks for s in (b.get("shots") or [])):
+        legend += " &nbsp;·&nbsp; 📷 = roll the glasses (POV)"
 
     return f"""<!doctype html><html><head><meta charset="utf-8"><style>
 @page {{ size: letter portrait; margin: 0.5in 0.55in; }}
@@ -130,6 +138,9 @@ body {{ font-family:-apple-system,"Segoe UI",Helvetica,Arial,sans-serif; color:#
 .chip.ty {{ background:#eef1f4; color:#46586a; }}
 .chip.len {{ background:#eef1f4; color:#46586a; }}
 .chip.vrt {{ background:#1f9d6b; color:#fff; }}
+.chip.pov {{ background:#6a3fb0; color:#fff; }}
+.callout.rig {{ background:#eef3fb; border-color:#cdddf0; }}
+.card.povcard {{ border-left:7px solid #6a3fb0; }}
 .ln {{ margin-bottom:5px; }}
 .ln .lbl {{ display:inline-block; min-width:50px; padding-right:14px; font-size:11pt; font-weight:800; text-transform:uppercase; letter-spacing:.04em; color:#8a98a6; vertical-align:top; }}
 .ln.say {{ color:#0b2c42; font-style:italic; font-size:14.5pt; }}
@@ -141,9 +152,9 @@ body {{ font-family:-apple-system,"Segoe UI",Helvetica,Arial,sans-serif; color:#
 <div class="head">
   <h1>{heading}</h1>
   <div class="sub">{e(d.get('location',''))}</div>
-  <div class="meta">{e(d.get('host',''))} &nbsp;·&nbsp; {e(d.get('date',''))} &nbsp;·&nbsp; {total} {count_noun} &nbsp;·&nbsp; {extra_meta} &nbsp;·&nbsp; <span class="star">★ = also grab a vertical 9:16</span></div>
+  <div class="meta">{e(d.get('host',''))} &nbsp;·&nbsp; {e(d.get('date',''))} &nbsp;·&nbsp; {total} {count_noun} &nbsp;·&nbsp; {extra_meta} &nbsp;·&nbsp; <span class="star">{legend}</span></div>
 </div>
-{gear_html}{order_html}
+{rig_html}{gear_html}{order_html}
 {''.join(sections)}
 <div class="foot">Wharfside Picnic Guide · picnic.vistter.com — leave the grill better than you found it.</div>
 </body></html>"""

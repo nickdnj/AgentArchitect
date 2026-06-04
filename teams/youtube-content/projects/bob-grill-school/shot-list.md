@@ -2,8 +2,10 @@
 
 **Location:** Wharfside Manor picnic area, Monmouth Beach NJ (waterfront)
 **Host:** Bob (on camera) · **Shooter:** Nick
-**Date:** 2026-06-04 · Shoot horizontal 1080p; grab the marked ✓ moments in vertical 9:16 for Shorts/Reels.
+**Date:** 2026-06-04 · ★ = grab a vertical 9:16 for Shorts · 📷 = roll the Meta glasses (POV) on this shot.
 **Grills:** Kay Park SF163.5 — firebox 20"W×15"D×10"H, 360° rotating head on in-ground pedestal, flip-back grate, utility shelf.
+
+> **🎥 3-camera kit** — **A-cam:** iPhone on tripod (LANDSCAPE 1080p, the 16:9 YouTube master) · **B-cam:** Meta glasses POV on Bob (PORTRAIT → crop-to-16:9 or PiP for the master, native for 9:16 Shorts) · **Audio:** iPhone-in-pocket Voice Memos. **📷 = roll the glasses. Clap every take to sync all three.**
 
 ---
 
@@ -11,8 +13,9 @@
 
 - [ ] **AUDIO: iPhone in Bob's button-down chest pocket → Voice Memos (Lossless), Airplane Mode + Do Not Disturb.** This is the primary voice track; the pocket fabric is the windscreen — no lav/deadcat. Camera's onboard mic = scratch track for sync.
 - [ ] **CLAP once at the head of EVERY take** (Bob claps on camera) so the Voice Memo snaps to the video in post — non-negotiable.
+- [ ] **CAMERA A (master):** iPhone on the **tripod, LANDSCAPE 1080p** = the 16:9 YouTube master. Lock off for demos/inserts; handheld only for hooks & CTAs.
+- [ ] **CAMERA B (POV):** **Meta glasses on Bob** for first-person hand-work + vertical Shorts. Portrait capture → crop-to-16:9 / PiP for the master, native for Shorts. Coach Bob: gaze ON the task, slow head moves, don't look at the operator. Check clip-length cap; charge + clear storage.
 - [ ] Grab 2–3 min of clean ambient **shore/gull sound** separately for the bed.
-- [ ] **Tripod** — lock it off for all demo/insert shots; handheld only for hooks & to-camera CTAs.
 - [ ] Chimney starter · 2+ bags charcoal briquettes · newspaper · long lighter/matches · long tongs · spatula · **heat gloves**.
 - [ ] Can of **lighter fluid** (Ep 4 only) · **instant-read thermometer** (Ep 3 — must show **160°F** clearly).
 - [ ] **Test food:** burgers (80/20), good hot dogs, buns, cheese, plate (Ep 3).
