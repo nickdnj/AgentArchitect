@@ -1,0 +1,6 @@
+# Local-only heavy media (captured + test footage) — not for git
+assets/videos/
+assets/images/
+
+# App autosave backups
+storyboard-app/backups/

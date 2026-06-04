@@ -12,10 +12,12 @@ storyboard-data.json. No auth, localhost only.
 Data file lives at <project>/storyboard-data.json (one level above this app dir),
 written by the Video Script Writer; this server reads/writes it in place.
 """
+import datetime
 import json
 import os
 import re
 import secrets
+import shutil
 import tempfile
 from pathlib import Path
 
@@ -27,6 +29,8 @@ PROJECT_DIR = APP_DIR.parent  # storyboard-app sits inside <project>/
 DATA_FILE = PROJECT_DIR / "storyboard-data.json"
 ASSETS_DIR = PROJECT_DIR / "assets"
 INDEX_FILE = APP_DIR / "index.html"
+BACKUP_DIR = APP_DIR / "backups"
+KEEP_BACKUPS = 15
 
 # --- config -----------------------------------------------------------------
 PORT = 8510  # bob-grill-school
@@ -110,6 +114,22 @@ def serve_asset(subpath):
     return send_from_directory(str(abs_path.parent), abs_path.name, mimetype=mime, conditional=True)
 
 
+def backup_current():
+    """Roll a timestamped backup of the on-disk data file before overwriting it.
+    Cheap insurance against a stale browser tab autosaving over good data."""
+    if not DATA_FILE.exists():
+        return
+    BACKUP_DIR.mkdir(exist_ok=True)
+    ts = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+    try:
+        shutil.copy2(DATA_FILE, BACKUP_DIR / f"storyboard-data.{ts}.json")
+        baks = sorted(BACKUP_DIR.glob("storyboard-data.*.json"))
+        for stale in baks[:-KEEP_BACKUPS]:
+            stale.unlink()
+    except OSError:
+        pass  # never let a backup failure block a save
+
+
 @app.route("/save", methods=["POST"])
 def save():
     try:
@@ -118,6 +138,11 @@ def save():
         return jsonify({"error": f"invalid json: {e}"}), 400
     if not isinstance(data, dict):
         return jsonify({"error": "body must be a JSON object"}), 400
+    # Guard: refuse an obviously-empty payload (stale tab / load failure) that would
+    # clobber a populated file. A real edit always has episodes.
+    if not data.get("episodes") and DATA_FILE.exists():
+        return jsonify({"error": "refused: payload has no episodes (stale tab?)"}), 409
+    backup_current()
     try:
         atomic_write_json(DATA_FILE, data)
     except OSError as e:
