@@ -1,0 +1,214 @@
+{
+  "project": "Bob's Grill School",
+  "version": "1.0",
+  "date": "2026-06-04",
+  "location": "Wharfside Manor picnic area, Monmouth Beach NJ",
+  "host": "Bob (on camera) · Nick (shooting)",
+  "episodes": [
+    {
+      "num": 1,
+      "title": "Light Your First Charcoal Fire",
+      "level": "Beginner",
+      "runtime": "~2:20",
+      "objective": "Show a total beginner the no-fear chimney-starter method: fill the chimney, newspaper underneath, light, wait ~15 min for gray ash, dump. Kill the single biggest beginner fear.",
+      "takeaways": [
+        "A chimney starter is the easiest, no-fluid way to light charcoal",
+        "Fill the top with charcoal, crumple newspaper underneath, light the paper",
+        "Wait ~15 minutes — walk away, the chimney does the work",
+        "Ready when the top coals turn gray and ashy; dump and spread"
+      ],
+      "pages": [
+        { "page": 1, "type": "video", "shotId": "1A", "time": "0:00–0:09", "shotType": "MWS", "framing": "Bob standing beside the SF163.5 grill, water and gulls behind him, handheld slightly loose for a warm feel, eyeline to lens", "action": "Bob holds up an empty chimney starter, gives it a friendly little shake", "line": "If the only grill you've ever used is the gas one at home, lighting charcoal looks scary. It's not — watch me once.", "onScreenText": "", "vertical": false, "grillState": "unlit", "notes": "Cold open hook. Lav mic + deadcat on Bob. Golden hour. This is a BLOCK E to-camera wraparound." },
+        { "page": 2, "type": "image", "shotId": "1B", "time": "0:09–0:13", "shotType": "TITLE", "framing": "Title card slide — wave mark + 'Bob's Grill School', lower-third with episode title", "action": "Title card: episode title appears over a still of the grill", "line": "", "onScreenText": "Bob's Grill School — Ep 1: Light Your First Charcoal Fire", "vertical": false, "grillState": "n/a", "notes": "Built in post. End card and title cards are BLOCK F / graphics." },
+        { "page": 3, "type": "video", "shotId": "1C", "time": "0:13–0:30", "shotType": "MS", "framing": "Tripod locked off, Bob at the firebox, chimney on the utility shelf, 3/4 angle showing his hands", "action": "Bob holds the chimney up, then fills the top basket with charcoal briquettes", "line": "This metal cylinder is a chimney starter — best three bucks you'll spend. Fill the top with charcoal.", "onScreenText": "Chimney starter — ~$15, no fluid needed", "vertical": false, "grillState": "unlit", "notes": "Lock the tripod for the demo. BLOCK A." },
+        { "page": 4, "type": "video", "shotId": "1D", "time": "0:30–0:42", "shotType": "ECU", "framing": "Insert, tight on the bottom of the chimney sitting on the grate, hands in frame", "action": "Bob crumples two sheets of newspaper and stuffs them into the bottom chamber under the chimney", "line": "Crumple a couple sheets of newspaper underneath — not packed tight, just loose enough to breathe.", "onScreenText": "", "vertical": false, "grillState": "unlit", "notes": "Critical cut-in #1. BLOCK A insert." },
+        { "page": 5, "type": "video", "shotId": "1E", "time": "0:42–0:55", "shotType": "CU", "framing": "Tight on the side vent holes of the chimney, long lighter entering frame", "action": "Bob touches a long lighter to the newspaper through the side holes; paper catches", "line": "Light the paper through these holes … and walk away. The chimney does the work.", "onScreenText": "", "vertical": false, "grillState": "lighting", "notes": "Critical cut-in #2 — the ignition. BLOCK B. Get the flame catching on camera." },
+        { "page": 6, "type": "video", "shotId": "1F", "time": "0:55–1:35", "shotType": "ECU", "framing": "Top-down insert over the chimney mouth, locked tripod or high handheld; capture the transition over time", "action": "Time-lapse-style: coals go from black to glowing orange to gray-ashed at the top", "line": "About fifteen minutes later — see how the top coals are turning gray and ashy? That means they're ready.", "onScreenText": "~15 minutes → gray = ready", "vertical": true, "grillState": "lighting", "notes": "THE money shot. Vertical 9:16 grab for Shorts. Shoot a real timelapse or grab start + end and speed-ramp in post. BLOCK B." },
+        { "page": 7, "type": "video", "shotId": "1G", "time": "1:35–1:55", "shotType": "MS", "framing": "Tripod, Bob with gloves, side angle so the dump arc reads clearly against the water", "action": "Bob lifts the hot chimney by the handle and dumps glowing coals into the firebox, then spreads them with tongs", "line": "Grab the handle — use the glove, it's hot — dump them in, spread them out, and you're grilling.", "onScreenText": "Use the glove — the handle gets HOT", "vertical": false, "grillState": "ready-gray", "notes": "Safety beat baked in (glove). BLOCK C. Great wide dump shot." },
+        { "page": 8, "type": "video", "shotId": "1H", "time": "1:55–2:08", "shotType": "MS", "framing": "Handheld, Bob to camera, glowing firebox in foreground", "action": "Bob gestures to the ready fire, easy smile", "line": "That's the whole trick. No fluid, no chemical taste — just a clean fire in fifteen minutes.", "onScreenText": "", "vertical": false, "grillState": "ready-gray", "notes": "BLOCK E to-camera. Can batch with other CTAs." },
+        { "page": 9, "type": "image", "shotId": "1I", "time": "2:08–2:20", "shotType": "TITLE", "framing": "End card slide over a beauty still of glowing coals", "action": "End card: CTA and URL", "line": "Every step's written out at picnic dot vistter dot com. Go light one.", "onScreenText": "More at picnic.vistter.com", "vertical": false, "grillState": "n/a", "notes": "End card. VO can be recorded in BLOCK E. BLOCK F graphic." }
+      ]
+    },
+    {
+      "num": 2,
+      "title": "Is It Ready? Reading Your Coals",
+      "level": "Beginner",
+      "runtime": "~2:10",
+      "objective": "Teach beginners to read coal readiness by eye (gray ash, not flames), run the 3-second hand heat-test, and rake a two-zone fire with a hot side and a cool 'safe zone'.",
+      "takeaways": [
+        "Ready = glowing and covered in gray ash, NOT shooting flames",
+        "No thermometer? The 3-second hand test, 5 inches over the grate",
+        "Build a two-zone fire: a hot side to cook, a cool side to retreat to",
+        "The cool 'safe zone' is your flare-up insurance"
+      ],
+      "pages": [
+        { "page": 1, "type": "video", "shotId": "2A", "time": "0:00–0:09", "shotType": "MS", "framing": "Handheld, Bob to camera, ready firebox glowing beside him", "action": "Bob points down at the gray coals", "line": "Flames don't mean ready. THIS — gray and glowing — this means ready.", "onScreenText": "", "vertical": false, "grillState": "ready-gray", "notes": "Cold open hook. BLOCK E to-camera, but needs the gray fire in frame — shoot during BLOCK C if you want it live, else clean to camera and cut in 2B." },
+        { "page": 2, "type": "image", "shotId": "2B", "time": "0:09–0:13", "shotType": "TITLE", "framing": "Title card slide, wave mark + episode title", "action": "Title card", "line": "", "onScreenText": "Bob's Grill School — Ep 2: Is It Ready? Reading Your Coals", "vertical": false, "grillState": "n/a", "notes": "Graphic. BLOCK F." },
+        { "page": 3, "type": "video", "shotId": "2C", "time": "0:13–0:35", "shotType": "ECU", "framing": "Top-down insert of the coal bed, tripod, fill the frame with coals", "action": "Slow push or hold on glowing coals fully covered in gray ash", "line": "When most of the coals are glowing and covered in gray ash — about fifteen minutes in — you're good to go.", "onScreenText": "Gray ash + orange glow = GO", "vertical": false, "grillState": "ready-gray", "notes": "Beauty insert of readiness. BLOCK C / F." },
+        { "page": 4, "type": "video", "shotId": "2D", "time": "0:35–1:05", "shotType": "CU", "framing": "Side angle, tripod, Bob's hand held flat ~5 inches over the grate, his face just in frame", "action": "Bob holds his palm over the coals, counts on his fingers, pulls back", "line": "No thermometer? Hold your hand five inches up and count. Pull back at 'three Mississippi' — that's a hot fire.", "onScreenText": "Hand test: pull back at 3 Mississippi = hot & ready", "vertical": true, "grillState": "ready-gray", "notes": "THE teach moment + vertical 9:16 grab. Make the count readable. BLOCK C." },
+        { "page": 5, "type": "video", "shotId": "2E", "time": "1:05–1:40", "shotType": "MS", "framing": "Tripod, 3/4 over-the-firebox so you see coals move to one side", "action": "Bob rakes most of the coals to one side with long tongs, leaving the other side bare", "line": "Now push most of the coals to one side. A hot zone to cook over — and a cool side to slide food to if it flares up.", "onScreenText": "Two-zone fire = hot side + cool 'safe zone'", "vertical": false, "grillState": "ready-gray", "notes": "Defines the term on screen per tone rule. BLOCK C." },
+        { "page": 6, "type": "video", "shotId": "2F", "time": "1:40–1:52", "shotType": "MS", "framing": "Handheld, Bob to camera, two-zone fire visible below", "action": "Bob gives a thumbs up over the set fire", "line": "That's the one trick that turns a scary fire into one you control.", "onScreenText": "", "vertical": false, "grillState": "ready-gray", "notes": "Safety/confidence beat. BLOCK E to-camera." },
+        { "page": 7, "type": "image", "shotId": "2G", "time": "1:52–2:05", "shotType": "TITLE", "framing": "End card slide over a still of the two-zone fire", "action": "End card", "line": "Now you've got a fire you can control. Full steps at picnic dot vistter dot com — let's cook.", "onScreenText": "More at picnic.vistter.com", "vertical": false, "grillState": "n/a", "notes": "End card. BLOCK F." }
+      ]
+    },
+    {
+      "num": 3,
+      "title": "Burgers & Dogs: Your First Cook",
+      "level": "Beginner",
+      "runtime": "~2:15",
+      "objective": "Walk a first-timer through cooking burgers and dogs to safe temps with confidence: dimple the patties, season just before, flip ONCE and don't press, burgers to 160°F, dogs hot through, thermometer kills the guesswork.",
+      "takeaways": [
+        "Dimple the patties so they don't puff; season just before they hit the grate",
+        "Flip ONCE — never press the burgers (you squeeze the juice out)",
+        "Burgers to 160°F, dogs just need color and blisters",
+        "A $12 instant-read thermometer removes all the guessing"
+      ],
+      "pages": [
+        { "page": 1, "type": "video", "shotId": "3A", "time": "0:00–0:09", "shotType": "CU", "framing": "Tight on burgers sizzling on the grate, steam/smoke rising, then tilt up to Bob", "action": "Burgers searing; Bob leans into frame", "line": "If you can cook a burger, you can grill. Let's do your first cook — and do it right.", "onScreenText": "", "vertical": false, "grillState": "cooking", "notes": "Cold open hook over sizzle. BLOCK D + Bob to-camera line." },
+        { "page": 2, "type": "image", "shotId": "3B", "time": "0:09–0:13", "shotType": "TITLE", "framing": "Title card slide", "action": "Title card", "line": "", "onScreenText": "Bob's Grill School — Ep 3: Burgers & Dogs, Your First Cook", "vertical": false, "grillState": "n/a", "notes": "Graphic. BLOCK F." },
+        { "page": 3, "type": "video", "shotId": "3C", "time": "0:13–0:42", "shotType": "ECU", "framing": "Insert over the utility shelf / prep board, Bob's hands forming patties", "action": "Bob forms a loose patty, presses a dimple into the center with his thumb, salts and peppers both sides", "line": "Loose patties — don't overwork them. Press a dimple in the middle so they don't puff into a meatball. Salt and pepper right before they hit the grate.", "onScreenText": "Dimple the center · season just before grilling", "vertical": false, "grillState": "cooking", "notes": "Prep insert. Can be shot tableside while coals hold. BLOCK D." },
+        { "page": 4, "type": "video", "shotId": "3D", "time": "0:42–1:00", "shotType": "MS", "framing": "Tripod, 3/4 over the grate, patties laid over the hot zone", "action": "Bob lays patties and dogs over the coals; sets a timer mentally; hands off", "line": "Burgers over the hot side, dogs over the cooler side. Now — leave them alone.", "onScreenText": "", "vertical": false, "grillState": "cooking", "notes": "BLOCK D. Establishes two-zone use from Ep 2." },
+        { "page": 5, "type": "video", "shotId": "3E", "time": "1:00–1:25", "shotType": "CU", "framing": "Tight on the spatula under a patty, the single flip, tripod", "action": "Bob slides the spatula under and flips each burger ONCE; resists pressing; adds cheese", "line": "Resist the urge to flip and press. Once — that's it. Pressing just squeezes the juice out. Cheese in the last minute.", "onScreenText": "Flip ONCE · never press", "vertical": true, "grillState": "cooking", "notes": "THE critical move + vertical 9:16 grab. Get the single clean flip. BLOCK D." },
+        { "page": 6, "type": "video", "shotId": "3F", "time": "1:25–1:50", "shotType": "ECU", "framing": "Insert, instant-read probe going into the side of a burger, display readable to lens", "action": "Bob probes a burger; thermometer reads 160°F; rolls the dogs showing blisters", "line": "Burgers to one-sixty. Dogs just need color and a few blisters. A twelve-dollar thermometer takes out all the guessing.", "onScreenText": "Burgers 160°F · dogs hot through", "vertical": false, "grillState": "cooking", "notes": "Get the 160°F readout CLEAR on camera — the safety beat. BLOCK D." },
+        { "page": 7, "type": "video", "shotId": "3G", "time": "1:50–2:02", "shotType": "CU", "framing": "Tight on a finished burger built on a toasted bun, hero food shot", "action": "Bob builds the burger on a toasted bun, lifts it to camera", "line": "Toast those buns, build it up — congratulations, you're a griller.", "onScreenText": "", "vertical": false, "grillState": "cooking", "notes": "Hero plating shot. BLOCK D / F." },
+        { "page": 8, "type": "image", "shotId": "3H", "time": "2:02–2:15", "shotType": "TITLE", "framing": "End card slide over the hero burger still", "action": "End card", "line": "Full cook steps and safe temps at picnic dot vistter dot com.", "onScreenText": "More at picnic.vistter.com", "vertical": false, "grillState": "n/a", "notes": "End card. BLOCK F." }
+      ]
+    },
+    {
+      "num": 4,
+      "title": "Lighter Fluid, the Safe Way",
+      "level": "Beginner",
+      "runtime": "~2:00",
+      "objective": "Show the safe lighter-fluid method: fluid on UNLIT coals only, wait a minute for it to soak, light from the side. Drill the cardinal rule — NEVER add fluid to lit coals.",
+      "takeaways": [
+        "Lighter fluid goes on UNLIT coals only",
+        "Squirt, then WAIT about a minute for it to soak in",
+        "Light from the side, never leaning over the pile",
+        "NEVER add fluid to lit or smoldering coals — it can flare back at you"
+      ],
+      "pages": [
+        { "page": 1, "type": "video", "shotId": "4A", "time": "0:00–0:09", "shotType": "MS", "framing": "Handheld, Bob to camera holding a can of lighter fluid, unlit grill beside him", "action": "Bob holds up the fluid can", "line": "Prefer lighter fluid? It's fine — if you do it the safe way. There's one rule that really matters.", "onScreenText": "", "vertical": false, "grillState": "unlit", "notes": "Cold open hook. NEEDS A FRESH UNLIT GRILL. BLOCK A + to-camera." },
+        { "page": 2, "type": "image", "shotId": "4B", "time": "0:09–0:13", "shotType": "TITLE", "framing": "Title card slide", "action": "Title card", "line": "", "onScreenText": "Bob's Grill School — Ep 4: Lighter Fluid, the Safe Way", "vertical": false, "grillState": "n/a", "notes": "Graphic. BLOCK F." },
+        { "page": 3, "type": "video", "shotId": "4C", "time": "0:13–0:35", "shotType": "MS", "framing": "Tripod, 3/4 over the firebox, pile of plain unlit briquettes", "action": "Bob squirts lighter fluid evenly over the UNLIT pile of charcoal", "line": "Pile your plain charcoal, then squirt the fluid over the cold, unlit pile — a few seconds, not the whole can.", "onScreenText": "Fluid on UNLIT coals only", "vertical": false, "grillState": "unlit", "notes": "Critical demo on a fresh unlit grill. BLOCK A." },
+        { "page": 4, "type": "video", "shotId": "4D", "time": "0:35–0:52", "shotType": "CU", "framing": "Insert on the pile, Bob's hand setting the can down and away", "action": "Bob caps the can, sets it well away from the grill, waits", "line": "Now wait about a minute — let it soak in. And set the can far away before you ever bring a flame near.", "onScreenText": "Wait ~1 min · move the can away", "vertical": false, "grillState": "unlit", "notes": "Safety detail — can away from flame. BLOCK A." },
+        { "page": 5, "type": "video", "shotId": "4E", "time": "0:52–1:12", "shotType": "MS", "framing": "Side angle, tripod, Bob lighting from the EDGE of the pile, body back", "action": "Bob lights a long match/lighter at the side of the pile; it catches", "line": "Light it from the side — never leaning over the top. Let it catch and burn down to gray, same as always.", "onScreenText": "Light from the SIDE", "vertical": false, "grillState": "lighting", "notes": "The ignition. BLOCK B. Keep Bob's body back from the flare." },
+        { "page": 6, "type": "video", "shotId": "4F", "time": "1:12–1:38", "shotType": "MS", "framing": "Handheld, Bob to camera, very deliberate, fire going behind him — the SAFETY beat", "action": "Bob holds up a flat hand, firm but warm, delivers the cardinal rule", "line": "Here's the one that matters: NEVER add more fluid once the coals are lit — even if they look out. The flame can run right up the stream at you.", "onScreenText": "NEVER add fluid to lit coals", "vertical": true, "grillState": "lighting", "notes": "THE safety beat + vertical 9:16 grab. Most important 'don't' in the series. BLOCK E / B." },
+        { "page": 7, "type": "image", "shotId": "4G", "time": "1:38–1:50", "shotType": "TITLE", "framing": "End card slide", "action": "End card", "line": "Honestly? A chimney starter skips all this. But if you use fluid — now you'll use it safe. picnic dot vistter dot com.", "onScreenText": "More at picnic.vistter.com", "vertical": false, "grillState": "n/a", "notes": "End card. BLOCK F. VO recorded in BLOCK E." }
+      ]
+    },
+    {
+      "num": 5,
+      "title": "Beat the Wind on the Waterfront",
+      "level": "Intermediate",
+      "runtime": "~2:00",
+      "objective": "Show how to handle wind off the river using the grill's 360° rotation and body position so the fire lights and burns steady. Re-spin when the wind shifts.",
+      "takeaways": [
+        "Our SF163.5 grills rotate a full 360° on the pedestal — use it",
+        "Turn the firebox so YOUR back is to the wind when you light",
+        "Out of the wind it lights faster and burns more evenly",
+        "Wind shifts? Just spin the grill again"
+      ],
+      "pages": [
+        { "page": 1, "type": "video", "shotId": "5A", "time": "0:00–0:09", "shotType": "MWS", "framing": "Handheld, wind visibly moving Bob's shirt/hair, water and whitecaps behind, lighter struggling", "action": "Bob shields a lighter flame from the wind, it keeps blowing out", "line": "That river breeze? Gorgeous — until you're trying to light a fire. Let me show you the fix.", "onScreenText": "", "vertical": false, "grillState": "unlit", "notes": "Cold open hook — sell the wind. Shoot when it's actually breezy if possible. BLOCK A / E. Lav mic critical here." },
+        { "page": 2, "type": "image", "shotId": "5B", "time": "0:09–0:13", "shotType": "TITLE", "framing": "Title card slide", "action": "Title card", "line": "", "onScreenText": "Bob's Grill School — Ep 5: Beat the Wind on the Waterfront", "vertical": false, "grillState": "n/a", "notes": "Graphic. BLOCK F." },
+        { "page": 3, "type": "video", "shotId": "5C", "time": "0:13–0:40", "shotType": "MS", "framing": "Tripod, wide enough to see the firebox swing on its pedestal, Bob's hands on the rim", "action": "Bob grips the firebox and rotates the whole head a smooth 180°+ on the pedestal", "line": "These grills spin a full three-sixty on the pedestal. Turn the firebox so YOU block the wind — your back to the gust.", "onScreenText": "360° rotation — put your back to the wind", "vertical": true, "grillState": "unlit", "notes": "THE signature move of this episode + vertical 9:16 grab. Make the rotation obvious. BLOCK A." },
+        { "page": 4, "type": "video", "shotId": "5D", "time": "0:40–1:05", "shotType": "MS", "framing": "Behind/over Bob's shoulder so we see him shielding the firebox with his body, OTS", "action": "Bob, back to the wind, lights the coals successfully on the first try", "line": "Out of the wind, it lights first try and burns even — no hot spots, no ash blowing in your food.", "onScreenText": "", "vertical": false, "grillState": "lighting", "notes": "Payoff shot. BLOCK B — wind-blocked lighting. Pairs with whichever fire you light here." },
+        { "page": 5, "type": "video", "shotId": "5E", "time": "1:05–1:30", "shotType": "MS", "framing": "Tripod, Bob re-gripping and re-spinning the grill as he glances at the water", "action": "Bob feels the wind shift, re-spins the grill head to keep his back to it", "line": "Wind shifts during your cook? Don't fight it — spin the grill again. That's the whole trick.", "onScreenText": "Wind shifts → re-spin", "vertical": false, "grillState": "cooking", "notes": "Can shoot over the cooking fire (BLOCK D) or the lit fire. BLOCK D/B." },
+        { "page": 6, "type": "video", "shotId": "5F", "time": "1:30–1:45", "shotType": "MWS", "framing": "Handheld, Bob to camera, steady fire and water behind him", "action": "Bob gestures to the steady fire, relaxed", "line": "The water's the best part of grilling down here — a little spin and the wind's on your side.", "onScreenText": "", "vertical": false, "grillState": "cooking", "notes": "Confidence/close beat. BLOCK E to-camera." },
+        { "page": 7, "type": "image", "shotId": "5G", "time": "1:45–2:00", "shotType": "TITLE", "framing": "End card slide over a beauty still of the grill + water", "action": "End card", "line": "More waterfront grilling tips at picnic dot vistter dot com. Now go enjoy that breeze.", "onScreenText": "More at picnic.vistter.com", "vertical": false, "grillState": "n/a", "notes": "End card. BLOCK F." }
+      ]
+    }
+  ],
+  "shotList": {
+    "gearReminder": [
+      "Lav mic on Bob + deadcat windscreen — NON-NEGOTIABLE on the waterfront (river wind will wreck on-camera audio)",
+      "Grab 2–3 min of clean ambient shore/gull sound separately for the audio bed",
+      "Tripod — lock it off for all demo/insert shots; handheld only for hooks & to-camera CTAs",
+      "Chimney starter, 2+ bags charcoal briquettes, newspaper, long lighter/matches, long tongs, spatula, heat gloves",
+      "Can of lighter fluid (Ep 4 only) + instant-read thermometer (Ep 3, must show 160°F clearly)",
+      "Test food: burgers (80/20, pre-formed or form on site), good hot dogs, buns, cheese, plate (Ep 3)",
+      "Reflector OR shoot golden hour to avoid raccoon-eye shadows; confirm 10 ft clearance per picnic rules",
+      "Heat gloves + sand bucket/water within reach; never leave coals unattended (Wharfside rule)"
+    ],
+    "shootingOrderNote": "A charcoal fire has a one-way lifecycle (unlit → lighting → gray-ready → cooking → cooldown), so plan around 3 fires, not 5 relights. CRITICAL: you cannot demo lighter fluid (Ep 4) on coals already lit by a chimney (Ep 1), and the wind-lighting (Ep 5) needs an unlit firebox too. FIRE 1 (chimney): shoot Ep 1 lighting through gray-ready, then ride that same fire straight into Ep 2 readiness/hand-test/two-zone AND Ep 3 burgers & dogs, AND grab Ep 5's 're-spin during cook' beat over it — one fire covers Blocks A(Ep1)/B(Ep1)/C/D. FIRE 2 (lighter fluid, fresh unlit grill): shoot all of Ep 4 (Block A fluid-on-unlit → Block B side-light → safety beat). FIRE 3 (wind, fresh unlit grill — ideally a genuinely breezy moment): shoot Ep 5's back-to-wind setup and wind-blocked lighting. Batch ALL to-camera hooks/CTAs (Block E) and B-roll/end cards (Block F) separately — no fire required — so a flat shot doesn't cost you a fire. Net: 3 fires, ~2 relights. Tip: light Fire 2 and Fire 3 at adjacent grills back-to-back to parallelize.",
+    "blocks": [
+      {
+        "id": "A",
+        "title": "Cold / unlit grill",
+        "grillState": "unlit",
+        "shots": [
+          { "shotId": "1C", "episodes": [1], "shotType": "MS", "framing": "Tripod locked, 3/4 on firebox, chimney on shelf", "action": "Bob fills the chimney top with charcoal", "line": "Best three bucks you'll spend—fill the top with charcoal.", "vertical": false, "duration": "17s", "dependsOn": "FIRE 1 — fresh unlit grill (chimney)" },
+          { "shotId": "1D", "episodes": [1], "shotType": "ECU", "framing": "Insert, bottom of chimney on grate, hands in frame", "action": "Crumples newspaper loosely under the chimney", "line": "Crumple a couple sheets underneath—loose enough to breathe.", "vertical": false, "duration": "12s", "dependsOn": "FIRE 1 — same unlit grill, before lighting" },
+          { "shotId": "4A", "episodes": [4], "shotType": "MS", "framing": "Handheld, Bob to camera w/ fluid can, unlit grill beside", "action": "Holds up the lighter-fluid can", "line": "Prefer fluid? Fine—if you do it the safe way.", "vertical": false, "duration": "9s", "dependsOn": "FIRE 2 — separate FRESH unlit grill (cannot reuse a lit chimney fire)" },
+          { "shotId": "4C", "episodes": [4], "shotType": "MS", "framing": "Tripod, 3/4 over firebox, plain unlit briquette pile", "action": "Squirts fluid over the UNLIT pile", "line": "Squirt it on the cold, unlit pile—a few seconds, not the whole can.", "vertical": false, "duration": "22s", "dependsOn": "FIRE 2 — same fresh unlit grill" },
+          { "shotId": "4D", "episodes": [4], "shotType": "CU", "framing": "Insert, hand setting the can away from the grill", "action": "Caps the can, sets it well clear, waits", "line": "Wait about a minute—let it soak. Set the can far away.", "vertical": false, "duration": "17s", "dependsOn": "FIRE 2 — before lighting" },
+          { "shotId": "5A", "episodes": [5], "shotType": "MWS", "framing": "Handheld, wind moving shirt/hair, water behind", "action": "Shields a lighter; it keeps blowing out", "line": "That river breeze? Gorgeous—until you light a fire.", "vertical": false, "duration": "9s", "dependsOn": "FIRE 3 — separate fresh unlit grill, ideally a breezy moment" },
+          { "shotId": "5C", "episodes": [5], "shotType": "MS", "framing": "Tripod, wide enough to see firebox swing on pedestal", "action": "Rotates the grill head 180°+ on its pedestal", "line": "They spin a full 360—turn the firebox so YOU block the wind.", "vertical": true, "duration": "27s", "dependsOn": "FIRE 3 — same fresh unlit grill (rotation demo before lighting)" }
+        ]
+      },
+      {
+        "id": "B",
+        "title": "Lighting in progress (flames catching, wind)",
+        "grillState": "lighting",
+        "shots": [
+          { "shotId": "1E", "episodes": [1], "shotType": "CU", "framing": "Tight on chimney side vents, long lighter entering", "action": "Lights the newspaper through the side holes", "line": "Light the paper through these holes… and walk away.", "vertical": false, "duration": "13s", "dependsOn": "FIRE 1 — ignition (start the 15-min clock here)" },
+          { "shotId": "1F", "episodes": [1], "shotType": "ECU", "framing": "Top-down over chimney mouth, capture over time", "action": "Coals go black → orange → gray-ashed (timelapse)", "line": "See the tops turning gray and ashy? That means ready.", "vertical": true, "duration": "speed-ramp", "dependsOn": "FIRE 1 — the 15-min burn; shoot start+end, ramp in post" },
+          { "shotId": "4E", "episodes": [4], "shotType": "MS", "framing": "Side angle, tripod, Bob lighting EDGE of pile, body back", "action": "Lights from the side of the fluid-soaked pile; catches", "line": "Light it from the side—never over the top.", "vertical": false, "duration": "20s", "dependsOn": "FIRE 2 — ignition after the 1-min soak" },
+          { "shotId": "4F", "episodes": [4], "shotType": "MS", "framing": "Handheld, Bob to camera, fire behind — SAFETY beat", "action": "Flat-hand cardinal-rule delivery", "line": "NEVER add more fluid once it's lit—flame runs up the stream.", "vertical": true, "duration": "26s", "dependsOn": "FIRE 2 — over the just-lit fluid fire" },
+          { "shotId": "5D", "episodes": [5], "shotType": "MS/OTS", "framing": "Over Bob's shoulder, body shielding the firebox", "action": "Back to wind, lights first try", "line": "Out of the wind it lights first try and burns even.", "vertical": false, "duration": "25s", "dependsOn": "FIRE 3 — wind-blocked ignition" }
+        ]
+      },
+      {
+        "id": "C",
+        "title": "Ready coals / gray ash",
+        "grillState": "ready-gray",
+        "shots": [
+          { "shotId": "1G", "episodes": [1], "shotType": "MS", "framing": "Tripod, side angle, gloved dump arc against water", "action": "Dumps glowing coals into firebox, spreads with tongs", "line": "Use the glove—it's hot—dump them in, spread out, you're grilling.", "vertical": false, "duration": "20s", "dependsOn": "FIRE 1 — chimney top gone gray (~15 min after 1E)" },
+          { "shotId": "2A", "episodes": [2], "shotType": "MS", "framing": "Handheld, Bob to camera, ready firebox glowing beside", "action": "Points down at the gray coals", "line": "Flames don't mean ready. THIS means ready.", "vertical": false, "duration": "9s", "dependsOn": "FIRE 1 — needs gray fire in frame (or shoot clean + cut in 2C)" },
+          { "shotId": "2C", "episodes": [2], "shotType": "ECU", "framing": "Top-down insert, frame full of coals", "action": "Hold on glowing, fully gray-ashed coal bed", "line": "Glowing and covered in gray ash—you're good to go.", "vertical": false, "duration": "22s", "dependsOn": "FIRE 1 — readiness beauty insert" },
+          { "shotId": "2D", "episodes": [2], "shotType": "CU", "framing": "Side angle, palm ~5in over grate, face in frame", "action": "Hand test—counts, pulls back at 3 Mississippi", "line": "Hold your hand five inches up—pull back at 3 Mississippi.", "vertical": true, "duration": "30s", "dependsOn": "FIRE 1 — hot ready fire" },
+          { "shotId": "2E", "episodes": [2], "shotType": "MS", "framing": "Tripod, 3/4 over firebox", "action": "Rakes coals to one side—hot zone + bare cool side", "line": "Hot zone to cook, cool side to slide food to if it flares.", "vertical": false, "duration": "35s", "dependsOn": "FIRE 1 — builds two-zone (do BEFORE Ep 3 cook)" }
+        ]
+      },
+      {
+        "id": "D",
+        "title": "Cooking",
+        "grillState": "cooking",
+        "shots": [
+          { "shotId": "3C", "episodes": [3], "shotType": "ECU", "framing": "Insert over prep board, Bob's hands", "action": "Forms loose patty, thumb-dimples center, seasons", "line": "Dimple the middle so they don't puff; season just before.", "vertical": false, "duration": "29s", "dependsOn": "FIRE 1 — can prep tableside while two-zone holds" },
+          { "shotId": "3D", "episodes": [3], "shotType": "MS", "framing": "Tripod, 3/4 over grate", "action": "Lays burgers on hot zone, dogs on cool zone", "line": "Burgers over the hot side, dogs over the cooler side—leave them.", "vertical": false, "duration": "18s", "dependsOn": "FIRE 1 — two-zone fire from 2E" },
+          { "shotId": "3E", "episodes": [3], "shotType": "CU", "framing": "Tight on spatula, the single flip, tripod", "action": "Flips each burger ONCE, no press, adds cheese", "line": "Once—that's it. Pressing squeezes the juice out.", "vertical": true, "duration": "25s", "dependsOn": "FIRE 1 — mid-cook" },
+          { "shotId": "3F", "episodes": [3], "shotType": "ECU", "framing": "Insert, probe in side of burger, display to lens", "action": "Probes burger → 160°F; rolls dogs showing blisters", "line": "Burgers to 160; dogs just need color. Thermometer ends the guessing.", "vertical": false, "duration": "25s", "dependsOn": "FIRE 1 — get the 160°F readout clean" },
+          { "shotId": "3A", "episodes": [3], "shotType": "CU", "framing": "Tight on sizzling burgers, tilt up to Bob", "action": "Burgers searing; Bob leans in", "line": "If you can cook a burger, you can grill.", "vertical": false, "duration": "9s", "dependsOn": "FIRE 1 — cooking sizzle (cold-open hook)" },
+          { "shotId": "3G", "episodes": [3], "shotType": "CU", "framing": "Tight hero shot, finished burger on toasted bun", "action": "Builds the burger, lifts to camera", "line": "Build it up—congratulations, you're a griller.", "vertical": false, "duration": "12s", "dependsOn": "FIRE 1 — end of cook (plating/hero)" },
+          { "shotId": "5E", "episodes": [5], "shotType": "MS", "framing": "Tripod, Bob re-gripping and re-spinning the grill", "action": "Feels wind shift, re-spins to keep back to wind", "line": "Wind shifts? Don't fight it—spin the grill again.", "vertical": false, "duration": "25s", "dependsOn": "FIRE 1 or 3 — 'during cook' re-spin; grab over any lit/cooking fire" }
+        ]
+      },
+      {
+        "id": "E",
+        "title": "To-camera wraparounds (hooks + CTAs — batch clean, no fire needed)",
+        "grillState": "n/a",
+        "shots": [
+          { "shotId": "1A", "episodes": [1], "shotType": "MWS", "framing": "Handheld, water + gulls behind, eyeline to lens", "action": "Shakes an empty chimney, cold-open hook", "line": "Lighting charcoal looks scary. It's not—watch me once.", "vertical": false, "duration": "9s", "dependsOn": "No fire needed (empty/unlit grill as backdrop)" },
+          { "shotId": "1H", "episodes": [1], "shotType": "MS", "framing": "Handheld, Bob to camera, fire OR clean", "action": "Gestures to the fire, CTA recap", "line": "That's the whole trick—clean fire in fifteen minutes.", "vertical": false, "duration": "13s", "dependsOn": "Best over FIRE 1 ready fire; can fake clean" },
+          { "shotId": "2F", "episodes": [2], "shotType": "MS", "framing": "Handheld, Bob to camera", "action": "Thumbs up over the set fire", "line": "That's the trick that turns a scary fire into one you control.", "vertical": false, "duration": "12s", "dependsOn": "Best over FIRE 1 two-zone; can batch clean" },
+          { "shotId": "4F-alt", "episodes": [4], "shotType": "MS", "framing": "Handheld, Bob to camera (safety beat backup, no fire)", "action": "Flat-hand cardinal rule (clean backup of 4F)", "line": "NEVER add fluid to lit coals—flame runs right up at you.", "vertical": false, "duration": "26s", "dependsOn": "Optional clean backup of 4F if the fire take is unusable" },
+          { "shotId": "5F", "episodes": [5], "shotType": "MWS", "framing": "Handheld, Bob to camera, water behind", "action": "Gestures to steady fire, relaxed close", "line": "A little spin and the wind's on your side.", "vertical": false, "duration": "15s", "dependsOn": "Best over a lit fire; can batch clean" },
+          { "shotId": "CTA-VO", "episodes": [1,2,3,4,5], "shotType": "n/a", "framing": "Audio only — record all five end-card VO lines clean on the lav", "action": "Bob reads each episode's 'picnic.vistter.com' CTA line", "line": "Full steps at picnic dot vistter dot com.", "vertical": false, "duration": "5x ~6s", "dependsOn": "No fire — record while a fire burns down" }
+        ]
+      },
+      {
+        "id": "F",
+        "title": "B-roll, inserts & end cards (no fire required)",
+        "grillState": "n/a",
+        "shots": [
+          { "shotId": "BR-water", "episodes": [1,2,3,4,5], "shotType": "WS", "framing": "Locked wide, water + gulls + picnic area, golden hour", "action": "Ambiance establishing plate; record matching audio bed", "line": "(none — ambient)", "vertical": false, "duration": "30s", "dependsOn": "No fire; also grab clean gull/shore audio" },
+          { "shotId": "BR-grill", "episodes": [1,2,3,4,5], "shotType": "MS/CU", "framing": "Beauty pans of the SF163.5: head-on, flip-back grate, pedestal, shelf", "action": "Slow beauty moves of a clean grill", "line": "(none)", "vertical": false, "duration": "45s", "dependsOn": "No fire; clean grill" },
+          { "shotId": "BR-vert", "episodes": [1,2,3,4,5], "shotType": "WS", "framing": "Vertical 9:16 plates of grill + water for Shorts headers/tails", "action": "Vertical ambiance + grill plates", "line": "(none)", "vertical": true, "duration": "30s", "dependsOn": "No fire; shoot vertical pickups" },
+          { "shotId": "TC-all", "episodes": [1,2,3,4,5], "shotType": "TITLE", "framing": "Title cards: wave mark + 'Bob's Grill School' + each episode title (1B,2B,3B,4B,5B)", "action": "Built in post over stills", "line": "(graphics)", "vertical": false, "duration": "post", "dependsOn": "Post-production graphic" },
+          { "shotId": "EC-all", "episodes": [1,2,3,4,5], "shotType": "TITLE", "framing": "End cards: 'More at picnic.vistter.com' (1I,2G,3H,4G,5G)", "action": "Built in post over beauty stills", "line": "(graphics)", "vertical": false, "duration": "post", "dependsOn": "Post-production graphic" }
+        ]
+      }
+    ]
+  }
+}
