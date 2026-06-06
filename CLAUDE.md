@@ -44,6 +44,7 @@ If you have access to the `Task` tool with named subagent types, use skill invoc
 | Hardware, PCB, schematic, KiCad, enclosure, firmware, ESP32, Jetson, BOM, DFM, manufacturing | `Skill(skill: "hardware-dev")` |
 | Software, code, app, feature, architecture, requirements, development, testing | `Skill(skill: "software-project")` |
 | YouTube, video, shorts, content, channel, upload | `Skill(skill: "youtube-content")` |
+| Autobiography, life story, story, memory, Obsidian, vault, correct/fix a memory, offline notes | `Skill(skill: "campfire")` |
 | Build agent, create team, manage agents, modify agent, bucket | `Skill(skill: "architect")` |
 
 ### Cowork Environment
@@ -57,6 +58,7 @@ If you have access to the `Agent` tool (with subagent_type="general-purpose"), r
 | Hardware, PCB, schematic, KiCad, enclosure, firmware, ESP32, Jetson, BOM, DFM, manufacturing | Read `AgentArchitect/cowork/skills/hardware-dev/SKILL.md` and follow its orchestration instructions |
 | Software, code, app, feature, architecture, requirements, development, testing | Read `AgentArchitect/cowork/skills/software-project/SKILL.md` and follow its orchestration instructions |
 | YouTube, video, shorts, content, channel, upload | Read `AgentArchitect/cowork/skills/youtube-content/SKILL.md` and follow its orchestration instructions |
+| Autobiography, life story, story, memory, Obsidian, vault, correct/fix a memory, offline notes | Read `AgentArchitect/cowork/skills/campfire/SKILL.md` and follow its orchestration instructions |
 | Build agent, create team, manage agents, modify agent, bucket, sync | Read `AgentArchitect/cowork/skills/architect/SKILL.md` and follow its instructions |
 
 ### Project Context Detection (runs BEFORE team routing)
