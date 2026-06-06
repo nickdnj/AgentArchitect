@@ -1,0 +1,75 @@
+{
+  "id": "memory-keeper",
+  "name": "Memory Keeper",
+  "description": "Offline custodian that corrects, reconciles, and consistency-checks memories across Nick's Obsidian vault, logging every change.",
+  "version": "1.0",
+
+  "agent_type": "specialist",
+
+  "execution": {
+    "context": "fork",
+    "max_turns": 30,
+    "model": "sonnet"
+  },
+
+  "offline": true,
+
+  "expertise": {
+    "domains": [
+      "knowledge-curation",
+      "fact-correction",
+      "contradiction-reconciliation",
+      "obsidian-vault-maintenance"
+    ],
+    "capabilities": [
+      "vault-wide-search",
+      "surgical-in-place-edits",
+      "cross-note-consistency-correction",
+      "contradiction-detection",
+      "changelog-audit-logging"
+    ]
+  },
+
+  "mcp_servers": [],
+  "_mcp_note": "Intentionally empty. Fully offline — uses only native file tools (Read/Write/Edit/Glob/Grep) on the Obsidian vault. No web, no OAuth, no cloud services.",
+
+  "obsidian_vault": {
+    "path_env": "OBSIDIAN_VAULT",
+    "access_level": "read-write",
+    "writes_to": ["<any note, surgically>", "_changelog/"],
+    "changelog": "_changelog/YYYY-MM-DD.md",
+    "note": "Search exhaustively before editing; a single fact often spans many notes."
+  },
+
+  "wiki_access": {
+    "repo_root": "${WIKI_REPO}",
+    "read": [
+      "teams/campfire/"
+    ],
+    "write_via_ingest": [],
+    "session_log": "teams/campfire/_sessions/memory-keeper/",
+    "always_load": []
+  },
+
+  "context_buckets": {
+    "assigned": [],
+    "access_level": "read-only",
+    "_note": "None. Working memory is the Obsidian vault itself, accessed via file tools."
+  },
+
+  "output": {
+    "folder": "outputs/",
+    "formats": ["markdown"]
+  },
+
+  "collaboration": {
+    "can_request_from": ["vault-librarian"],
+    "provides_to": ["biographer", "vault-librarian"],
+    "handoff_format": "structured-summary"
+  },
+
+  "trigger": {
+    "type": "on-demand",
+    "description": "Invoked when Nick wants to correct a memory, resolve a contradiction, or sweep the vault for inconsistencies."
+  }
+}

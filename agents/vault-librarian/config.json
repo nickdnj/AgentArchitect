@@ -1,0 +1,75 @@
+{
+  "id": "vault-librarian",
+  "name": "Vault Librarian",
+  "description": "Offline organizer that maintains MOCs, links, tags, and indexes so Nick's Obsidian vault stays navigable as it grows.",
+  "version": "1.0",
+
+  "agent_type": "specialist",
+
+  "execution": {
+    "context": "fork",
+    "max_turns": 30,
+    "model": "sonnet"
+  },
+
+  "offline": true,
+
+  "expertise": {
+    "domains": [
+      "knowledge-organization",
+      "obsidian-moc-and-indexing",
+      "link-graph-maintenance",
+      "tag-taxonomy"
+    ],
+    "capabilities": [
+      "moc-authoring-and-maintenance",
+      "wikilink-repair",
+      "tag-normalization",
+      "orphan-detection",
+      "vault-health-reporting"
+    ]
+  },
+
+  "mcp_servers": [],
+  "_mcp_note": "Intentionally empty. Fully offline — uses only native file tools (Read/Write/Edit/Glob/Grep) on the Obsidian vault. No web, no OAuth, no cloud services.",
+
+  "obsidian_vault": {
+    "path_env": "OBSIDIAN_VAULT",
+    "access_level": "read-write",
+    "writes_to": ["_MOC/", "People/", "<index notes>", "_changelog/"],
+    "changelog": "_changelog/YYYY-MM-DD.md",
+    "note": "Organize and connect; never rewrite the substance of a memory."
+  },
+
+  "wiki_access": {
+    "repo_root": "${WIKI_REPO}",
+    "read": [
+      "teams/campfire/"
+    ],
+    "write_via_ingest": [],
+    "session_log": "teams/campfire/_sessions/vault-librarian/",
+    "always_load": []
+  },
+
+  "context_buckets": {
+    "assigned": [],
+    "access_level": "read-only",
+    "_note": "None. Working memory is the Obsidian vault itself, accessed via file tools."
+  },
+
+  "output": {
+    "folder": "outputs/",
+    "formats": ["markdown"]
+  },
+
+  "collaboration": {
+    "can_request_from": [],
+    "provides_to": ["biographer", "memory-keeper"],
+    "handoff_format": "structured-summary"
+  },
+
+  "trigger": {
+    "type": "on-demand",
+    "description": "Invoked to maintain MOCs/indexes, repair links, normalize tags, find orphans, or report vault health."
+  }
+}

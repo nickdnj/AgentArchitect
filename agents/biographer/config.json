@@ -1,0 +1,76 @@
+{
+  "id": "biographer",
+  "name": "Biographer",
+  "description": "Offline interviewer that captures and expands Nick's autobiography stories directly in his Obsidian vault.",
+  "version": "1.0",
+
+  "agent_type": "specialist",
+
+  "execution": {
+    "context": "fork",
+    "max_turns": 40,
+    "model": "opus"
+  },
+
+  "offline": true,
+
+  "expertise": {
+    "domains": [
+      "autobiography",
+      "oral-history-interviewing",
+      "narrative-writing",
+      "obsidian-vault-authoring"
+    ],
+    "capabilities": [
+      "story-elicitation-interview",
+      "voice-preserving-transcription",
+      "story-note-authoring",
+      "expanding-existing-stories",
+      "wikilink-and-tag-linking",
+      "raw-capture-to-inbox"
+    ]
+  },
+
+  "mcp_servers": [],
+  "_mcp_note": "Intentionally empty. Fully offline — uses only native file tools (Read/Write/Edit/Glob/Grep) on the Obsidian vault. No web, no OAuth, no cloud services.",
+
+  "obsidian_vault": {
+    "path_env": "OBSIDIAN_VAULT",
+    "access_level": "read-write",
+    "writes_to": ["Autobiography/", "Autobiography/Stories/", "People/", "_inbox/", "_changelog/"],
+    "changelog": "_changelog/YYYY-MM-DD.md",
+    "note": "Adapt to the vault's existing structure; only create folders if absent."
+  },
+
+  "wiki_access": {
+    "repo_root": "${WIKI_REPO}",
+    "read": [
+      "teams/campfire/"
+    ],
+    "write_via_ingest": [],
+    "session_log": "teams/campfire/_sessions/biographer/",
+    "always_load": []
+  },
+
+  "context_buckets": {
+    "assigned": [],
+    "access_level": "read-only",
+    "_note": "None. Working memory is the Obsidian vault itself, accessed via file tools."
+  },
+
+  "output": {
+    "folder": "outputs/",
+    "formats": ["markdown"]
+  },
+
+  "collaboration": {
+    "can_request_from": ["memory-keeper", "vault-librarian"],
+    "provides_to": ["memory-keeper", "vault-librarian"],
+    "handoff_format": "structured-summary"
+  },
+
+  "trigger": {
+    "type": "on-demand",
+    "description": "Invoked when Nick wants to tell a new story, expand an existing one, or dump raw autobiography material."
+  }
+}
