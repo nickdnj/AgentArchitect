@@ -1,0 +1,68 @@
+{
+  "id": "campfire",
+  "name": "Campfire Memory Team",
+  "description": "Fully offline team that uses a local Obsidian vault as its memory: captures and expands autobiography stories, corrects existing memories, and keeps the vault organized — no web, no cloud, no OAuth.",
+  "version": "1.0",
+  "created": "2026-06-06",
+  "members": [
+    {
+      "agent_id": "biographer",
+      "role": "Interviewer & writer - captures new stories and expands existing autobiography material in the vault",
+      "context_override": null
+    },
+    {
+      "agent_id": "memory-keeper",
+      "role": "Custodian - corrects memories, reconciles contradictions, keeps facts consistent vault-wide, logs every change",
+      "context_override": null
+    },
+    {
+      "agent_id": "vault-librarian",
+      "role": "Organizer - maintains MOCs/indexes, repairs links, normalizes tags, finds orphans",
+      "context_override": null
+    }
+  ],
+  "shared_context": {
+    "buckets": [],
+    "outputs_folder": "teams/campfire/outputs"
+  },
+  "offline": true,
+  "obsidian_vault": {
+    "path_env": "OBSIDIAN_VAULT",
+    "note": "The Obsidian vault IS this team's memory store. All members read/write it via native file tools. The orchestrator must confirm $OBSIDIAN_VAULT is set before delegating any work.",
+    "changelog": "_changelog/YYYY-MM-DD.md",
+    "session_log": "_sessions/YYYY-MM-DD.md"
+  },
+  "mcp_servers": [],
+  "_mcp_note": "Intentionally empty. This team is designed to run with no external services — no web search, no Gmail/Drive/Docs, no OAuth. Only local Obsidian vault files.",
+  "orchestration": {
+    "mode": "thin-orchestrator",
+    "execution": {
+      "model": "opus",
+      "max_turns": 50
+    },
+    "routing": {
+      "capture-story": ["biographer"],
+      "expand-story": ["biographer"],
+      "brain-dump": ["biographer"],
+      "correct-memory": ["memory-keeper"],
+      "reconcile-contradiction": ["memory-keeper"],
+      "consistency-sweep": ["memory-keeper"],
+      "organize-vault": ["vault-librarian"],
+      "fix-links": ["vault-librarian"],
+      "vault-health": ["vault-librarian"],
+      "general": ["biographer"]
+    },
+    "delegation_strategy": "Thin router for an offline Obsidian-backed memory team.\n\n**Step 0 — vault check (every session):** Before delegating, confirm `$OBSIDIAN_VAULT` is set and the directory exists (`echo \"$OBSIDIAN_VAULT\" && ls \"$OBSIDIAN_VAULT\"`). If not, ask Nick for the vault path and do not proceed until it resolves.\n\n**Routing:** Telling/recording a story, or expanding one → biographer. Fixing a fact, resolving a contradiction, or sweeping for inconsistencies → memory-keeper. Indexing, MOCs, links, tags, orphans, vault health → vault-librarian. When a task naturally spans roles (e.g. capture a story AND link it into the People MOC), delegate in sequence and have the librarian clean up after the biographer.\n\n**Delegate, don't do.** Each specialist runs forked with its own view of the vault; only their structured summaries come back to you. Synthesize those for Nick. Handle inline only routing/clarifying questions and final synthesis.\n\n**Offline discipline:** Never reach for web search, email, or cloud tools — they are unavailable by design. Everything lives in the vault.",
+    "session_summary": {
+      "enabled": true,
+      "output_path": "teams/campfire/outputs/"
+    },
+    "orchestrator_instructions": "\n\n## Vault Session Log (offline — MANDATORY)\n\nThis team has NO wiki and NO cloud. Continuity lives in the Obsidian vault itself.\n\nAfter every substantive interaction with Nick (anything that produced or changed a note, captured a story, or made a decision), append a short summary to:\n\n`$OBSIDIAN_VAULT/_sessions/YYYY-MM-DD.md`\n\n(Create the file if it does not exist. Append chronologically — newest at the bottom. Use today's date.)\n\nEach entry should cover:\n- **Asked:** one line — what Nick wanted\n- **Specialists:** which agents ran (biographer / memory-keeper / vault-librarian)\n- **Output:** notes created or edited (vault-relative paths), stories captured, corrections made\n- **Open follow-ups:** unfinished interviews, unresolved contradictions, items flagged \"To confirm\"\n\nSkip the log for trivial exchanges (a single yes/no, a quick lookup with no change to the vault).\n\n## Edit Safety (offline — MANDATORY)\n\nThe vault may have no backup while traveling. Any specialist that edits an existing note MUST log the change to `$OBSIDIAN_VAULT/_changelog/YYYY-MM-DD.md` (old → new snippet + reason). Confirm in each specialist briefing that the changelog was written. Never let a specialist delete content Nick wrote without explicit confirmation.\n"
+  },
+  "collaboration_rules": {
+    "coordination_mode": "orchestrated",
+    "handoff_protocol": "task-delegation",
+    "output_sharing": "summarized",
+    "notification_email": ""
+  }
+}
