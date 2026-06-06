@@ -1,7 +1,31 @@
 {
   "version": "1.0",
-  "last_updated": "2026-05-14",
+  "last_updated": "2026-06-06",
   "agents": [
+    {
+      "id": "biographer",
+      "name": "Biographer",
+      "folder": "agents/biographer",
+      "teams": ["campfire"],
+      "created": "2026-06-06",
+      "status": "active"
+    },
+    {
+      "id": "memory-keeper",
+      "name": "Memory Keeper",
+      "folder": "agents/memory-keeper",
+      "teams": ["campfire"],
+      "created": "2026-06-06",
+      "status": "active"
+    },
+    {
+      "id": "vault-librarian",
+      "name": "Vault Librarian",
+      "folder": "agents/vault-librarian",
+      "teams": ["campfire"],
+      "created": "2026-06-06",
+      "status": "active"
+    },
     {
       "id": "wiki-ingest",
       "name": "Wiki Ingest",

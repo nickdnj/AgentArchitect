@@ -1,7 +1,15 @@
 {
   "version": "1.0",
-  "last_updated": "2026-04-30",
+  "last_updated": "2026-06-06",
   "teams": [
+    {
+      "id": "campfire",
+      "name": "Campfire Memory Team",
+      "folder": "teams/campfire",
+      "member_count": 3,
+      "created": "2026-06-06",
+      "status": "active"
+    },
     {
       "id": "wharfside-board-assistant",
       "name": "Wharfside Board Assistant Team",
