@@ -24,20 +24,55 @@ Optional — put it on your PATH:
 ln -sf "$PWD/scribe" /usr/local/bin/scribe
 ```
 
+## Your offline second brain
+
+The wiki *is* the second brain; Scribe is how you talk to it offline. Build the index
+once (before you go offline), then ask it anything — answers are grounded **only** in your
+own pages and cite the source, so when something's wrong you know exactly where to fix it.
+
+```bash
+./scribe index                       # embed all wiki pages locally (do this before offline)
+./scribe ask "what do I know about the Concurrent 3280?"
+./scribe chat                        # conversational REPL (below)
+```
+
+In `scribe chat`, plain text asks a question; these slash-commands do more:
+
+| In-chat command | Effect |
+|---|---|
+| `/remember <text>` (or start a line with "remember…") | Stage a **proposed memory** to `raw/` for `wiki-ingest` |
+| `/correct <what's wrong>` | Fix a fact inline (same flow as `scribe correct`) |
+| `/voice` | Dictate your next message via the local mic |
+| `/sources` | Show the raw excerpts behind the last answer (to spot errors) |
+| `/reindex` | Rebuild the index (after you've made edits) |
+| `/quit` | Exit |
+
 ## Commands
 
 | Command | What it does |
 |---|---|
-| `scribe doctor` | Health-check Ollama, the model, whisper, ffmpeg, paths, and git. Run this first. |
-| `scribe story [--voice] [--title "..."]` | Capture or **dictate** an autobiography story. Light cleanup (fixes filler/transcription, preserves your voice and every fact). You approve, then it's saved to the autobiography bucket + a pointer in `raw/`. |
-| `scribe correct "<what's wrong>"` | Locate the wiki page and fix a fact. Trivial unique fix → proposes a diff you approve → edits the page. Anything substantive or ambiguous → staged as a note in `raw/`. |
-| `scribe note <project> [--voice]` | Free-form capture about any project, appended verbatim to `raw/notes-<project>-<date>.md`. |
+| `scribe doctor` | Health-check Ollama, both models, whisper, ffmpeg, paths, git, and the index. Run first. |
+| `scribe index [--rebuild]` | Build/refresh the local semantic index. Incremental — only re-embeds changed pages. |
+| `scribe ask "<question>"` | One-shot grounded question → cited answer from your wiki. |
+| `scribe chat` | Conversational second-brain REPL (see slash-commands above). |
+| `scribe reflect [tool\|wiki\|all]` | **Self-improvement.** The local model proposes (never makes) improvements and stages a Claude-ready brief to `raw/improvement-proposals-<date>.md`. |
+| `scribe story [--voice] [--title "..."]` | Capture or **dictate** an autobiography story. Light cleanup (fixes filler/transcription, preserves your voice and every fact). Saved to the autobiography bucket + a pointer in `raw/`. |
+| `scribe correct "<what's wrong>"` | Locate the wiki page and fix a fact. Trivial unique fix → diff you approve → edits the page. Substantive or ambiguous → staged as a note in `raw/`. |
+| `scribe note <project> [--voice]` | Free-form capture about any project → `raw/notes-<project>-<date>.md`. |
 | `scribe queue` | Show everything staged offline, awaiting `wiki-ingest`. |
-| `scribe handoff` | Write a summary of all captures + the exact reconnect command. |
+| `scribe handoff` | Summary of all captures + the exact reconnect commands. |
 
 `--voice` records from the mic (press ENTER to stop) and transcribes locally. If the mic
 or whisper is unavailable, it falls back to typing automatically.
 Without `--text`, typed input opens `$EDITOR` (default `nano`).
+
+## Self-improvement loop
+
+`scribe reflect` is the "get better over time" mechanism, designed for the local model's
+limits: **it plans and documents, it does not act.** It reviews how you've used Scribe and
+the shape of your wiki, then writes prioritized proposals (what / why / next step) for Claude
+to execute when you're back online. `scribe handoff` routes those to the Architect / `improver`
+agent. Nothing is changed without Claude in the loop.
 
 ## When you reconnect
 

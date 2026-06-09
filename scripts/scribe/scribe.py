@@ -10,6 +10,10 @@ reconnection. Only trivial fixes (with your approval) touch curated pages.
 
 Commands:
     scribe doctor                 Health-check every local dependency
+    scribe index                  Build/refresh the local semantic index of the wiki
+    scribe ask "<question>"        One-shot grounded question over your wiki (cited)
+    scribe chat                   Conversational second-brain REPL (ask, remember, correct)
+    scribe reflect [tool|wiki]    Propose (not make) improvements for Claude to act on later
     scribe story  [--voice]       Capture/dictate an autobiography story (light cleanup)
     scribe correct "<what's wrong>"   Locate a wiki page and fix a fact
     scribe note <project> [--voice]   Free-form project capture -> raw/
@@ -20,14 +24,17 @@ Env overrides:
     WIKI_REPO        default ~/Workspaces/wiki
     AA_REPO          default ~/Workspaces/AgentArchitect
     SCRIBE_MODEL     default qwen2.5:14b   (fallback: glm4:latest)
+    EMBED_MODEL      default nomic-embed-text
     OLLAMA_URL       default http://localhost:11434
     WHISPER_URL      default http://localhost:2022/v1/audio/transcriptions
     SCRIBE_MIC       default 2   (ffmpeg avfoundation audio device index)
+    SCRIBE_INDEX     default ~/.scribe/wiki-index.json
 """
 
 import argparse
 import datetime as _dt
 import difflib
+import math
 import json
 import os
 import re
@@ -48,9 +55,13 @@ MANIFEST = RAW_DIR / ".scribe-manifest.json"
 
 PRIMARY_MODEL = os.environ.get("SCRIBE_MODEL", "qwen2.5:14b")
 FALLBACK_MODEL = "glm4:latest"
+EMBED_MODEL = os.environ.get("EMBED_MODEL", "nomic-embed-text")
 OLLAMA_URL = os.environ.get("OLLAMA_URL", "http://localhost:11434")
 WHISPER_URL = os.environ.get("WHISPER_URL", "http://localhost:2022/v1/audio/transcriptions")
 MIC_INDEX = os.environ.get("SCRIBE_MIC", "2")
+INDEX_PATH = Path(os.environ.get("SCRIBE_INDEX", HOME / ".scribe" / "wiki-index.json"))
+# wiki subdirs/files we never index
+INDEX_SKIP = (".git", ".obsidian", "_archive", "_lint", "_changelog", "raw/")
 
 # ----------------------------------------------------------------------------- tty helpers
 def c(text, color):
@@ -258,7 +269,323 @@ def show_diff(old, new, fromfile="current", tofile="proposed"):
             print(c(line, "dim"))
 
 
+# ----------------------------------------------------------------------------- semantic index
+def embed(text):
+    """Return a local embedding vector for text via nomic-embed-text."""
+    r = requests.post(f"{OLLAMA_URL}/api/embeddings",
+                      json={"model": EMBED_MODEL, "prompt": text}, timeout=120)
+    r.raise_for_status()
+    return r.json()["embedding"]
+
+
+def cosine(a, b):
+    dot = sum(x * y for x, y in zip(a, b))
+    na = math.sqrt(sum(x * x for x in a))
+    nb = math.sqrt(sum(y * y for y in b))
+    return dot / (na * nb) if na and nb else 0.0
+
+
+def index_files():
+    """Wiki .md files eligible for indexing."""
+    out = []
+    for p in WIKI_REPO.rglob("*.md"):
+        rel = str(p.relative_to(WIKI_REPO))
+        if any(rel.startswith(s) or f"/{s}" in f"/{rel}" for s in INDEX_SKIP):
+            continue
+        out.append(p)
+    return out
+
+
+def chunk_page(path):
+    """Split a page into heading-scoped chunks (~250 words max)."""
+    text = path.read_text(errors="ignore")
+    rel = str(path.relative_to(WIKI_REPO))
+    chunks, heading, buf = [], "", []
+
+    def flush():
+        body = "\n".join(buf).strip()
+        if body:
+            words = body.split()
+            for i in range(0, len(words), 250):
+                chunks.append({"path": rel, "heading": heading,
+                               "text": " ".join(words[i:i + 250])})
+
+    for line in text.splitlines():
+        if line.startswith("#"):
+            flush()
+            buf = []
+            heading = line.lstrip("# ").strip()
+        else:
+            buf.append(line)
+    flush()
+    return chunks
+
+
+def load_index():
+    if INDEX_PATH.exists():
+        try:
+            return json.loads(INDEX_PATH.read_text())
+        except json.JSONDecodeError:
+            return {"files": {}, "chunks": []}
+    return {"files": {}, "chunks": []}
+
+
+def save_index(idx):
+    INDEX_PATH.parent.mkdir(parents=True, exist_ok=True)
+    INDEX_PATH.write_text(json.dumps(idx))
+
+
+def build_index(force=False, quiet=False):
+    """Incrementally (re)embed changed wiki pages. Returns the index dict."""
+    idx = load_index()
+    files_meta = {} if force else idx.get("files", {})
+    chunks = [] if force else [c for c in idx.get("chunks", [])]
+    current = index_files()
+    current_rel = {str(p.relative_to(WIKI_REPO)) for p in current}
+    # drop chunks/meta for deleted files
+    chunks = [c for c in chunks if c["path"] in current_rel]
+    files_meta = {k: v for k, v in files_meta.items() if k in current_rel}
+    changed = 0
+    for p in current:
+        rel = str(p.relative_to(WIKI_REPO))
+        mtime = p.stat().st_mtime
+        if not force and files_meta.get(rel) == mtime:
+            continue
+        # re-embed this file: drop its old chunks, add fresh
+        chunks = [c for c in chunks if c["path"] != rel]
+        for ch in chunk_page(p):
+            label = f"{rel} :: {ch['heading']}" if ch["heading"] else rel
+            ch["embedding"] = embed(f"{label}\n{ch['text']}")
+            chunks.append(ch)
+        files_meta[rel] = mtime
+        changed += 1
+        if not quiet:
+            print(c(f"  embedded {rel}", "dim"))
+    idx = {"files": files_meta, "chunks": chunks, "built": now_stamp()}
+    save_index(idx)
+    if not quiet:
+        ok(f"index ready — {len(chunks)} chunks from {len(files_meta)} pages "
+           f"({changed} re-embedded this run)")
+    return idx
+
+
+def retrieve(query, k=6):
+    """Return top-k (chunk, score) for a query from the local index."""
+    idx = load_index()
+    if not idx.get("chunks"):
+        idx = build_index(quiet=True)
+    qv = embed(query)
+    scored = [(c, cosine(qv, c["embedding"])) for c in idx["chunks"]]
+    scored.sort(key=lambda x: x[1], reverse=True)
+    return scored[:k]
+
+
+CHAT_SYSTEM = (
+    "You are Nick's second brain — a precise assistant grounded in HIS personal wiki. "
+    "Answer the question using ONLY the WIKI EXCERPTS provided. After your answer, the "
+    "calling program shows the source pages, so weave the page path in brackets like "
+    "[spine/network/yeager-ken.md] when you rely on a specific page. "
+    "If the excerpts do not contain the answer, say plainly: 'That's not in the wiki.' "
+    "You may then add general knowledge ONLY if clearly prefixed with 'OUTSIDE THE WIKI:'. "
+    "Never invent personal facts, dates, names, or events that aren't in the excerpts. "
+    "Be concise and direct."
+)
+
+
+def answer_question(question, history=None):
+    hits = retrieve(question)
+    ctx = "\n\n".join(f"### [{c['path']}]"
+                      + (f" — {c['heading']}" if c["heading"] else "")
+                      + f"\n{c['text']}" for c, _ in hits)
+    convo = ""
+    if history:
+        convo = "RECENT CONVERSATION:\n" + "\n".join(history[-4:]) + "\n\n"
+    prompt = f"{convo}WIKI EXCERPTS:\n\n{ctx}\n\nQUESTION: {question}"
+    resp, _ = ollama_generate(prompt, system=CHAT_SYSTEM, temperature=0.2)
+    sources = []
+    for c, s in hits:
+        if c["path"] not in [x[0] for x in sources]:
+            sources.append((c["path"], s))
+    return resp, sources, hits
+
+
+def stage_memory(text):
+    """Stage a proposed memory into raw/ for wiki-ingest."""
+    RAW_DIR.mkdir(parents=True, exist_ok=True)
+    mf = RAW_DIR / f"proposed-memories-{today()}.md"
+    with open(mf, "a") as f:
+        f.write(f"\n## {now_stamp()}\n\n{text}\n")
+    add_manifest({"type": "proposed-memory", "ts": now_stamp(),
+                  "summary": text[:160], "path": str(mf)})
+    ok(f"staged proposed memory → {mf}")
+    return mf
+
+
+REFLECT_SYSTEM = (
+    "You are the reflective, self-improving layer of Nick's offline 'second brain' tool "
+    "(called Scribe). You are running on a small LOCAL model with no internet. "
+    "Your job is NOT to make changes — you cannot be trusted to act, and Claude (a far more "
+    "capable agent) will do the actual work when Nick is back online. "
+    "Your job is to PLAN and DOCUMENT: produce concrete, prioritized improvement proposals "
+    "that Claude can pick up and execute later. "
+    "For each proposal give: a short title, WHAT to improve, WHY it matters, and a concrete "
+    "NEXT STEP a capable agent should take. Mark each priority High/Medium/Low. "
+    "Be specific and honest about gaps. Do not invent facts about Nick. "
+    "Output clean markdown with '## ' headings per proposal, grouped under the given scope."
+)
+
+
+def gather_usage_summary():
+    data = load_manifest()
+    if not data:
+        return "No captures recorded yet this offline session."
+    by_type = {}
+    for e in data:
+        by_type.setdefault(e["type"], 0)
+        by_type[e["type"]] += 1
+    lines = [f"- {n}× {t}" for t, n in by_type.items()]
+    recent = [f"  • {e['ts']} [{e['type']}] {e.get('summary','')[:80]}" for e in data[-8:]]
+    return "Activity so far:\n" + "\n".join(lines) + "\nRecent items:\n" + "\n".join(recent)
+
+
+def gather_wiki_overview():
+    rows = []
+    for p in index_files():
+        rel = str(p.relative_to(WIKI_REPO))
+        words = len(p.read_text(errors="ignore").split())
+        rows.append((rel, words))
+    rows.sort()
+    thin = [f"  - {r} ({w} words)" for r, w in rows if w < 40]
+    overview = "\n".join(f"  - {r} ({w} words)" for r, w in rows)
+    return overview, thin
+
+
+def cmd_reflect(args):
+    scope = (args.scope or "all").lower()
+    tool_help = ""
+    try:
+        tool_help = (Path(__file__).parent / "README.md").read_text()[:3000]
+    except OSError:
+        pass
+    blocks = []
+    if scope in ("tool", "all"):
+        blocks.append("SCOPE: SCRIBE TOOL\n\nWhat Scribe does (README excerpt):\n"
+                      + tool_help + "\n\n" + gather_usage_summary())
+    if scope in ("wiki", "all"):
+        overview, thin = gather_wiki_overview()
+        thin_txt = ("\nPages that look thin (<40 words) — possible stubs:\n" + "\n".join(thin)) if thin else ""
+        blocks.append("SCOPE: WIKI / SECOND BRAIN\n\nAll pages with word counts:\n"
+                      + overview + thin_txt)
+    prompt = ("Produce improvement proposals for the following. Group your output under a "
+              f"'# {scope.upper()} improvement proposals' heading.\n\n" + "\n\n---\n\n".join(blocks))
+    info(f"Reflecting on '{scope}' (local model, proposing only — no changes)…")
+    resp, _ = ollama_generate(prompt, system=REFLECT_SYSTEM, temperature=0.4)
+
+    RAW_DIR.mkdir(parents=True, exist_ok=True)
+    rf = RAW_DIR / f"improvement-proposals-{today()}.md"
+    header = (f"\n# Improvement proposals — scope: {scope} — {now_stamp()}\n"
+              f"_Generated offline by Scribe ({PRIMARY_MODEL}). For Claude to review & act on when back online._\n\n")
+    with open(rf, "a") as f:
+        f.write(header + resp + "\n")
+    print(c("\n" + resp + "\n", "bold"))
+    add_manifest({"type": "improvement-proposal", "ts": now_stamp(),
+                  "summary": f"{scope} improvement proposals", "path": str(rf)})
+    git_commit([rf], f"scribe(reflect): {scope} improvement proposals", no_commit=args.no_commit)
+    return 0
+
+
 # ----------------------------------------------------------------------------- commands
+def cmd_index(args):
+    info(f"Indexing wiki at {WIKI_REPO} (embed model: {EMBED_MODEL})…")
+    build_index(force=args.rebuild)
+    return 0
+
+
+def cmd_ask(args):
+    question = args.question or get_text_input(False, label="question")
+    if not question:
+        err("No question.")
+        return 1
+    info("Thinking (local, grounded in your wiki)…")
+    resp, sources, _ = answer_question(question)
+    print(c("\n" + resp + "\n", "bold"))
+    if sources:
+        print(c("sources:", "dim"))
+        for path, score in sources:
+            print(c(f"  [{score:.2f}] {path}", "dim"))
+    return 0
+
+
+def cmd_chat(args):
+    print(c("\n🧠 Scribe — your offline second brain", "bold"))
+    print(c("Ask anything about your wiki. Commands: /remember <text>, /correct <text>, "
+            "/voice, /sources, /reindex, /quit\n", "dim"))
+    build_index(quiet=True)
+    history = []
+    last_hits = []
+    while True:
+        try:
+            msg = input(c("you> ", "cyan")).strip()
+        except (EOFError, KeyboardInterrupt):
+            print()
+            break
+        if not msg:
+            continue
+        low = msg.lower()
+        if low in ("/quit", "/q", "/exit"):
+            break
+        if low == "/reindex":
+            build_index(force=True)
+            continue
+        if low == "/voice":
+            v = record_and_transcribe()
+            if not v:
+                continue
+            msg = v
+            print(c(f"you> {msg}", "cyan"))
+            low = msg.lower()
+        if low == "/sources":
+            if not last_hits:
+                info("No previous answer yet.")
+            else:
+                for ch, s in last_hits:
+                    print(c(f"\n[{s:.2f}] {ch['path']}"
+                            + (f" — {ch['heading']}" if ch['heading'] else ""), "cyan"))
+                    print(ch["text"])
+            continue
+        if low.startswith("/remember") or low.startswith("remember "):
+            mem = msg.split(" ", 1)[1].strip() if " " in msg else ""
+            if not mem:
+                mem = ask("What should I remember")
+            if mem and confirm(f"Stage this as a proposed memory?\n  “{mem}”", default=True):
+                mf = stage_memory(mem)
+                git_commit([mf], f"scribe(memory): {mem[:50]}", no_commit=args.no_commit)
+            continue
+        if low.startswith("/correct"):
+            desc = msg.split(" ", 1)[1].strip() if " " in msg else ask("What's wrong")
+            if desc:
+                _run_correct(desc, no_commit=args.no_commit)
+            continue
+        # normal question
+        info("…")
+        resp, sources, hits = answer_question(msg, history)
+        last_hits = hits
+        print(c("\n" + resp + "\n", "bold"))
+        if sources:
+            print(c("sources: " + "  ".join(f"[{p}]" for p, _ in sources[:4]), "dim"))
+        history.append(f"Nick: {msg}")
+        history.append(f"Brain: {resp}")
+        # opportunistic: offer to remember if the answer wasn't in the wiki
+        if "not in the wiki" in resp.lower():
+            if confirm("That wasn't in your wiki. Want to add it as a proposed memory?", default=False):
+                mem = ask("Phrase the memory to save")
+                if mem:
+                    mf = stage_memory(mem)
+                    git_commit([mf], f"scribe(memory): {mem[:50]}", no_commit=args.no_commit)
+    info("Bye. Run `scribe handoff` to see what you staged.")
+    return 0
+
+
 def cmd_doctor(args):
     print(c("\nScribe health check\n", "bold"))
     okall = True
@@ -298,6 +625,20 @@ def cmd_doctor(args):
         ok(f"ffmpeg present (mic device index SCRIBE_MIC={MIC_INDEX})")
     else:
         warn("ffmpeg missing — voice capture unavailable")
+    # embedding model + index
+    try:
+        if EMBED_MODEL in ollama_models() or any(m.startswith(EMBED_MODEL.split(':')[0]) for m in ollama_models()):
+            ok(f"embedding model '{EMBED_MODEL}' present (powers ask/chat)")
+        else:
+            warn(f"embedding model '{EMBED_MODEL}' NOT pulled — ask/chat won't work")
+            okall = False
+    except Exception:  # noqa: BLE001
+        pass
+    idx = load_index()
+    if idx.get("chunks"):
+        ok(f"wiki index: {len(idx['chunks'])} chunks from {len(idx.get('files',{}))} pages (built {idx.get('built','?')})")
+    else:
+        warn("wiki index not built yet — run `scribe index` (do this before going offline)")
     # paths
     for label, p in [("wiki repo", WIKI_REPO), ("raw/ dir", RAW_DIR),
                      ("autobiography dir", AUTOBIO_DIR)]:
@@ -448,22 +789,18 @@ def write_correction_note(description, proposal=None):
     return note_file
 
 
-def cmd_correct(args):
-    description = args.description or get_text_input(False, label="correction")
-    if not description:
-        err("No correction described.")
-        return 1
+def _run_correct(description, no_commit=False):
+    """Shared correction logic, used by `scribe correct` and the chat REPL."""
     info("Searching the wiki for the relevant page…")
     candidates = search_wiki(description)
     if not candidates:
         warn("No matching page found by keyword. Staging a correction note for wiki-ingest.")
         nf = write_correction_note(description)
-        git_commit([nf], f"scribe(correction-note): {description[:50]}", no_commit=args.no_commit)
+        git_commit([nf], f"scribe(correction-note): {description[:50]}", no_commit=no_commit)
         return 0
     print(c("Candidate pages:", "dim"))
     for p in candidates:
         print("   ", p.relative_to(WIKI_REPO))
-    # build context for the model
     blocks = []
     for p in candidates:
         rel = p.relative_to(WIKI_REPO)
@@ -472,20 +809,20 @@ def cmd_correct(args):
     prompt = (f"CORRECTION REQUEST:\n{description}\n\n"
               f"CANDIDATE FILE EXCERPTS (file paths are repo-relative):\n\n{ctx}")
     info("Asking the local model to locate the exact text…")
-    resp, model = ollama_generate(prompt, system=CORRECT_SYSTEM, json_mode=True, temperature=0)
+    resp, _ = ollama_generate(prompt, system=CORRECT_SYSTEM, json_mode=True, temperature=0)
     try:
         prop = json.loads(resp)
     except json.JSONDecodeError:
         warn("Model did not return valid JSON; staging a correction note instead.")
         nf = write_correction_note(description)
-        git_commit([nf], f"scribe(correction-note): {description[:50]}", no_commit=args.no_commit)
+        git_commit([nf], f"scribe(correction-note): {description[:50]}", no_commit=no_commit)
         return 0
 
     # Tier B or not located -> stage a note
     if not prop.get("located") or prop.get("tier") != "A":
         info(f"Treated as Tier B (substantive) — reason: {prop.get('reason','')}")
         nf = write_correction_note(description, prop)
-        git_commit([nf], f"scribe(correction-note): {description[:50]}", no_commit=args.no_commit)
+        git_commit([nf], f"scribe(correction-note): {description[:50]}", no_commit=no_commit)
         return 0
 
     # Tier A: deterministic, verified exact replace
@@ -496,14 +833,14 @@ def cmd_correct(args):
     if not target.exists() or not old:
         warn("Proposed target/text invalid; staging a correction note instead.")
         nf = write_correction_note(description, prop)
-        git_commit([nf], f"scribe(correction-note): {description[:50]}", no_commit=args.no_commit)
+        git_commit([nf], f"scribe(correction-note): {description[:50]}", no_commit=no_commit)
         return 0
     content = target.read_text()
     count = content.count(old)
     if count != 1:
         warn(f"old_string occurs {count} times in {rel} (need exactly 1) — staging a note for safety.")
         nf = write_correction_note(description, prop)
-        git_commit([nf], f"scribe(correction-note): {description[:50]}", no_commit=args.no_commit)
+        git_commit([nf], f"scribe(correction-note): {description[:50]}", no_commit=no_commit)
         return 0
 
     new_content = content.replace(old, new, 1)
@@ -513,7 +850,7 @@ def cmd_correct(args):
     if not confirm("\nApply this edit to the curated page?", default=False):
         if confirm("Stage it as a correction note instead?", default=True):
             nf = write_correction_note(description, prop)
-            git_commit([nf], f"scribe(correction-note): {description[:50]}", no_commit=args.no_commit)
+            git_commit([nf], f"scribe(correction-note): {description[:50]}", no_commit=no_commit)
         else:
             warn("Discarded.")
         return 0
@@ -522,8 +859,17 @@ def cmd_correct(args):
     add_manifest({"type": "correction-applied", "ts": now_stamp(),
                   "summary": f"{rel}: '{old[:40]}' → '{new[:40]}'", "path": str(target)})
     git_commit([target], f"scribe(correct): {rel} — {prop.get('reason','fix')[:50]}",
-               no_commit=args.no_commit)
+               no_commit=no_commit)
+    # the edited page changed -> refresh its index entry next query (mtime-based, automatic)
     return 0
+
+
+def cmd_correct(args):
+    description = args.description or get_text_input(False, label="correction")
+    if not description:
+        err("No correction described.")
+        return 1
+    return _run_correct(description, no_commit=args.no_commit)
 
 
 def cmd_note(args):
@@ -575,15 +921,23 @@ def cmd_handoff(args):
             lines.append(f"- {e['ts']} — {label}  \n  `{e.get('path','')}`")
         lines.append("")
     lines += ["## Reconnect — run when back online", "", "```bash",
-              "# Compile every staged raw file into curated wiki pages:",
-              "for f in raw/corrections-*.md raw/notes-*.md raw/autobio-additions-*.md; do",
+              "# 1. Compile captured knowledge into curated wiki pages:",
+              "for f in raw/corrections-*.md raw/notes-*.md raw/autobio-additions-*.md "
+              "raw/proposed-memories-*.md; do",
               "  node scripts/run-agent.js wiki-ingest --operation ingest --source \"$f\"",
               "done",
-              "# Then lint the touched subtrees:",
+              "# 2. Lint the touched subtrees:",
               "node scripts/run-agent.js wiki-ingest --operation lint --scope spine/",
               "```",
               "",
-              "Or in Claude Code: `/architect wiki-ingest ingest --source raw/<file>.md`"]
+              "In Claude Code: `/architect wiki-ingest ingest --source raw/<file>.md`",
+              "",
+              "**Self-improvement proposals** (if any `raw/improvement-proposals-*.md` exist): "
+              "review them with the `improver` agent / Architect — they are plans for Claude to "
+              "act on, not changes already made:",
+              "```",
+              "/architect            # then discuss raw/improvement-proposals-*.md",
+              "```"]
     hf.write_text("\n".join(lines))
     ok(f"handoff summary → {hf}")
     print()
@@ -598,6 +952,21 @@ def main():
     sub = p.add_subparsers(dest="cmd", required=True)
 
     sub.add_parser("doctor", help="health-check local dependencies").set_defaults(func=cmd_doctor)
+
+    ip = sub.add_parser("index", help="build/refresh the local semantic index of the wiki")
+    ip.add_argument("--rebuild", action="store_true", help="re-embed every page from scratch")
+    ip.set_defaults(func=cmd_index)
+
+    ap = sub.add_parser("ask", help="one-shot grounded question over your wiki")
+    ap.add_argument("question", nargs="?", help="your question (quoted)")
+    ap.set_defaults(func=cmd_ask)
+
+    sub.add_parser("chat", help="conversational second-brain REPL").set_defaults(func=cmd_chat)
+
+    rp = sub.add_parser("reflect", help="propose improvements (tool/wiki) for Claude to act on later")
+    rp.add_argument("scope", nargs="?", choices=["tool", "wiki", "all"], default="all",
+                    help="what to reflect on (default: all)")
+    rp.set_defaults(func=cmd_reflect)
 
     sp = sub.add_parser("story", help="capture/dictate an autobiography story")
     sp.add_argument("--voice", action="store_true", help="dictate via microphone")
