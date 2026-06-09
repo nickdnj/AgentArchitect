@@ -369,7 +369,7 @@ def build_index(force=False, quiet=False):
     return idx
 
 
-def retrieve(query, k=6):
+def retrieve(query, k=8):
     """Return top-k (chunk, score) for a query from the local index."""
     idx = load_index()
     if not idx.get("chunks"):
@@ -382,13 +382,16 @@ def retrieve(query, k=6):
 
 CHAT_SYSTEM = (
     "You are Nick's second brain — a precise assistant grounded in HIS personal wiki. "
-    "Answer the question using ONLY the WIKI EXCERPTS provided. After your answer, the "
-    "calling program shows the source pages, so weave the page path in brackets like "
-    "[spine/network/yeager-ken.md] when you rely on a specific page. "
-    "If the excerpts do not contain the answer, say plainly: 'That's not in the wiki.' "
+    "Answer the question using ONLY the WIKI EXCERPTS provided. "
+    "DIRECTLY answer by extracting and presenting the actual information from the excerpts. "
+    "Do NOT tell Nick to 'see', 'check', or 'refer to' another page — HE is asking YOU, so "
+    "synthesize the answer yourself. If the excerpts contain a list (e.g. projects, people, "
+    "tasks), reproduce the relevant items with their key details, don't just name the page. "
+    "Cite supporting pages inline in brackets like [projects.md]; the program also prints the "
+    "sources afterward. "
+    "If the excerpts truly do not contain the answer, say plainly: 'That's not in the wiki.' "
     "You may then add general knowledge ONLY if clearly prefixed with 'OUTSIDE THE WIKI:'. "
-    "Never invent personal facts, dates, names, or events that aren't in the excerpts. "
-    "Be concise and direct."
+    "Never invent personal facts, dates, names, or events that aren't in the excerpts."
 )
 
 
