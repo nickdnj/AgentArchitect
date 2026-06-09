@@ -1,4 +1,12 @@
 #!/usr/bin/env bash
 # Convenience wrapper for Offline Scribe. Symlink into PATH if you like:
-#   ln -sf "$PWD/scripts/scribe/scribe" /usr/local/bin/scribe
-exec python3 "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/scribe.py" "$@"
+#   ln -sf "$PWD/scribe" /opt/homebrew/bin/scribe
+# Resolves symlinks so it finds scribe.py even when invoked via a symlink.
+src="${BASH_SOURCE[0]}"
+while [ -h "$src" ]; do
+  dir="$(cd -P "$(dirname "$src")" && pwd)"
+  src="$(readlink "$src")"
+  [[ $src != /* ]] && src="$dir/$src"
+done
+dir="$(cd -P "$(dirname "$src")" && pwd)"
+exec python3 "$dir/scribe.py" "$@"
