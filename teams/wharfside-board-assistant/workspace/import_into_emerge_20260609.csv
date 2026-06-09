@@ -1,0 +1,13 @@
+#EXPORT_FORMAT_VERSION=1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Id,First Name,Middle Name,Last Name,Card Number,Card Format,Select Type,Access Level,Phone Number,Phone(ext),Cell Phone,E-mail,Threat Level,UserDefine1,UserDefine2,UserDefine3,UserDefine4,UserDefine5,UserDefine6,UserDefine7,UserDefine8,UserDefine9,UserDefine10,UserDefine11,UserDefine12,UserDefine13,UserDefine14,UserDefine15,UserDefine16,UserDefine17,UserDefine18,UserDefine19,UserDefine20,Activation Date,Expiration Date,Never Expired,Card Type,Card Status
+50030,Tom,,Jordon,34971,118-mircom,I,Resident-POOL|Bathrooms|Ice|Laundry/Gym Rooms,,,,,LOW,174,,,,,,,,,,,,,,,,,,,,,,1,0,0
+50031,Angelo,,Diorio,59444,254-59x,I,Resident-POOL|Bathrooms|Ice|Laundry/Gym Rooms,,,,,LOW,151,,,,,,,,,,,,,,,,,,,,,,1,0,0
+50032,Samuel,,Delgado,49788,95-mircom,I,Resident-POOL|Bathrooms|Ice|Laundry/Gym Rooms,,,,,LOW,186,,,,,,,,,,,,,,,,,,,,,,1,0,0
+50033,Anthony,,Danna,28019,121-mircon,I,Resident-POOL|Bathrooms|Ice|Laundry/Gym Rooms,,,,,LOW,99,,,,,,,,,,,,,,,,,,,,,,1,0,0
+50034,Need name from Management,,,620,75-mircom,I,Resident-POOL|Bathrooms|Ice|Laundry/Gym Rooms,,,,,LOW,,,,,,,,,,,,,,,,,,,,,,,1,0,0
+50035,Need name from Management,,,35033,118-mircom,I,Resident-POOL|Bathrooms|Ice|Laundry/Gym Rooms,,,,,LOW,,,,,,,,,,,,,,,,,,,,,,,1,0,0
+50036,Need name from Management,,,17312,75-mircom,I,Resident-POOL|Bathrooms|Ice|Laundry/Gym Rooms,,,,,LOW,,,,,,,,,,,,,,,,,,,,,,,1,0,0
+50037,Need name from Management,,,49947,95-mircom,I,Resident-POOL|Bathrooms|Ice|Laundry/Gym Rooms,,,,,LOW,,,,,,,,,,,,,,,,,,,,,,,1,0,0
+50038,Need name from Management,,,28013,121-mircon,I,Resident-POOL|Bathrooms|Ice|Laundry/Gym Rooms,,,,,LOW,,,,,,,,,,,,,,,,,,,,,,,1,0,0
+50039,Need name from Management,,,28015,121-mircon,I,Resident-POOL|Bathrooms|Ice|Laundry/Gym Rooms,,,,,LOW,,,,,,,,,,,,,,,,,,,,,,,1,0,0
+50040,Need name from Management,,,28016,121-mircon,I,Resident-POOL|Bathrooms|Ice|Laundry/Gym Rooms,,,,,LOW,,,,,,,,,,,,,,,,,,,,,,,1,0,0
