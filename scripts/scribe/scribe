@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# Convenience wrapper for Offline Scribe. Symlink into PATH if you like:
+#   ln -sf "$PWD/scripts/scribe/scribe" /usr/local/bin/scribe
+exec python3 "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/scribe.py" "$@"
