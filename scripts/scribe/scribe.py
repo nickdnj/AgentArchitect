@@ -525,6 +525,11 @@ _HELP_RE = re.compile(
 _STORY_RE = re.compile(
     r"\b(tell|telling|record|capture|add|share)\b[^.]{0,40}\bstory\b|"
     r"for my (auto)?bio(graphy)?|for my memoir|here'?s a story|a (new|another) story", re.I)
+# asking to LIST stories (answer from real files, not the curated index page)
+_STORYLIST_RE = re.compile(
+    r"(list|show|what|which|how many).{0,40}\bstories\b|"
+    r"\bstories\b.{0,25}(so far|do i have|i have|recorded|are (stored|saved|there))|"
+    r"my stories", re.I)
 # references to what was JUST said in conversation (not the wiki)
 _RECAP_RE = re.compile(
     r"(summari[sz]e|recap|repeat|read back)\b.{0,25}(what i (just )?(said|told)|that|this|my story|it)|"
@@ -564,6 +569,7 @@ it, and stage changes for Claude. Here's everything you can do — just talk or 
 
 ASK & RECALL (your second brain)
   • Ask anything in plain words → I answer from your wiki, with sources.
+  • "list my stories" / "/stories"  → every memoir story you've recorded (live from disk).
   • "/sources"  → show the exact excerpts behind my last answer.
 
 TALK
@@ -815,6 +821,11 @@ def cmd_chat(args):
             _do_story(args.no_commit)
             continue
 
+        # ---- list stories: answer from the real files, never the stale index page ----
+        if low == "/stories" or (_STORYLIST_RE.search(low) and not _STORY_RE.search(low)):
+            print(c("\n" + list_stories() + "\n", "bold"))
+            continue
+
         # ---- conversation self-reference (about what was just said, not the wiki) ----
         if _SAVE_THAT_RE.search(low) and last_user_text:
             print(c("(Saving what you just told me as a story.)", "dim"))
@@ -895,6 +906,22 @@ def _do_task(t, no_commit):
     if t and confirm(f"Stage this task for Claude?\n  “{t}”", default=True):
         tf = stage_task(t)
         git_commit([tf], f"scribe(task): {t[:50]}", no_commit=no_commit)
+
+
+def list_stories():
+    """Enumerate the ACTUAL story files (not the curated index page) — always current."""
+    files = sorted(WIKI_STORIES.glob("*.md"))
+    if not files:
+        return "No stories recorded yet. Say \"add a story\" to record your first one."
+    lines = [f"You have {len(files)} recorded stories:"]
+    for f in files:
+        txt = f.read_text(errors="ignore")
+        m = re.search(r"^title:\s*(.+)$", txt, re.M)
+        title = m.group(1).strip() if m else f.stem
+        num = f.stem.split("-")[0]
+        flag = c("  ⚠ unvalidated", "yellow") if "validated_by_claude: false" in txt else ""
+        lines.append(f"  {num}. {title}{flag}")
+    return "\n".join(lines)
 
 
 def _do_story(no_commit):
