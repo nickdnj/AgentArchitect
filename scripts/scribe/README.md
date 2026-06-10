@@ -36,13 +36,16 @@ own pages and cite the source, so when something's wrong you know exactly where 
 ./scribe chat                        # conversational REPL (below)
 ```
 
-In `scribe chat`, plain text asks a question; these slash-commands do more:
+In `scribe chat`, plain text asks a question; **tap the SPACEBAR to talk** instead of
+typing (push-to-talk: tap space to start recording, tap space again to stop — then it
+transcribes locally and sends). These slash-commands do more:
 
 | In-chat command | Effect |
 |---|---|
+| *(tap SPACE)* | Push-to-talk — speak your message; tap SPACE again to stop |
 | `/remember <text>` (or start a line with "remember…") | Stage a **proposed memory** to `raw/` for `wiki-ingest` |
 | `/correct <what's wrong>` | Fix a fact inline (same flow as `scribe correct`) |
-| `/voice` | Dictate your next message via the local mic |
+| `/voice` | Dictate your next message (ENTER to stop) |
 | `/sources` | Show the raw excerpts behind the last answer (to spot errors) |
 | `/reindex` | Rebuild the index (after you've made edits) |
 | `/quit` | Exit |

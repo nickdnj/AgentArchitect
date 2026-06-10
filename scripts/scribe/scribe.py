@@ -43,6 +43,13 @@ import sys
 import tempfile
 from pathlib import Path
 
+try:
+    import termios
+    import tty
+except ImportError:  # non-POSIX; spacebar push-to-talk falls back to ENTER
+    termios = None
+    tty = None
+
 import requests
 
 # ----------------------------------------------------------------------------- config
@@ -144,28 +151,30 @@ def ollama_models():
 
 
 # ----------------------------------------------------------------------------- whisper / voice
-def record_and_transcribe():
-    """Record from the mic with ffmpeg until ENTER, transcribe via local whisper.cpp."""
+def _start_recording():
     wav = Path(tempfile.gettempdir()) / "scribe_rec.wav"
     if wav.exists():
         wav.unlink()
-    info("Recording… speak now. Press ENTER to stop.")
     proc = subprocess.Popen(
         ["ffmpeg", "-nostdin", "-y", "-f", "avfoundation", "-i", f":{MIC_INDEX}",
          "-ar", "16000", "-ac", "1", str(wav)],
         stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, stdin=subprocess.DEVNULL,
     )
-    try:
-        input()
-    except (EOFError, KeyboardInterrupt):
-        pass
+    return proc, wav
+
+
+def _stop_recording(proc):
     proc.terminate()
     try:
         proc.wait(timeout=5)
     except subprocess.TimeoutExpired:
         proc.kill()
+
+
+def transcribe_wav(wav):
     if not wav.exists() or wav.stat().st_size < 1000:
-        err("No audio captured. Check mic permission for your terminal in System Settings → Privacy → Microphone.")
+        err("No audio captured. Check mic permission for your terminal in "
+            "System Settings → Privacy → Microphone.")
         return None
     info("Transcribing locally…")
     try:
@@ -179,6 +188,46 @@ def record_and_transcribe():
     except Exception as e:  # noqa: BLE001
         err(f"Whisper transcription failed: {e}")
         return None
+
+
+def _wait_for_key(stop_keys):
+    """Block until one of stop_keys is pressed (raw tty); ENTER fallback if not a tty."""
+    if not sys.stdin.isatty() or termios is None:
+        try:
+            input()
+        except (EOFError, KeyboardInterrupt):
+            pass
+        return
+    fd = sys.stdin.fileno()
+    old = termios.tcgetattr(fd)
+    try:
+        tty.setcbreak(fd)
+        while True:
+            ch = sys.stdin.read(1)
+            if ch in stop_keys:
+                return
+            if ch == "\x03":  # Ctrl-C
+                raise KeyboardInterrupt
+    finally:
+        termios.tcsetattr(fd, termios.TCSADRAIN, old)
+
+
+def record_and_transcribe(stop_hint="ENTER", stop_keys=("\n", "\r")):
+    """Record from the mic until a stop key, then transcribe via local whisper.cpp."""
+    print(c(f"🎙  Recording… speak now. Tap {stop_hint} to stop.", "red"))
+    proc, wav = _start_recording()
+    try:
+        _wait_for_key(stop_keys)
+    except KeyboardInterrupt:
+        _stop_recording(proc)
+        return None
+    _stop_recording(proc)
+    return transcribe_wav(wav)
+
+
+def push_to_talk():
+    """Tap SPACE to start was already done; record until SPACE/ENTER tapped again."""
+    return record_and_transcribe(stop_hint="SPACE", stop_keys=(" ", "\n", "\r"))
 
 
 def get_text_input(use_voice, label="text", inline=None):
@@ -519,19 +568,64 @@ def cmd_ask(args):
     return 0
 
 
+_VOICE_SENTINEL = "\x00__VOICE__"
+
+
+def chat_read(prompt="you> "):
+    """Read a chat line. Tapping SPACE first triggers push-to-talk; else normal typing.
+    Returns the text, the _VOICE_SENTINEL, or None on EOF (quit)."""
+    if not sys.stdin.isatty() or termios is None:
+        try:
+            return input(c(prompt, "cyan"))
+        except EOFError:
+            return None
+    sys.stdout.write(c(prompt, "cyan"))
+    sys.stdout.flush()
+    fd = sys.stdin.fileno()
+    old = termios.tcgetattr(fd)
+    try:
+        tty.setcbreak(fd)
+        ch = sys.stdin.read(1)
+    finally:
+        termios.tcsetattr(fd, termios.TCSADRAIN, old)
+    if ch == " ":                      # spacebar → talk
+        sys.stdout.write("\n")
+        return _VOICE_SENTINEL
+    if ch in ("\n", "\r"):             # empty line
+        sys.stdout.write("\n")
+        return ""
+    if ch == "\x03":                   # Ctrl-C
+        raise KeyboardInterrupt
+    if ch == "\x04":                   # Ctrl-D
+        return None
+    # typed character (already echoed by cbreak) — read the rest of the line cooked
+    rest = sys.stdin.readline()
+    return ch + rest.rstrip("\n")
+
+
 def cmd_chat(args):
     print(c("\n🧠 Scribe — your offline second brain", "bold"))
-    print(c("Ask anything about your wiki. Commands: /remember <text>, /correct <text>, "
-            "/voice, /sources, /reindex, /quit\n", "dim"))
+    print(c("Type to ask · tap SPACE to talk · /remember /correct /voice /sources "
+            "/reindex /quit\n", "dim"))
     build_index(quiet=True)
     history = []
     last_hits = []
     while True:
         try:
-            msg = input(c("you> ", "cyan")).strip()
-        except (EOFError, KeyboardInterrupt):
+            msg = chat_read()
+        except KeyboardInterrupt:
             print()
             break
+        if msg is None:
+            print()
+            break
+        if msg == _VOICE_SENTINEL:
+            v = push_to_talk()
+            if not v:
+                continue
+            msg = v
+            print(c(f"you> {msg}", "cyan"))
+        msg = msg.strip()
         if not msg:
             continue
         low = msg.lower()
