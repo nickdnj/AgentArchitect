@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """
-Offline Scribe — a fully-local capture & staging tool for the wiki + autobiography.
+Otto — your offline second-brain agent (engine). The wiki is the brain; Otto reaches
+and tends it offline. A fully-local capture & staging tool for the wiki + autobiography.
+(File kept as scribe.py for stability; the user-facing command is `otto`.)
 
 Runs entirely against local services (Ollama + whisper.cpp). No internet required.
 The local model NEVER writes files directly: it emits a structured proposal and
@@ -557,7 +559,8 @@ def classify_intent(msg):
 
 
 # Canonical, authoritative capability reference (NOT model-generated — so it's always accurate).
-CAPABILITIES = """Here's everything you can do — just talk or type, I'll route it:
+CAPABILITIES = """I'm Otto, your offline agent. Your brain is the wiki — I read from it, add to
+it, and stage changes for Claude. Here's everything you can do — just talk or type, I'll route it:
 
 ASK & RECALL (your second brain)
   • Ask anything in plain words → I answer from your wiki, with sources.
@@ -597,7 +600,8 @@ def help_reply(msg, history=None):
 
 
 CHITCHAT_SYSTEM = (
-    "You are Nick's friendly offline assistant (a local model with no internet, called Scribe). "
+    "You are Otto, Nick's friendly offline AGENT (a local model, no internet). You are NOT his "
+    "brain — his second brain is his wiki; you are how he reaches and tends it while offline. "
     "Reply briefly and naturally to this small-talk or meta message — 1-2 sentences. "
     "Do NOT pretend to search a knowledge base or cite pages. If he's testing voice, just "
     "confirm you heard him. If he asks what you can do, tell him to say 'help'."
@@ -741,7 +745,8 @@ def chat_read(prompt="you> "):
 
 
 def cmd_chat(args):
-    print(c("\n🧠 Scribe — your offline second brain", "bold"))
+    print(c("\n🧠 I'm Otto — your offline agent. Your brain is the wiki; "
+            "I'm how you reach it without internet.", "bold"))
     print(c("Type to ask · tap SPACE to talk · say \"help\" anytime · "
             "/story /remember /correct /task /voice /sources /reindex /quit\n", "dim"))
     build_index(quiet=True)
@@ -875,7 +880,7 @@ def cmd_chat(args):
             if confirm("That wasn't in your wiki. Add it as a proposed memory?", default=False):
                 mem = ask("Phrase the memory to save")
                 _do_remember(mem, args.no_commit)
-    info("Bye. Run `scribe handoff` to see what you staged.")
+    info("Otto signing off. Run `otto handoff` to see what you staged.")
     return 0
 
 
@@ -1355,7 +1360,9 @@ def cmd_handoff(args):
 
 # ----------------------------------------------------------------------------- main
 def main():
-    p = argparse.ArgumentParser(prog="scribe", description="Offline capture & staging for wiki + autobiography")
+    p = argparse.ArgumentParser(
+        prog=os.path.basename(sys.argv[0]) or "otto",
+        description="Otto — your offline second brain (chat, recall, capture, staging)")
     p.add_argument("--no-commit", action="store_true", help="do not auto git-commit")
     sub = p.add_subparsers(dest="cmd", required=True)
 
@@ -1395,7 +1402,11 @@ def main():
     sub.add_parser("queue", help="show everything staged offline").set_defaults(func=cmd_queue)
     sub.add_parser("handoff", help="summarize captures + reconnect command").set_defaults(func=cmd_handoff)
 
-    args = p.parse_args()
+    # bare `otto` (no subcommand) drops straight into the chat — the everyday front door
+    argv = sys.argv[1:]
+    if not argv or argv == ["--no-commit"]:
+        argv = argv + ["chat"]
+    args = p.parse_args(argv)
     try:
         sys.exit(args.func(args))
     except KeyboardInterrupt:
