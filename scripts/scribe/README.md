@@ -45,10 +45,26 @@ transcribes locally and sends). These slash-commands do more:
 | *(tap SPACE)* | Push-to-talk — speak your message; tap SPACE again to stop |
 | `/remember <text>` (or start a line with "remember…") | Stage a **proposed memory** to `raw/` for `wiki-ingest` |
 | `/correct <what's wrong>` | Fix a fact inline (same flow as `scribe correct`) |
+| `/task <what to do>` | Stage an action for Claude to do when you're back online |
 | `/voice` | Dictate your next message (ENTER to stop) |
 | `/sources` | Show the raw excerpts behind the last answer (to spot errors) |
 | `/reindex` | Rebuild the index (after you've made edits) |
 | `/quit` | Exit |
+
+### Intent routing
+
+You don't have to use slash-commands — chat figures out what you mean. Each message is
+routed to one of:
+
+- **chit-chat / meta** ("can you hear me?", "thanks") → a natural reply, no wiki lookup, nothing saved
+- **question** → grounded, cited answer from your wiki
+- **remember** → stages a proposed memory
+- **correct** → runs the fact-fix flow
+- **task** ("draft me…", "plan…", "write a summary of…") → staged to `raw/tasks-for-claude-<date>.md`
+
+That last one turns the offline chat into a **capture queue for Claude**: anything beyond a
+local model's reach is parked for Claude to do properly when you reconnect. `scribe handoff`
+lists both your tasks and any self-improvement proposals.
 
 ## Commands
 

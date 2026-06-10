@@ -473,6 +473,70 @@ def stage_memory(text):
     return mf
 
 
+def stage_task(text):
+    """Stage a to-do for Claude to do properly when back online."""
+    RAW_DIR.mkdir(parents=True, exist_ok=True)
+    tf = RAW_DIR / f"tasks-for-claude-{today()}.md"
+    with open(tf, "a") as f:
+        f.write(f"\n## {now_stamp()}\n\n{text}\n")
+    add_manifest({"type": "task-for-claude", "ts": now_stamp(),
+                  "summary": text[:160], "path": str(tf)})
+    ok(f"staged task for Claude → {tf}")
+    return tf
+
+
+# ----------------------------------------------------------------------------- intent router
+INTENT_SYSTEM = (
+    "You are the intent router for Nick's offline second-brain chat. Classify his message "
+    "into EXACTLY one intent and reply with STRICT JSON: {\"intent\": \"...\"}. Intents:\n"
+    "- chitchat: greetings, thanks, mic/voice tests ('can you hear me'), small talk, or "
+    "meta questions about the tool itself. No knowledge lookup needed.\n"
+    "- question: he wants information or recall FROM his wiki/knowledge (who/what/when/why, "
+    "'tell me about', 'what do I know about').\n"
+    "- remember: he wants to SAVE a new fact/memory ('remember that…', 'note that…', 'add a memory').\n"
+    "- correct: he wants to FIX or change something already in the wiki ('that's wrong', "
+    "'change X to Y', 'it should say…').\n"
+    "- task: he wants something DONE or CREATED — draft, write, plan, build, research, "
+    "summarize-into-a-doc, an action with a deliverable.\n"
+    "Default to 'question' only if it is clearly an information request; default ambiguous "
+    "conversational input to 'chitchat'. Reply with JSON only."
+)
+
+_GREETING_RE = re.compile(
+    r"^(hi|hey|hello|yo|sup|thanks|thank you|thx|ok|okay|cool|nice|test|testing|"
+    r"can you hear me|are you there|you there|good (morning|night|evening))\b", re.I)
+
+
+def classify_intent(msg):
+    """Return one of: chitchat, question, remember, correct, task."""
+    low = msg.strip().lower()
+    if low.startswith("remember ") or low.startswith("note that "):
+        return "remember"
+    if _GREETING_RE.search(low) or len(low.split()) <= 2:
+        return "chitchat"
+    try:
+        resp, _ = ollama_generate(msg, system=INTENT_SYSTEM, json_mode=True, temperature=0)
+        intent = json.loads(resp).get("intent", "question").strip().lower()
+        return intent if intent in ("chitchat", "question", "remember", "correct", "task") else "question"
+    except Exception:  # noqa: BLE001
+        return "question"
+
+
+CHITCHAT_SYSTEM = (
+    "You are Nick's friendly offline assistant (a local model with no internet, called Scribe). "
+    "Reply briefly and naturally to this small-talk or meta message — 1-2 sentences. "
+    "Do NOT pretend to search a knowledge base or cite pages. If he's testing voice, just "
+    "confirm you heard him. If he asks what you can do, mention: ask questions about his wiki, "
+    "remember new facts, correct facts, or stage tasks for Claude to do when he's back online."
+)
+
+
+def chitchat_reply(msg, history=None):
+    convo = ("Recent conversation:\n" + "\n".join(history[-4:]) + "\n\n") if history else ""
+    resp, _ = ollama_generate(convo + msg, system=CHITCHAT_SYSTEM, temperature=0.5)
+    return resp
+
+
 REFLECT_SYSTEM = (
     "You are the reflective, self-improving layer of Nick's offline 'second brain' tool "
     "(called Scribe). You are running on a small LOCAL model with no internet. "
@@ -605,7 +669,7 @@ def chat_read(prompt="you> "):
 
 def cmd_chat(args):
     print(c("\n🧠 Scribe — your offline second brain", "bold"))
-    print(c("Type to ask · tap SPACE to talk · /remember /correct /voice /sources "
+    print(c("Type to ask · tap SPACE to talk · /remember /correct /task /voice /sources "
             "/reindex /quit\n", "dim"))
     build_index(quiet=True)
     history = []
@@ -622,6 +686,7 @@ def cmd_chat(args):
         if msg == _VOICE_SENTINEL:
             v = push_to_talk()
             if not v:
+                warn("Didn't catch that — tap SPACE to try again, or type.")
                 continue
             msg = v
             print(c(f"you> {msg}", "cyan"))
@@ -637,6 +702,7 @@ def cmd_chat(args):
         if low == "/voice":
             v = record_and_transcribe()
             if not v:
+                warn("Didn't catch that — try again or type.")
                 continue
             msg = v
             print(c(f"you> {msg}", "cyan"))
@@ -650,37 +716,68 @@ def cmd_chat(args):
                             + (f" — {ch['heading']}" if ch['heading'] else ""), "cyan"))
                     print(ch["text"])
             continue
-        if low.startswith("/remember") or low.startswith("remember "):
-            mem = msg.split(" ", 1)[1].strip() if " " in msg else ""
-            if not mem:
-                mem = ask("What should I remember")
-            if mem and confirm(f"Stage this as a proposed memory?\n  “{mem}”", default=True):
-                mf = stage_memory(mem)
-                git_commit([mf], f"scribe(memory): {mem[:50]}", no_commit=args.no_commit)
+        if low.startswith("/remember"):
+            mem = msg.split(" ", 1)[1].strip() if " " in msg else ask("What should I remember")
+            _do_remember(mem, args.no_commit)
             continue
         if low.startswith("/correct"):
             desc = msg.split(" ", 1)[1].strip() if " " in msg else ask("What's wrong")
             if desc:
                 _run_correct(desc, no_commit=args.no_commit)
             continue
-        # normal question
+        if low.startswith("/task"):
+            t = msg.split(" ", 1)[1].strip() if " " in msg else ask("What should Claude do")
+            _do_task(t, args.no_commit)
+            continue
+
+        # ---- intent routing for non-command input ----
+        intent = classify_intent(msg)
+        history.append(f"Nick: {msg}")
+
+        if intent == "chitchat":
+            reply = chitchat_reply(msg, history)
+            print(c("\n" + reply + "\n", "bold"))
+            history.append(f"Brain: {reply}")
+            continue
+        if intent == "remember":
+            _do_remember(msg, args.no_commit)
+            continue
+        if intent == "correct":
+            _run_correct(msg, no_commit=args.no_commit)
+            continue
+        if intent == "task":
+            print(c("(That's an action — I'll stage it for Claude to do properly when you're online.)", "dim"))
+            _do_task(msg, args.no_commit)
+            continue
+
+        # intent == question -> grounded RAG answer
         info("…")
         resp, sources, hits = answer_question(msg, history)
         last_hits = hits
         print(c("\n" + resp + "\n", "bold"))
         if sources:
             print(c("sources: " + "  ".join(f"[{p}]" for p, _ in sources[:4]), "dim"))
-        history.append(f"Nick: {msg}")
         history.append(f"Brain: {resp}")
-        # opportunistic: offer to remember if the answer wasn't in the wiki
+        # offer to remember ONLY when a genuine question found nothing in the wiki
         if "not in the wiki" in resp.lower():
-            if confirm("That wasn't in your wiki. Want to add it as a proposed memory?", default=False):
+            if confirm("That wasn't in your wiki. Add it as a proposed memory?", default=False):
                 mem = ask("Phrase the memory to save")
-                if mem:
-                    mf = stage_memory(mem)
-                    git_commit([mf], f"scribe(memory): {mem[:50]}", no_commit=args.no_commit)
+                _do_remember(mem, args.no_commit)
     info("Bye. Run `scribe handoff` to see what you staged.")
     return 0
+
+
+def _do_remember(mem, no_commit):
+    mem = re.sub(r"^(remember|note)\s+(that\s+)?", "", (mem or "").strip(), flags=re.I).strip()
+    if mem and confirm(f"Stage this as a proposed memory?\n  “{mem}”", default=True):
+        mf = stage_memory(mem)
+        git_commit([mf], f"scribe(memory): {mem[:50]}", no_commit=no_commit)
+
+
+def _do_task(t, no_commit):
+    if t and confirm(f"Stage this task for Claude?\n  “{t}”", default=True):
+        tf = stage_task(t)
+        git_commit([tf], f"scribe(task): {t[:50]}", no_commit=no_commit)
 
 
 def cmd_doctor(args):
@@ -1029,11 +1126,15 @@ def cmd_handoff(args):
               "",
               "In Claude Code: `/architect wiki-ingest ingest --source raw/<file>.md`",
               "",
+              "**Tasks for Claude** (if any `raw/tasks-for-claude-*.md` exist): these are "
+              "actions you asked for offline — open them and have Claude do them properly. "
+              "They are NOT knowledge to ingest.",
+              "",
               "**Self-improvement proposals** (if any `raw/improvement-proposals-*.md` exist): "
               "review them with the `improver` agent / Architect — they are plans for Claude to "
               "act on, not changes already made:",
               "```",
-              "/architect            # then discuss raw/improvement-proposals-*.md",
+              "/architect            # then discuss raw/improvement-proposals-*.md + tasks-for-claude-*.md",
               "```"]
     hf.write_text("\n".join(lines))
     ok(f"handoff summary → {hf}")
