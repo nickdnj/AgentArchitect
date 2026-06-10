@@ -349,6 +349,7 @@ def index_files():
 def chunk_page(path):
     """Split a page into heading-scoped chunks (~250 words max)."""
     text = path.read_text(errors="ignore")
+    text = re.sub(r"<!--.*?-->", "", text, flags=re.DOTALL)  # don't index embedded raw transcripts
     rel = str(path.relative_to(WIKI_REPO))
     chunks, heading, buf = [], "", []
 
@@ -979,16 +980,49 @@ def cmd_doctor(args):
 
 
 STORY_SYSTEM = (
-    "You are a careful transcription cleaner for a personal memoir. "
-    "You will receive a spoken or typed story. Your job is to: fix obvious transcription "
-    "errors, add sensible paragraph breaks and punctuation, and remove filler words (um, uh, "
-    "like). Also drop any META-PREAMBLE where the speaker announces he is about to tell a story "
-    "or addresses the assistant (e.g. 'okay I'm going to tell a story', 'I turned off the wifi', "
-    "'now I'm talking to you scribe') — keep only the story itself. "
-    "Otherwise you MUST preserve the speaker's voice, word choices, and ALL facts and details "
-    "exactly. NEVER invent, embellish, summarize, or omit story content. Do not add a title or "
+    "You are a light transcription cleaner for a personal memoir. You will receive a spoken "
+    "transcript. Make ONLY these changes: fix punctuation and capitalization, add paragraph "
+    "breaks, remove filler words (um, uh, you know, like, I mean), and drop META-PREAMBLE where "
+    "the speaker announces he's telling a story or addresses the assistant ('okay I'm going to "
+    "tell a story', 'I turned off the wifi', 'now I'm talking to you scribe'). "
+    "Do NOT condense, merge, summarize, rephrase, reorder, or 'improve' anything. Keep his exact "
+    "sentences, wording, repetition, and asides. This is his memoir voice — preserve it verbatim "
+    "apart from the mechanical fixes above. Never invent or omit content. Do not add a title or "
     "commentary. Return ONLY the cleaned story text."
 )
+
+PROOFREAD_SYSTEM = (
+    "You proofread a speech-to-text transcript of a personal memoir. Return STRICT JSON: "
+    "{\"title\": \"a short 3-6 word title for this story\", "
+    "\"suspects\": [{\"heard\": \"<exact text as transcribed>\", \"guess\": \"<best correction, "
+    "or '?' if unsure>\", \"kind\": \"name|place|company|term\"}]}. "
+    "Flag ONLY likely speech-to-text errors: proper nouns (people, places, companies) and "
+    "technical terms that sound phonetically off or inconsistent. Do NOT flag ordinary words. "
+    "Be conservative: at most 8 suspects. 'heard' MUST be the exact substring from the text so "
+    "it can be found and replaced. JSON only."
+)
+
+
+def proofread_story(text):
+    """Suggest a title + flag likely mistranscribed names/places/terms."""
+    try:
+        resp, _ = ollama_generate(text, system=PROOFREAD_SYSTEM, json_mode=True, temperature=0)
+        d = json.loads(resp)
+        return (d.get("title", "") or "").strip(), (d.get("suspects") or [])[:8]
+    except Exception:  # noqa: BLE001
+        return "", []
+
+
+def _apply_fixes(fixes_str, *texts):
+    """Apply 'wrong=>right; wrong=>right' replacements across all given texts."""
+    out, n = list(texts), 0
+    for pair in fixes_str.split(";"):
+        if "=>" in pair:
+            w, r = (x.strip() for x in pair.split("=>", 1))
+            if w:
+                out = [t.replace(w, r) for t in out]
+                n += 1
+    return out, n
 
 
 def save_story(raw, title=None, no_commit=False):
@@ -1000,17 +1034,32 @@ def save_story(raw, title=None, no_commit=False):
     print(c("\n--- raw input ---", "dim"))
     print(raw)
     info("Cleaning up (light touch, preserving your voice)…")
-    cleaned, _ = ollama_generate(raw, system=STORY_SYSTEM, temperature=0.3)
+    cleaned, _ = ollama_generate(raw, system=STORY_SYSTEM, temperature=0.2)
     print(c("\n--- cleaned ---", "bold"))
     print(cleaned)
+
+    # proofread pass: suggest a title + flag likely mistranscribed names/places/terms
+    info("Proofreading for likely mistranscriptions…")
+    title_sugg, suspects = proofread_story(cleaned)
+    if suspects:
+        print(c("\n⚠ Check these — speech-to-text often mangles names/places:", "yellow"))
+        for s in suspects:
+            g = s.get("guess", "?")
+            print(c(f"   • \"{s.get('heard','')}\"  →  maybe \"{g}\"  ({s.get('kind','')})", "yellow"))
+        fixes = ask("Fixes? e.g.  Sue Fong=>Sufeng; Mototola=>Motorola   (Enter to skip)")
+        if fixes.strip():
+            (raw, cleaned), n = _apply_fixes(fixes, raw, cleaned)
+            ok(f"applied {n} fix(es).")
+            print(c("\n--- corrected ---", "bold"))
+            print(cleaned)
     print()
     choice = ask("Use [c]leaned, keep [r]aw, or [a]bort?", default="c").lower()
     if choice.startswith("a"):
         warn("Aborted; nothing written.")
         return 1
-    text = raw if choice.startswith("r") else cleaned
+    body = raw if choice.startswith("r") else cleaned
 
-    title = (title or ask("Short title for this story")).strip()
+    title = (title or ask("Short title for this story", default=title_sugg)).strip()
     if not title:
         title = f"untitled story {now_stamp()}"
     slug = re.sub(r"[^a-z0-9]+", "-", title.lower()).strip("-")[:50]
@@ -1019,7 +1068,12 @@ def save_story(raw, title=None, no_commit=False):
             if (m := re.match(r"(\d+)[-_]", f.name))]
     n = (max(nums) + 1) if nums else 1
     dest = WIKI_STORIES / f"{n:02d}-{slug}.md"
-    # save into the wiki, flagged as NOT yet validated by Claude
+    # save into the wiki: the readable body is your offline "short-term memory";
+    # the verbatim raw transcription rides along (HTML comment) so Claude can
+    # faithfully reconcile on reconnect even if the raw/ draft is gone.
+    raw_block = ("" if body.strip() == raw.strip() else
+                 "\n\n<!-- RAW TRANSCRIPTION (verbatim, unedited — for Claude to validate against; "
+                 f"not rendered):\n{raw}\n-->\n")
     dest.write_text(
         "---\n"
         f"title: {title}\n"
@@ -1031,18 +1085,22 @@ def save_story(raw, title=None, no_commit=False):
         f"# {title}\n\n"
         "> ⚠️ Captured offline by Scribe — **not yet reviewed by Claude.** "
         "Validate & polish on reconnect.\n\n"
-        f"{text}\n")
+        f"{body}\n"
+        f"{raw_block}")
     ok(f"saved to wiki → {dest.relative_to(WIKI_REPO)}  (flagged unvalidated)")
 
-    # stage a full draft in raw/ for wiki-ingest to validate/normalize
+    # stage a full draft in raw/ for Claude — BOTH cleaned and raw, side by side
     RAW_DIR.mkdir(parents=True, exist_ok=True)
     draft = RAW_DIR / f"autobio-story-{slug}-{today()}.md"
     draft.write_text(
         f"# NEW STORY (offline) — {title}\n\n"
         f"Placed UNVALIDATED at `projects/autobiography/stories/{dest.name}` on {now_stamp()}.\n"
-        "Claude: review, fix transcription/formatting, set `validated_by_claude: true`.\n\n"
-        "---\n\n"
-        f"{text}\n")
+        "Claude: reconcile CLEANED against RAW below, fix transcription (esp. names/places), "
+        "restore Nick's voice where over-edited, then set `validated_by_claude: true`.\n\n"
+        "## Cleaned (placed in wiki)\n\n"
+        f"{cleaned}\n\n"
+        "## Raw transcription (verbatim — source of truth)\n\n"
+        f"{raw}\n")
     add_manifest({"type": "story", "ts": now_stamp(), "title": title,
                   "path": str(dest), "summary": cleaned[:160]})
     git_commit([dest, draft], f"scribe(story): {title} [unvalidated]", no_commit=no_commit)

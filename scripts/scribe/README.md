@@ -68,12 +68,21 @@ You don't have to use slash-commands — chat figures out what you mean. Each me
 - **correct** → runs the fact-fix flow
 - **task** ("draft me…", "plan…", "write a summary of…") → staged to `raw/tasks-for-claude-<date>.md`
 
-### Where new stories go
+### Recording a story (what happens)
 
-A story you dictate offline is saved straight into `wiki/projects/autobiography/stories/`
-(so you can **ask about it immediately**), flagged `validated_by_claude: false` in its
-frontmatter, **and** a full draft is staged to `raw/autobio-story-*.md`. When you reconnect,
-Claude reviews the flagged story, fixes any transcription/formatting, and sets the flag true.
+When you dictate/type a story, Scribe:
+1. **Lightly cleans** the transcript (punctuation, paragraphs, filler removed) — it does *not*
+   condense or rephrase; pick **`r`** at the prompt to keep your exact words instead.
+2. **Proofreads** it and flags likely speech-to-text errors — names, places, companies — so you
+   can fix them inline: enter `wrong=>right; wrong=>right` (e.g. `Sue Fong=>Sufeng`).
+3. **Suggests a title** you can accept (Enter) or edit.
+4. **Saves both versions**: the cleaned text becomes your searchable wiki story (your offline
+   "short-term memory"); the **verbatim raw transcription** is preserved with it (and in the
+   `raw/` draft) so Claude can faithfully reconcile on reconnect.
+
+The story lands in `wiki/projects/autobiography/stories/` flagged `validated_by_claude: false`
+and is **immediately searchable**. A side-by-side cleaned/raw draft goes to `raw/autobio-story-*.md`.
+On reconnect, Claude compares the two, fixes anything off, and sets the flag true.
 
 The **task** intent turns the offline chat into a **capture queue for Claude**: anything beyond
 a local model's reach is parked for Claude to do properly on reconnect. `scribe handoff` lists
