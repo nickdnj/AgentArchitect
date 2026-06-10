@@ -1045,18 +1045,6 @@ def proofread_story(text):
         return "", []
 
 
-def _apply_fixes(fixes_str, *texts):
-    """Apply 'wrong=>right; wrong=>right' replacements across all given texts."""
-    out, n = list(texts), 0
-    for pair in fixes_str.split(";"):
-        if "=>" in pair:
-            w, r = (x.strip() for x in pair.split("=>", 1))
-            if w:
-                out = [t.replace(w, r) for t in out]
-                n += 1
-    return out, n
-
-
 def save_story(raw, title=None, no_commit=False):
     """Clean a captured story, save it to the wiki (flagged unvalidated), stage a raw
     draft for Claude, and re-index so it's immediately searchable. Shared by CLI + chat."""
@@ -1070,19 +1058,31 @@ def save_story(raw, title=None, no_commit=False):
     print(c("\n--- cleaned ---", "bold"))
     print(cleaned)
 
-    # proofread pass: suggest a title + flag likely mistranscribed names/places/terms
+    # proofread pass: suggest a title + flag likely mistranscribed names/places/terms,
+    # then walk them ONE BY ONE: Enter=skip, y=accept guess, or type the correction.
     info("Proofreading for likely mistranscriptions…")
     title_sugg, suspects = proofread_story(cleaned)
+    suspects = [s for s in suspects if s.get("heard") and s["heard"] in cleaned]
     if suspects:
-        print(c("\n⚠ Check these — speech-to-text often mangles names/places:", "yellow"))
-        for s in suspects:
-            g = s.get("guess", "?")
-            print(c(f"   • \"{s.get('heard','')}\"  →  maybe \"{g}\"  ({s.get('kind','')})", "yellow"))
-        fixes = ask("Fixes? e.g.  Sue Fong=>Sufeng; Mototola=>Motorola   (Enter to skip)")
-        if fixes.strip():
-            (raw, cleaned), n = _apply_fixes(fixes, raw, cleaned)
-            ok(f"applied {n} fix(es).")
-            print(c("\n--- corrected ---", "bold"))
+        print(c(f"\n⚠ {len(suspects)} possible mistranscription(s). For each: "
+                "Enter=keep as-is · y=use suggestion · or type the correct text.", "yellow"))
+        applied = 0
+        for i, s in enumerate(suspects, 1):
+            heard, guess = s["heard"], (s.get("guess") or "?").strip()
+            has_guess = guess and guess != "?"
+            sugg = f"  →  suggest \"{guess}\"" if has_guess else "  (no suggestion — type the right text)"
+            resp = ask(f"[{i}/{len(suspects)}] \"{heard}\"{sugg}")
+            if not resp:
+                continue
+            replacement = guess if (resp.lower() == "y" and has_guess) else (None if resp.lower() == "y" else resp)
+            if not replacement:
+                continue
+            raw = raw.replace(heard, replacement)
+            cleaned = cleaned.replace(heard, replacement)
+            applied += 1
+            ok(f"\"{heard}\" → \"{replacement}\"")
+        if applied:
+            print(c(f"\n--- corrected ({applied} fix(es)) ---", "bold"))
             print(cleaned)
     print()
     choice = ask("Use [c]leaned, keep [r]aw, or [a]bort?", default="c").lower()
