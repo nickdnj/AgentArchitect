@@ -56,7 +56,8 @@ import requests
 HOME = Path.home()
 WIKI_REPO = Path(os.environ.get("WIKI_REPO", HOME / "Workspaces" / "wiki"))
 AA_REPO = Path(os.environ.get("AA_REPO", HOME / "Workspaces" / "AgentArchitect"))
-AUTOBIO_DIR = AA_REPO / "context-buckets" / "autobiography" / "files"
+AUTOBIO_DIR = AA_REPO / "context-buckets" / "autobiography" / "files"  # legacy raw source
+WIKI_STORIES = WIKI_REPO / "projects" / "autobiography" / "stories"     # current home (searchable)
 RAW_DIR = WIKI_REPO / "raw"
 MANIFEST = RAW_DIR / ".scribe-manifest.json"
 
@@ -498,36 +499,86 @@ INTENT_SYSTEM = (
     "'change X to Y', 'it should say…').\n"
     "- task: he wants something DONE or CREATED — draft, write, plan, build, research, "
     "summarize-into-a-doc, an action with a deliverable.\n"
+    "- story: he wants to RECORD or ADD an autobiography / memoir story about his own life "
+    "('add a story', 'I want to tell a story', 'record a new memory of when…', 'capture a story').\n"
+    "- help: he wants to know what he can do, what the commands are, or HOW to use Scribe "
+    "('what can I do', 'how do I…', 'help', 'what are my options', 'how does this work').\n"
     "Default to 'question' only if it is clearly an information request; default ambiguous "
     "conversational input to 'chitchat'. Reply with JSON only."
 )
 
+_INTENTS = ("chitchat", "question", "remember", "correct", "task", "story", "help")
+
 _GREETING_RE = re.compile(
     r"^(hi|hey|hello|yo|sup|thanks|thank you|thx|ok|okay|cool|nice|test|testing|"
     r"can you hear me|are you there|you there|good (morning|night|evening))\b", re.I)
+_HELP_RE = re.compile(
+    r"\b(what can (i|you) do|how do i|how does this work|what are my (options|commands)|"
+    r"what commands|help me use|^help\b|capabilities)\b", re.I)
 
 
 def classify_intent(msg):
-    """Return one of: chitchat, question, remember, correct, task."""
+    """Return one of: chitchat, question, remember, correct, task, story, help."""
     low = msg.strip().lower()
     if low.startswith("remember ") or low.startswith("note that "):
         return "remember"
+    if _HELP_RE.search(low):
+        return "help"
     if _GREETING_RE.search(low) or len(low.split()) <= 2:
         return "chitchat"
     try:
         resp, _ = ollama_generate(msg, system=INTENT_SYSTEM, json_mode=True, temperature=0)
         intent = json.loads(resp).get("intent", "question").strip().lower()
-        return intent if intent in ("chitchat", "question", "remember", "correct", "task") else "question"
+        return intent if intent in _INTENTS else "question"
     except Exception:  # noqa: BLE001
         return "question"
+
+
+# Canonical, authoritative capability reference (NOT model-generated — so it's always accurate).
+CAPABILITIES = """Here's everything you can do — just talk or type, I'll route it:
+
+ASK & RECALL (your second brain)
+  • Ask anything in plain words → I answer from your wiki, with sources.
+  • "/sources"  → show the exact excerpts behind my last answer.
+
+TALK
+  • Tap SPACE at the prompt → push-to-talk (tap SPACE again to stop).
+  • "/voice"  → dictate (press ENTER to stop instead).
+
+CAPTURE (saved now, finalized by Claude when you're back online)
+  • "remember <fact>"  or "/remember"   → save a new memory.
+  • "/correct <what's wrong>"           → fix a fact in the wiki.
+  • "add a story" / "/story"            → record an autobiography story (voice-first).
+        Saved into your wiki right away (flagged unvalidated) so you can ask about it,
+        and queued for Claude to polish.
+  • "/task <do this>"                   → park an action for Claude to do online.
+
+MANAGE
+  • "/reindex"  → rebuild search after edits.   "/help" → this list.   "/quit" → exit.
+
+You don't need to remember the slash-commands — just say what you want in normal words."""
+
+
+def help_reply(msg, history=None):
+    """Answer 'what can I do / how do I…' grounded in the accurate CAPABILITIES text."""
+    low = msg.strip().lower()
+    # exact help asks just get the full canonical list
+    if low in ("/help", "help", "what can i do", "what can i do?"):
+        return CAPABILITIES
+    prompt = (f"SCRIBE CAPABILITIES (authoritative):\n{CAPABILITIES}\n\n"
+              f"Nick asks: {msg}\n\nAnswer his specific question using ONLY the capabilities "
+              "above. Be concrete: tell him exactly what to say or which command to use. "
+              "If unsure, show the full list.")
+    resp, _ = ollama_generate(prompt, temperature=0.2,
+                              system="You explain how to use Scribe. Accurate, brief, concrete.")
+    return resp
 
 
 CHITCHAT_SYSTEM = (
     "You are Nick's friendly offline assistant (a local model with no internet, called Scribe). "
     "Reply briefly and naturally to this small-talk or meta message — 1-2 sentences. "
     "Do NOT pretend to search a knowledge base or cite pages. If he's testing voice, just "
-    "confirm you heard him. If he asks what you can do, mention: ask questions about his wiki, "
-    "remember new facts, correct facts, or stage tasks for Claude to do when he's back online."
+    "confirm you heard him. If he asks what you can do, tell him to say 'help'."
 )
 
 
@@ -669,8 +720,8 @@ def chat_read(prompt="you> "):
 
 def cmd_chat(args):
     print(c("\n🧠 Scribe — your offline second brain", "bold"))
-    print(c("Type to ask · tap SPACE to talk · /remember /correct /task /voice /sources "
-            "/reindex /quit\n", "dim"))
+    print(c("Type to ask · tap SPACE to talk · say \"help\" anytime · "
+            "/story /remember /correct /task /voice /sources /reindex /quit\n", "dim"))
     build_index(quiet=True)
     history = []
     last_hits = []
@@ -729,6 +780,12 @@ def cmd_chat(args):
             t = msg.split(" ", 1)[1].strip() if " " in msg else ask("What should Claude do")
             _do_task(t, args.no_commit)
             continue
+        if low in ("/help", "/?", "/h"):
+            print(c("\n" + CAPABILITIES + "\n", "bold"))
+            continue
+        if low == "/story":
+            _do_story(args.no_commit)
+            continue
 
         # ---- intent routing for non-command input ----
         intent = classify_intent(msg)
@@ -738,6 +795,14 @@ def cmd_chat(args):
             reply = chitchat_reply(msg, history)
             print(c("\n" + reply + "\n", "bold"))
             history.append(f"Brain: {reply}")
+            continue
+        if intent == "help":
+            reply = help_reply(msg, history)
+            print(c("\n" + reply + "\n", "bold"))
+            history.append(f"Brain: {reply}")
+            continue
+        if intent == "story":
+            _do_story(args.no_commit)
             continue
         if intent == "remember":
             _do_remember(msg, args.no_commit)
@@ -778,6 +843,19 @@ def _do_task(t, no_commit):
     if t and confirm(f"Stage this task for Claude?\n  “{t}”", default=True):
         tf = stage_task(t)
         git_commit([tf], f"scribe(task): {t[:50]}", no_commit=no_commit)
+
+
+def _do_story(no_commit):
+    """Voice-first autobiography capture from inside chat."""
+    print(c("Let's record a story. Speak it (or type it).", "bold"))
+    if sys.stdin.isatty():
+        raw = push_to_talk() if confirm("Use voice?", default=True) else get_text_input(False, label="story")
+    else:
+        raw = get_text_input(False, label="story")
+    if not raw:
+        warn("Didn't catch a story — nothing saved.")
+        return
+    save_story(raw, no_commit=no_commit)
 
 
 def cmd_doctor(args):
@@ -835,12 +913,11 @@ def cmd_doctor(args):
         warn("wiki index not built yet — run `scribe index` (do this before going offline)")
     # paths
     for label, p in [("wiki repo", WIKI_REPO), ("raw/ dir", RAW_DIR),
-                     ("autobiography dir", AUTOBIO_DIR)]:
+                     ("autobiography stories (wiki)", WIKI_STORIES)]:
         if p.exists():
             ok(f"{label}: {p}")
         else:
-            err(f"{label} MISSING: {p}")
-            okall = False
+            warn(f"{label} not found yet: {p} (created on first story)")
     # git
     for label, p in [("wiki", WIKI_REPO), ("AgentArchitect", AA_REPO)]:
         if (p / ".git").exists():
@@ -865,16 +942,16 @@ STORY_SYSTEM = (
 )
 
 
-def cmd_story(args):
-    AUTOBIO_DIR.mkdir(parents=True, exist_ok=True)
-    raw = get_text_input(args.voice, label="story", inline=args.text)
+def save_story(raw, title=None, no_commit=False):
+    """Clean a captured story, save it to the wiki (flagged unvalidated), stage a raw
+    draft for Claude, and re-index so it's immediately searchable. Shared by CLI + chat."""
     if not raw:
         err("No story captured.")
         return 1
     print(c("\n--- raw input ---", "dim"))
     print(raw)
     info("Cleaning up (light touch, preserving your voice)…")
-    cleaned, model = ollama_generate(raw, system=STORY_SYSTEM, temperature=0.3)
+    cleaned, _ = ollama_generate(raw, system=STORY_SYSTEM, temperature=0.3)
     print(c("\n--- cleaned ---", "bold"))
     print(cleaned)
     print()
@@ -884,28 +961,54 @@ def cmd_story(args):
         return 1
     text = raw if choice.startswith("r") else cleaned
 
-    title = (args.title or ask("Short title for this story")).strip()
+    title = (title or ask("Short title for this story")).strip()
     if not title:
         title = f"untitled story {now_stamp()}"
-    slug = re.sub(r"[^a-z0-9]+", "_", title.lower()).strip("_")[:50]
-    # next number
-    nums = [int(m.group(1)) for f in AUTOBIO_DIR.glob("*.md")
-            if (m := re.match(r"(\d+)_", f.name))]
+    slug = re.sub(r"[^a-z0-9]+", "-", title.lower()).strip("-")[:50]
+    WIKI_STORIES.mkdir(parents=True, exist_ok=True)
+    nums = [int(m.group(1)) for f in WIKI_STORIES.glob("*.md")
+            if (m := re.match(r"(\d+)[-_]", f.name))]
     n = (max(nums) + 1) if nums else 1
-    dest = AUTOBIO_DIR / f"{n:02d}_{slug}.md"
-    dest.write_text(f"# {title}\n\n_Captured offline via Scribe on {now_stamp()}_\n\n{text}\n")
-    ok(f"wrote story → {dest}")
+    dest = WIKI_STORIES / f"{n:02d}-{slug}.md"
+    # save into the wiki, flagged as NOT yet validated by Claude
+    dest.write_text(
+        "---\n"
+        f"title: {title}\n"
+        "type: autobiography-story\n"
+        "status: draft\n"
+        "validated_by_claude: false\n"
+        f"captured: offline via Scribe ({PRIMARY_MODEL}) on {now_stamp()}\n"
+        "---\n\n"
+        f"# {title}\n\n"
+        "> ⚠️ Captured offline by Scribe — **not yet reviewed by Claude.** "
+        "Validate & polish on reconnect.\n\n"
+        f"{text}\n")
+    ok(f"saved to wiki → {dest.relative_to(WIKI_REPO)}  (flagged unvalidated)")
 
-    # pointer into raw/ so wiki-ingest knows new memoir material exists
+    # stage a full draft in raw/ for wiki-ingest to validate/normalize
     RAW_DIR.mkdir(parents=True, exist_ok=True)
-    ptr = RAW_DIR / f"autobio-additions-{today()}.md"
-    with open(ptr, "a") as f:
-        f.write(f"- {now_stamp()} — new story **{title}** at "
-                f"`context-buckets/autobiography/files/{dest.name}`\n")
+    draft = RAW_DIR / f"autobio-story-{slug}-{today()}.md"
+    draft.write_text(
+        f"# NEW STORY (offline) — {title}\n\n"
+        f"Placed UNVALIDATED at `projects/autobiography/stories/{dest.name}` on {now_stamp()}.\n"
+        "Claude: review, fix transcription/formatting, set `validated_by_claude: true`.\n\n"
+        "---\n\n"
+        f"{text}\n")
     add_manifest({"type": "story", "ts": now_stamp(), "title": title,
                   "path": str(dest), "summary": cleaned[:160]})
-    git_commit([dest, ptr], f"scribe(story): {title}", no_commit=args.no_commit)
+    git_commit([dest, draft], f"scribe(story): {title} [unvalidated]", no_commit=no_commit)
+    # re-index so the new story is immediately searchable in ask/chat
+    try:
+        build_index(quiet=True)
+        ok("indexed — you can ask about this story now.")
+    except Exception:  # noqa: BLE001
+        warn("saved, but re-index failed; run /reindex or `scribe index`.")
     return 0
+
+
+def cmd_story(args):
+    raw = get_text_input(args.voice, label="story", inline=args.text)
+    return save_story(raw, title=args.title, no_commit=args.no_commit)
 
 
 CORRECT_SYSTEM = (

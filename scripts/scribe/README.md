@@ -40,10 +40,15 @@ In `scribe chat`, plain text asks a question; **tap the SPACEBAR to talk** inste
 typing (push-to-talk: tap space to start recording, tap space again to stop — then it
 transcribes locally and sends). These slash-commands do more:
 
+**You don't have to remember any of this** — say **"help"** anytime and the chat tells you
+exactly what you can do and how. Every capability is reachable from the chat in plain words.
+
 | In-chat command | Effect |
 |---|---|
 | *(tap SPACE)* | Push-to-talk — speak your message; tap SPACE again to stop |
-| `/remember <text>` (or start a line with "remember…") | Stage a **proposed memory** to `raw/` for `wiki-ingest` |
+| `help` / `/help` | Show everything you can do (authoritative, always accurate) |
+| `/story` (or "add a story") | Record an autobiography story, voice-first |
+| `/remember <text>` (or "remember…") | Stage a **proposed memory** to `raw/` for `wiki-ingest` |
 | `/correct <what's wrong>` | Fix a fact inline (same flow as `scribe correct`) |
 | `/task <what to do>` | Stage an action for Claude to do when you're back online |
 | `/voice` | Dictate your next message (ENTER to stop) |
@@ -53,18 +58,26 @@ transcribes locally and sends). These slash-commands do more:
 
 ### Intent routing
 
-You don't have to use slash-commands — chat figures out what you mean. Each message is
-routed to one of:
+You don't have to use slash-commands — chat figures out what you mean. Each message routes to:
 
-- **chit-chat / meta** ("can you hear me?", "thanks") → a natural reply, no wiki lookup, nothing saved
+- **help** ("what can I do?", "how do I…") → an accurate answer from the built-in capability list
+- **chit-chat / meta** ("can you hear me?", "thanks") → natural reply, no lookup, nothing saved
 - **question** → grounded, cited answer from your wiki
+- **story** ("add a story", "record a memory of when…") → voice-first autobiography capture
 - **remember** → stages a proposed memory
 - **correct** → runs the fact-fix flow
 - **task** ("draft me…", "plan…", "write a summary of…") → staged to `raw/tasks-for-claude-<date>.md`
 
-That last one turns the offline chat into a **capture queue for Claude**: anything beyond a
-local model's reach is parked for Claude to do properly when you reconnect. `scribe handoff`
-lists both your tasks and any self-improvement proposals.
+### Where new stories go
+
+A story you dictate offline is saved straight into `wiki/projects/autobiography/stories/`
+(so you can **ask about it immediately**), flagged `validated_by_claude: false` in its
+frontmatter, **and** a full draft is staged to `raw/autobio-story-*.md`. When you reconnect,
+Claude reviews the flagged story, fixes any transcription/formatting, and sets the flag true.
+
+The **task** intent turns the offline chat into a **capture queue for Claude**: anything beyond
+a local model's reach is parked for Claude to do properly on reconnect. `scribe handoff` lists
+your tasks, staged stories, and any self-improvement proposals.
 
 ## Commands
 
