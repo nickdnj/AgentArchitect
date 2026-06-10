@@ -499,12 +499,15 @@ INTENT_SYSTEM = (
     "'change X to Y', 'it should say…').\n"
     "- task: he wants something DONE or CREATED — draft, write, plan, build, research, "
     "summarize-into-a-doc, an action with a deliverable.\n"
-    "- story: he wants to RECORD or ADD an autobiography / memoir story about his own life "
-    "('add a story', 'I want to tell a story', 'record a new memory of when…', 'capture a story').\n"
+    "- story: he is RECORDING or ADDING an autobiography / memoir story about his own life. "
+    "This includes BOTH a short trigger ('add a story', 'I want to tell a story') AND a long "
+    "first-person narrative where he is actually telling the story (even if it opens with "
+    "chatter like 'ok I'm going to tell a story…'). Any extended personal anecdote about his "
+    "past = story.\n"
     "- help: he wants to know what he can do, what the commands are, or HOW to use Scribe "
     "('what can I do', 'how do I…', 'help', 'what are my options', 'how does this work').\n"
-    "Default to 'question' only if it is clearly an information request; default ambiguous "
-    "conversational input to 'chitchat'. Reply with JSON only."
+    "Default to 'question' only if it is clearly an information request. A LONG first-person "
+    "narrative is 'story', never 'chitchat'. Reply with JSON only."
 )
 
 _INTENTS = ("chitchat", "question", "remember", "correct", "task", "story", "help")
@@ -515,23 +518,41 @@ _GREETING_RE = re.compile(
 _HELP_RE = re.compile(
     r"\b(what can (i|you) do|how do i|how does this work|what are my (options|commands)|"
     r"what commands|help me use|^help\b|capabilities)\b", re.I)
+# announcements that he's telling/recording a memoir story
+_STORY_RE = re.compile(
+    r"\b(tell|telling|record|capture|add|share)\b[^.]{0,40}\bstory\b|"
+    r"for my (auto)?bio(graphy)?|for my memoir|here'?s a story|a (new|another) story", re.I)
+# references to what was JUST said in conversation (not the wiki)
+_RECAP_RE = re.compile(
+    r"(summari[sz]e|recap|repeat|read back)\b.{0,25}(what i (just )?(said|told)|that|this|my story|it)|"
+    r"what did i just (say|tell)", re.I)
+_SAVE_THAT_RE = re.compile(
+    r"\b(save|make|turn|keep|add)\b.{0,25}(that|this|what i (just )?said|it)\b.{0,20}"
+    r"(as |into )?(a )?(story|memoir|autobiography)|save (that|this|it) as a story", re.I)
 
 
 def classify_intent(msg):
     """Return one of: chitchat, question, remember, correct, task, story, help."""
     low = msg.strip().lower()
+    words = low.split()
     if low.startswith("remember ") or low.startswith("note that "):
         return "remember"
+    if _STORY_RE.search(low):
+        return "story"
     if _HELP_RE.search(low):
         return "help"
-    if _GREETING_RE.search(low) or len(low.split()) <= 2:
+    if _GREETING_RE.search(low) or len(words) <= 2:
         return "chitchat"
     try:
         resp, _ = ollama_generate(msg, system=INTENT_SYSTEM, json_mode=True, temperature=0)
         intent = json.loads(resp).get("intent", "question").strip().lower()
-        return intent if intent in _INTENTS else "question"
+        intent = intent if intent in _INTENTS else "question"
     except Exception:  # noqa: BLE001
-        return "question"
+        intent = "question"
+    # a long first-person narrative is never chitchat — it's a story he's telling
+    if intent == "chitchat" and len(words) > 40:
+        return "story"
+    return intent
 
 
 # Canonical, authoritative capability reference (NOT model-generated — so it's always accurate).
@@ -725,6 +746,7 @@ def cmd_chat(args):
     build_index(quiet=True)
     history = []
     last_hits = []
+    last_user_text = ""
     while True:
         try:
             msg = chat_read()
@@ -787,9 +809,28 @@ def cmd_chat(args):
             _do_story(args.no_commit)
             continue
 
+        # ---- conversation self-reference (about what was just said, not the wiki) ----
+        if _SAVE_THAT_RE.search(low) and last_user_text:
+            print(c("(Saving what you just told me as a story.)", "dim"))
+            save_story(last_user_text, no_commit=args.no_commit)
+            continue
+        if _RECAP_RE.search(low) and last_user_text:
+            info("…")
+            summary, _ = ollama_generate(
+                f"Summarize what Nick just said, in his voice:\n\n{last_user_text}",
+                system="Summarize the user's own words concisely. Do not cite or look anything up.")
+            print(c("\n" + summary + "\n", "bold"))
+            history.append(f"Nick: {msg}")
+            history.append(f"Brain: {summary}")
+            if confirm("Want to save what you told me as an autobiography story?", default=False):
+                save_story(last_user_text, no_commit=args.no_commit)
+            continue
+
         # ---- intent routing for non-command input ----
         intent = classify_intent(msg)
         history.append(f"Nick: {msg}")
+        if len(msg.split()) >= 12:   # remember his last substantial utterance
+            last_user_text = msg
 
         if intent == "chitchat":
             reply = chitchat_reply(msg, history)
@@ -802,7 +843,12 @@ def cmd_chat(args):
             history.append(f"Brain: {reply}")
             continue
         if intent == "story":
-            _do_story(args.no_commit)
+            # if he already SPOKE/typed the story (long), capture THAT — don't re-record
+            if len(msg.split()) >= 20:
+                print(c("(That sounded like a memoir story — let me capture it.)", "dim"))
+                save_story(msg, no_commit=args.no_commit)
+            else:
+                _do_story(args.no_commit)
             continue
         if intent == "remember":
             _do_remember(msg, args.no_commit)
@@ -934,11 +980,14 @@ def cmd_doctor(args):
 
 STORY_SYSTEM = (
     "You are a careful transcription cleaner for a personal memoir. "
-    "You will receive a spoken or typed story. Your ONLY job is to: fix obvious "
-    "transcription errors, add sensible paragraph breaks and punctuation, and remove "
-    "filler words (um, uh, like). You MUST preserve the speaker's voice, word choices, "
-    "and ALL facts and details exactly. NEVER invent, embellish, summarize, or omit "
-    "any content. Do not add a title or commentary. Return ONLY the cleaned story text."
+    "You will receive a spoken or typed story. Your job is to: fix obvious transcription "
+    "errors, add sensible paragraph breaks and punctuation, and remove filler words (um, uh, "
+    "like). Also drop any META-PREAMBLE where the speaker announces he is about to tell a story "
+    "or addresses the assistant (e.g. 'okay I'm going to tell a story', 'I turned off the wifi', "
+    "'now I'm talking to you scribe') — keep only the story itself. "
+    "Otherwise you MUST preserve the speaker's voice, word choices, and ALL facts and details "
+    "exactly. NEVER invent, embellish, summarize, or omit story content. Do not add a title or "
+    "commentary. Return ONLY the cleaned story text."
 )
 
 
