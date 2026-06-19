@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SGI Indigo² — "It's a UNIX System!" Exhibit Kit</title>
+<style>
+  :root{
+    --ink:#1d2433; --muted:#5b6577; --line:#e4e8f0; --bg:#ffffff;
+    --accent:#1f6feb; --accent2:#0b8a5b; --warn:#b4690e; --soft:#f5f8fc;
+    --code:#0f172a; --codebg:#f3f5f9;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:#eef1f6;color:var(--ink);
+    font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+  .wrap{max-width:880px;margin:0 auto;background:var(--bg);}
+  header.hero{padding:38px 40px 30px;background:linear-gradient(135deg,#13294b,#1f6feb);color:#fff;}
+  header.hero .kicker{text-transform:uppercase;letter-spacing:.14em;font-size:12px;opacity:.85;margin:0 0 10px;}
+  header.hero h1{margin:0 0 8px;font-size:30px;line-height:1.2;font-weight:800;}
+  header.hero p{margin:6px 0 0;font-size:16px;opacity:.95;}
+  main{padding:8px 40px 48px;}
+  h2{margin:40px 0 6px;font-size:23px;border-bottom:2px solid var(--line);padding-bottom:8px;}
+  h2 .num{color:var(--accent);font-weight:800;margin-right:8px;}
+  h3{margin:26px 0 6px;font-size:18px;color:#13294b;}
+  h4{margin:18px 0 4px;font-size:15px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;}
+  p{margin:10px 0;}
+  ul,ol{margin:10px 0 10px 4px;padding-left:22px;}
+  li{margin:5px 0;}
+  a{color:var(--accent);}
+  .lead{font-size:17px;color:#2b3650;}
+  .toc{background:var(--soft);border:1px solid var(--line);border-radius:12px;padding:16px 22px;margin:22px 0;}
+  .toc h4{margin:0 0 8px;color:#13294b;}
+  .toc ol{margin:0;}
+  blockquote{margin:16px 0;padding:12px 18px;background:var(--soft);
+    border-left:4px solid var(--accent);border-radius:0 8px 8px 0;color:#23304a;font-style:italic;}
+  blockquote.payoff{border-left-color:var(--accent2);background:#eefaf3;font-weight:600;font-style:normal;}
+  .warn{border-left-color:var(--warn);background:#fff7ec;font-style:normal;}
+  pre{background:var(--codebg);border:1px solid var(--line);border-radius:10px;padding:14px 16px;
+    overflow:auto;font:13px/1.5 "SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;color:var(--code);}
+  code{background:var(--codebg);border-radius:5px;padding:1px 5px;font-size:13px;color:#0b3d91;}
+  pre code{background:none;padding:0;color:inherit;}
+  table{border-collapse:collapse;width:100%;margin:14px 0;font-size:14.5px;}
+  th,td{border:1px solid var(--line);padding:8px 11px;text-align:left;vertical-align:top;}
+  th{background:#13294b;color:#fff;font-weight:600;}
+  tr:nth-child(even) td{background:#f7f9fc;}
+  .card{border:1px solid var(--line);border-radius:12px;padding:4px 22px 18px;margin:18px 0;background:#fff;
+    box-shadow:0 1px 0 rgba(16,42,80,.03);}
+  .pill{display:inline-block;background:#e7f0ff;color:#13294b;border-radius:999px;padding:3px 11px;font-size:12px;font-weight:600;margin:2px 6px 2px 0;}
+  .stage{color:var(--accent2);font-style:italic;}
+  hr{border:0;border-top:1px solid var(--line);margin:36px 0;}
+  footer{padding:24px 40px 40px;color:var(--muted);font-size:13px;background:var(--soft);}
+  .two{display:flex;gap:18px;flex-wrap:wrap;}
+  .two>div{flex:1 1 320px;}
+  @media print{body{background:#fff}.wrap{max-width:100%}header.hero{color:#000;background:#fff;border-bottom:3px solid #13294b}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <p class="kicker">Museum Exhibit · Docent &amp; Demo Package</p>
+  <h1>SGI Indigo² — "It's a UNIX System! I Know This!"</h1>
+  <p>The Silicon Graphics workstation that starred <em>in</em> Jurassic Park — and the same kind of machine that <em>made</em> its dinosaurs. Paired with a looping clip of the famous scene.</p>
+  <p style="margin-top:14px;font-size:14px;opacity:.9;">Demo script · "Both sides of the camera" explainer · Exhibit placard · Operator setup card · Visitor FAQ</p>
+</header>
+
+<main>
+
+  <p class="lead">The throughline of the whole exhibit is one idea: <strong>the same company's hardware was a <em>character</em> in Jurassic Park <em>and</em> the <em>tool</em> that created the movie's groundbreaking dinosaurs. The computer in the movie helped make the movie.</strong> This document contains everything needed to present, explain, run, and label the exhibit.</p>
+
+  <div class="toc">
+    <h4>Contents</h4>
+    <ol>
+      <li><a href="#overview">Overview &amp; the 20‑second version</a></li>
+      <li><a href="#explainer">Both Sides of the Camera (the core explainer)</a></li>
+      <li><a href="#script">Demo Script (timed, for presenters)</a></li>
+      <li><a href="#placard">Exhibit Placard (print &amp; mount)</a></li>
+      <li><a href="#setup">Operator Setup Card (run it / fix it)</a></li>
+      <li><a href="#faq">Visitor FAQ</a></li>
+      <li><a href="#sources">Hardware &amp; Sources</a></li>
+    </ol>
+  </div>
+
+  <!-- ============ OVERVIEW ============ -->
+  <h2 id="overview"><span class="num">1</span>Overview &amp; the 20‑second version</h2>
+  <p>This is a <strong>Silicon Graphics (SGI) workstation</strong> from the era — roughly a decade — when SGI was the <strong>only company on earth selling computers that could do real‑time 3‑D graphics at all.</strong> That single capability put these machines everywhere people needed to <em>see</em> data move: Hollywood, NASA, medical imaging, flight simulators — and a movie about dinosaurs.</p>
+  <ul>
+    <li>It runs <strong>IRIX</strong> — SGI's UNIX — and boots to a slick <strong>graphical desktop</strong> in 1993, while most PCs were still staring at a <code>C:\&gt;</code> prompt.</li>
+    <li>In <em>Jurassic Park</em>, the kid restores the door locks on an SGI by flying through a glowing 3‑D file browser — <strong>real SGI software</strong>, not a Hollywood prop.</li>
+    <li>The film's dinosaurs were built at <strong>Industrial Light &amp; Magic on ~70 SGI machines</strong> like this one.</li>
+    <li>Under the hood: a <strong>MIPS RISC</strong> processor plus dedicated graphics hardware — the direct ancestor of the <strong>GPU</strong> in every phone and game console today.</li>
+  </ul>
+  <blockquote class="payoff">SGI starred on both sides of the camera — the prop in the story <em>and</em> the tool that drew the story.</blockquote>
+
+  <!-- ============ EXPLAINER ============ -->
+  <h2 id="explainer"><span class="num">2</span>Both Sides of the Camera</h2>
+  <p>This is the core teaching piece. Two true things — and the magic is that they're the <strong>same company</strong>:</p>
+  <blockquote><strong>1.</strong> SGI <em>on screen</em> — the "It's a UNIX system!" control‑room machine → <strong>2.</strong> SGI <em>behind the camera</em> — the workstations that animated the dinosaurs → <strong>3.</strong> Why this machine made 3‑D graphics a product instead of a research project.</blockquote>
+
+  <h3>Part 1 — SGI on screen: "It's a UNIX system! I know this!"</h3>
+  <p>In the film's climax, young <strong>Lex</strong> (Ariana Richards) sits at a workstation to restore the park's security, flies through a glowing 3‑D landscape of pedestals and wireframes, and says the immortal line. For thirty years people mocked it as fake Hollywood computer nonsense. <strong>It was 100% real software.</strong></p>
+  <p>The interface is <strong><code>fsn</code></strong> — "File System Navigator," pronounced <em>"fusion"</em> — an actual experimental tool Silicon Graphics shipped as a demo on IRIX. Directories became pedestals; files became boxes you could fly between; the height of a pedestal showed how much data it held.</p>
+  <blockquote class="warn"><strong>⚠ The honest caveat — keep it ready:</strong> the <em>software</em> was real, but the <em>use</em> was pure cinema. <code>fsn</code> was a <em>viewer</em> — you could not actually re‑lock a building's doors with it. So: real tool, dramatized scene. Saying this out loud makes you <strong>more</strong> credible, not less.</blockquote>
+
+  <h3>Part 2 — SGI behind the camera: the machine that made the monsters</h3>
+  <p>The dinosaurs that chase Lex through that room were built on machines just like this one. At <strong>Industrial Light &amp; Magic</strong>, artists used a fleet of roughly <strong>70 Silicon Graphics workstations</strong> — desktop Indigos up to the <strong>Onyx</strong> graphics supercomputer. Asked what they used, ILM staff said "everything SGI makes." The pipeline:</p>
+  <table>
+    <tr><th>Stage</th><th>Tool (running on SGI)</th><th>What it did</th></tr>
+    <tr><td>Model</td><td>Alias (PowerAnimator)</td><td>Sculpt the dinosaur geometry (from a scan of Stan Winston's maquette)</td></tr>
+    <tr><td>Animate</td><td>Softimage 3D</td><td>Bring the creatures to life, motion and performance</td></tr>
+    <tr><td>Render</td><td>Pixar's PhotoRealistic RenderMan</td><td>Turn the 3‑D models into photoreal frames (hours per frame)</td></tr>
+  </table>
+  <blockquote class="warn"><strong>⚠ Don't overstate it:</strong> SGI dominated the <em>interactive</em> work — modeling and animation. The <em>final</em> frames were rendered with Pixar's RenderMan. Say the dinosaurs were <strong>built and animated</strong> on SGI, not "rendered on SGI."</blockquote>
+
+  <h3>Part 3 — The surprising part: most of the dinosaurs aren't CGI</h3>
+  <p>Of roughly <strong>15 minutes</strong> of on‑screen dinosaurs in the film, <strong>most are Stan Winston's full‑size animatronics</strong> — only about <strong>4–6 minutes are computer‑generated</strong> (~50 shots). The watershed wasn't <em>volume</em>; it was <strong>photorealism</strong> — the first time audiences believed a computer‑generated creature was really there.</p>
+  <p>When stop‑motion legend <strong>Phil Tippett</strong> — hired to animate the dinosaurs the old way — saw ILM's digital test, he reportedly said <em>"I feel extinct."</em> Spielberg put the line in the movie as Dr. Grant's. ILM's <strong>Dennis Muren</strong> supervised the effects; the film won the <strong>Academy Award for Best Visual Effects</strong> and redirected the entire industry from physical/optical effects to digital.</p>
+
+  <h3>Part 4 — Why this machine mattered</h3>
+  <p>For about a decade, SGI <em>owned</em> 3‑D graphics. The reason this Indigo² could do what a 1993 PC couldn't:</p>
+  <ul>
+    <li><strong>MIPS RISC CPU + dedicated graphics silicon.</strong> Offloading geometry to a specialized graphics processor is the architecture behind every modern <strong>GPU.</strong></li>
+    <li><strong>OpenGL</strong> — the cross‑platform graphics standard born at SGI — is still in use everywhere today.</li>
+    <li><strong>SGI's alumni</strong> went on to seed companies like <strong>NVIDIA</strong> and 3dfx. When cheap PC graphics cards finally caught up in the late 1990s, SGI faded; it went bankrupt in 2009. This machine is from its peak.</li>
+  </ul>
+
+  <blockquote class="warn"><strong>⚠ Docent honesty note — a sharp visitor will catch this:</strong> the film's control‑room hero machine was an SGI <strong>Crimson</strong>, not an Indigo². If someone says "that's not the model from the movie," say: <em>"Exactly right — the movie's hero unit was a Crimson. Ours is an Indigo², the desktop machine from the same family, same year, same IRIX, same <code>fsn</code> software. Same studio of computers, smaller box."</em></blockquote>
+
+  <h4>One‑paragraph summary (for memorizing)</h4>
+  <p>Silicon Graphics made the only computers that could do real‑time 3‑D, so they ended up on both sides of <em>Jurassic Park</em>: on screen, the "It's a UNIX system!" scene shows a real SGI tool called <code>fsn</code> running on a real SGI workstation; behind the camera, ILM built the film's dinosaurs on ~70 SGI machines (modeled in Alias, animated in Softimage, rendered in RenderMan). Most of the on‑screen dinosaurs are actually Stan Winston animatronics — only a few minutes are CGI — but those few minutes crossed into photorealism and changed moviemaking forever. The machine that did it ran a RISC chip and dedicated graphics hardware: the ancestor of today's GPU.</p>
+
+  <!-- ============ DEMO SCRIPT ============ -->
+  <h2 id="script"><span class="num">3</span>Demo Script</h2>
+  <p><span class="pill">Runtime ~5–7 min</span><span class="pill">All ages</span><span class="pill">Stage directions in italics</span></p>
+  <p><strong>Presenter needs:</strong> the Indigo² powered on and logged in to the IRIX desktop (see §5), the looping "It's a UNIX system!" clip playing on the side screen, and a 3‑D demo ready to launch from the Demos catalog.</p>
+
+  <div class="card">
+    <h3>⏱ 90‑Second Short Version (walk‑up)</h3>
+    <p><span class="stage">[Point at the side screen looping the scene.]</span> "You know this scene — <em>'It's a UNIX system, I know this!'</em> Everybody remembers it, and everybody assumed that goofy 3‑D thing was <strong>fake Hollywood nonsense.</strong> It wasn't. That was <strong>real software</strong>, running on a real Silicon Graphics computer — <strong>this kind of computer, right here.</strong></p>
+    <p>Here's the wild part. The <strong>dinosaurs</strong> in that same movie? Also built on machines like this one. Silicon Graphics was the <em>only</em> company making computers that could do 3‑D graphics in real time. So they ended up <strong>in</strong> the movie <em>and</em> they <strong>made</strong> the movie.</p>
+    <p><span class="stage">[Double‑click a 3‑D demo; rotate it with the middle mouse button.]</span> "And while your 1993 PC was showing a blinking text cursor, <strong>this</strong> was spinning a 3‑D object in real time. That's why Hollywood, NASA, and the dinosaur guys all wanted one.</p>
+    <p><strong>The computer in the movie helped make the movie. That's the whole story.</strong>"</p>
+  </div>
+
+  <h3>1. The Hook (30 sec)</h3>
+  <p><span class="stage">[Stand by the looping clip.]</span> "Almost everyone has seen this — the kid sits down, says <em>'It's a UNIX system, I know this!'</em>, and flies through a weird 3‑D world to lock the doors. For thirty years people laughed at it as fake computer baloney. <strong>I'm here to tell you it was real</strong> — real software, on a real Silicon Graphics machine, exactly like the one in front of you."</p>
+
+  <h3>2. The reveal — it was real (60 sec)</h3>
+  <p>"That 3‑D file browser has a name: <strong><code>fsn</code></strong>, 'File System Navigator,' and people pronounce it <em>'fusion.'</em> Silicon Graphics actually shipped it as a demo on their UNIX system. Every pedestal is a folder; every little box is a file. <span class="stage">[Gesture to the machine.]</span> The only Hollywood part was using it to lock doors — really it was just a fancy way to <em>look</em> at your files. But the <strong>computer was real, the software was real, and SGI was the only company whose machines could draw something like that in 1993.</strong>"</p>
+
+  <h3>3. The twist — it made the movie too (75 sec)</h3>
+  <p>"Now here's what surprises people. <span class="stage">[Beat.]</span> The <strong>dinosaurs</strong> in Jurassic Park were built on machines just like this one. A studio called Industrial Light &amp; Magic used about <strong>seventy</strong> Silicon Graphics computers to model and animate the dinosaurs. <span class="stage">[Optional:]</span> and here's a fact that floors people — <strong>most of the dinosaurs in the movie aren't computer graphics at all.</strong> Most are full‑size robots built by Stan Winston. Only a <em>few minutes</em> of the whole film are CGI — but those few minutes were the first time a computer creature looked <strong>completely real</strong>, and it changed movies forever."</p>
+
+  <h3>4. Why this machine could do it (60 sec)</h3>
+  <p><span class="stage">[Tap the case.]</span> "Why SGI and nobody else? Because this machine had a special chip just for graphics — the great‑grandparent of the graphics card in your phone and your PlayStation. They invented a graphics language called <strong>OpenGL</strong> that's still used today, and their engineers later started <strong>NVIDIA.</strong> For about ten years, if you needed real‑time 3‑D — Hollywood, NASA, fighter‑jet simulators — you bought one of these."</p>
+
+  <h3>5. The Payoff — make it live (90 sec)</h3>
+  <p>"Let me show you what '1993 magic' looked like." <span class="stage">[Open the Demos catalog; double‑click a 3‑D demo such as 'Insect' or the music visualizer.]</span> "This is running <strong>right now</strong>, in real time. <span class="stage">[Hold the MIDDLE mouse button and drag to rotate.]</span> I can grab it and spin it around — smooth, instant. <strong>Remember what a normal computer looked like in 1993:</strong> a black screen with a blinking cursor, maybe Windows 3 if you were lucky. <em>This</em> was from another planet. That gap — that's exactly why the dinosaurs, and that famous scene, both happened on a Silicon Graphics machine."</p>
+
+  <h3>6. The Close (30 sec)</h3>
+  <p>"So next time you see that scene, you'll know the secret: the computer the kid uses to survive the dinosaurs is the <em>same kind of computer</em> that <strong>drew</strong> the dinosaurs. <strong>The machine in the movie helped make the movie.</strong> That's Silicon Graphics — and for one incredible decade, they were the future."</p>
+
+  <h3>Presenter notes &amp; recovery lines</h3>
+  <ul>
+    <li><strong>Machine won't boot / no desktop:</strong> don't hard power‑cycle a UNIX box in front of a crowd — fall back to the looping clip, which carries the whole story on its own. Note it in the repair sheet.</li>
+    <li><strong>"Is this the actual computer from the movie?"</strong> — "Not this exact unit, and the movie's was a Crimson — but ours is the same family, same year, same operating system, same software. Same studio of computers, smaller box."</li>
+    <li><strong>"Wasn't that scene fake?"</strong> — "The software was 100% real (it's called <code>fsn</code>); only using it to lock doors was made up."</li>
+    <li><strong>"SGI? Never heard of them."</strong> — "For a decade they owned 3‑D graphics. They invented OpenGL, their people started NVIDIA, and cheap PC graphics cards eventually put them out of business in 2009."</li>
+    <li>Keep the 3‑D demo <strong>moving</strong> — motion is what makes the jaw drop. Pick a demo that spins or walks.</li>
+  </ul>
+  <blockquote class="payoff">The one line to never skip: "The computer in the movie helped make the movie. That's the charm of this machine."</blockquote>
+
+  <!-- ============ PLACARD ============ -->
+  <h2 id="placard"><span class="num">4</span>Exhibit Placard <span style="font-size:14px;font-weight:400;color:var(--muted)">(print &amp; mount)</span></h2>
+  <div class="card">
+    <h3 style="font-size:22px;margin-top:14px;">"It's a UNIX System! I Know This!"</h3>
+    <p style="color:var(--muted);margin-top:0;"><strong>Silicon Graphics Indigo²</strong> · the computer that starred in <em>Jurassic Park</em> — and helped build it</p>
+    <p>You remember the scene: a kid sits at a computer, says <strong>"It's a UNIX system — I know this!"</strong>, and flies through a glowing 3‑D world to lock the doors. For years people assumed that interface was <strong>fake Hollywood nonsense.</strong> It wasn't. It was <strong>real software</strong> — a Silicon Graphics tool called <code>fsn</code> — running on a real SGI workstation like this one.</p>
+    <p>Here's the twist: the <strong>dinosaurs</strong> in that same movie were <strong>built on machines like this one too.</strong> Industrial Light &amp; Magic animated them on about <strong>70 Silicon Graphics computers.</strong> SGI was the only company making machines that could do real‑time 3‑D — so they ended up <em>in</em> the movie <strong>and</strong> they <em>made</em> the movie.</p>
+    <h4>SGI on both sides of the camera</h4>
+    <pre><code>ON SCREEN   → the "It's a UNIX system!" workstation (real SGI software, fsn)
+BEHIND IT   → ~70 SGI machines at ILM built the CG dinosaurs
+THE MACHINE → real-time 3-D when PCs showed a blinking cursor</code></pre>
+    <p><strong>The computer in the movie helped make the movie.</strong></p>
+    <h4>Try this (docent‑assisted)</h4>
+    <p><strong>Ask a docent to open a 3‑D demo and spin it with the mouse.</strong> In 1993, watching a computer rotate a solid 3‑D object in real time was astonishing — your home PC couldn't come close. That gap is the whole reason Hollywood, NASA, and the dinosaur animators all came to Silicon Graphics.</p>
+    <blockquote class="payoff">Most of the dinosaurs in Jurassic Park aren't even CGI — they're robots. Only a few minutes are computer‑generated. But those few minutes changed movies forever.</blockquote>
+    <h4>Did you know?</h4>
+    <p>Silicon Graphics invented <strong>OpenGL</strong>, a graphics standard still used today, and SGI engineers went on to start <strong>NVIDIA.</strong> The dedicated graphics chip in this machine is the ancestor of the <strong>GPU</strong> in every phone and game console.</p>
+    <p style="font-size:12.5px;color:var(--muted);"><em>The film's control‑room "hero" machine was an SGI Crimson; this exhibit's Indigo² is the desktop model from the same family, year, and operating system (IRIX). The 3‑D file browser in the scene, <code>fsn</code>, was genuine SGI demo software.</em></p>
+  </div>
+
+  <!-- ============ SETUP CARD ============ -->
+  <h2 id="setup"><span class="num">5</span>Operator Setup Card</h2>
+  <blockquote class="warn"><strong>Authority:</strong> confirm the boot procedure, the exact on‑screen name of the demos catalog, and any login/guest password with <strong>Thomas Gilinsky</strong> (recorded the docent demo for this unit) and record them in the operational binder. The steps below are reconstructed from that demo video and need on‑site verification.</blockquote>
+
+  <h3>A. Power‑up &amp; display</h3>
+  <ol>
+    <li>Power on the Indigo² and its monitor; allow it to boot to the <strong>IRIX graphical desktop.</strong></li>
+    <li>Power on the <strong>side screen</strong> looping the "It's a UNIX system!" clip (<code>jurassic-unix-loop.mp4</code>, set to <strong>Repeat One</strong>). This carries the exhibit even if the workstation is down.</li>
+    <li>Confirm the <strong>3‑button mouse</strong> works — the middle button rotates 3‑D demos and is part of the show.</li>
+  </ol>
+
+  <h3>B. Launching a demo (the photographed configuration)</h3>
+  <table>
+    <tr><th>Step</th><th>Action</th><th>Why</th></tr>
+    <tr><td>1</td><td>Find the <strong>Demos catalog</strong> on the desktop</td><td>The preloaded library of 3‑D demos (~30–50)</td></tr>
+    <tr><td>2</td><td>If not visible: open the <strong>Toolchest</strong> (top‑left) → <strong>Find / Demos</strong></td><td>Re‑opens the demos catalog</td></tr>
+    <tr><td>3</td><td><strong>Double‑click</strong> a demo (e.g. "Insect," a music visualizer)</td><td>Opens it like a Windows program; full real‑time 3‑D</td></tr>
+    <tr><td>4</td><td>Hold the <strong>MIDDLE mouse button</strong> and drag</td><td>Rotates the 3‑D object — the crowd‑pleaser moment</td></tr>
+    <tr><td>5</td><td>Pick demos that <strong>move</strong> (spin/walk)</td><td>Motion is what makes a 1993 machine impressive</td></tr>
+  </table>
+  <blockquote class="warn"><strong>⚠ Verify on‑site:</strong> the demo catalog's exact on‑screen name needs confirming — the docent video's audio transcribes it ambiguously (likely "Demos catalog," not "iPhone catalog"). Open the Toolchest menu and read the real label before relying on this card.</blockquote>
+
+  <h3>C. The teaching beat (don't skip)</h3>
+  <p>Start a spinning 3‑D demo, <em>then</em> say: <em>"This is 1993 — while everyone else's computer is showing a blinking text cursor."</em> The contrast between this machine and a period PC is what makes the exhibit land. Tie it to the dinosaurs: <em>"This same kind of machine is what drew the dinosaurs."</em></p>
+
+  <h3>D. Run sequence (each visitor group)</h3>
+  <ol>
+    <li>Gesture to the looping clip; deliver the "it was real" reveal (§3).</li>
+    <li>Open the Demos catalog and launch a moving 3‑D demo.</li>
+    <li>Rotate it with the middle mouse button; deliver the "1993 vs. a blinking cursor" line.</li>
+    <li>Close with "the computer in the movie helped make the movie."</li>
+  </ol>
+
+  <h3>E. Troubleshooting</h3>
+  <table>
+    <tr><th>Symptom</th><th>Likely cause</th><th>Fix</th></tr>
+    <tr><td>No Demos catalog on screen</td><td>window closed</td><td>Open Toolchest (top‑left) → Find/Demos; don't reboot in front of a crowd</td></tr>
+    <tr><td>A demo hangs / won't close</td><td>old demo software</td><td>Leave it; launch a different demo; note it in the repair sheet</td></tr>
+    <tr><td>Won't boot / no graphical login</td><td>disk or hardware</td><td>Stop — IRIX is real multiuser UNIX; a hard power‑cycle can corrupt the disk. Flag it; run the exhibit on the looping clip alone</td></tr>
+    <tr><td>3‑D demo won't rotate</td><td>middle mouse button</td><td>Confirm the 3‑button mouse is connected and the middle button works</td></tr>
+    <tr><td>Side clip not looping</td><td>player not on repeat</td><td>Set the media player to <strong>Repeat One</strong> (or launch VLC with <code>--loop --fullscreen</code>)</td></tr>
+  </table>
+
+  <h3>F. Facts cheat‑sheet</h3>
+  <ul>
+    <li><strong>~70</strong> SGI workstations in ILM's dinosaur pipeline.</li>
+    <li><strong>~$1 million</strong> in SGI hardware loaned to the production (a real partnership, not a coincidence).</li>
+    <li><strong>~4–6 minutes</strong> of fully computer‑generated dinosaur footage in the whole film (~50 shots); the rest is animatronics. <em>(Sources vary — state as a range.)</em></li>
+    <li><strong><code>fsn</code></strong> = File System Navigator ("fusion"); real IRIX demo software. Pronunciation is community‑sourced.</li>
+    <li>Film's hero machine = SGI <strong>Crimson</strong>; ours = <strong>Indigo²</strong> (same family). Don't claim our unit was used in the film.</li>
+    <li>Don't say the dinosaurs were "rendered on SGI" — they were <strong>built and animated</strong> on SGI; final render was Pixar's RenderMan.</li>
+  </ul>
+
+  <!-- ============ FAQ ============ -->
+  <h2 id="faq"><span class="num">6</span>Visitor FAQ</h2>
+  <p><strong>Q: Wait — that "It's a UNIX system" scene was <em>real</em>?</strong><br>Yes. The 3‑D file browser is genuine SGI software called <code>fsn</code> ("fusion"), shipped as a demo on IRIX. People assumed it was fake only because nothing else looked like it — SGI was years ahead. The only made‑up part was using it to lock doors; it was really just a way to view your files.</p>
+  <p><strong>Q: Is <em>this</em> the actual computer from the movie?</strong><br>Not this exact unit, and not the exact model — the film's control‑room machine was an SGI Crimson. Ours is an Indigo², the desktop machine from the same family, same year, same operating system, running the same software. Same studio of computers, smaller box.</p>
+  <p><strong>Q: What is SGI / Silicon Graphics? I've never heard of them.</strong><br>For about a decade they owned 3‑D graphics — Hollywood, NASA, science, and engineering all ran on these. They invented OpenGL (still used today), and their engineers went on to start companies like NVIDIA. Cheap PC graphics cards caught up in the late 1990s, and SGI went bankrupt in 2009. This machine is from their peak.</p>
+  <p><strong>Q: Were the dinosaurs made on this?</strong><br>On machines just like it. ILM used about 70 SGI workstations to model and animate the CG dinosaurs. The final frames were rendered with Pixar's RenderMan software, but the dinosaurs were <em>built and animated</em> on SGI.</p>
+  <p><strong>Q: How much of the movie is actually CGI?</strong><br>Surprisingly little. Of roughly 15 minutes of on‑screen dinosaurs, most are Stan Winston's full‑size animatronics — only about 4–6 minutes are computer‑generated. But those few minutes were the first time a CG creature looked completely real.</p>
+  <p><strong>Q: Why was this computer special?</strong><br>It had dedicated graphics hardware — a chip just for drawing 3‑D — at a time when PCs didn't. That's the ancestor of the GPU in your phone and game console. It let SGI do real‑time 3‑D when everyone else showed a blinking text cursor.</p>
+  <p><strong>Q: What's it doing when the docent spins that shape?</strong><br>Running a 3‑D graphics demo in real time. In 1993 that was astonishing; today your phone does it, because your phone has SGI's idea (a graphics processor) inside it.</p>
+  <p><strong>Q: Real work, or a toy?</strong><br>Serious work. These ran flight simulators, scientific visualization, medical imaging, and movie effects. SGI was a real powerhouse for about ten years.</p>
+  <p><strong>Q: Why did they lose?</strong><br>Cheap, fast PC graphics cards — many made by companies SGI's own people founded, like NVIDIA — caught up and undercut them. SGI couldn't compete on price and went bankrupt in 2009.</p>
+  <blockquote class="payoff">Leave them with: "The computer the kid uses to survive the dinosaurs is the same kind of computer that <em>drew</em> the dinosaurs. The machine in the movie helped make the movie."</blockquote>
+
+  <!-- ============ SOURCES ============ -->
+  <h2 id="sources"><span class="num">7</span>Hardware &amp; Sources</h2>
+  <p><strong>SGI Indigo²</strong> (Silicon Graphics, 1993): a MIPS RISC workstation with dedicated graphics hardware, running the <strong>IRIX</strong> UNIX operating system with a full graphical desktop. Shipped with a 3‑button mouse; preloaded with a catalog of real‑time 3‑D demos. Paired in this exhibit with a side screen looping the "It's a UNIX system!" scene (<code>jurassic-unix-loop.mp4</code>) and the printed display card (<code>Exhibit-Card.html</code> / <code>.pdf</code>).</p>
+  <ul>
+    <li><a href="https://sgistuff.net/funstuff/hollywood/jpark.html">SGI's 1993 press release on the Jurassic Park partnership (sgistuff.net)</a></li>
+    <li><a href="https://en.wikipedia.org/wiki/File_System_Visualizer">File System Navigator / fsn — Wikipedia</a> · <a href="https://handwiki.org/wiki/Software:Fsn_(file_manager)">HandWiki: fsn</a></li>
+    <li><a href="https://www.ilm.com/vfx/jurassic-park/">Industrial Light &amp; Magic — Jurassic Park</a></li>
+    <li><a href="https://www.fxguide.com/fxfeatured/welcome-back-to-jurassic-park/">fxguide — "Welcome Back to Jurassic Park"</a></li>
+    <li><a href="https://en.wikipedia.org/wiki/SGI_Crimson">SGI Crimson — Wikipedia</a> · <a href="https://en.wikipedia.org/wiki/Silicon_Graphics">Silicon Graphics — Wikipedia</a></li>
+    <li>Computer Graphics World, "The Jurassic Age" (period production deep‑dive)</li>
+    <li>Companion docent video: <em>SGI Indigo² with Thomas Gilinsky</em> (InfoAge docent resources)</li>
+  </ul>
+
+  <blockquote class="warn"><strong>Accuracy caveats (do not overstate on the floor):</strong> the CGI runtime (~4–6 min) genuinely varies by source; state it as a range. The "~15 min total dinosaur" figure is a long‑circulating round estimate. The "fusion" pronunciation of <code>fsn</code> is community‑sourced. The dinosaurs were <em>built and animated</em> on SGI; final frames were rendered with Pixar's RenderMan. Our unit is a <em>representative</em> Indigo² — not a machine used in the film.</blockquote>
+
+</main>
+
+<footer>
+  <p><strong>SGI Indigo² — "It's a UNIX System!" Exhibit Kit.</strong> Prepared for the InfoAge Computer Museum exhibit pairing a Silicon Graphics Indigo² workstation with a looping clip of the Jurassic Park control‑room scene. Format matches the Comdyna GP‑6 exhibit kit. Verify boot procedure, demo‑catalog name, and login details with the operator (Thomas Gilinsky) before relying on the setup card.</p>
+</footer>
+
+</div>
+</body>
+</html>
