@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Clip Editor</title>
+<style>
+  :root {
+    --bg: #14161a;
+    --panel: #1d2128;
+    --panel-2: #262b34;
+    --text: #e6e9ef;
+    --muted: #9aa3b2;
+    --accent: #4f9cff;
+    --accent-2: #2d7bf0;
+    --ok: #3ecf8e;
+    --warn: #ffb454;
+    --err: #ff6b6b;
+    --border: #333a45;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    font-size: 14px;
+  }
+  header {
+    padding: 12px 18px; border-bottom: 1px solid var(--border);
+    display: flex; align-items: baseline; gap: 14px;
+  }
+  header h1 { font-size: 16px; margin: 0; font-weight: 600; }
+  header .meta { color: var(--muted); font-size: 12px; }
+  .wrap { display: flex; gap: 18px; padding: 18px; align-items: flex-start; }
+  .left { flex: 0 0 auto; }
+  .right { flex: 1 1 auto; min-width: 280px; max-width: 520px; }
+
+  .video-stage {
+    position: relative; display: inline-block;
+    background: #000; border-radius: 6px; overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  video { display: block; max-height: 70vh; }
+
+  /* Crop overlay */
+  #cropBox {
+    position: absolute; border: 2px solid var(--accent);
+    background: rgba(79,156,255,0.12);
+    box-shadow: 0 0 0 9999px rgba(0,0,0,0.45);
+    cursor: move; display: none;
+  }
+  #cropBox .handle {
+    position: absolute; width: 14px; height: 14px;
+    background: var(--accent); border: 2px solid #fff; border-radius: 3px;
+  }
+  #cropBox .br { right: -8px; bottom: -8px; cursor: nwse-resize; }
+  #cropBox .label {
+    position: absolute; top: -22px; left: 0; font-size: 11px;
+    background: var(--accent); color: #fff; padding: 1px 6px; border-radius: 3px;
+    white-space: nowrap;
+  }
+
+  .controls { margin-top: 14px; }
+  .timeline {
+    position: relative; height: 46px; background: var(--panel-2);
+    border-radius: 6px; margin: 10px 0; cursor: pointer;
+    border: 1px solid var(--border);
+  }
+  .tl-progress { position: absolute; top:0; bottom:0; left:0; background: rgba(79,156,255,0.18); }
+  .tl-region { position: absolute; top:0; bottom:0; background: rgba(62,207,142,0.20); }
+  .tl-region.cut { background: rgba(255,107,107,0.22); }
+  .tl-handle {
+    position: absolute; top: -3px; bottom: -3px; width: 10px;
+    background: var(--accent); border-radius: 3px; cursor: ew-resize;
+    transform: translateX(-5px);
+  }
+  .tl-handle.out { background: var(--ok); }
+  .tl-handle.cuta, .tl-handle.cutb { background: var(--err); }
+  .tl-playhead {
+    position: absolute; top: -3px; bottom: -3px; width: 2px;
+    background: #fff; transform: translateX(-1px); pointer-events: none;
+  }
+  .tl-marker {
+    position: absolute; top:-3px; bottom:-3px; width:3px; background: var(--warn);
+    transform: translateX(-1.5px); cursor: pointer;
+  }
+
+  .row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin: 8px 0; }
+  button {
+    background: var(--panel-2); color: var(--text); border: 1px solid var(--border);
+    border-radius: 6px; padding: 7px 12px; cursor: pointer; font-size: 13px;
+  }
+  button:hover { background: #2f3640; }
+  button.active { background: var(--accent-2); border-color: var(--accent); color: #fff; }
+  button.primary { background: var(--accent-2); border-color: var(--accent); color: #fff; }
+  button.primary:hover { background: var(--accent); }
+  button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .seg-label { color: var(--muted); font-size: 12px; margin-right: 4px; }
+  .mono { font-variant-numeric: tabular-nums; font-feature-settings: "tnum"; }
+
+  .card {
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 8px; padding: 14px; margin-bottom: 14px;
+  }
+  .card h3 { margin: 0 0 8px; font-size: 13px; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; }
+  .kv { display: flex; justify-content: space-between; padding: 3px 0; }
+  .kv span:first-child { color: var(--muted); }
+  .hint { color: var(--muted); font-size: 12px; line-height: 1.5; }
+
+  #result {
+    white-space: pre-wrap; font-family: ui-monospace, Menlo, monospace; font-size: 12px;
+    background: #11141a; border: 1px solid var(--border); border-radius: 6px;
+    padding: 10px; margin-top: 10px; display: none; max-height: 220px; overflow: auto;
+  }
+  #result.ok { border-color: var(--ok); }
+  #result.err { border-color: var(--err); color: #ffd5d5; }
+
+  .spinner {
+    display: inline-block; width: 14px; height: 14px; border: 2px solid var(--muted);
+    border-top-color: var(--accent); border-radius: 50%;
+    animation: spin .7s linear infinite; vertical-align: -2px; margin-right: 6px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  input[type=number] {
+    background: var(--panel-2); color: var(--text); border: 1px solid var(--border);
+    border-radius: 5px; padding: 4px 6px; width: 70px;
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>Clip Editor</h1>
+  <span class="meta" id="hdrScene"></span>
+  <span class="meta" id="hdrInfo"></span>
+</header>
+
+<div class="wrap">
+  <div class="left">
+    <div class="video-stage" id="stage">
+      <video id="video" preload="metadata" playsinline></video>
+      <div id="cropBox">
+        <div class="label" id="cropLabel">9:16</div>
+        <div class="handle br" id="cropHandle"></div>
+      </div>
+    </div>
+
+    <div class="controls">
+      <div class="row">
+        <button id="playBtn">▶ Play / Pause</button>
+        <span class="seg-label">Time</span>
+        <span class="mono" id="curTime">0:00.0</span>
+        <span class="seg-label">/</span>
+        <span class="mono" id="durTime">0:00.0</span>
+      </div>
+
+      <div class="timeline" id="timeline">
+        <div class="tl-progress" id="tlProgress"></div>
+        <div class="tl-region" id="tlRegion"></div>
+        <div class="tl-playhead" id="tlPlayhead"></div>
+        <div class="tl-handle in" id="hIn" title="IN"></div>
+        <div class="tl-handle out" id="hOut" title="OUT"></div>
+        <!-- markers injected for split -->
+      </div>
+
+      <div class="row" id="inoutRow">
+        <span class="seg-label">IN</span>
+        <span class="mono" id="inTime">0:00.0</span>
+        <button id="setIn">Set IN at playhead</button>
+        <span class="seg-label">OUT</span>
+        <span class="mono" id="outTime">0:00.0</span>
+        <button id="setOut">Set OUT at playhead</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="right">
+    <div class="card">
+      <h3>Mode</h3>
+      <div class="row">
+        <button id="mTrim" class="active">Trim</button>
+        <button id="mCut">Remove section</button>
+        <button id="mCrop">Crop 9:16</button>
+        <button id="mSplit">Split</button>
+      </div>
+      <div class="hint" id="modeHint"></div>
+    </div>
+
+    <div class="card" id="splitCard" style="display:none;">
+      <h3>Split points</h3>
+      <div class="row">
+        <button id="addMarker">+ Add split at playhead</button>
+        <button id="clearMarkers">Clear</button>
+      </div>
+      <div class="hint" id="markerList">No split points.</div>
+    </div>
+
+    <div class="card">
+      <h3>Source</h3>
+      <div class="kv"><span>Resolution</span><span class="mono" id="srcRes">—</span></div>
+      <div class="kv"><span>Duration</span><span class="mono" id="srcDur">—</span></div>
+      <div class="kv"><span>FPS</span><span class="mono" id="srcFps">—</span></div>
+      <div class="kv"><span>File</span><span class="mono" id="srcFile" style="font-size:11px;">—</span></div>
+    </div>
+
+    <div class="card">
+      <h3>Save</h3>
+      <div class="row">
+        <button id="saveBtn" class="primary">Save</button>
+        <button id="reloadBtn">Reload clip</button>
+      </div>
+      <div class="hint">Trim / Remove / Crop overwrite the scene clip in place (original backed up). Split creates new sibling files.</div>
+      <div id="result"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ---------------------------------------------------------------------------
+// Read params from the URL the storyboard link passed us.
+// ---------------------------------------------------------------------------
+const Q = new URLSearchParams(location.search);
+const CLIP  = Q.get('clip')  || '';
+const THUMB = Q.get('thumb') || '';
+const SCENE = Q.get('scene') || '?';
+const DOC   = Q.get('doc')   || '';
+
+const video = document.getElementById('video');
+const stage = document.getElementById('stage');
+
+let SRC = { width: 0, height: 0, duration: 0, fps: 30 };
+let inT = 0, outT = 0;      // trim in/out
+let cutA = 0, cutB = 0;     // remove-section bounds
+let markers = [];           // split points
+let mode = 'trim';
+
+// ---- helpers --------------------------------------------------------------
+function fmt(t) {
+  if (!isFinite(t)) t = 0;
+  const m = Math.floor(t / 60);
+  const s = (t % 60);
+  return `${m}:${s.toFixed(1).padStart(4,'0')}`;
+}
+function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+
+// ---- load source info -----------------------------------------------------
+async function loadInfo() {
+  document.getElementById('hdrScene').textContent = 'Scene ' + SCENE;
+  document.getElementById('srcFile').textContent = CLIP.split('/').pop();
+  video.src = '/media?path=' + encodeURIComponent(CLIP);
+
+  try {
+    const r = await fetch('/info?path=' + encodeURIComponent(CLIP));
+    const j = await r.json();
+    if (j.ok) {
+      SRC = j;
+      document.getElementById('srcRes').textContent = `${j.width}×${j.height}`;
+      document.getElementById('srcDur').textContent = `${j.duration}s`;
+      document.getElementById('srcFps').textContent = j.fps;
+      document.getElementById('hdrInfo').textContent = `${j.width}×${j.height} · ${j.duration}s`;
+    }
+  } catch (e) { /* ignore */ }
+}
+
+video.addEventListener('loadedmetadata', () => {
+  const d = video.duration || SRC.duration || 0;
+  SRC.duration = d;
+  inT = 0; outT = d; cutA = d * 0.25; cutB = d * 0.5;
+  document.getElementById('durTime').textContent = fmt(d);
+  updateInOutLabels();
+  renderTimeline();
+});
+
+video.addEventListener('timeupdate', () => {
+  document.getElementById('curTime').textContent = fmt(video.currentTime);
+  renderTimeline();
+});
+
+// ---- timeline rendering ---------------------------------------------------
+const timeline   = document.getElementById('timeline');
+const tlProgress = document.getElementById('tlProgress');
+const tlRegion   = document.getElementById('tlRegion');
+const tlPlayhead = document.getElementById('tlPlayhead');
+const hIn  = document.getElementById('hIn');
+const hOut = document.getElementById('hOut');
+
+function pct(t) { return SRC.duration ? (t / SRC.duration * 100) : 0; }
+
+function renderTimeline() {
+  const d = SRC.duration || 1;
+  tlPlayhead.style.left = pct(video.currentTime) + '%';
+  tlProgress.style.width = pct(video.currentTime) + '%';
+
+  // clear old markers
+  timeline.querySelectorAll('.tl-marker').forEach(m => m.remove());
+
+  if (mode === 'cut') {
+    hIn.className = 'tl-handle cuta'; hOut.className = 'tl-handle cutb';
+    hIn.style.left = pct(cutA) + '%'; hOut.style.left = pct(cutB) + '%';
+    tlRegion.className = 'tl-region cut';
+    tlRegion.style.left = pct(cutA) + '%';
+    tlRegion.style.width = (pct(cutB) - pct(cutA)) + '%';
+    tlRegion.style.display = 'block';
+    hIn.style.display = hOut.style.display = 'block';
+  } else if (mode === 'trim') {
+    hIn.className = 'tl-handle in'; hOut.className = 'tl-handle out';
+    hIn.style.left = pct(inT) + '%'; hOut.style.left = pct(outT) + '%';
+    tlRegion.className = 'tl-region';
+    tlRegion.style.left = pct(inT) + '%';
+    tlRegion.style.width = (pct(outT) - pct(inT)) + '%';
+    tlRegion.style.display = 'block';
+    hIn.style.display = hOut.style.display = 'block';
+  } else if (mode === 'split') {
+    hIn.style.display = hOut.style.display = 'none';
+    tlRegion.style.display = 'none';
+    markers.forEach((t, i) => {
+      const el = document.createElement('div');
+      el.className = 'tl-marker';
+      el.style.left = pct(t) + '%';
+      el.title = `Split ${i+1} @ ${fmt(t)} (click to remove)`;
+      el.addEventListener('click', (ev) => {
+        ev.stopPropagation();
+        markers.splice(i, 1);
+        renderMarkerList(); renderTimeline();
+      });
+      timeline.appendChild(el);
+    });
+  } else {
+    // crop: hide handles/region
+    hIn.style.display = hOut.style.display = 'none';
+    tlRegion.style.display = 'none';
+  }
+}
+
+function updateInOutLabels() {
+  document.getElementById('inTime').textContent  = fmt(inT);
+  document.getElementById('outTime').textContent = fmt(outT);
+}
+
+// ---- timeline interaction -------------------------------------------------
+function timelineTimeAt(clientX) {
+  const r = timeline.getBoundingClientRect();
+  const x = clamp(clientX - r.left, 0, r.width);
+  return (x / r.width) * SRC.duration;
+}
+
+timeline.addEventListener('click', (e) => {
+  if (e.target.classList.contains('tl-handle') || e.target.classList.contains('tl-marker')) return;
+  video.currentTime = timelineTimeAt(e.clientX);
+});
+
+function dragHandle(handle, onMove) {
+  handle.addEventListener('mousedown', (e) => {
+    e.preventDefault(); e.stopPropagation();
+    const move = (ev) => { onMove(timelineTimeAt(ev.clientX)); renderTimeline(); updateInOutLabels(); };
+    const up = () => { document.removeEventListener('mousemove', move); document.removeEventListener('mouseup', up); };
+    document.addEventListener('mousemove', move);
+    document.addEventListener('mouseup', up);
+  });
+}
+dragHandle(hIn,  (t) => { if (mode==='cut') cutA = clamp(t,0,cutB-0.05); else inT = clamp(t,0,outT-0.05); });
+dragHandle(hOut, (t) => { if (mode==='cut') cutB = clamp(t,cutA+0.05,SRC.duration); else outT = clamp(t,inT+0.05,SRC.duration); });
+
+// ---- buttons --------------------------------------------------------------
+document.getElementById('playBtn').onclick = () => { video.paused ? video.play() : video.pause(); };
+document.getElementById('setIn').onclick  = () => { inT  = clamp(video.currentTime,0,outT-0.05); updateInOutLabels(); renderTimeline(); };
+document.getElementById('setOut').onclick = () => { outT = clamp(video.currentTime,inT+0.05,SRC.duration); updateInOutLabels(); renderTimeline(); };
+
+const HINTS = {
+  trim:  'Drag the IN (blue) and OUT (green) handles, or use the buttons, to keep just that range. Saving overwrites the clip.',
+  cut:   'Drag the two red handles to mark a section to REMOVE. The parts before and after are joined.',
+  crop:  'Drag/resize the blue box over the video to choose a 9:16 region. It is scaled to 1080×1920 on save.',
+  split: 'Position the playhead and add split points. Saving exports one new sibling clip per segment (does not change the original).'
+};
+
+function setMode(m) {
+  mode = m;
+  ['mTrim','mCut','mCrop','mSplit'].forEach(id => document.getElementById(id).classList.remove('active'));
+  ({trim:'mTrim',cut:'mCut',crop:'mCrop',split:'mSplit'})[m] && document.getElementById(({trim:'mTrim',cut:'mCut',crop:'mCrop',split:'mSplit'})[m]).classList.add('active');
+  document.getElementById('modeHint').textContent = HINTS[m];
+  document.getElementById('splitCard').style.display = (m === 'split') ? 'block' : 'none';
+  document.getElementById('cropBox').style.display = (m === 'crop') ? 'block' : 'none';
+  document.getElementById('inoutRow').style.display = (m === 'trim' || m === 'cut') ? 'flex' : 'none';
+  document.getElementById('saveBtn').textContent = (m === 'split') ? 'Save as new snippet(s)' : 'Save';
+  if (m === 'crop') initCropBox();
+  renderTimeline();
+}
+document.getElementById('mTrim').onclick  = () => setMode('trim');
+document.getElementById('mCut').onclick   = () => setMode('cut');
+document.getElementById('mCrop').onclick  = () => setMode('crop');
+document.getElementById('mSplit').onclick = () => setMode('split');
+
+// ---- split markers --------------------------------------------------------
+function renderMarkerList() {
+  const el = document.getElementById('markerList');
+  if (!markers.length) { el.textContent = 'No split points.'; return; }
+  const segs = [0, ...markers.slice().sort((a,b)=>a-b), SRC.duration];
+  let out = `${markers.length} split point(s) → ${markers.length+1} clips:\n`;
+  for (let i=0; i<segs.length-1; i++) out += `  ${String.fromCharCode(97+i)}: ${fmt(segs[i])}–${fmt(segs[i+1])}\n`;
+  el.textContent = out;
+}
+document.getElementById('addMarker').onclick = () => {
+  const t = video.currentTime;
+  if (t > 0.05 && t < SRC.duration - 0.05) { markers.push(t); markers.sort((a,b)=>a-b); renderMarkerList(); renderTimeline(); }
+};
+document.getElementById('clearMarkers').onclick = () => { markers = []; renderMarkerList(); renderTimeline(); };
+
+// ---- crop box -------------------------------------------------------------
+// The crop box is constrained to 9:16. We map displayed coords -> source px.
+const cropBox = document.getElementById('cropBox');
+const cropHandle = document.getElementById('cropHandle');
+let crop = { x: 0, y: 0, w: 0, h: 0 }; // in DISPLAYED pixels relative to video
+
+function videoDisplayRect() {
+  // The <video> may be letterboxed inside its box; compute the actual
+  // rendered content rect so crop coords map correctly to source pixels.
+  const vw = video.videoWidth || SRC.width;
+  const vh = video.videoHeight || SRC.height;
+  const cw = video.clientWidth, ch = video.clientHeight;
+  if (!vw || !vh) return { left: 0, top: 0, w: cw, h: ch };
+  const scale = Math.min(cw / vw, ch / vh);
+  const w = vw * scale, h = vh * scale;
+  return { left: (cw - w) / 2, top: (ch - h) / 2, w, h, scale };
+}
+
+function initCropBox() {
+  const r = videoDisplayRect();
+  // Start with a centered 9:16 box at ~60% height of the displayed video.
+  let h = r.h * 0.9;
+  let w = h * 9 / 16;
+  if (w > r.w) { w = r.w * 0.9; h = w * 16 / 9; }
+  crop = { x: r.left + (r.w - w)/2, y: r.top + (r.h - h)/2, w, h };
+  drawCrop();
+}
+
+function drawCrop() {
+  cropBox.style.left = crop.x + 'px';
+  cropBox.style.top = crop.y + 'px';
+  cropBox.style.width = crop.w + 'px';
+  cropBox.style.height = crop.h + 'px';
+  // show the source-pixel mapping in the label
+  const sp = cropToSource();
+  document.getElementById('cropLabel').textContent = `9:16 · ${sp.w}×${sp.h} src px`;
+}
+
+function cropToSource() {
+  const r = videoDisplayRect();
+  const scale = r.scale || 1;
+  // displayed coords relative to the rendered video content
+  const sx = (crop.x - r.left) / scale;
+  const sy = (crop.y - r.top) / scale;
+  const sw = crop.w / scale;
+  const sh = crop.h / scale;
+  return {
+    x: Math.round(clamp(sx, 0, SRC.width)),
+    y: Math.round(clamp(sy, 0, SRC.height)),
+    w: Math.round(clamp(sw, 1, SRC.width)),
+    h: Math.round(clamp(sh, 1, SRC.height)),
+  };
+}
+
+// drag to move
+cropBox.addEventListener('mousedown', (e) => {
+  if (e.target === cropHandle) return;
+  e.preventDefault();
+  const r = videoDisplayRect();
+  const sx = e.clientX, sy = e.clientY, ox = crop.x, oy = crop.y;
+  const move = (ev) => {
+    crop.x = clamp(ox + (ev.clientX - sx), r.left, r.left + r.w - crop.w);
+    crop.y = clamp(oy + (ev.clientY - sy), r.top,  r.top  + r.h - crop.h);
+    drawCrop();
+  };
+  const up = () => { document.removeEventListener('mousemove', move); document.removeEventListener('mouseup', up); };
+  document.addEventListener('mousemove', move);
+  document.addEventListener('mouseup', up);
+});
+
+// resize via corner handle (keeps 9:16)
+cropHandle.addEventListener('mousedown', (e) => {
+  e.preventDefault(); e.stopPropagation();
+  const r = videoDisplayRect();
+  const sx = e.clientX, ow = crop.w;
+  const move = (ev) => {
+    let w = clamp(ow + (ev.clientX - sx), 20, r.left + r.w - crop.x);
+    let h = w * 16 / 9;
+    if (crop.y + h > r.top + r.h) { h = r.top + r.h - crop.y; w = h * 9 / 16; }
+    crop.w = w; crop.h = h;
+    drawCrop();
+  };
+  const up = () => { document.removeEventListener('mousemove', move); document.removeEventListener('mouseup', up); };
+  document.addEventListener('mousemove', move);
+  document.addEventListener('mouseup', up);
+});
+
+// ---- save -----------------------------------------------------------------
+const resultEl = document.getElementById('result');
+const saveBtn = document.getElementById('saveBtn');
+
+function showResult(text, kind) {
+  resultEl.style.display = 'block';
+  resultEl.className = kind || '';
+  resultEl.textContent = text;
+}
+
+saveBtn.onclick = async () => {
+  let body = { clip: CLIP, thumb: THUMB, scene: SCENE, doc: DOC, op: mode };
+  if (mode === 'trim') {
+    body.in = inT; body.out = outT;
+  } else if (mode === 'cut') {
+    body.cutStart = cutA; body.cutEnd = cutB;
+  } else if (mode === 'crop') {
+    body.crop = cropToSource();
+  } else if (mode === 'split') {
+    if (!markers.length) { showResult('Add at least one split point first.', 'err'); return; }
+    body.points = markers.slice().sort((a,b)=>a-b);
+  }
+
+  saveBtn.disabled = true;
+  showResult('Working…', '');
+  resultEl.innerHTML = '<span class="spinner"></span>Running ffmpeg…';
+  try {
+    const r = await fetch('/save', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+    const j = await r.json();
+    if (j.ok) {
+      showResult(j.message, 'ok');
+      if (mode !== 'split') reloadClip();   // refresh player after in-place edit
+    } else {
+      showResult('Error: ' + (j.error || 'unknown'), 'err');
+    }
+  } catch (e) {
+    showResult('Request failed: ' + e, 'err');
+  } finally {
+    saveBtn.disabled = false;
+  }
+};
+
+function reloadClip() {
+  const t = video.currentTime;
+  video.src = '/media?path=' + encodeURIComponent(CLIP) + '&t=' + Date.now();
+  video.load();
+  loadInfo();
+}
+document.getElementById('reloadBtn').onclick = reloadClip;
+
+// ---- init -----------------------------------------------------------------
+window.addEventListener('resize', () => { if (mode === 'crop') drawCrop(); });
+setMode('trim');
+loadInfo();
+</script>
+</body>
+</html>

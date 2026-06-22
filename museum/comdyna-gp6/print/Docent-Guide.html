@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Docent Guide — Comdyna GP-6 Projectile Demonstration</title>
+<style>
+  @page { size: Letter portrait; margin:0.6in 0.7in; }
+  :root{
+    --navy:#10233f; --navy2:#0b1a30; --ink:#1f2733; --muted:#6a6152;
+    --brass:#b3852b; --brass-lt:#d6ab53; --brass-dk:#8a6418;
+    --parch:#f8f2e3; --parch2:#f2ead6; --line:#e2d8bf; --rule:#e6e9ef;
+    --phos:#28c870; --green:#0b7a44;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:"Segoe UI",system-ui,-apple-system,Helvetica,Arial,sans-serif;
+    color:var(--ink); line-height:1.55; font-size:11pt;
+    -webkit-print-color-adjust:exact; print-color-adjust:exact;
+    background:#d7dbe1;
+  }
+  .serif{font-family:Georgia,"Iowan Old Style","Palatino Linotype",serif;}
+  .sheet{ width:8.5in; min-height:11in; margin:18px auto; background:#fff; padding:0.7in 0.75in 0.6in;
+    box-shadow:0 10px 36px rgba(10,20,40,.22); }
+  .page-break{ break-before:page; }
+  /* ---- cover ---- */
+  .cover{ background:linear-gradient(150deg,#173257 0%, var(--navy) 55%, var(--navy2) 100%);
+    color:#f1ead7; padding:0; box-shadow:0 10px 36px rgba(10,20,40,.22);
+    width:8.5in; margin:18px auto; min-height:11in; position:relative; overflow:hidden; }
+  .cover .inner{ padding:0.9in 0.85in; display:flex; flex-direction:column; min-height:11in; }
+  .cover .kick{ font-size:11px; letter-spacing:.34em; text-transform:uppercase; color:var(--brass-lt); font-weight:700; margin:0 0 18px;}
+  .cover h1{ font-size:46px; line-height:1.03; margin:0; font-weight:800; }
+  .cover h1 .em{ color:var(--brass-lt); }
+  .cover .tag{ font-size:17px; color:#cfd9ea; margin:16px 0 0; max-width:46ch; line-height:1.5; }
+  .cover .rule{ height:3px; width:90px; background:var(--brass); margin:26px 0; }
+  .cover .scopebox{ margin:8px 0 0; max-width:4.6in; }
+  .cover .meta{ margin-top:auto; font-size:12.5px; color:#b9c4d8; border-top:1px solid rgba(255,255,255,.15); padding-top:16px; }
+  .cover .meta b{ color:#f1ead7; }
+  .cover .pill{ display:inline-block; border:1px solid var(--brass); color:var(--brass-lt);
+    border-radius:999px; padding:3px 12px; font-size:11px; margin:3px 6px 3px 0; letter-spacing:.04em;}
+  /* ---- headings ---- */
+  h2.sec{ font-size:23px; color:var(--navy); margin:6px 0 4px; font-weight:800; letter-spacing:.2px;}
+  .sec-kick{ font-size:11px; letter-spacing:.22em; text-transform:uppercase; color:var(--brass-dk); font-weight:700; margin:0;}
+  .sec-rule{ height:3px; width:60px; background:var(--brass); margin:8px 0 16px; border-radius:2px;}
+  h3{ font-size:15.5px; color:var(--navy); margin:20px 0 6px; }
+  h4{ font-size:12px; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); margin:16px 0 4px; }
+  p{ margin:9px 0; } ul,ol{ margin:8px 0 8px; padding-left:20px;} li{ margin:4px 0;}
+  code{ background:#f1f0ec; border-radius:4px; padding:1px 5px; font-size:.92em; color:#0b3d91;
+    font-family:ui-monospace,Menlo,Consolas,monospace;}
+  .lead{ font-size:13.5px; color:#2b3343; }
+  a{ color:#1f6feb; }
+  /* callouts */
+  .note{ background:var(--parch); border:1px solid var(--line); border-left:5px solid var(--brass);
+    border-radius:0 10px 10px 0; padding:13px 17px; margin:14px 0; }
+  .note h4{ margin:0 0 5px; color:var(--brass-dk);}
+  .note p{ margin:5px 0; }
+  .payoff{ background:#eef9f1; border:1px solid #cfe9d8; border-left:5px solid var(--green);
+    border-radius:0 10px 10px 0; padding:12px 17px; margin:14px 0; font-style:italic; color:#1d4a32; }
+  .payoff b{ font-style:normal; }
+  .warn{ background:#fff6e9; border:1px solid #f0dcb6; border-left:5px solid #c98a16;
+    border-radius:0 10px 10px 0; padding:12px 17px; margin:14px 0; }
+  /* tables */
+  table{ border-collapse:collapse; width:100%; margin:12px 0; font-size:10.3pt; }
+  th,td{ border:1px solid var(--rule); padding:7px 9px; text-align:left; vertical-align:top; }
+  th{ background:var(--navy); color:#fff; font-weight:600; }
+  tr:nth-child(even) td{ background:#f7f8fb; }
+  /* age tiers */
+  .tiers{ display:flex; flex-direction:column; gap:12px; }
+  .tier{ border:1px solid var(--line); border-radius:12px; overflow:hidden; background:#fff; break-inside:avoid;}
+  .tier .top{ display:flex; align-items:center; gap:12px; padding:10px 15px; background:var(--parch2); border-bottom:1px solid var(--line);}
+  .tier .age{ background:var(--navy); color:#fff; font-weight:800; border-radius:8px; padding:5px 11px; font-size:14px; white-space:nowrap;}
+  .tier .who{ font-size:12.5px; color:var(--brass-dk); font-weight:700; letter-spacing:.03em;}
+  .tier .txt{ padding:11px 15px 13px; font-size:11pt; }
+  .tier .txt b{ color:var(--navy);}
+  /* diagram figures */
+  figure{ margin:16px 0; padding:14px; background:#fbfaf6; border:1px solid var(--line); border-radius:12px; break-inside:avoid; }
+  figure svg{ width:100%; height:auto; display:block; }
+  figcaption{ font-size:11px; color:var(--muted); text-align:center; margin-top:9px; font-style:italic; }
+  /* script blocks */
+  .scriptcard{ border:1px solid var(--line); border-radius:12px; padding:4px 16px 12px; margin:14px 0; background:#fff; break-inside:avoid;}
+  .beat{ margin:14px 0; }
+  .beat .h{ display:flex; align-items:baseline; gap:10px; margin-bottom:3px; }
+  .beat .h .t{ font-weight:800; color:var(--navy); font-size:13.5px; }
+  .beat .h .clock{ font-size:11px; color:#fff; background:var(--brass); border-radius:999px; padding:2px 9px; font-weight:700;}
+  .stage{ color:var(--green); font-style:italic; }
+  .say{ } .say b{ color:var(--navy);}
+  .qa p{ margin:10px 0; } .qa .q{ font-weight:700; color:var(--navy); }
+  /* timeline */
+  .tl{ position:relative; margin:14px 0 4px; padding-left:26px; }
+  .tl::before{ content:""; position:absolute; left:7px; top:4px; bottom:4px; width:3px; background:var(--brass); border-radius:2px;}
+  .tl .ev{ position:relative; margin:0 0 13px; break-inside:avoid; }
+  .tl .ev::before{ content:""; position:absolute; left:-22px; top:4px; width:12px; height:12px; border-radius:50%; background:#fff; border:3px solid var(--navy);}
+  .tl .yr{ font-weight:800; color:var(--brass-dk); }
+  .foot{ margin-top:26px; border-top:1px solid var(--rule); padding-top:12px; font-size:10px; color:var(--muted); }
+  @media print{ body{background:#fff} .sheet,.cover{box-shadow:none;margin:0;width:auto;} }
+</style>
+</head>
+<body>
+
+<!-- ============================ COVER ============================ -->
+<section class="cover">
+  <div class="inner">
+    <p class="kick">Museum Docent Guide · Exhibit Demonstration</p>
+    <h1 class="serif">The Machine That<br><span class="em">Flew the Cannonball</span></h1>
+    <p class="tag">How a 1960s analog computer solves a projectile’s flight with nothing but voltages, op-amps, and patch cords — and why that problem launched the entire computer age.</p>
+    <div class="rule"></div>
+
+    <div class="scopebox">
+      <svg viewBox="0 0 440 300" role="img" aria-label="Oscilloscope showing a glowing green parabola">
+        <defs>
+          <filter id="g1" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="3.4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <radialGradient id="sg1" cx="50%" cy="42%" r="70%"><stop offset="0" stop-color="#0e3120"/><stop offset="100%" stop-color="#04100a"/></radialGradient>
+        </defs>
+        <rect x="2" y="2" width="436" height="296" rx="16" fill="#0a1422" stroke="#26405f" stroke-width="1.5"/>
+        <rect x="20" y="18" width="400" height="264" rx="10" fill="url(#sg1)" stroke="#0c2a1b" stroke-width="2"/>
+        <g stroke="#0f3a25" stroke-width="1">
+          <line x1="110" y1="18" x2="110" y2="282"/><line x1="200" y1="18" x2="200" y2="282"/><line x1="290" y1="18" x2="290" y2="282"/><line x1="380" y1="18" x2="380" y2="282"/>
+          <line x1="20" y1="106" x2="420" y2="106"/><line x1="20" y1="194" x2="420" y2="194"/>
+        </g>
+        <g stroke="#1d5c3d" stroke-width="1.3"><line x1="220" y1="18" x2="220" y2="282"/><line x1="20" y1="150" x2="420" y2="150"/></g>
+        <path d="M44,252 Q220,-130 396,252" fill="none" stroke="#1c8f4f" stroke-width="7" opacity=".5" filter="url(#g1)"/>
+        <path d="M44,252 Q220,-130 396,252" fill="none" stroke="#34f58a" stroke-width="3.4" stroke-linecap="round" filter="url(#g1)"/>
+        <circle cx="220" cy="58" r="5.5" fill="#eafff3" filter="url(#g1)"/>
+      </svg>
+    </div>
+
+    <div class="meta">
+      <span class="pill">Ages 10 → adult</span><span class="pill">~5–7 min demo</span><span class="pill">Patch list + troubleshooting</span><span class="pill">Print-ready</span>
+      <p style="margin:12px 0 0;"><b>Exhibit:</b> Comdyna GP-6 Analog Computer with Hewlett-Packard 1200B oscilloscope &nbsp;·&nbsp; <b>The equation:</b> d²y/dt² = −g</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ 1. BIG IDEA + HISTORY ============================ -->
+<section class="sheet">
+  <p class="sec-kick">Section 1</p>
+  <h2 class="sec serif">The Big Idea — and why it built the modern world</h2>
+  <div class="sec-rule"></div>
+
+  <p class="lead">In one sentence: <b>this machine has no microchip and runs no software, yet it solves a real physics problem in real time — by turning the problem into electricity.</b> The green arc on the oscilloscope is a projectile’s flight, computed live. Turn a knob and the flight changes shape instantly.</p>
+
+  <p>That is strange and wonderful, but it’s also <em>historically enormous.</em> The problem this exhibit demonstrates — <b>predicting where a projectile will land</b> — is, quite literally, the problem that gave birth to the computer industry.</p>
+
+  <figure>
+    <svg viewBox="0 0 520 250" role="img" aria-label="A cannon firing a ball along a parabola, with the highest point and landing point marked">
+      <defs>
+        <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#eaf2fb"/><stop offset="1" stop-color="#f6f1e4"/></linearGradient>
+      </defs>
+      <rect x="0" y="0" width="520" height="250" rx="10" fill="url(#sky)"/>
+      <!-- ground -->
+      <rect x="0" y="216" width="520" height="34" fill="#dfe7d3"/>
+      <line x1="0" y1="216" x2="520" y2="216" stroke="#9cab86" stroke-width="2"/>
+      <!-- trajectory -->
+      <path d="M72,170 Q270,-90 470,210" fill="none" stroke="#b3852b" stroke-width="3" stroke-dasharray="2 7" stroke-linecap="round"/>
+      <!-- apex -->
+      <line x1="270" y1="50" x2="270" y2="216" stroke="#10233f" stroke-width="1.2" stroke-dasharray="4 5" opacity=".55"/>
+      <circle cx="270" cy="50" r="6" fill="#10233f"/>
+      <text x="270" y="38" fill="#10233f" font-size="12" font-family="Georgia,serif" text-anchor="middle" font-style="italic">highest point (apogee)</text>
+      <!-- ball -->
+      <circle cx="180" cy="92" r="8" fill="#2a2f38"/>
+      <!-- cannon -->
+      <g>
+        <circle cx="46" cy="196" r="20" fill="#3a4150"/><circle cx="46" cy="196" r="7" fill="#1d222b"/>
+        <rect x="34" y="150" width="58" height="22" rx="6" fill="#2a2f38" transform="rotate(-32 60 161)"/>
+      </g>
+      <!-- launch label -->
+      <text x="40" y="240" fill="#5a6450" font-size="11" font-family="Georgia,serif">launch</text>
+      <!-- landing -->
+      <circle cx="470" cy="210" r="6" fill="#a33"/>
+      <text x="470" y="240" fill="#5a6450" font-size="11" font-family="Georgia,serif" text-anchor="middle">target</text>
+    </svg>
+    <figcaption>The age-old question of war: aim the cannon at what angle, and the shot lands… where? Answering it means solving the math of a flying body — over and over.</figcaption>
+  </figure>
+
+  <h3>From firing tables to your phone</h3>
+  <p>To hit a target miles away, gunners needed <b>firing tables</b> — books listing exactly how to aim for every distance, wind, and powder charge. Each number is the solution to a projectile equation. In World War II the U.S. Army needed these tables by the thousands, and computing them by hand took teams of people (called “computers”) months per table.</p>
+  <p>That bottleneck drove the invention of the first electronic computers. <b>ENIAC</b> (1945) — often called the first general-purpose electronic computer — was commissioned for exactly this: <b>calculating artillery firing tables.</b> Analog computers like the Comdyna GP-6 in front of you attacked the same equations from a different direction — with amplifiers and capacitors instead of code. Both lineages chased the same prize: <b>knowing where the projectile will go.</b> Everything downstream — spaceflight, weather models, video games, the device in your pocket — grew from that root.</p>
+
+  <div class="payoff"><b>The throughline for visitors:</b> “The reason computers exist at all starts with this exact question — and here’s a machine that answers it by <em>becoming</em> the physics, right in front of you.”</div>
+</section>
+
+<!-- ============================ 2. EXPLAIN IT AT ANY AGE ============================ -->
+<section class="sheet page-break">
+  <p class="sec-kick">Section 2</p>
+  <h2 class="sec serif">Explain It at Any Age</h2>
+  <div class="sec-rule"></div>
+  <p class="lead">Same truth, four altitudes. Pick the one that fits the visitor in front of you — or climb the ladder as they lean in.</p>
+
+  <div class="tiers">
+    <div class="tier">
+      <div class="top"><span class="age">Age 10</span><span class="who">The curious kid</span></div>
+      <div class="txt">“See that glowing line? That’s a <b>ball flying through the air</b>, like throwing a baseball. This old machine is drawing it as it figures out the path. But here’s the cool part — there’s <b>no computer chip inside, and no app.</b> It thinks with <b>electricity and wires.</b> Gravity is just a little zap of electricity, and the machine adds it up to figure out how fast the ball goes and how high it gets. Watch — when I turn this knob, I’m changing how strong gravity is, and the whole throw changes! Less gravity, the ball floats way up like on the Moon!”</div>
+    </div>
+    <div class="tier">
+      <div class="top"><span class="age">Age 15</span><span class="who">The student</span></div>
+      <div class="txt">“This is an <b>analog computer.</b> Your phone is digital — it solves problems by counting in 1s and 0s, super fast. This one doesn’t count at all. It lets a <b>voltage stand in for a real quantity:</b> one voltage <em>is</em> gravity, one <em>is</em> the ball’s speed, one <em>is</em> its height. You learned in science that if you add up acceleration over time you get speed, and add up speed you get distance. This machine does that adding-up — it’s called <b>integration</b> — with an electronic part called an integrator. Two integrations turn gravity into the flight path you see.”</div>
+    </div>
+    <div class="tier">
+      <div class="top"><span class="age">Age 20</span><span class="who">The college mind</span></div>
+      <div class="txt">“Projectile motion is the differential equation <code>d²y/dt² = −g</code>. Rather than solving it numerically in tiny time-steps like a digital computer, this machine solves it <b>continuously.</b> Each op-amp-with-a-capacitor is an analog integrator; chain two of them and a constant input (gravity) becomes velocity, then position. The patch cords <em>are</em> the program — re-wire them and you’ve written a new equation. And because it runs in repetitive mode, it re-solves the whole trajectory dozens of times a second, so adjusting a coefficient pot updates the solution in real time. It’s a physical, continuous-time computer.”</div>
+    </div>
+    <div class="tier">
+      <div class="top"><span class="age">Age 62</span><span class="who">The lifelong learner</span></div>
+      <div class="txt">“You may remember when ‘computer’ could mean either a digital machine or one of these. Before microprocessors were cheap, engineers designing aircraft, spacecraft, and control systems leaned on analog computers because they’d solve a differential equation <b>instantly</b> and let you <em>feel</em> the system respond as you turned a dial. This GP-6 is a teaching version of those room-sized machines. The same math that puts this arc on the screen sent Apollo to the Moon and traces back to the WWII firing-table problem that built ENIAC. It trades a little precision for something digital never quite recaptured — intuition you can hold in your hand.”</div>
+    </div>
+  </div>
+
+  <div class="note"><h4>One line that lands for everyone</h4><p>“A digital computer <b>calculates</b> the motion. This one <b>becomes</b> the motion.”</p></div>
+</section>
+
+<!-- ============================ 3. SCHEMATIC → EQUATION → WIRING ============================ -->
+<section class="sheet page-break">
+  <p class="sec-kick">Section 3 · The Technical Heart</p>
+  <h2 class="sec serif">From Schematic → Equation → Wiring</h2>
+  <div class="sec-rule"></div>
+  <p class="lead">This is the path an engineer walks to make an analog computer solve anything: <b>(1)</b> write the physics as an equation, <b>(2)</b> redraw the equation as a block diagram, <b>(3)</b> translate each block into patch cords. When you finish this section, the tangle of wires reads like a sentence.</p>
+
+  <h3>Step 1 — The physics becomes an equation</h3>
+  <p>Throw a ball straight up; ignore air. Only gravity acts, a constant downward acceleration <b>g</b>. The whole flight is one second-order differential equation:</p>
+  <p style="text-align:center; font-size:18px; font-family:Georgia,serif;"><code style="font-size:18px;">d²y/dt² = −g</code> &nbsp;&nbsp;<span style="color:var(--muted); font-size:13px;">with start values y(0)=height, y′(0)=launch speed</span></p>
+  <p>Read it as a chain you can build: <b>gravity → (add up over time) → speed → (add up over time) → height.</b> Two “add-ups.” In calculus, adding up over time is <b>integration</b>.</p>
+
+  <h3>Step 2 — The equation becomes a block diagram (the schematic)</h3>
+  <p>Each piece of the equation becomes a labeled block. Follow the signal left to right; the initial “throw” enters the first integrator from below.</p>
+
+  <figure>
+    <svg viewBox="0 0 940 300" role="img" aria-label="Block diagram: gravity knob into an inverter into two integrators into the oscilloscope, with an initial-velocity input feeding the first integrator">
+      <defs>
+        <marker id="ah" markerWidth="11" markerHeight="11" refX="8.5" refY="3.2" orient="auto"><path d="M0,0 L9,3.2 L0,6.4 z" fill="#b3852b"/></marker>
+      </defs>
+      <style>
+        .bx{ fill:#fbf6ea; stroke:#10233f; stroke-width:2; }
+        .bt{ font-family:Georgia,serif; font-weight:700; fill:#10233f; }
+        .bs{ font-family:'Segoe UI',sans-serif; fill:#5a5446; }
+        .wire{ stroke:#b3852b; stroke-width:2.4; fill:none; }
+        .eq{ font-family:ui-monospace,monospace; fill:#0b7a44; font-weight:700; }
+      </style>
+      <!-- main row boxes -->
+      <rect class="bx" x="14"  y="46" width="120" height="80" rx="11"/>
+      <text class="bt" x="74"  y="80" font-size="15" text-anchor="middle">GRAVITY</text>
+      <text class="bs" x="74"  y="100" font-size="10.5" text-anchor="middle">pot #2 = a knob</text>
+      <text class="bs" x="74"  y="114" font-size="10.5" text-anchor="middle">(a voltage = g)</text>
+
+      <rect class="bx" x="172" y="56" width="70"  height="60" rx="11"/>
+      <text class="bt" x="207" y="84" font-size="20" text-anchor="middle">−1</text>
+      <text class="bs" x="207" y="104" font-size="9.5" text-anchor="middle">amp #7</text>
+
+      <rect class="bx" x="280" y="46" width="166" height="80" rx="11"/>
+      <text class="bt" x="363" y="80" font-size="16" text-anchor="middle">∫ INTEGRATE</text>
+      <text class="bs" x="363" y="100" font-size="10.5" text-anchor="middle">amp #1 — running total</text>
+      <text class="bs" x="363" y="114" font-size="10.5" text-anchor="middle">of gravity over time</text>
+
+      <rect class="bx" x="484" y="46" width="166" height="80" rx="11"/>
+      <text class="bt" x="567" y="80" font-size="16" text-anchor="middle">∫ INTEGRATE</text>
+      <text class="bs" x="567" y="100" font-size="10.5" text-anchor="middle">amp #2 — running total</text>
+      <text class="bs" x="567" y="114" font-size="10.5" text-anchor="middle">of speed over time</text>
+
+      <rect class="bx" x="688" y="46" width="150" height="80" rx="11" fill="#0a1f14" stroke="#0c2a1b"/>
+      <text x="763" y="80" font-size="15" text-anchor="middle" font-family="Georgia,serif" font-weight="700" fill="#bdf5d3">OSCILLOSCOPE</text>
+      <text x="763" y="100" font-size="10.5" text-anchor="middle" fill="#7fd6a3" font-family="'Segoe UI',sans-serif">draws height</text>
+      <text x="763" y="114" font-size="10.5" text-anchor="middle" fill="#7fd6a3" font-family="'Segoe UI',sans-serif">vs. time</text>
+
+      <!-- main wires -->
+      <line class="wire" x1="134" y1="86" x2="168" y2="86" marker-end="url(#ah)"/>
+      <line class="wire" x1="242" y1="86" x2="276" y2="86" marker-end="url(#ah)"/>
+      <line class="wire" x1="446" y1="86" x2="480" y2="86" marker-end="url(#ah)"/>
+      <line class="wire" x1="650" y1="86" x2="684" y2="86" marker-end="url(#ah)"/>
+      <!-- arrow equations -->
+      <text class="eq" x="463" y="38" font-size="12" text-anchor="middle">= SPEED</text>
+      <text class="eq" x="667" y="38" font-size="12" text-anchor="middle">= HEIGHT</text>
+
+      <!-- initial velocity path -->
+      <rect class="bx" x="206" y="210" width="150" height="64" rx="11"/>
+      <text class="bt" x="281" y="238" font-size="13" text-anchor="middle">INITIAL VELOCITY</text>
+      <text class="bs" x="281" y="256" font-size="10" text-anchor="middle">pot #5 = the throw</text>
+
+      <rect class="bx" x="386" y="212" width="66" height="60" rx="11"/>
+      <text class="bt" x="419" y="240" font-size="18" text-anchor="middle">−1</text>
+      <text class="bs" x="419" y="259" font-size="9" text-anchor="middle">amp #8</text>
+
+      <line class="wire" x1="356" y1="242" x2="384" y2="242" marker-end="url(#ah)"/>
+      <!-- up into integrator #1 -->
+      <path class="wire" d="M419,212 L419,170 Q419,150 399,150 L380,150 L380,128" marker-end="url(#ah)"/>
+      <text class="bs" x="300" y="290" font-size="10" text-anchor="middle" fill="#8a6418">starting value loaded into integrator #1 (the “initial condition”)</text>
+    </svg>
+    <figcaption>The schematic <em>is</em> the equation. Gravity (a voltage) → flip its sign → integrate to get speed → integrate again to get height → display. The “−1” blocks are sign-fixers; the “throw” preloads integrator&nbsp;#1.</figcaption>
+  </figure>
+
+  <table>
+    <tr><th>Block</th><th>What it is</th><th>What it means in d²y/dt² = −g</th></tr>
+    <tr><td><b>GRAVITY</b> (pot #2)</td><td>a knob = a voltage divider</td><td>the constant <code>g</code></td></tr>
+    <tr><td><b>−1</b> (amp #7)</td><td>inverter</td><td>makes it <code>−g</code> (gravity pulls <em>down</em>)</td></tr>
+    <tr><td><b>∫</b> (amp #1)</td><td>integrator</td><td>first integral → <b>velocity</b>, <code>v = v₀ − g·t</code></td></tr>
+    <tr><td><b>INITIAL VELOCITY</b> (pot #5 → amp #8 → amp #1)</td><td>a knob + inverter into the integrator’s start input</td><td>the launch speed <code>v₀</code></td></tr>
+    <tr><td><b>∫</b> (amp #2)</td><td>integrator</td><td>second integral → <b>position</b> (height)</td></tr>
+    <tr><td><b>Oscilloscope</b></td><td>X = time, Y = height</td><td>the <b>flight arc</b> — a parabola</td></tr>
+  </table>
+
+  <h3>What an integrator actually is</h3>
+  <p>The whole machine hinges on one part: an operational amplifier with a <b>capacitor</b> in its feedback loop. Its output is the <b>running total of its input over time</b> — calculus, done by electronics.</p>
+
+  <figure>
+    <svg viewBox="0 0 560 230" role="img" aria-label="Schematic of an op-amp integrator: input resistor, op-amp triangle, feedback capacitor, output">
+      <style>
+        .w{ stroke:#10233f; stroke-width:2.2; fill:none; }
+        .lbl{ font-family:'Segoe UI',sans-serif; fill:#1f2733; font-size:12px; }
+        .lblm{ font-family:ui-monospace,monospace; fill:#0b7a44; font-size:13px; font-weight:700; }
+      </style>
+      <!-- input wire + label -->
+      <text class="lblm" x="18" y="92" >−g  in</text>
+      <line class="w" x1="78" y1="100" x2="150" y2="100"/>
+      <!-- resistor -->
+      <path class="w" d="M150,100 l8,-9 l14,18 l14,-18 l14,18 l14,-18 l8,9"/>
+      <text class="lbl" x="186" y="80" text-anchor="middle">R</text>
+      <line class="w" x1="222" y1="100" x2="272" y2="100"/>
+      <!-- node to inverting input -->
+      <circle cx="272" cy="100" r="3.5" fill="#10233f"/>
+      <line class="w" x1="272" y1="100" x2="300" y2="100"/>
+      <!-- op amp triangle -->
+      <path class="w" d="M300,64 L300,164 L392,114 Z" fill="#fbf6ea"/>
+      <text class="lbl" x="312" y="100" font-size="15">−</text>
+      <text class="lbl" x="312" y="142" font-size="15">+</text>
+      <!-- + input to ground -->
+      <line class="w" x1="300" y1="130" x2="276" y2="130"/>
+      <line class="w" x1="276" y1="122" x2="276" y2="138"/><line class="w" x1="270" y1="125" x2="282" y2="125"/><line class="w" x1="273" y1="135" x2="279" y2="135"/>
+      <!-- output -->
+      <line class="w" x1="392" y1="114" x2="500" y2="114"/>
+      <text class="lblm" x="500" y="108" >→ velocity</text>
+      <!-- feedback capacitor over the top -->
+      <line class="w" x1="272" y1="100" x2="272" y2="46"/>
+      <line class="w" x1="272" y1="46" x2="320" y2="46"/>
+      <line class="w" x1="332" y1="46" x2="430" y2="46"/>
+      <line class="w" x1="430" y1="46" x2="430" y2="114"/>
+      <circle cx="430" cy="114" r="3.5" fill="#10233f"/>
+      <!-- capacitor plates -->
+      <line class="w" x1="320" y1="34" x2="320" y2="58"/>
+      <line class="w" x1="332" y1="34" x2="332" y2="58"/>
+      <text class="lbl" x="326" y="26" text-anchor="middle">C  (capacitor)</text>
+      <!-- formula -->
+      <text x="280" y="206" text-anchor="middle" font-family="ui-monospace,monospace" font-size="13" fill="#10233f">output = −(1/RC) × ∫ input dt &nbsp;+&nbsp; starting value</text>
+    </svg>
+    <figcaption>The integrator. Notice the minus sign in the formula — every integrator <em>flips the sign</em> as it works. That’s the only reason the “−1” inverter blocks exist: to keep the physics signs honest.</figcaption>
+  </figure>
+
+  <div class="warn"><b>The key insight that de-tangles the wires:</b> an op-amp integrator computes the <em>negative</em> integral. Chain two and the sign flips twice. So the “extra” amplifiers on the schematic (the inverters) aren’t doing physics — they’re <b>bookkeeping the minus signs</b> so velocity falls and the arc points the right way. See that, and the patch panel stops looking like spaghetti.</div>
+
+  <h3>Step 3 — The block diagram becomes patch cords</h3>
+  <p>On the GP-6 every block’s connections are brought out to color-coded jacks. “Programming” means plugging cords so each arrow above becomes a wire. (Exact jack list is in Section 6.) Walking the signal:</p>
+  <ol>
+    <li><b>+10 V reference → GRAVITY pot (#2).</b> Dialing it sets the number <code>g</code>.</li>
+    <li><b>Pot #2 → inverter (#7).</b> Now a steady <b>−g</b> — a downward pull.</li>
+    <li><b>−g → integrator #1.</b> Its output ramps; that ramp <b>is velocity.</b></li>
+    <li><b>−10 V → INITIAL VELOCITY pot (#5) → inverter (#8) → integrator #1’s start input.</b> Preloads the launch speed.</li>
+    <li><b>Integrator #1 → integrator #2.</b> Output is <b>height.</b></li>
+    <li><b>Integrator #2 → oscilloscope Y.</b> Scope X is time → it draws <b>height vs. time, the parabola.</b></li>
+  </ol>
+  <div class="payoff"><b>Say it out loud:</b> “Every term in the equation is a block, every arrow is a wire. The schematic <em>is</em> the equation, and the equation <em>is</em> the flight.”</div>
+</section>
+
+<!-- ============================ 4. WHY IT'S ALIVE ============================ -->
+<section class="sheet page-break">
+  <p class="sec-kick">Section 4</p>
+  <h2 class="sec serif">Why the Curve Is Alive — and where “apogee” hides</h2>
+  <div class="sec-rule"></div>
+
+  <p class="lead">A digital computer steps through tiny slices of time. This machine never steps — its capacitors integrate <b>continuously</b>, at the speed of electricity. The whole flight is solved all at once, all the time.</p>
+
+  <p>A switch called <b>Repetitive Operation</b> makes the machine re-launch the projectile dozens of times a second, redrawing the arc each time. That’s why turning the <b>GRAVITY</b> or <b>INITIAL VELOCITY</b> knob reshapes the trajectory <em>instantly and smoothly</em> — nothing is recompiled; you simply changed a number in a live equation.</p>
+
+  <table>
+    <tr><th>Mode</th><th>What happens inside</th><th>The projectile story</th></tr>
+    <tr><td><b>Pot Set</b></td><td>You dial the coefficient knobs and read them on the meter.</td><td>Choose gravity and launch speed.</td></tr>
+    <tr><td><b>IC (Reset)</b></td><td>Integrators forced to their start values.</td><td>The ball is in your hand.</td></tr>
+    <tr><td><b>Operate</b></td><td>Integrators integrate; the solution runs.</td><td><b>Launch!</b></td></tr>
+    <tr><td><b>Hold</b></td><td>Integration freezes.</td><td>Pause the ball mid-air.</td></tr>
+    <tr><td><b>Repetitive Op</b></td><td>Auto-cycles Reset → Operate many times/second.</td><td>Re-flies it forever → a stable, live trace.</td></tr>
+  </table>
+
+  <h3>The hidden gem: find the top of the flight</h3>
+  <p>Switch the scope to view <b>velocity</b> instead of height and the parabola becomes a <b>straight line sloping down.</b> Gravity steadily steals speed. Where that line <b>crosses zero</b>, the ball has stopped rising — that instant is the <b>apogee</b>, the very top. After it, the ball falls.</p>
+
+  <figure>
+    <svg viewBox="0 0 440 280" role="img" aria-label="Oscilloscope showing velocity as a straight line crossing zero at the apogee">
+      <defs><filter id="g2" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="2.6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        <radialGradient id="sg2" cx="50%" cy="50%" r="70%"><stop offset="0" stop-color="#0e3120"/><stop offset="100%" stop-color="#04100a"/></radialGradient></defs>
+      <rect x="2" y="2" width="436" height="276" rx="14" fill="#0a1422" stroke="#26405f" stroke-width="1.5"/>
+      <rect x="22" y="20" width="396" height="240" rx="10" fill="url(#sg2)" stroke="#0c2a1b" stroke-width="2"/>
+      <g stroke="#0f3a25" stroke-width="1"><line x1="110" y1="20" x2="110" y2="260"/><line x1="308" y1="20" x2="308" y2="260"/><line x1="22" y1="80" x2="418" y2="80"/><line x1="22" y1="200" x2="418" y2="200"/></g>
+      <g stroke="#1d5c3d" stroke-width="1.4"><line x1="220" y1="20" x2="220" y2="260"/><line x1="22" y1="140" x2="418" y2="140"/></g>
+      <!-- velocity line -->
+      <line x1="48" y1="56" x2="392" y2="224" stroke="#34f58a" stroke-width="3.2" stroke-linecap="round" filter="url(#g2)"/>
+      <!-- zero crossing -->
+      <circle cx="220" cy="140" r="6" fill="#eafff3" filter="url(#g2)"/>
+      <text x="232" y="132" fill="#a9ffce" font-size="12" font-family="monospace">v = 0</text>
+      <text x="232" y="156" fill="#7fd6a3" font-size="11" font-family="'Segoe UI'">top of flight (apogee)</text>
+      <text x="60" y="44" fill="#7fd6a3" font-size="11" font-family="'Segoe UI'">rising ↑</text>
+      <text x="330" y="244" fill="#7fd6a3" font-size="11" font-family="'Segoe UI'">falling ↓</text>
+    </svg>
+    <figcaption>Velocity vs. time. The straight, falling line is gravity bleeding off speed. The zero-crossing is the apogee — a beautiful “aha” for any age.</figcaption>
+  </figure>
+</section>
+
+<!-- ============================ 5. DEMO SCRIPT ============================ -->
+<section class="sheet page-break">
+  <p class="sec-kick">Section 5 · For the Presenter</p>
+  <h2 class="sec serif">The Demo Script</h2>
+  <div class="sec-rule"></div>
+  <p class="lead">A timed walkthrough — about 5–7 minutes. <span class="stage">Stage directions are in green italics.</span> Spoken lines are in quotes. Land the <b>bold</b> beats.</p>
+
+  <div class="scriptcard">
+    <div class="beat"><div class="h"><span class="t">0 · The 60-second hook</span><span class="clock">for walk-ups</span></div>
+      <p class="say"><span class="stage">[Point at the parabola.]</span> “See that curve? That’s a ball flying through the air — being figured out <b>right now</b> by this machine. And here’s the surprise: <b>no chip, no software.</b> It’s an <b>analog</b> computer — it uses <b>electricity to act out the physics.</b> Gravity is a voltage set by this knob. Watch.” <span class="stage">[Turn GRAVITY slowly.]</span> “<b>The whole trajectory reshapes — instantly.</b> Less gravity, it sails like the Moon; more, it slams down. I didn’t re-run anything. The wires just <em>are</em> the new equation. <b>That’s the charm of analog computing.</b>”</p></div>
+  </div>
+
+  <div class="scriptcard">
+    <div class="beat"><div class="h"><span class="t">1 · The hook</span><span class="clock">0:30</span></div>
+      <p class="say"><span class="stage">[Beside the scope, parabola visible.]</span> “Look at this green arc — a ball thrown across a field, up, over, and down. <b>This machine is drawing it because it’s computing the flight in real time.</b> And it’s a computer with <b>no chip, no code, no software.</b> It’s called an <b>analog computer.</b>”</p></div>
+
+    <div class="beat"><div class="h"><span class="t">2 · Digital vs. analog</span><span class="clock">1:00</span></div>
+      <p class="say">“Your phone is <b>digital</b> — it solves problems by <b>counting</b>, billions of 1s and 0s a second. This one is <b>analog.</b> It doesn’t count — it uses <b>voltage to stand in for real things.</b> A voltage here <em>is</em> gravity, one <em>is</em> the ball’s speed, one <em>is</em> its height. It’s <b>wired</b> so the electricity obeys the same physics a real ball obeys. <b>It doesn’t calculate the motion — it becomes the motion.</b>” <span class="stage">[Gesture at the patch cords.]</span> “Those wires are the program.”</p></div>
+
+    <div class="beat"><div class="h"><span class="t">3 · The physics, in three steps</span><span class="clock">1:15</span></div>
+      <p class="say"><span class="stage">[Mime a ball arcing.]</span> “One thing acts on a thrown ball: <b>gravity</b>, pulling down steadily. So — <b>one</b>, gravity is a steady voltage, set by this <b>GRAVITY</b> knob. <span class="stage">[Tap pot #2.]</span> <b>Two</b>, add that pull up over time and you get <b>speed</b> — the block that adds up is an <b>integrator.</b> <b>Three</b>, add the <em>speed</em> up over time and you get <b>height</b> — that’s the arc. Gravity → integrate → speed → integrate → height.”</p></div>
+
+    <div class="beat"><div class="h"><span class="t">4 · Read the wiring like a sentence</span><span class="clock">1:00</span></div>
+      <p class="say"><span class="stage">[Trace the schematic / panel with a finger.]</span> “Start at the <b>GRAVITY</b> knob → into the <b>first integrator</b> → out comes <b>speed.</b> This other knob, <b>INITIAL VELOCITY</b>, is how hard we throw it. <span class="stage">[Tap pot #5.]</span> Into the <b>second integrator</b> → out comes <b>height</b> → to the <b>scope.</b> That’s your arc. Those little ‘invert’ amps don’t do physics — they just keep plus and minus straight so gravity pulls down and the throw goes up.”</p></div>
+
+    <div class="beat"><div class="h"><span class="t">5 · The payoff — make it live</span><span class="clock">1:30</span></div>
+      <p class="say">“Here’s the magic — it re-flies the ball dozens of times a second, so I can change the world <b>mid-flight.</b>” <span class="stage">[Turn GRAVITY down slowly.]</span> “Weaken gravity… the arc <b>stretches</b> — that’s the <b>Moon.</b>” <span class="stage">[Turn it up.]</span> “Crank it up — the arc <b>collapses.</b> Heavy planet.” <span class="stage">[Turn INITIAL VELOCITY up.]</span> “Throw harder — bigger arc. <b>I never typed anything. The trajectory changes the instant I turn the knob, because the wiring is the equation.</b>” <span class="stage">[Optional: switch to the velocity view.]</span> “This falling line is <b>speed</b>; where it crosses zero is the <b>top of the flight — the apogee.</b>”</p></div>
+
+    <div class="beat"><div class="h"><span class="t">6 · The close</span><span class="clock">0:30</span></div>
+      <p class="say">“For about thirty years — through the Apollo program, aircraft and missile design — <b>this</b> is how engineers solved the hardest equations: not by counting, but by building a little electrical model and watching it run. Digital won on precision and flexibility. But for <em>feeling</em> how a system behaves, nothing beats it. <b>That’s the charm of analog computing.</b>”</p></div>
+  </div>
+
+  <div class="note"><h4>Presenter tips</h4>
+    <p>• Turn knobs <b>slowly</b> — the magic is watching the curve <em>morph.</em> &nbsp; • Don’t re-patch cords mid-tour unless confident (Section 6 restores it). &nbsp; • If the trace is flat/off-screen, you’re likely in Reset/Hold or a pot is at zero — confirm Operate/Repetitive and raise the pots.</p></div>
+  <div class="payoff"><b>The one line to never skip:</b> “It doesn’t calculate the motion — it <em>becomes</em> the motion.”</div>
+</section>
+
+<!-- ============================ 6. OPERATOR SETUP ============================ -->
+<section class="sheet page-break">
+  <p class="sec-kick">Section 6 · Run It / Fix It</p>
+  <h2 class="sec serif">Operator Setup &amp; Patch List</h2>
+  <div class="sec-rule"></div>
+
+  <div class="warn"><b>Authority:</b> the museum’s tan schematic handout is the master wiring diagram for this exact patch. If anything here disagrees with the physical panel or that sheet, <b>trust the sheet.</b> The list below reconstructs it block-for-block — verify before re-patching.</div>
+
+  <h3>A · Power-up &amp; display</h3>
+  <ol>
+    <li>Power on the GP-6 and the HP 1200B; warm up ~1 minute.</li>
+    <li>Scope: computed signal on <b>vertical (Y)</b>, <b>time on horizontal (X)</b>; start ~<b>1 V/div</b>, set the sweep so one full flight fills the screen; adjust intensity/focus.</li>
+    <li>Confirm the red <b>OVLD</b> lamp is <b>off.</b> If lit, an amplifier is railed — lower the GRAVITY / INITIAL-VELOCITY pots and recheck patching.</li>
+  </ol>
+
+  <h3>B · Front-panel settings (the photographed configuration)</h3>
+  <table>
+    <tr><th>Control</th><th>Setting</th><th>Why</th></tr>
+    <tr><td>Mode selector</td><td><b>OPR</b> (operate)</td><td>Lets the run modes drive the solution.</td></tr>
+    <tr><td>Run mode</td><td><b>RO</b> (repetitive)</td><td>Auto-cycles Reset→Operate → live, stable trace.</td></tr>
+    <tr><td>Compute Time</td><td>mid (~<b>20–50</b>)</td><td>Repeat rate; tune so the arc is steady and fills the screen.</td></tr>
+    <tr><td><b>GRAVITY</b> — pot #2</td><td>~<b>0.16</b> (≈ −0.160 on meter)</td><td>The value of g. The “hero” knob.</td></tr>
+    <tr><td><b>INITIAL VELOCITY</b> — pot #5</td><td>~<b>0.66</b> (≈ −0.660 on meter)</td><td>Launch speed. The second demo knob.</td></tr>
+  </table>
+  <p style="font-size:10.5px; color:var(--muted);">Meter reads <b>percent of 10 V</b> (−0.588 = −5.88 V = −59%). Panel address tape: <b>X = TIME</b>; <b>Y/Pot 7 = GRAVITY, 5 = G×V</b>; <b>Solution 3 = VELOCITY, 2 = POSITION</b>.</p>
+
+  <h3>C · Patch list (block-for-block)</h3>
+  <p style="font-size:10.5px;">Each amplifier brings out <b>SJ</b> (input / summing junction), <b>IC</b> (start-value input), and <b>output</b>. Pots have input + wiper. References are <b>±10 V</b>.</p>
+  <table>
+    <tr><th>#</th><th>From</th><th>To</th><th>Represents</th></tr>
+    <tr><td>1</td><td>+10 V ref</td><td>Pot #2 in (GRAVITY)</td><td>scale into g</td></tr>
+    <tr><td>2</td><td>Pot #2 out</td><td>Amp #7 in (invert)</td><td>make −g</td></tr>
+    <tr><td>3</td><td>Amp #7 out</td><td>Amp #1 SJ (integrate)</td><td>−g → velocity</td></tr>
+    <tr><td>4</td><td>−10 V ref</td><td>Pot #5 in (INIT VEL)</td><td>scale into v₀</td></tr>
+    <tr><td>5</td><td>Pot #5 out</td><td>Amp #8 in (invert)</td><td>make +v₀</td></tr>
+    <tr><td>6</td><td>Amp #8 out</td><td>Amp #1 <b>IC</b></td><td>preload launch speed</td></tr>
+    <tr><td>7</td><td>Amp #1 out</td><td>Amp #2 SJ (integrate)</td><td>velocity → height</td></tr>
+    <tr><td>8</td><td>Amp #2 out</td><td>Scope Y</td><td>height vs. time (parabola)</td></tr>
+    <tr><td>9</td><td>Amp #1 out</td><td>Amp #3 in (invert)</td><td>flip velocity for display</td></tr>
+    <tr><td>10</td><td>Amp #3 out</td><td>Scope Y (alt.)</td><td>velocity line</td></tr>
+    <tr><td>—</td><td>Time base</td><td>Scope X</td><td>time axis</td></tr>
+  </table>
+  <p style="font-size:10.5px; color:var(--muted);"><b>Grounds:</b> black cords tie scope and computer references together — don’t pull them thinking they’re spare.</p>
+
+  <h3>D · Run sequence (each demo)</h3>
+  <ol>
+    <li>Mode → <b>Pot Set</b>; confirm GRAVITY (#2) and INITIAL VELOCITY (#5) on the meter; back to <b>OPR.</b></li>
+    <li>Ensure <b>RO</b>; a steady arc should appear.</li>
+    <li>Demo <b>GRAVITY</b> (slow): arc stretches (Moon) / collapses (heavy planet).</li>
+    <li>Demo <b>INITIAL VELOCITY</b>: bigger / smaller arc.</li>
+    <li>Freeze for discussion with <b>Hold</b>; resume with <b>Operate/RO.</b></li>
+  </ol>
+
+  <h3>E · Troubleshooting</h3>
+  <table>
+    <tr><th>Symptom</th><th>Likely cause</th><th>Fix</th></tr>
+    <tr><td>OVLD lit; trace pinned to edge</td><td>pot too high / mis-patch</td><td>Lower pots; verify cords 1–7 vs. the sheet.</td></tr>
+    <tr><td>Flat line, no arc</td><td>in Reset/Hold, pot at zero, or scope on wrong node</td><td>Set Operate/RO; raise pots; scope Y on Amp #2.</td></tr>
+    <tr><td>Arc drifts / won’t sit still</td><td>Compute Time or sweep mismatched</td><td>Re-tune Compute Time &amp; scope time/div.</td></tr>
+    <tr><td>Curve frozen, ignores knobs</td><td>stuck in Hold, or in Pot Set</td><td>Return to Operate + RO.</td></tr>
+    <tr><td>Wrong trace (line vs. parabola)</td><td>scope Y on wrong amp</td><td>Amp #2 = parabola; Amp #3 = velocity line.</td></tr>
+  </table>
+
+  <!-- timeline -->
+  <h2 class="sec serif" style="margin-top:30px;">From Cannonballs to Your Phone</h2>
+  <div class="sec-rule"></div>
+  <div class="tl">
+    <div class="ev"><span class="yr">1600s</span> — Galileo shows a projectile’s path is a <b>parabola</b>; the math of flight begins.</div>
+    <div class="ev"><span class="yr">1700s–1800s</span> — Armies compile <b>firing tables</b> by hand; “computers” are people doing arithmetic.</div>
+    <div class="ev"><span class="yr">1930s–40s</span> — Analog <b>differential analyzers</b> mechanize the equations of motion for ballistics and engineering.</div>
+    <div class="ev"><span class="yr">1945</span> — <b>ENIAC</b> is built to compute artillery firing tables — a founding moment of digital computing.</div>
+    <div class="ev"><span class="yr">1950s–70s</span> — Analog computers like this GP-6 design aircraft, spacecraft, and control systems; Apollo-era engineers live on them.</div>
+    <div class="ev"><span class="yr">Today</span> — The same equations run on the chip in your pocket. It all traces back to one question: <b>where will the projectile land?</b></div>
+  </div>
+
+  <div class="foot">
+    <b>Comdyna GP-6 Projectile Demonstration — Docent Guide.</b> Prepared for the museum exhibit pairing the GP-6 analog computer with the HP 1200B oscilloscope. The patch list reconstructs the museum’s tan schematic block-for-block; verify against the physical panel and that sheet before re-patching. &nbsp;·&nbsp; Print on US Letter; colors and diagrams are tuned for color printing.
+  </div>
+</section>
+
+</body>
+</html>
