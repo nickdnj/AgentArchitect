@@ -1,0 +1,16 @@
+# Regeneratable render intermediates — do not commit
+build/
+
+# Regeneratable per-scene audio (the concatenated narration.mp3 + durations.json are kept)
+assets/audio/
+assets/audio-nick/scene-*.wav
+*.tmp.mp3
+
+# Superseded full-cut variants (vcf-comdyna-previz-LOCKED.mp4 is the keeper)
+media/vcf-comdyna-draft-v1.mp4
+media/vcf-comdyna-draft-v2.mp4
+media/vcf-comdyna-draft-nick.mp4
+media/vcf-comdyna-animatic.mp4
+
+# Incoming real footage drop (large; not version-controlled)
+photos/
