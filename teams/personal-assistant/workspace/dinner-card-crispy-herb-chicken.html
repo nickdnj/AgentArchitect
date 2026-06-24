@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crispy Lemon-Garlic-Thyme Chicken Dinner</title>
+<style>
+  :root { --ink:#1d1d1f; --muted:#6b6b6b; --line:#e2e2e2; --accent:#2e5d4b; --accent-soft:#eef4f0; --gold:#c8973f; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: "Georgia", "Times New Roman", serif;
+    color: var(--ink); background:#fff; margin:0;
+    line-height:1.5; -webkit-font-smoothing:antialiased;
+  }
+  .page { max-width: 820px; margin: 0 auto; padding: 40px 48px; }
+  .eyebrow {
+    font-family:"Helvetica Neue",Arial,sans-serif; text-transform:uppercase;
+    letter-spacing:.22em; font-size:11px; color:var(--accent); font-weight:700; margin:0 0 8px;
+  }
+  h1 { font-size:34px; line-height:1.1; margin:0 0 6px; }
+  .subtitle { font-style:italic; color:var(--muted); font-size:16px; margin:0 0 18px; }
+  .meta {
+    display:flex; gap:0; border:1px solid var(--line); border-radius:8px; overflow:hidden;
+    margin:0 0 28px; font-family:"Helvetica Neue",Arial,sans-serif;
+  }
+  .meta div { flex:1; padding:12px 14px; text-align:center; border-right:1px solid var(--line); }
+  .meta div:last-child { border-right:none; }
+  .meta .k { text-transform:uppercase; letter-spacing:.1em; font-size:9.5px; color:var(--muted); }
+  .meta .v { font-size:15px; font-weight:700; margin-top:3px; }
+
+  .cols { display:flex; gap:36px; align-items:flex-start; }
+  .ingredients { flex:0 0 270px; }
+  .steps { flex:1; }
+
+  h2.section {
+    font-family:"Helvetica Neue",Arial,sans-serif; font-size:12px; text-transform:uppercase;
+    letter-spacing:.16em; color:var(--accent); border-bottom:2px solid var(--accent);
+    padding-bottom:6px; margin:0 0 14px;
+  }
+  ul.ing { list-style:none; margin:0 0 22px; padding:0; }
+  ul.ing li { display:flex; justify-content:space-between; gap:10px; padding:7px 0; border-bottom:1px dotted var(--line); font-size:14px; }
+  ul.ing li .amt { color:var(--accent); font-weight:700; white-space:nowrap; font-family:"Helvetica Neue",Arial,sans-serif; font-size:13px; }
+  .haveit { font-family:"Helvetica Neue",Arial,sans-serif; font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin:-12px 0 22px; }
+  .shop {
+    background:var(--accent-soft); border-radius:8px; padding:14px 16px; margin:0 0 22px;
+    font-family:"Helvetica Neue",Arial,sans-serif; font-size:13px;
+  }
+  .shop b { display:block; text-transform:uppercase; letter-spacing:.12em; font-size:10px; color:var(--accent); margin-bottom:8px; }
+  .shop ul { margin:0; padding-left:18px; }
+  .shop li { margin:4px 0; }
+
+  .step { display:flex; gap:16px; margin:0 0 22px; }
+  .num {
+    flex:0 0 34px; height:34px; width:34px; border-radius:50%;
+    background:var(--accent); color:#fff; font-family:"Helvetica Neue",Arial,sans-serif;
+    font-weight:700; font-size:16px; display:flex; align-items:center; justify-content:center;
+  }
+  .step .body { flex:1; }
+  .step h3 { font-family:"Helvetica Neue",Arial,sans-serif; font-size:15px; margin:4px 0 5px; }
+  .step h3 .time { color:var(--gold); font-weight:700; font-size:12px; margin-left:8px; letter-spacing:.04em; }
+  .step p { margin:0; font-size:14.5px; }
+  .tip { background:#fbf7ef; border-left:3px solid var(--gold); padding:6px 12px; margin-top:8px; font-size:13px; font-style:italic; color:#5a4a2a; }
+
+  .choice { border:1px dashed var(--accent); border-radius:8px; padding:14px 18px; margin:0 0 22px; }
+  .choice h3 { font-family:"Helvetica Neue",Arial,sans-serif; font-size:14px; margin:0 0 10px; color:var(--accent); }
+  .choice .opt { font-size:14px; margin:6px 0; }
+  .choice .opt b { font-family:"Helvetica Neue",Arial,sans-serif; }
+
+  .footer { margin-top:30px; padding-top:14px; border-top:1px solid var(--line); font-family:"Helvetica Neue",Arial,sans-serif; font-size:11px; color:var(--muted); display:flex; justify-content:space-between; }
+
+  @media print {
+    .page { padding:18px 24px; max-width:none; }
+    body { font-size:12.5px; }
+    h1 { font-size:28px; }
+    .step { margin-bottom:14px; }
+    .num { box-shadow:none; }
+    .nobreak { break-inside:avoid; }
+    @page { margin:1cm; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <p class="eyebrow">Tonight's Dinner &middot; Serves 2</p>
+  <h1>Crispy Lemon-Garlic-Thyme Drumsticks</h1>
+  <p class="subtitle">with roasted garlic-thyme Yukon golds, lemony broccoli &amp; a dip bar</p>
+
+  <div class="meta">
+    <div><div class="k">Prep</div><div class="v">15 min</div></div>
+    <div><div class="k">Cook</div><div class="v">45 min</div></div>
+    <div><div class="k">Total</div><div class="v">~1 hour</div></div>
+    <div><div class="k">Heat</div><div class="v">450&deg;F</div></div>
+    <div><div class="k">Serves</div><div class="v">2</div></div>
+  </div>
+
+  <div class="cols">
+
+    <!-- LEFT: INGREDIENTS -->
+    <div class="ingredients">
+      <h2 class="section">Ingredients</h2>
+      <ul class="ing">
+        <li><span>Chicken drumsticks</span><span class="amt">1&frac12; lb</span></li>
+        <li><span>Yukon gold potatoes</span><span class="amt">1&frac12; lb</span></li>
+        <li><span>Broccoli</span><span class="amt">1 head</span></li>
+        <li><span>Garlic</span><span class="amt">6 cloves</span></li>
+        <li><span>Shallot</span><span class="amt">1</span></li>
+        <li><span>Fresh thyme</span><span class="amt">6 sprigs</span></li>
+        <li><span>Lemon</span><span class="amt">1</span></li>
+        <li><span>Butter</span><span class="amt">4 Tbsp</span></li>
+        <li><span>Baking powder</span><span class="amt">&frac12; tsp</span></li>
+        <li><span>Baking soda</span><span class="amt">&frac12; tsp</span></li>
+        <li><span>Olive oil</span><span class="amt">3 Tbsp</span></li>
+        <li><span>Salt &amp; black pepper</span><span class="amt">to taste</span></li>
+      </ul>
+
+      <div class="shop">
+        <b>Pick up at the store</b>
+        <ul>
+          <li>Baking powder + baking soda &mdash; <em>the crispy secret</em></li>
+          <li>Butter (1 stick)</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- RIGHT: STEPS -->
+    <div class="steps">
+      <h2 class="section">Instructions</h2>
+
+      <div class="step nobreak">
+        <div class="num">1</div>
+        <div class="body">
+          <h3>Prep &amp; preheat <span class="time">0:00</span></h3>
+          <p>Heat oven to <b>450&deg;F</b>. Pat the thawed chicken <b>very dry</b> with paper towels &mdash; dry skin = crispy skin. Mince 4 cloves garlic, finely dice the shallot, strip the leaves from 4 thyme sprigs. Zest the lemon, then cut it in half.</p>
+        </div>
+      </div>
+
+      <div class="step nobreak">
+        <div class="num">2</div>
+        <div class="body">
+          <h3>Potatoes in first <span class="time">0:05</span></h3>
+          <p>Cut potatoes into &frac34;" chunks. Toss with 2 Tbsp olive oil, 2 smashed garlic cloves, 2 thyme sprigs, salt &amp; pepper. Spread on a sheet pan and roast <b>35&ndash;40 min</b>, flipping once at the halfway mark.</p>
+        </div>
+      </div>
+
+      <div class="step nobreak">
+        <div class="num">3</div>
+        <div class="body">
+          <h3>Season &amp; roast the chicken <span class="time">0:10</span></h3>
+          <p>Mix <b>&frac12; tsp baking soda + &frac12; tsp baking powder</b> with 1 tsp salt and pepper, then toss with the dried drumsticks until evenly coated. Arrange on a wire rack set over a foil-lined sheet pan. Roast <b>40&ndash;45 min</b> until deep golden and crisp.</p>
+          <div class="tip">No rack? Roast straight on the pan and flip once &mdash; still great, just rotate for even crisping.</div>
+        </div>
+      </div>
+
+      <div class="step nobreak">
+        <div class="num">4</div>
+        <div class="body">
+          <h3>Roast the broccoli <span class="time">0:30</span></h3>
+          <p>Cut broccoli into florets. Toss with 1 Tbsp olive oil, 2 sliced garlic cloves, salt &amp; pepper. Roast <b>18&ndash;20 min</b> until edges char. Finish with a squeeze of fresh lemon.</p>
+        </div>
+      </div>
+
+      <div class="step nobreak">
+        <div class="num">5</div>
+        <div class="body">
+          <h3>Make the herb-lemon butter <span class="time">0:40</span></h3>
+          <p>In a small pan, melt 4 Tbsp butter with the minced garlic, diced shallot, thyme leaves, and lemon zest. Simmer 1&ndash;2 min until fragrant. Squeeze in half the lemon.</p>
+        </div>
+      </div>
+
+      <div class="step nobreak">
+        <div class="num">6</div>
+        <div class="body">
+          <h3>Toss, plate &amp; serve <span class="time">0:45</span></h3>
+          <p>Add the hot, crispy drumsticks to a big bowl, pour over the herb-lemon butter, and toss to coat. Plate with the potatoes and broccoli. Dinner's served. &#127831;</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="science nobreak" style="background:#f4f0e6;border-left:4px solid #c8973f;border-radius:8px;padding:16px 20px;margin:30px 0 0;">
+    <h2 class="section" style="border-color:#c8973f;color:#9a6f1f;margin-bottom:10px;">The Science &middot; Why Baking Soda + Powder?</h2>
+    <p style="margin:0;font-size:14px;">Crispy skin comes down to two things: <b>dry</b> and <b>brown</b>. The <b>baking soda</b> is alkaline &mdash; it raises the skin's pH, which speeds up the Maillard browning reaction so the skin colors and crisps <em>before</em> the meat dries out. It also pulls moisture to the surface, where the oven's heat evaporates it, leaving a thin, shatter-crisp shell instead of soft, rubbery skin. The <b>baking powder</b> adds a touch more lift and tempers the soda so there's no soapy edge. Together they give you fried-chicken crunch straight from the oven &mdash; no frying, no mess.</p>
+  </div>
+
+  <div class="footer">
+    <span>Chef Nick &middot; Kitchen Card</span>
+    <span>Crispy lemon-garlic-thyme drumsticks &#127831;</span>
+  </div>
+
+</div>
+</body>
+</html>
