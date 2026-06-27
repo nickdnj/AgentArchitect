@@ -89,6 +89,7 @@ your tasks, staged stories, and any self-improvement proposals.
 |---|---|
 | `otto doctor` | Health-check Ollama, both models, whisper, ffmpeg, paths, git, and the index. Run first. |
 | `otto index [--rebuild]` | Build/refresh the local semantic index. Incremental — only re-embeds changed pages. |
+| `otto bundle [--out DIR] [--rebuild]` | Export a compact, phone-ready copy of the index + wiki pages (for the future Otto Mobile app). Refreshes the index first, then writes to iCloud Drive. |
 | `otto ask "<question>"` | One-shot grounded question → cited answer from your wiki. |
 | `otto chat` | Conversational second-brain REPL (see slash-commands above). |
 | `otto reflect [tool\|wiki\|all]` | **Self-improvement.** The local model proposes (never makes) improvements and stages a Claude-ready brief to `raw/improvement-proposals-<date>.md`. |
@@ -122,6 +123,32 @@ curator:
 
 Otto's job ends at the `raw/` boundary; Claude's disciplined `wiki-ingest` begins there.
 
+## Phone bundle (Otto Mobile — Phase 0)
+
+`otto bundle` exports a compact, fully-offline snapshot of your wiki that a phone app can
+read without any network: the same `nomic-embed-text` vectors as the local index (packed as
+little-endian float32), the chunk text, and a mirror of the wiki markdown pages so a citation
+can open the full page. It refreshes the index first, then writes the bundle to iCloud Drive
+(`~/Library/Mobile Documents/com~apple~CloudDocs/Otto/wiki-bundle`) so it syncs to the phone
+automatically; override with `--out` or `OTTO_BUNDLE_DIR`.
+
+```bash
+otto bundle            # before you leave: refresh index + export to iCloud
+```
+
+Bundle contents (see `FORMAT.md` inside the bundle for the full phone-client contract):
+
+| File | What it is |
+|---|---|
+| `manifest.json` | Metadata + the **embedding-parity contract** the phone must honor |
+| `vectors.f32` | `count × dim` little-endian float32 embeddings, row-major, unnormalized |
+| `chunks.json` | `{id, path, heading, text}` per chunk, parallel to the vector rows |
+| `pages/<path>` | The wiki markdown, mirrored for offline reading |
+
+**Parity rule:** the phone must embed the user's raw query with the **same** model
+(`nomic-embed-text`) — never Apple `NLEmbedding` — or the vectors won't be comparable. A
+bundle is a snapshot; re-run `otto bundle` to refresh it.
+
 ## Configuration (env vars)
 
 | Var | Default |
@@ -132,6 +159,7 @@ Otto's job ends at the `raw/` boundary; Claude's disciplined `wiki-ingest` begin
 | `OLLAMA_URL` | `http://localhost:11434` |
 | `WHISPER_URL` | `http://localhost:2022/v1/audio/transcriptions` |
 | `SCRIBE_MIC` | `2` (ffmpeg avfoundation device index = MacBook Air Microphone) |
+| `OTTO_BUNDLE_DIR` | `~/Library/Mobile Documents/com~apple~CloudDocs/Otto/wiki-bundle` (fallback `~/.scribe/Otto/wiki-bundle`) |
 
 Every write is auto-committed locally (only the files Otto touched). Use `--no-commit`
 to skip. Nothing is pushed — you sync when you're back online.

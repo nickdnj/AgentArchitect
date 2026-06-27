@@ -13,6 +13,7 @@ reconnection. Only trivial fixes (with your approval) touch curated pages.
 Commands:
     scribe doctor                 Health-check every local dependency
     scribe index                  Build/refresh the local semantic index of the wiki
+    scribe bundle                 Export a compact, phone-ready copy of the index + pages
     scribe ask "<question>"        One-shot grounded question over your wiki (cited)
     scribe chat                   Conversational second-brain REPL (ask, remember, correct)
     scribe reflect [tool|wiki]    Propose (not make) improvements for Claude to act on later
@@ -31,15 +32,19 @@ Env overrides:
     WHISPER_URL      default http://localhost:2022/v1/audio/transcriptions
     SCRIBE_MIC       default 2   (ffmpeg avfoundation audio device index)
     SCRIBE_INDEX     default ~/.scribe/wiki-index.json
+    OTTO_BUNDLE_DIR  default ~/Library/Mobile Documents/com~apple~CloudDocs/Otto/wiki-bundle
+                     (falls back to ~/.scribe/Otto/wiki-bundle if iCloud Drive is absent)
 """
 
 import argparse
+import array
 import datetime as _dt
 import difflib
 import math
 import json
 import os
 import re
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -697,6 +702,146 @@ def cmd_reflect(args):
 def cmd_index(args):
     info(f"Indexing wiki at {WIKI_REPO} (embed model: {EMBED_MODEL})…")
     build_index(force=args.rebuild)
+    return 0
+
+
+# ----------------------------------------------------------------------------- phone bundle (Phase 0)
+BUNDLE_SCHEMA = "otto-bundle/1"
+
+# Written into every bundle so the phone client (Phase 1) knows the exact format AND the
+# embedding-parity contract it must honor. This file IS the spec — keep it truthful.
+BUNDLE_FORMAT_DOC = """# Otto phone bundle — format `{schema}`
+
+A compact, fully-offline snapshot of the wiki for a phone client. Built on the Mac by
+`otto bundle`; copied to the phone whenever it has signal, then read locally forever.
+
+## Files
+- `manifest.json`  — metadata + the embedding-parity contract (read this first).
+- `vectors.f32`    — chunk embeddings: `count × dim` little-endian float32, row-major,
+                     **unnormalized**. Row i belongs to chunk i in `chunks.json`.
+- `chunks.json`    — array of `{{id, path, heading, text}}`, same order as the vector rows.
+- `pages/<path>`   — the wiki markdown, mirrored so a citation tap opens the full page.
+
+## Retrieval on the phone (must match the Mac exactly)
+1. Embed the user's RAW query with **the same model** (`{embed_model}`) — no prefix, no
+   path/heading label. (Otto embeds documents WITH a `"<path> :: <heading>\\n<text>"` label
+   but the query WITHOUT one; replicate both sides faithfully or scores drift.)
+2. Cosine-similarity the query vector against every row of `vectors.f32`
+   (vectors are stored unnormalized — normalize both sides, or pre-normalize on import).
+3. Take the top-k chunks; show them as sources and feed their `text` to the on-device model.
+
+## Parity warning
+Do NOT substitute a different embedder (e.g. Apple `NLEmbedding`) for the query — its
+vectors live in a different space and will silently return garbage. Re-embedding requires
+a fresh `otto bundle`; bundles are snapshots, not live data.
+"""
+
+
+def default_bundle_dir():
+    """Where `otto bundle` writes by default: iCloud Drive if present, else ~/.scribe."""
+    env = os.environ.get("OTTO_BUNDLE_DIR")
+    if env:
+        return Path(env).expanduser()
+    icloud = HOME / "Library" / "Mobile Documents" / "com~apple~CloudDocs"
+    base = icloud if icloud.exists() else (HOME / ".scribe")
+    return base / "Otto" / "wiki-bundle"
+
+
+def _dir_size(path):
+    return sum(f.stat().st_size for f in path.rglob("*") if f.is_file())
+
+
+def _human(nbytes):
+    size = float(nbytes)
+    for unit in ("B", "KB", "MB", "GB"):
+        if size < 1024 or unit == "GB":
+            return f"{size:.0f} {unit}" if unit == "B" else f"{size:.1f} {unit}"
+        size /= 1024
+    return f"{size:.1f} GB"
+
+
+def export_bundle(out_dir, idx):
+    """Write a compact, phone-ready bundle (compact float32 vectors + chunk text + pages).
+    Faithfully mirrors the index `idx`; returns the manifest dict."""
+    chunks = idx.get("chunks", [])
+    if not chunks:
+        err("Index is empty — run `otto index` first (nothing to bundle).")
+        return None
+
+    # validate dimensionality is consistent across every chunk (parity depends on it)
+    dims = {len(ch.get("embedding") or []) for ch in chunks}
+    dims.discard(0)
+    if len(dims) != 1:
+        err(f"Inconsistent/empty embedding dimensions {sorted(dims)} — re-run `otto index --rebuild`.")
+        return None
+    dim = dims.pop()
+
+    out_dir.mkdir(parents=True, exist_ok=True)
+    pages_dir = out_dir / "pages"
+    # clear ONLY the artifacts we own, so deleted wiki pages don't linger in the bundle
+    if pages_dir.exists():
+        shutil.rmtree(pages_dir)
+    for stale in ("vectors.f32", "chunks.json", "manifest.json", "FORMAT.md"):
+        (out_dir / stale).unlink(missing_ok=True)
+
+    # 1. pack embeddings into one contiguous little-endian float32 blob (row i == chunk i)
+    vec = array.array("f")
+    for ch in chunks:
+        vec.extend(ch["embedding"])
+    if sys.byteorder == "big":
+        vec.byteswap()
+    (out_dir / "vectors.f32").write_bytes(vec.tobytes())
+
+    # 2. chunk metadata + text, parallel to the vector rows (embeddings live in vectors.f32)
+    meta_chunks = [{"id": i, "path": ch["path"], "heading": ch.get("heading", ""),
+                    "text": ch["text"]} for i, ch in enumerate(chunks)]
+    (out_dir / "chunks.json").write_text(json.dumps(meta_chunks, ensure_ascii=False))
+
+    # 3. mirror the actual wiki pages so a citation can open the full page offline
+    page_count = 0
+    for p in index_files():
+        dest = pages_dir / p.relative_to(WIKI_REPO)
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(p, dest)
+        page_count += 1
+
+    manifest = {
+        "schema": BUNDLE_SCHEMA,
+        "built": now_stamp(),
+        "wiki_repo": str(WIKI_REPO),
+        "embed_model": EMBED_MODEL,
+        "dim": dim,
+        "count": len(chunks),
+        "pages": page_count,
+        "vectors": {"file": "vectors.f32", "dtype": "float32",
+                    "byte_order": "little", "layout": "row-major count x dim",
+                    "normalized": False},
+        "chunks_file": "chunks.json",
+        "pages_dir": "pages",
+        "parity": {
+            "query_embed_input": "<text>  (raw query, no label/prefix)",
+            "doc_embed_input": "<path> :: <heading>\\n<text>  (heading omitted -> just <path>)",
+            "similarity": "cosine (vectors unnormalized)",
+        },
+    }
+    (out_dir / "manifest.json").write_text(json.dumps(manifest, indent=2))
+    (out_dir / "FORMAT.md").write_text(
+        BUNDLE_FORMAT_DOC.format(schema=BUNDLE_SCHEMA, embed_model=EMBED_MODEL))
+    return manifest
+
+
+def cmd_bundle(args):
+    out_dir = Path(args.out).expanduser() if args.out else default_bundle_dir()
+    info(f"Refreshing index before export (embed model: {EMBED_MODEL})…")
+    idx = build_index(force=args.rebuild, quiet=True)
+    info(f"Exporting phone bundle → {out_dir}")
+    manifest = export_bundle(out_dir, idx)
+    if not manifest:
+        return 1
+    ok(f"bundle ready — {manifest['count']} chunks ({manifest['dim']}-d) from "
+       f"{manifest['pages']} pages, {_human(_dir_size(out_dir))} total")
+    info("Copy this folder to the phone (iCloud Drive syncs it automatically). "
+         "See FORMAT.md inside for the phone client contract.")
     return 0
 
 
@@ -1398,6 +1543,11 @@ def main():
     ip = sub.add_parser("index", help="build/refresh the local semantic index of the wiki")
     ip.add_argument("--rebuild", action="store_true", help="re-embed every page from scratch")
     ip.set_defaults(func=cmd_index)
+
+    bp = sub.add_parser("bundle", help="export a compact, phone-ready copy of the index + pages")
+    bp.add_argument("--out", help="output directory (default: iCloud Drive Otto/wiki-bundle)")
+    bp.add_argument("--rebuild", action="store_true", help="re-embed every page before exporting")
+    bp.set_defaults(func=cmd_bundle)
 
     ap = sub.add_parser("ask", help="one-shot grounded question over your wiki")
     ap.add_argument("question", nargs="?", help="your question (quoted)")
