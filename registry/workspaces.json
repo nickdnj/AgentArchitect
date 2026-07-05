@@ -10,6 +10,33 @@
       "aaCommit": "d0bc14feebcc6d1c36ef85d65c81466d02c0f4e1"
     },
     {
+      "kind": "project",
+      "team": "content-studio",
+      "projectType": "podcast",
+      "name": "Donkey Kong at InfoAge",
+      "path": "/Users/nickd/Workspaces/donkey-kong-infoage",
+      "provisionedAt": "2026-07-05",
+      "aaCommit": "5cc5cdba0271b78dce30e9fb2b926ee899ed2be6"
+    },
+    {
+      "kind": "project",
+      "team": "software-project",
+      "projectType": "software",
+      "name": "Factory Demo App",
+      "path": "/Users/nickd/Workspaces/factory-demo-app",
+      "provisionedAt": "2026-07-05",
+      "aaCommit": "87034c7501aee54449b8e0a01fdfec5f02abf247"
+    },
+    {
+      "kind": "project",
+      "team": "content-studio",
+      "projectType": "youtube",
+      "name": "The Jersey Stack Ep 1 — The Transistor",
+      "path": "/Users/nickd/Workspaces/jersey-stack-ep1",
+      "provisionedAt": "2026-07-05",
+      "aaCommit": "5cc5cdba0271b78dce30e9fb2b926ee899ed2be6"
+    },
+    {
       "kind": "workspace",
       "team": "personal-assistant",
       "projectType": null,
