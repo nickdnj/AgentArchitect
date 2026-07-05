@@ -1,4 +1,0 @@
-# Regenerable render intermediates from the Video Assembler — not worth versioning.
-assembly/
-*.bak
-*.bak-*
