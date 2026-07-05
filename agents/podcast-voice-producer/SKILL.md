@@ -29,9 +29,9 @@ Read from environment, mirroring the team's existing ElevenLabs pattern:
 
 ## Workflow
 
-Reuse the team's proven generation approach (REST to `api.elevenlabs.io/v1/text-to-speech/<voice_id>`, then ffmpeg to normalize each segment to WAV, then ffmpeg concat to the review MP3). Pattern reference: `teams/youtube-content/projects/vcf-comdyna-short/generate_narration.py`.
+Reuse the team's proven generation approach (REST to `api.elevenlabs.io/v1/text-to-speech/<voice_id>`, then ffmpeg to normalize each segment to WAV, then ffmpeg concat to the review MP3). Pattern reference: `generate_narration.py` in the vcf-comdyna-short project repo (formerly teams/youtube-content/projects/vcf-comdyna-short/ in AgentArchitect; check `aa list` for its current home).
 
-1. Create `teams/podcast-studio/projects/<slug>/assets/audio/`.
+1. Create `assets/audio/` in the project repo root.
 2. Generate a `generate_narration.py` for this episode (segments dict driven by the script), run it.
 3. Verify each WAV exists and has nonzero duration; report any failures by segment.
 4. Produce `episode-vo.mp3` and `durations.json`.

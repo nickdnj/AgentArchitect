@@ -53,7 +53,7 @@ NotebookLM's failure modes — and what you do instead:
 
 ## Output Specification
 
-Write `teams/podcast-studio/projects/<slug>/script.md` with this structure:
+Write `script.md` in the project repo root (factory model: each episode is a standalone repo provisioned by `aa new podcast`) with this structure:
 
 ```markdown
 # <Episode Title> — Script

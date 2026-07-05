@@ -15,10 +15,10 @@ attach/delete/reorder, per-scene narration WAV playback, auto-saving notes, and
 
    ```bash
    PROJECT=<your-project-slug>
-   mkdir -p teams/youtube-content/projects/$PROJECT/storyboard-app
+   mkdir -p storyboard-app
    cp agents/video-script-writer/templates/storyboard-app/storyboard-data.json.tpl \
-      teams/youtube-content/projects/$PROJECT/storyboard-app/storyboard-data.json
-   mkdir -p teams/youtube-content/projects/$PROJECT/assets/{images,videos,audio/narration}
+      storyboard-app/storyboard-data.json
+   mkdir -p assets/{images,videos,audio/narration}
    ```
 
 2. Start the multi-tenant server (one time, serves every project):

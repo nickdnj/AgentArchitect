@@ -7,7 +7,8 @@
       "projectType": null,
       "path": "/Users/nickd/Workspaces/Altium",
       "provisionedAt": "2026-07-05",
-      "aaCommit": "d0bc14feebcc6d1c36ef85d65c81466d02c0f4e1"
+      "aaCommit": "bf513599106bbfda63bef80260b9c3de007a590b",
+      "syncedAt": "2026-07-05"
     },
     {
       "kind": "project",
@@ -16,7 +17,8 @@
       "name": "Donkey Kong at InfoAge",
       "path": "/Users/nickd/Workspaces/donkey-kong-infoage",
       "provisionedAt": "2026-07-05",
-      "aaCommit": "5cc5cdba0271b78dce30e9fb2b926ee899ed2be6"
+      "aaCommit": "bf513599106bbfda63bef80260b9c3de007a590b",
+      "syncedAt": "2026-07-05"
     },
     {
       "kind": "project",
@@ -25,7 +27,8 @@
       "name": "Factory Demo App",
       "path": "/Users/nickd/Workspaces/factory-demo-app",
       "provisionedAt": "2026-07-05",
-      "aaCommit": "87034c7501aee54449b8e0a01fdfec5f02abf247"
+      "aaCommit": "bf513599106bbfda63bef80260b9c3de007a590b",
+      "syncedAt": "2026-07-05"
     },
     {
       "kind": "project",
@@ -34,7 +37,8 @@
       "name": "The Jersey Stack Ep 1 — The Transistor",
       "path": "/Users/nickd/Workspaces/jersey-stack-ep1",
       "provisionedAt": "2026-07-05",
-      "aaCommit": "5cc5cdba0271b78dce30e9fb2b926ee899ed2be6"
+      "aaCommit": "bf513599106bbfda63bef80260b9c3de007a590b",
+      "syncedAt": "2026-07-05"
     },
     {
       "kind": "workspace",
@@ -42,7 +46,8 @@
       "projectType": null,
       "path": "/Users/nickd/Workspaces/max",
       "provisionedAt": "2026-07-05",
-      "aaCommit": "d0bc14feebcc6d1c36ef85d65c81466d02c0f4e1"
+      "aaCommit": "bf513599106bbfda63bef80260b9c3de007a590b",
+      "syncedAt": "2026-07-05"
     },
     {
       "kind": "workspace",
@@ -50,7 +55,8 @@
       "projectType": null,
       "path": "/Users/nickd/Workspaces/vcf",
       "provisionedAt": "2026-07-05",
-      "aaCommit": "0cc985704618873aa7716b7aa31eac68c544e11d"
+      "aaCommit": "bf513599106bbfda63bef80260b9c3de007a590b",
+      "syncedAt": "2026-07-05"
     },
     {
       "kind": "workspace",
@@ -58,7 +64,8 @@
       "projectType": null,
       "path": "/Users/nickd/Workspaces/wharfside",
       "provisionedAt": "2026-07-05",
-      "aaCommit": "d0bc14feebcc6d1c36ef85d65c81466d02c0f4e1"
+      "aaCommit": "bf513599106bbfda63bef80260b9c3de007a590b",
+      "syncedAt": "2026-07-05"
     }
   ]
 }

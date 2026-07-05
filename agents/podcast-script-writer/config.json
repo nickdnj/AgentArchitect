@@ -46,12 +46,18 @@
     "_note": "Curated knowledge lives in wiki_access."
   },
   "output": {
-    "folder": "teams/podcast-studio/projects/",
-    "formats": ["markdown"]
+    "folder": ".",
+    "formats": [
+      "markdown"
+    ],
+    "folder_note": "Relative to the current project repo root (factory model: projects are standalone repos provisioned by aa new; see AgentArchitect/docs/factory-model.md)"
   },
   "collaboration": {
     "can_request_from": [],
-    "provides_to": ["podcast-voice-producer", "podcast-show-notes"],
+    "provides_to": [
+      "podcast-voice-producer",
+      "podcast-show-notes"
+    ],
     "handoff_format": "structured-summary"
   },
   "trigger": {
