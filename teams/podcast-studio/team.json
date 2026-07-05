@@ -1,0 +1,28 @@
+{
+  "id": "podcast-studio",
+  "name": "Podcast Studio Team (merged into Content Studio)",
+  "description": "MERGED into content-studio (2026-07-05). Publish-ready podcast episodes in Nick's cloned voice. This alias redirects to the unified Content Studio team.",
+  "version": "2.0",
+  "created": "2026-06-25",
+  "merged_into": "content-studio",
+  "members": [],
+  "shared_context": {
+    "buckets": [],
+    "outputs_folder": null
+  },
+  "orchestration": {
+    "mode": "thin-orchestrator",
+    "execution": {
+      "model": "opus",
+      "max_turns": 50
+    },
+    "routing": {},
+    "delegation_strategy": "This team has merged into **content-studio**. Do not do any work here. Immediately invoke `Skill(skill: \"content-studio\")` with the user's original request verbatim. The Content Studio orchestrator runs the PODCAST pipeline (format selection → script → review gates → voice → master → show notes → publish)."
+  },
+  "collaboration_rules": {
+    "coordination_mode": "orchestrated",
+    "handoff_protocol": "sequential-delegation",
+    "output_sharing": "full",
+    "notification_email": "nickd@demarconet.com"
+  }
+}

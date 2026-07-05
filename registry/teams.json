@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "last_updated": "2026-06-25",
+  "last_updated": "2026-07-05",
   "teams": [
     {
       "id": "wharfside-board-assistant",
@@ -38,9 +38,10 @@
       "id": "youtube-content",
       "name": "YouTube Content Team",
       "folder": "teams/youtube-content",
-      "member_count": 5,
+      "member_count": 0,
       "created": "2026-02-11",
-      "status": "active"
+      "status": "merged",
+      "merged_into": "content-studio"
     },
     {
       "id": "hardware-dev",
@@ -62,9 +63,22 @@
       "id": "podcast-studio",
       "name": "Podcast Studio Team",
       "folder": "teams/podcast-studio",
-      "member_count": 6,
+      "member_count": 0,
       "created": "2026-06-25",
-      "status": "active"
+      "status": "merged",
+      "merged_into": "content-studio"
+    },
+    {
+      "id": "content-studio",
+      "name": "Content Studio Team",
+      "folder": "teams/content-studio",
+      "member_count": 11,
+      "created": "2026-07-05",
+      "status": "active",
+      "merged_from": [
+        "youtube-content",
+        "podcast-studio"
+      ]
     }
   ]
 }
