@@ -19,6 +19,14 @@
     },
     {
       "kind": "workspace",
+      "team": "vcf-museum",
+      "projectType": null,
+      "path": "/Users/nickd/Workspaces/vcf",
+      "provisionedAt": "2026-07-05",
+      "aaCommit": "0cc985704618873aa7716b7aa31eac68c544e11d"
+    },
+    {
+      "kind": "workspace",
       "team": "wharfside-board-assistant",
       "projectType": null,
       "path": "/Users/nickd/Workspaces/wharfside",
