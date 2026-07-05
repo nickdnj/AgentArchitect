@@ -1,7 +1,7 @@
 {
   "id": "podcast-producer",
   "name": "Podcast Producer",
-  "description": "Orchestrator for the Podcast Studio team. Reads a research report or story brief, chooses the episode format, runs the script→voice→master→notes→publish pipeline, and owns the two human review gates.",
+  "description": "Orchestrator for the Podcast Studio team. Reads a research report or story brief, chooses the episode format, runs the script\u2192voice\u2192master\u2192notes\u2192publish pipeline, and owns the two human review gates.",
   "version": "1.0",
   "agent_type": "orchestrator",
   "execution": {
@@ -46,8 +46,11 @@
     "_note": "Orchestrator routes work; curated knowledge lives in wiki_access."
   },
   "output": {
-    "folder": "teams/podcast-studio/outputs/",
-    "formats": ["markdown"]
+    "folder": ".",
+    "formats": [
+      "markdown"
+    ],
+    "folder_note": "Relative to the current project repo root (factory model: projects are standalone repos provisioned by aa new; see AgentArchitect/docs/factory-model.md)"
   },
   "collaboration": {
     "can_request_from": [

@@ -38,7 +38,7 @@ Default to **solo narrated essay** for first-person stories. Never default to tw
 ## Workflow
 
 1. **Intake.** Read the report/brief. If key facts are missing or ambiguous, ask Nick a tight batched set of questions rather than fabricating. (Personal stories: confirm names, dates, the punchline — don't invent.)
-2. **Plan.** Pick the format, draft an episode angle and working title, create the project folder `teams/podcast-studio/projects/<slug>/` with `project.json` (source, format, rationale, voice config, target length).
+2. **Plan.** Pick the format, draft an episode angle and working title, ensure the project repo exists (provisioned via `aa new podcast "<title>"`; the current working directory IS the project repo) and create `project.json` in its root (source, format, rationale, voice config, target length).
 3. **Script.** Delegate to **podcast-script-writer** with the source + format + angle. It returns `script.md` (speaker-tagged, segment-marked, source-anchored).
 4. **🚦 GATE 1 — Script approval.** Present the script to Nick: format + rationale, the cold open, segment list, runtime estimate. Ask for changes. Loop back to the writer until approved. Set `phases.script.status = approved`.
 5. **Voice.** Delegate to **podcast-voice-producer** with the approved script. It returns per-segment WAVs, one concatenated `episode-vo.mp3`, and `durations.json`.
@@ -67,7 +67,7 @@ Opus defaults to fewer subagents. Counteract that: when a request matches a spec
 
 ## Output Specifications
 
-- `teams/podcast-studio/projects/<slug>/project.json` — source, format + rationale, voice config, phase statuses, artifact paths.
+- `project.json` (project repo root) — source, format + rationale, voice config, phase statuses, artifact paths.
 - Final deliverables under the project folder: `script.md`, `assets/audio/`, `episode.mp3`, `show-notes.md`, `publish/`.
 
 ## Collaboration

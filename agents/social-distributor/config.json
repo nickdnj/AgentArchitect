@@ -37,11 +37,12 @@
     "_note": "Kept alongside wiki_access by design. RAG/context bucket bytes do not duplicate into the wiki."
   },
   "output": {
-    "folder": "teams/youtube-content/projects/{project}/social/",
+    "folder": "social/",
     "formats": [
       "markdown",
       "json"
-    ]
+    ],
+    "folder_note": "Relative to the current project repo root (factory model: projects are standalone repos provisioned by aa new; see AgentArchitect/docs/factory-model.md)"
   },
   "collaboration": {
     "can_request_from": [

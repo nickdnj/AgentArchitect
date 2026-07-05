@@ -17,7 +17,7 @@ This clones `nickdnj/wiki` to `$HOME/Workspaces/wiki/`, sets `WIKI_REPO`, and re
 **If clone fails** (private repo, auth required): run `gh auth login` then re-run bootstrap.
 
 **Teams that work in cloud mode** (OAuth-only MCPs): wharfside, personal-assistant (Max), architect, account-researcher, web-research, proposal-review, software-project (research/planning phase).
-**Teams that DO NOT work in cloud mode** (need local hardware/host MCPs): hardware-dev (KiCad/FreeCAD), youtube-content asset gen + assembly + publish (ffmpeg/chrome), anything using `apple-mcp` (Reminders/Calendar via EventKit), `chrome` (host browser), `voice-local` (local Whisper/Kokoro), or local Ollama.
+**Teams that DO NOT work in cloud mode** (need local hardware/host MCPs): hardware-dev (KiCad/FreeCAD), content-studio asset gen + assembly + publish (ffmpeg/chrome/ElevenLabs local files), anything using `apple-mcp` (Reminders/Calendar via EventKit), `chrome` (host browser), `voice-local` (local Whisper/Kokoro), or local Ollama.
 
 ## User Preferences
 
@@ -81,6 +81,20 @@ git pull --rebase && git push
 
 If user instructions conflict with these rules, ask for explicit confirmation that they want to override. Only then proceed.
 
+## The Factory Model (v3.0 — read this to know where work happens)
+
+AgentArchitect is a **factory**: it builds agents/teams and provisions standalone sibling repos where actual work happens. **No project or team work products live in this repo.** Full architecture: `docs/factory-model.md`.
+
+- **Workspace repos** (permanent, one per account-backed team): `~/Workspaces/wharfside`, `~/Workspaces/max`, `~/Workspaces/Altium`, `~/Workspaces/vcf`
+- **Project repos** (one per deliverable): created with `aa new <youtube|podcast|software> "<title>"` — e.g. `~/Workspaces/jersey-stack-ep1`
+- **The `aa` launcher** (`bin/aa`, works from anywhere): `aa new`, `aa workspace`, `aa list`, `aa sync [--all]`. Install: `ln -s ~/Workspaces/AgentArchitect/bin/aa /usr/local/bin/aa`
+- Spawned repos carry **generated** `.claude/` agents+skills and a `.agentarchitect.json` provenance manifest. Edit sources here, then `aa sync` — never edit generated files in spawned repos.
+- After changing any agent/team definition or template, run `aa sync --all` so every spawned repo picks it up.
+
+**When the user asks to start a new video/podcast/app in this repo:** run the matching `aa new …` command (or `node scripts/new-project.js …`) and hand them the printed `cd … && claude` line. Do NOT do project work inside AgentArchitect.
+
+**When the user asks for ongoing team work here (email, board, research):** do it if asked, but mention the team's workspace repo is the better home for it.
+
 ## Smart Routing (MANDATORY)
 
 When the user starts a conversation without invoking a specific agent or team, you MUST route to the appropriate orchestrator. Do NOT bypass the orchestrator by calling specialist agents directly. The orchestrator handles routing and delegation.
@@ -95,8 +109,10 @@ If you have access to the `Task` tool with named subagent types, use skill invoc
 | Altium, PCB, EDA, sales, deployment, customer, Cadence, Mentor, KiCad | `Skill(skill: "altium")` |
 | Hardware, PCB, schematic, KiCad, enclosure, firmware, ESP32, Jetson, BOM, DFM, manufacturing | `Skill(skill: "hardware-dev")` |
 | Software, code, app, feature, architecture, requirements, development, testing | `Skill(skill: "software-project")` |
-| YouTube, video, shorts, content, channel, upload | `Skill(skill: "youtube-content")` |
+| YouTube, video, shorts, podcast, episode, content, channel, upload | `Skill(skill: "content-studio")` |
+| VCF, InfoAge, museum, exhibit, docent, vintage computer | `Skill(skill: "vcf")` |
 | Build agent, create team, manage agents, modify agent, bucket | `Skill(skill: "architect")` |
+| New project/video/podcast/app ("start a new…") | Run `aa new <type> "<title>"` and hand off — see Factory Model above |
 
 ### Cowork Environment
 If you have access to the `Agent` tool (with subagent_type="general-purpose"), read the orchestrator file and follow its instructions:
@@ -108,7 +124,7 @@ If you have access to the `Agent` tool (with subagent_type="general-purpose"), r
 | Altium, PCB, EDA, sales, deployment, customer, Cadence, Mentor, KiCad | Read `AgentArchitect/cowork/skills/altium/SKILL.md` and follow its orchestration instructions |
 | Hardware, PCB, schematic, KiCad, enclosure, firmware, ESP32, Jetson, BOM, DFM, manufacturing | Read `AgentArchitect/cowork/skills/hardware-dev/SKILL.md` and follow its orchestration instructions |
 | Software, code, app, feature, architecture, requirements, development, testing | Read `AgentArchitect/cowork/skills/software-project/SKILL.md` and follow its orchestration instructions |
-| YouTube, video, shorts, content, channel, upload | Read `AgentArchitect/cowork/skills/youtube-content/SKILL.md` and follow its orchestration instructions |
+| YouTube, video, shorts, podcast, episode, content, channel, upload | Read `AgentArchitect/cowork/skills/content-studio/SKILL.md` and follow its orchestration instructions |
 | Build agent, create team, manage agents, modify agent, bucket, sync | Read `AgentArchitect/cowork/skills/architect/SKILL.md` and follow its instructions |
 
 ### Project Context Detection (runs BEFORE team routing)
@@ -160,20 +176,24 @@ This repository contains the **Agent Architect** system - a master agent for bui
 ### Directory Structure
 
 ```
-AgentArchitect/
+AgentArchitect/                 (the factory — definitions only, no work products)
 ├── Architect/              # The Architect agent itself
-├── agents/                 # Individual agent definitions
+├── agents/                 # Individual agent definitions (source of truth)
 │   ├── _templates/         # Agent templates
 │   └── <agent-id>/         # Created agents
-├── teams/                  # Team definitions
+├── teams/                  # Team DEFINITIONS (team.json) — work lives in spawned repos
 │   ├── _templates/         # Team templates
 │   └── <team-id>/          # Created teams
+├── templates/              # Scaffolds for spawned repos (workspace + project types)
+├── bin/aa                  # Global launcher CLI
+├── scripts/                # Generation, provisioning (new-*.js), sync (sync-workspace.js)
 ├── context-buckets/        # Knowledge bases
-│   ├── _templates/         # Bucket templates
-│   └── <bucket-id>/        # Created buckets
 ├── mcp-servers/            # MCP server configuration
-├── registry/               # Global registries
+├── registry/               # agents.json, teams.json, workspaces.json (spawned repos)
 └── .claude/                # Claude Code configuration
+
+~/Workspaces/<team>/            (workspace repos: wharfside, max, Altium, vcf)
+~/Workspaces/<project-slug>/    (project repos: one per video/podcast/app)
 ```
 
 ### Core Concepts

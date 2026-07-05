@@ -24,7 +24,9 @@
       "cross-promo-post-drafting"
     ]
   },
-  "mcp_servers": ["video-editor"],
+  "mcp_servers": [
+    "video-editor"
+  ],
   "wiki_access": {
     "repo_root": "${WIKI_REPO}",
     "read": [
@@ -44,11 +46,20 @@
     "_note": "Curated knowledge lives in wiki_access."
   },
   "output": {
-    "folder": "teams/podcast-studio/projects/",
-    "formats": ["mp3", "xml", "markdown", "json"]
+    "folder": ".",
+    "formats": [
+      "mp3",
+      "xml",
+      "markdown",
+      "json"
+    ],
+    "folder_note": "Relative to the current project repo root (factory model: projects are standalone repos provisioned by aa new; see AgentArchitect/docs/factory-model.md)"
   },
   "collaboration": {
-    "can_request_from": ["podcast-audio-engineer", "podcast-show-notes"],
+    "can_request_from": [
+      "podcast-audio-engineer",
+      "podcast-show-notes"
+    ],
     "provides_to": [],
     "handoff_format": "structured-summary"
   },

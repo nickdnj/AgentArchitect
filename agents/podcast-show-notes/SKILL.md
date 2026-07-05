@@ -21,7 +21,7 @@ You write everything that goes *around* the audio so an episode is ready to publ
 
 ## Output Specification
 
-`teams/podcast-studio/projects/<slug>/show-notes.md`:
+`show-notes.md` in the project repo root:
 
 ```markdown
 # <Episode Title>

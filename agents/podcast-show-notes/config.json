@@ -1,7 +1,7 @@
 {
   "id": "podcast-show-notes",
   "name": "Podcast Show Notes Writer",
-  "description": "Writes the episode package text: title, description, chapter timestamps, a clean transcript, and citation links — ready to paste into any podcast host.",
+  "description": "Writes the episode package text: title, description, chapter timestamps, a clean transcript, and citation links \u2014 ready to paste into any podcast host.",
   "version": "1.0",
   "agent_type": "specialist",
   "execution": {
@@ -43,12 +43,21 @@
     "_note": "Curated knowledge lives in wiki_access."
   },
   "output": {
-    "folder": "teams/podcast-studio/projects/",
-    "formats": ["markdown"]
+    "folder": ".",
+    "formats": [
+      "markdown"
+    ],
+    "folder_note": "Relative to the current project repo root (factory model: projects are standalone repos provisioned by aa new; see AgentArchitect/docs/factory-model.md)"
   },
   "collaboration": {
-    "can_request_from": ["podcast-script-writer", "podcast-audio-engineer", "podcast-voice-producer"],
-    "provides_to": ["podcast-publisher"],
+    "can_request_from": [
+      "podcast-script-writer",
+      "podcast-audio-engineer",
+      "podcast-voice-producer"
+    ],
+    "provides_to": [
+      "podcast-publisher"
+    ],
     "handoff_format": "structured-summary"
   },
   "trigger": {

@@ -1,0 +1,130 @@
+{
+  "id": "content-studio",
+  "name": "Content Studio Team",
+  "description": "Unified content-production team: YouTube videos AND podcast episodes. Merger of youtube-content + podcast-studio — same pipeline shape (script → voice/assets → assemble/master → publish → distribute), two deliverable branches.",
+  "version": "1.0",
+  "created": "2026-07-05",
+  "merged_from": ["youtube-content", "podcast-studio"],
+  "members": [
+    {
+      "agent_id": "video-script-writer",
+      "role": "VIDEO branch — research, outline, narration script, and storyboard creation",
+      "context_override": null
+    },
+    {
+      "agent_id": "video-asset-generator",
+      "role": "VIDEO branch — AI image generation, TTS narration, background music production",
+      "context_override": null
+    },
+    {
+      "agent_id": "video-assembler",
+      "role": "VIDEO branch — FFmpeg video assembly with multiple visual styles (Ken Burns, gentle zoom, static, pillarbox), transitions, encoding",
+      "context_override": null
+    },
+    {
+      "agent_id": "video-publisher",
+      "role": "VIDEO branch — metadata/SEO, thumbnails, YouTube upload, final delivery",
+      "context_override": null
+    },
+    {
+      "agent_id": "short-form-video",
+      "role": "VIDEO branch — Shorts/Reels/TikTok extraction and posting strategy",
+      "context_override": null
+    },
+    {
+      "agent_id": "social-distributor",
+      "role": "BOTH branches — social media launch campaigns: community research, launch calendar, platform-specific posts, premiere buzz, follow-up",
+      "context_override": null
+    },
+    {
+      "agent_id": "podcast-script-writer",
+      "role": "PODCAST branch — report/story → tightly-scripted, source-grounded episode in the chosen format",
+      "context_override": null
+    },
+    {
+      "agent_id": "podcast-voice-producer",
+      "role": "PODCAST branch — ElevenLabs TTS in Nick's cloned voice; per-segment WAVs + concatenated review MP3 + durations manifest",
+      "context_override": null
+    },
+    {
+      "agent_id": "podcast-audio-engineer",
+      "role": "PODCAST branch — FFmpeg mix + sound design + loudness mastering to -16 LUFS + chapter marks",
+      "context_override": null
+    },
+    {
+      "agent_id": "podcast-show-notes",
+      "role": "PODCAST branch — title, description, chapter timestamps, clean transcript, citations",
+      "context_override": null
+    },
+    {
+      "agent_id": "podcast-publisher",
+      "role": "PODCAST branch — host-agnostic RSS-ready episode package + cross-promo drafts",
+      "context_override": null
+    }
+  ],
+  "notes": {
+    "podcast-producer": "The former podcast-producer agent's orchestration role is subsumed by this team's orchestrator; the agent definition remains in agents/ for direct invocation but is not on the roster.",
+    "project_based": "This team is PROJECT-BASED: it is summoned into standalone project repos created via `aa new youtube|podcast` and has no standing workspace directory."
+  },
+  "shared_context": {
+    "buckets": [
+      "ai-journey"
+    ],
+    "outputs_folder": null
+  },
+  "orchestration": {
+    "mode": "thin-orchestrator",
+    "execution": {
+      "model": "opus",
+      "max_turns": 50
+    },
+    "routing": {
+      "script-outline": ["video-script-writer"],
+      "storyboard-review": ["video-script-writer"],
+      "visual-production": ["video-asset-generator"],
+      "video-assembly": ["video-assembler"],
+      "metadata-upload": ["video-publisher"],
+      "shorts-reels": ["short-form-video"],
+      "social-launch": ["social-distributor"],
+      "social-promotion": ["social-distributor"],
+      "full-video": [
+        "video-script-writer",
+        "video-asset-generator",
+        "video-assembler",
+        "video-publisher"
+      ],
+      "full-launch": [
+        "video-script-writer",
+        "video-asset-generator",
+        "video-assembler",
+        "video-publisher",
+        "social-distributor"
+      ],
+      "podcast-script": ["podcast-script-writer"],
+      "podcast-voice": ["podcast-voice-producer"],
+      "podcast-master": ["podcast-audio-engineer"],
+      "podcast-show-notes": ["podcast-show-notes"],
+      "podcast-publish": ["podcast-publisher"],
+      "full-episode": [
+        "podcast-script-writer",
+        "podcast-voice-producer",
+        "podcast-audio-engineer",
+        "podcast-show-notes",
+        "podcast-publisher"
+      ],
+      "general": ["video-script-writer"]
+    },
+    "delegation_strategy": "FIRST determine the deliverable branch, THEN run that branch's pipeline with its human review gates.\n\n**Branch selection:** Read `.agentarchitect.json` in the project repo root — `projectType: \"youtube\"` → VIDEO branch, `projectType: \"podcast\"` → PODCAST branch. If there is no manifest (ad-hoc request), infer from the request and confirm with the user in one line.\n\n**VIDEO branch** (former youtube-content pipeline):\n1. ALWAYS start with a Creative Brief conversation before delegating\n2. Script Writer → chapter-structured outline, script, storyboard, deck\n3. GATE 1: storyboard review with user; iterate until approved\n4. Asset Generator in AUDIO-ONLY mode\n5. GATE 2: audio listening review (per-scene WAVs + concatenated MP3)\n6. Asset Generator in VISUALS-ONLY mode\n7. Assembler → final video\n8. Publisher (if publishing), then optionally Short-Form Video + Social Distributor\n\n**PODCAST branch** (former podcast-studio pipeline):\n1. READ the source and make the editorial format call (solo essay / two-host / interview) BEFORE delegating — write rationale to project.json. Never default to two-host because NotebookLM does.\n2. Script Writer → script.md\n3. GATE 1: script review; iterate until approved\n4. Voice Producer → per-segment WAVs + episode-vo.mp3 + durations.json (confirm ELEVENLABS_API_KEY and VOICE_ID for Nick's 'Nick 2' clone first — if VOICE_ID is unset, STOP and ask; never fall back to a stock voice silently)\n5. GATE 2: listening review; surgical re-records only\n6. Audio Engineer → mastered episode.mp3 (-16 LUFS) + chapters\n7. Show Notes → show-notes.md\n8. Publisher → host-agnostic publish package\n\nEach specialist runs in its own forked context. Pass the project folder path, the brief/format decision, and the previous phase briefing to each.\n\n**Opus delegation note:** Opus defaults to fewer subagents/tool calls. Counteract that — when a request matches a specialist's domain, delegate rather than answering from training knowledge. Handle inline ONLY for routing/clarifying questions, trivial lookups in loaded context, or synthesizing briefings into the final response.",
+    "orchestrator_instructions": "## Phase -1: Branch Selection (ALWAYS FIRST)\n\nRead `.agentarchitect.json` in the repo root. `projectType` selects the branch: youtube → VIDEO, podcast → PODCAST. No manifest? Infer and confirm in one line.\n\n## VIDEO: Phase 0 Creative Brief (MANDATORY for full-video requests)\n\nBefore delegating ANY work for a new video, establish interactively: topic & story arc, audience, tone & style, visual style (Ken Burns / gentle motion / static / mixed), source material (+ orientation), target length, narration voice, publish preference. Ask 2-3 questions at a time; offer defaults; summarize the brief; save to project.json. Skip when the user asks for a specific pipeline step.\n\n## VIDEO: Storyboard Review Gate\n\nPresent the deck (path, chapters, runtime, scene count). Ask for batched feedback. Changes → back to Script Writer, regenerate, re-present. Approved → phases.storyboard_review.status = 'approved', proceed to audio.\n\n## VIDEO: Audio Review Gate\n\nPresent per-scene narration files with durations + folder path. Pacing/voice feedback → surgical regeneration of named scenes only. Approved → visuals.\n\n## PODCAST: Format Selection (MANDATORY)\n\nRead the source, choose ONE format with a one-paragraph rationale in project.json: solo narrated essay (DEFAULT for first-person stories) / two-host dialogue / host + expert guest. Missing key facts → ask Nick a tight batched set, never fabricate.\n\n## PODCAST: Script Gate\n\nPresent format + rationale, cold open, segment list, runtime estimate. Batched feedback → back to Script Writer. Approved → phases.script.status = 'approved'.\n\n## PODCAST: Listening Gate\n\nPresent episode-vo.mp3 + per-segment durations. Changes → SURGICAL re-records (name segments). Approved → phases.voice.status = 'approved', proceed to mastering.\n\n## Wiki Session Log (MANDATORY)\n\nAfter every substantive interaction, append a one-paragraph summary to `~/Workspaces/wiki/teams/content-studio/_sessions/YYYY-MM-DD.md` (create if missing, append chronologically): **Asked** / **Specialists** / **Output** / **Wiki-ingest candidates**. Skip for trivial exchanges.\n",
+    "session_summary": {
+      "enabled": true,
+      "output_path": "context-buckets/session-logs/files/"
+    }
+  },
+  "collaboration_rules": {
+    "coordination_mode": "orchestrated",
+    "handoff_protocol": "sequential-delegation",
+    "output_sharing": "full",
+    "notification_email": "nickd@demarconet.com"
+  }
+}

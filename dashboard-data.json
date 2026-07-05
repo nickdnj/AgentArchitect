@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-25T13:54:37Z",
+  "generated_at": "2026-07-05T21:52:41Z",
   "version": "1.0",
   "teams": [
     {
@@ -456,100 +456,20 @@
     },
     {
       "id": "youtube-content",
-      "name": "YouTube Content Team",
-      "description": "Video production and multi-platform short-form content strategy.",
+      "name": "YouTube Content Team (merged into Content Studio)",
+      "description": "MERGED into content-studio (2026-07-05). Video production and multi-platform short-form content strategy. This alias redirects to the unified Content Studio team.",
       "skill_alias": "youtube-content",
       "created": "2026-02-11",
-      "status": "active",
-      "members": [
-        {
-          "agent_id": "video-script-writer",
-          "role": "Research, outline, narration script, and storyboard creation",
-          "context_override": null
-        },
-        {
-          "agent_id": "video-asset-generator",
-          "role": "AI image generation, TTS narration, background music production",
-          "context_override": null
-        },
-        {
-          "agent_id": "video-assembler",
-          "role": "FFmpeg video assembly with multiple visual styles (Ken Burns, gentle zoom, static, pillarbox), transitions, encoding",
-          "context_override": null
-        },
-        {
-          "agent_id": "video-publisher",
-          "role": "Metadata/SEO, thumbnails, YouTube upload, final delivery",
-          "context_override": null
-        },
-        {
-          "agent_id": "short-form-video",
-          "role": "Shorts/Reels/TikTok extraction and posting strategy",
-          "context_override": null
-        },
-        {
-          "agent_id": "social-distributor",
-          "role": "Social media launch campaigns \u2014 community research, launch calendar, platform-specific posts, premiere buzz, follow-up",
-          "context_override": null
-        }
-      ],
+      "status": "merged",
+      "members": [],
       "orchestration": {
         "mode": "thin-orchestrator",
         "execution": {
           "model": "opus",
           "max_turns": 50
         },
-        "routing": {
-          "script-outline": [
-            "video-script-writer"
-          ],
-          "storyboard-review": [
-            "video-script-writer"
-          ],
-          "audio-production": [
-            "video-asset-generator"
-          ],
-          "visual-production": [
-            "video-asset-generator"
-          ],
-          "video-assembly": [
-            "video-assembler"
-          ],
-          "metadata-upload": [
-            "video-publisher"
-          ],
-          "shorts-reels": [
-            "short-form-video"
-          ],
-          "social-launch": [
-            "social-distributor"
-          ],
-          "social-promotion": [
-            "social-distributor"
-          ],
-          "full-video": [
-            "video-script-writer",
-            "video-asset-generator",
-            "video-assembler",
-            "video-publisher"
-          ],
-          "full-launch": [
-            "video-script-writer",
-            "video-asset-generator",
-            "video-assembler",
-            "video-publisher",
-            "social-distributor"
-          ],
-          "general": [
-            "video-script-writer"
-          ]
-        },
-        "delegation_strategy": "ALWAYS start with a Creative Brief conversation before delegating to any specialist. Once the brief is complete, run the chapter-based pipeline with two human review gates:\n\n1. Script Writer produces chapter-structured outline, script, storyboard, and PowerPoint storyboard deck\n2. GATE 1: Present the PowerPoint deck to user. Ask for feedback on story arc, chapters, and visual vision\n3. ITERATE: If user requests changes, delegate back to Script Writer to revise and regenerate deck\n4. Once storyboard is approved, delegate to Asset Generator in AUDIO-ONLY mode\n5. GATE 2: Present audio files to user for listening review\n6. Once audio is approved, delegate to Asset Generator in VISUALS-ONLY mode\n7. Delegate to Assembler with all approved assets\n8. Delegate to Publisher (if publishing)\n9. Optionally route to Short-Form Video for clip extraction\n\nEach specialist runs in its own forked context. Pass the creative brief, project folder path, and previous phase briefing to each.\n\n**Claude 4.7 delegation note:** Opus 4.7 defaults to fewer subagents and fewer tool calls than prior models. Counteract that here \u2014 when a request matches a specialist's domain, delegate rather than answering from training knowledge. Handle inline ONLY for: routing/clarifying questions back to the user, trivial lookups in already-loaded context, or synthesizing specialist briefings into the final response. Everything else goes to a specialist.",
-        "orchestrator_instructions": "## Phase 0: Creative Brief (MANDATORY for full-video requests)\n\nBefore delegating ANY work for a new video, have an interactive conversation with the user to establish:\n\n1. **Topic & Story** \u2014 What's the video about? What's the narrative arc or key message?\n2. **Audience** \u2014 Who is this for? (general YouTube, internal team, specific community, family)\n3. **Tone & Style** \u2014 Personal narrative, professional pitch, documentary, tutorial, showcase?\n4. **Visual Style** \u2014 Cinematic Ken Burns (photo stories), gentle motion (infographics/diagrams), static/clean (text-heavy), or mixed?\n5. **Source Material** \u2014 What photos, documents, or assets does the user have? Are they portrait or landscape? Do we need AI-generated images?\n6. **Target Length** \u2014 Short (3-5 min), medium (8-12 min), or long (15-20 min)?\n7. **Narration Voice** \u2014 Preferred TTS voice (echo, nova, onyx, etc.) and emotional tone?\n8. **Publish Preference** \u2014 Go all the way to YouTube upload, or stop at finished video for review/editing first?\n\n**How to run the brief:**\n- Ask 2-3 questions at a time, not all at once\n- Offer sensible defaults based on what you can infer from the request\n- If the user provides photos, note their orientation (portrait vs landscape) and suggest appropriate styles\n- Summarize the complete brief before proceeding to delegation\n- Save the brief as part of the project.json settings\n\n**Skip the brief when:** The user is asking for a specific pipeline step (e.g., 'just assemble the video' or 'upload this to YouTube') \u2014 go directly to the relevant specialist.\n\n## Phase 2: PowerPoint Storyboard Review Gate\n\nAfter the Script Writer returns with the storyboard and PowerPoint deck:\n\n1. **Present the deck to the user:**\n   - Share the PPTX file path so they can open it in PowerPoint\n   - List the chapters with brief summaries\n   - Note total estimated runtime and scene count\n\n2. **Ask for feedback:**\n   - 'Does this story arc and chapter flow work for your vision?'\n   - 'Any chapters to reorder, add, remove, or modify?'\n   - 'Are the visual descriptions aligned with what you're imagining?'\n\n3. **If changes requested:** Delegate back to Script Writer with specific feedback. The script writer updates the markdown files and regenerates the PowerPoint deck. Re-present for review.\n\n4. **If approved:** Set `phases.storyboard_review.status = 'approved'` in project.json, proceed to audio production.\n\n**Tip:** Suggest batching feedback rather than one change at a time to reduce iteration cycles.\n\n## Phase 4: Audio Review Gate\n\nAfter the Asset Generator returns from audio-only mode:\n\n1. **Present audio for review:**\n   - List per-scene narration files with durations\n   - Share the audio folder path so they can listen\n   - Note total narration duration and voice used\n\n2. **Ask for feedback:**\n   - 'Does the pacing and flow work? Any scenes feel too fast or too slow?'\n   - 'Is the voice and tone right for this video?'\n\n3. **If changes requested:** Delegate back to Asset Generator (audio-only mode) with specific scenes to regenerate.\n\n4. **If approved:** Proceed to visual production (Asset Generator in visuals-only mode).\n\n## Wiki Session Log (MANDATORY)\n\nAfter every substantive interaction with Nick (anything that lasted more than a quick yes/no exchange OR produced an artifact, decision, or specialist briefing), append a one-paragraph summary to:\n\n`~/Workspaces/wiki/teams/youtube-content/_sessions/YYYY-MM-DD.md`\n\n(Create the file if it does not exist. Append in chronological order \u2014 newest at the bottom of the day's file. Use today's date in YYYY-MM-DD format.)\n\nThe summary should cover:\n- **Asked:** one line \u2014 what Nick requested\n- **Specialists:** which agents invoked (if any)\n- **Output:** key artifacts produced, paths to files created, decisions made\n- **Wiki-ingest candidates:** any facts surfaced that should become permanent wiki pages (flag explicitly for next ingest pass)\n\nThis is the continuous session-logging surface that the `wiki-ingest` agent reads during the nightly lint to promote wiki-worthy content to permanent pages. **The wiki replaces the `/save` slash command for session continuity \u2014 but only if you write to it.**\n\nSkip the session log for trivial exchanges: pure yes/no answers, single-fact lookups, conversational meta-questions with no work product.\n",
-        "session_summary": {
-          "enabled": true,
-          "output_path": "context-buckets/session-logs/files/"
-        }
+        "routing": {},
+        "delegation_strategy": "This team has merged into **content-studio**. Do not do any work here. Immediately invoke `Skill(skill: \"content-studio\")` with the user's original request verbatim. The Content Studio orchestrator runs the VIDEO pipeline (creative brief \u2192 script/storyboard \u2192 review gates \u2192 assets \u2192 assembly \u2192 publish \u2192 distribution)."
       },
       "collaboration_rules": {
         "coordination_mode": "orchestrated",
@@ -773,40 +693,89 @@
     },
     {
       "id": "podcast-studio",
-      "name": "Podcast Studio Team",
-      "description": "Turns a research report or story into a publish-ready podcast episode in Nick's cloned voice \u2014 better than NotebookLM.",
+      "name": "Podcast Studio Team (merged into Content Studio)",
+      "description": "MERGED into content-studio (2026-07-05). Publish-ready podcast episodes in Nick's cloned voice. This alias redirects to the unified Content Studio team.",
       "skill_alias": "podcast-studio",
       "created": "2026-06-25",
+      "status": "merged",
+      "members": [],
+      "orchestration": {
+        "mode": "thin-orchestrator",
+        "execution": {
+          "model": "opus",
+          "max_turns": 50
+        },
+        "routing": {},
+        "delegation_strategy": "This team has merged into **content-studio**. Do not do any work here. Immediately invoke `Skill(skill: \"content-studio\")` with the user's original request verbatim. The Content Studio orchestrator runs the PODCAST pipeline (format selection \u2192 script \u2192 review gates \u2192 voice \u2192 master \u2192 show notes \u2192 publish)."
+      },
+      "collaboration_rules": {
+        "coordination_mode": "orchestrated",
+        "handoff_protocol": "sequential-delegation",
+        "output_sharing": "full",
+        "notification_email": "nickd@demarconet.com"
+      }
+    },
+    {
+      "id": "content-studio",
+      "name": "Content Studio Team",
+      "description": "Unified content-production team: YouTube videos AND podcast episodes. Merger of youtube-content + podcast-studio \u2014 same pipeline shape (script \u2192 voice/assets \u2192 assemble/master \u2192 publish \u2192 distribute), two deliverable branches.",
+      "skill_alias": "content-studio",
+      "created": "2026-07-05",
       "status": "active",
       "members": [
         {
-          "agent_id": "podcast-producer",
-          "role": "Orchestrator \u2014 reads the source, picks the format, runs the pipeline, owns the two review gates",
+          "agent_id": "video-script-writer",
+          "role": "VIDEO branch \u2014 research, outline, narration script, and storyboard creation",
+          "context_override": null
+        },
+        {
+          "agent_id": "video-asset-generator",
+          "role": "VIDEO branch \u2014 AI image generation, TTS narration, background music production",
+          "context_override": null
+        },
+        {
+          "agent_id": "video-assembler",
+          "role": "VIDEO branch \u2014 FFmpeg video assembly with multiple visual styles (Ken Burns, gentle zoom, static, pillarbox), transitions, encoding",
+          "context_override": null
+        },
+        {
+          "agent_id": "video-publisher",
+          "role": "VIDEO branch \u2014 metadata/SEO, thumbnails, YouTube upload, final delivery",
+          "context_override": null
+        },
+        {
+          "agent_id": "short-form-video",
+          "role": "VIDEO branch \u2014 Shorts/Reels/TikTok extraction and posting strategy",
+          "context_override": null
+        },
+        {
+          "agent_id": "social-distributor",
+          "role": "BOTH branches \u2014 social media launch campaigns: community research, launch calendar, platform-specific posts, premiere buzz, follow-up",
           "context_override": null
         },
         {
           "agent_id": "podcast-script-writer",
-          "role": "Report/story \u2192 tightly-scripted, source-grounded episode in the chosen format",
+          "role": "PODCAST branch \u2014 report/story \u2192 tightly-scripted, source-grounded episode in the chosen format",
           "context_override": null
         },
         {
           "agent_id": "podcast-voice-producer",
-          "role": "ElevenLabs TTS in Nick's cloned voice; per-segment WAVs + concatenated review MP3 + durations manifest",
+          "role": "PODCAST branch \u2014 ElevenLabs TTS in Nick's cloned voice; per-segment WAVs + concatenated review MP3 + durations manifest",
           "context_override": null
         },
         {
           "agent_id": "podcast-audio-engineer",
-          "role": "FFmpeg mix + sound design + loudness mastering to -16 LUFS + chapter marks",
+          "role": "PODCAST branch \u2014 FFmpeg mix + sound design + loudness mastering to -16 LUFS + chapter marks",
           "context_override": null
         },
         {
           "agent_id": "podcast-show-notes",
-          "role": "Title, description, chapter timestamps, clean transcript, citations",
+          "role": "PODCAST branch \u2014 title, description, chapter timestamps, clean transcript, citations",
           "context_override": null
         },
         {
           "agent_id": "podcast-publisher",
-          "role": "Host-agnostic RSS-ready episode package + cross-promo drafts",
+          "role": "PODCAST branch \u2014 host-agnostic RSS-ready episode package + cross-promo drafts",
           "context_override": null
         }
       ],
@@ -817,25 +786,56 @@
           "max_turns": 50
         },
         "routing": {
-          "script": [
+          "script-outline": [
+            "video-script-writer"
+          ],
+          "storyboard-review": [
+            "video-script-writer"
+          ],
+          "visual-production": [
+            "video-asset-generator"
+          ],
+          "video-assembly": [
+            "video-assembler"
+          ],
+          "metadata-upload": [
+            "video-publisher"
+          ],
+          "shorts-reels": [
+            "short-form-video"
+          ],
+          "social-launch": [
+            "social-distributor"
+          ],
+          "social-promotion": [
+            "social-distributor"
+          ],
+          "full-video": [
+            "video-script-writer",
+            "video-asset-generator",
+            "video-assembler",
+            "video-publisher"
+          ],
+          "full-launch": [
+            "video-script-writer",
+            "video-asset-generator",
+            "video-assembler",
+            "video-publisher",
+            "social-distributor"
+          ],
+          "podcast-script": [
             "podcast-script-writer"
           ],
-          "voice": [
+          "podcast-voice": [
             "podcast-voice-producer"
           ],
-          "narration": [
-            "podcast-voice-producer"
-          ],
-          "master": [
+          "podcast-master": [
             "podcast-audio-engineer"
           ],
-          "audio": [
-            "podcast-audio-engineer"
-          ],
-          "show-notes": [
+          "podcast-show-notes": [
             "podcast-show-notes"
           ],
-          "publish": [
+          "podcast-publish": [
             "podcast-publisher"
           ],
           "full-episode": [
@@ -846,15 +846,93 @@
             "podcast-publisher"
           ],
           "general": [
-            "podcast-script-writer"
+            "video-script-writer"
           ]
         },
-        "delegation_strategy": "Read the source first and make the editorial format call (solo essay / two-host / interview) BEFORE delegating. Then run the chapter pipeline with two human review gates:\n\n1. Delegate to Script Writer with source + format + angle \u2192 script.md\n2. GATE 1: Present the script (format + rationale, cold open, segments, runtime). Iterate with the writer until approved.\n3. Delegate to Voice Producer \u2192 per-segment WAVs + episode-vo.mp3 + durations.json\n4. GATE 2: Present episode-vo.mp3 for a listening pass. Surgical re-records only.\n5. Delegate to Audio Engineer \u2192 mastered episode.mp3 + chapters\n6. Delegate to Show Notes \u2192 show-notes.md\n7. Delegate to Publisher \u2192 host-agnostic publish package\n\nEach specialist runs in its own forked context. Pass the project folder path, source, format decision, and previous phase briefing to each.\n\n**Opus 4.x delegation note:** Opus defaults to fewer subagents/tool calls. Counteract that \u2014 when a request matches a specialist's domain, delegate rather than answering from training knowledge. Handle inline ONLY for routing/clarifying questions, trivial lookups in loaded context, or synthesizing briefings into the final response.",
+        "delegation_strategy": "FIRST determine the deliverable branch, THEN run that branch's pipeline with its human review gates.\n\n**Branch selection:** Read `.agentarchitect.json` in the project repo root \u2014 `projectType: \"youtube\"` \u2192 VIDEO branch, `projectType: \"podcast\"` \u2192 PODCAST branch. If there is no manifest (ad-hoc request), infer from the request and confirm with the user in one line.\n\n**VIDEO branch** (former youtube-content pipeline):\n1. ALWAYS start with a Creative Brief conversation before delegating\n2. Script Writer \u2192 chapter-structured outline, script, storyboard, deck\n3. GATE 1: storyboard review with user; iterate until approved\n4. Asset Generator in AUDIO-ONLY mode\n5. GATE 2: audio listening review (per-scene WAVs + concatenated MP3)\n6. Asset Generator in VISUALS-ONLY mode\n7. Assembler \u2192 final video\n8. Publisher (if publishing), then optionally Short-Form Video + Social Distributor\n\n**PODCAST branch** (former podcast-studio pipeline):\n1. READ the source and make the editorial format call (solo essay / two-host / interview) BEFORE delegating \u2014 write rationale to project.json. Never default to two-host because NotebookLM does.\n2. Script Writer \u2192 script.md\n3. GATE 1: script review; iterate until approved\n4. Voice Producer \u2192 per-segment WAVs + episode-vo.mp3 + durations.json (confirm ELEVENLABS_API_KEY and VOICE_ID for Nick's 'Nick 2' clone first \u2014 if VOICE_ID is unset, STOP and ask; never fall back to a stock voice silently)\n5. GATE 2: listening review; surgical re-records only\n6. Audio Engineer \u2192 mastered episode.mp3 (-16 LUFS) + chapters\n7. Show Notes \u2192 show-notes.md\n8. Publisher \u2192 host-agnostic publish package\n\nEach specialist runs in its own forked context. Pass the project folder path, the brief/format decision, and the previous phase briefing to each.\n\n**Opus delegation note:** Opus defaults to fewer subagents/tool calls. Counteract that \u2014 when a request matches a specialist's domain, delegate rather than answering from training knowledge. Handle inline ONLY for routing/clarifying questions, trivial lookups in loaded context, or synthesizing briefings into the final response.",
+        "orchestrator_instructions": "## Phase -1: Branch Selection (ALWAYS FIRST)\n\nRead `.agentarchitect.json` in the repo root. `projectType` selects the branch: youtube \u2192 VIDEO, podcast \u2192 PODCAST. No manifest? Infer and confirm in one line.\n\n## VIDEO: Phase 0 Creative Brief (MANDATORY for full-video requests)\n\nBefore delegating ANY work for a new video, establish interactively: topic & story arc, audience, tone & style, visual style (Ken Burns / gentle motion / static / mixed), source material (+ orientation), target length, narration voice, publish preference. Ask 2-3 questions at a time; offer defaults; summarize the brief; save to project.json. Skip when the user asks for a specific pipeline step.\n\n## VIDEO: Storyboard Review Gate\n\nPresent the deck (path, chapters, runtime, scene count). Ask for batched feedback. Changes \u2192 back to Script Writer, regenerate, re-present. Approved \u2192 phases.storyboard_review.status = 'approved', proceed to audio.\n\n## VIDEO: Audio Review Gate\n\nPresent per-scene narration files with durations + folder path. Pacing/voice feedback \u2192 surgical regeneration of named scenes only. Approved \u2192 visuals.\n\n## PODCAST: Format Selection (MANDATORY)\n\nRead the source, choose ONE format with a one-paragraph rationale in project.json: solo narrated essay (DEFAULT for first-person stories) / two-host dialogue / host + expert guest. Missing key facts \u2192 ask Nick a tight batched set, never fabricate.\n\n## PODCAST: Script Gate\n\nPresent format + rationale, cold open, segment list, runtime estimate. Batched feedback \u2192 back to Script Writer. Approved \u2192 phases.script.status = 'approved'.\n\n## PODCAST: Listening Gate\n\nPresent episode-vo.mp3 + per-segment durations. Changes \u2192 SURGICAL re-records (name segments). Approved \u2192 phases.voice.status = 'approved', proceed to mastering.\n\n## Wiki Session Log (MANDATORY)\n\nAfter every substantive interaction, append a one-paragraph summary to `~/Workspaces/wiki/teams/content-studio/_sessions/YYYY-MM-DD.md` (create if missing, append chronologically): **Asked** / **Specialists** / **Output** / **Wiki-ingest candidates**. Skip for trivial exchanges.\n",
         "session_summary": {
           "enabled": true,
           "output_path": "context-buckets/session-logs/files/"
+        }
+      },
+      "collaboration_rules": {
+        "coordination_mode": "orchestrated",
+        "handoff_protocol": "sequential-delegation",
+        "output_sharing": "full",
+        "notification_email": "nickd@demarconet.com"
+      }
+    },
+    {
+      "id": "vcf-museum",
+      "name": "VCF Museum Team",
+      "description": "Supports Nick's volunteer work with the Vintage Computer Federation museum at InfoAge (Fort Monmouth): exhibit kits, docent materials, machine research, curriculum, museum contributions, and coordination with museum staff.",
+      "skill_alias": "vcf",
+      "created": "2026-07-05",
+      "status": "active",
+      "members": [
+        {
+          "agent_id": "web-research",
+          "role": "Machine and computing-history research for exhibits \u2014 specs, provenance, historical context, restoration references",
+          "context_override": null
         },
-        "orchestrator_instructions": "## Phase 0: Format Selection (MANDATORY)\n\nBefore delegating any work, READ the source (report/document/story brief) and choose ONE episode format, writing a one-paragraph rationale into project.json:\n\n- **Solo narrated essay** (Nick's voice only) \u2014 personal stories, narrative arcs, strong single POV. DEFAULT for first-person stories.\n- **Two-host dialogue** (Nick + one stock voice) \u2014 debatable/multi-angle topics, contrast, reveals.\n- **Host + expert guest** (Nick hosts, stock voice answers) \u2014 dense/technical reports unpacked via Q&A.\n\nNever default to two-host just because NotebookLM does. Pick what serves THIS source. If key facts are missing or ambiguous (names, dates, the punchline of a personal story), ask Nick a tight batched set of questions \u2014 never fabricate.\n\n## Phase 1 Gate: Script Approval\n\nAfter the Script Writer returns script.md: present format + rationale, the cold open, the segment list, and the runtime estimate. Ask Nick for batched feedback. If changes are requested, delegate back to the Script Writer. On approval, set phases.script.status = 'approved' in project.json.\n\n## Phase 2 Gate: Audio Listening Review\n\nAfter the Voice Producer returns: present episode-vo.mp3 and per-segment durations. Ask about pacing, pronunciation, and energy. If changes are requested, delegate back to the Voice Producer for SURGICAL re-records (name the specific segments only). On approval, set phases.voice.status = 'approved' and proceed to mastering.\n\n## Voice credentials check\n\nBefore the voice phase, confirm ELEVENLABS_API_KEY and VOICE_ID (Nick's 'Nick 2' clone) are set. The clone's voice_id is NOT committed anywhere \u2014 it lives in Nick's ElevenLabs account. If VOICE_ID is unset, STOP and ask Nick for it. Do not silently fall back to a stock voice.\n\n## Wiki Session Log (MANDATORY)\n\nAfter every substantive interaction with Nick (anything that lasted more than a quick yes/no exchange OR produced an artifact, decision, or specialist briefing), append a one-paragraph summary to:\n\n`~/Workspaces/wiki/teams/podcast-studio/_sessions/YYYY-MM-DD.md`\n\n(Create the file if it does not exist. Append in chronological order \u2014 newest at the bottom of the day's file. Use today's date in YYYY-MM-DD format.)\n\nThe summary should cover:\n- **Asked:** one line \u2014 what Nick requested\n- **Specialists:** which agents invoked (if any)\n- **Output:** key artifacts produced, paths to files created, decisions made\n- **Wiki-ingest candidates:** any facts surfaced that should become permanent wiki pages (flag explicitly for next ingest pass)\n\nThis is the continuous session-logging surface that the `wiki-ingest` agent reads during the nightly lint to promote wiki-worthy content to permanent pages. **The wiki replaces the `/save` slash command for session continuity \u2014 but only if you write to it.**\n\nSkip the session log for trivial exchanges: pure yes/no answers, single-fact lookups, conversational meta-questions with no work product.\n"
+        {
+          "agent_id": "email-research",
+          "role": "Mines Gmail for VCF/InfoAge threads \u2014 contacts, commitments, action items (personal account)",
+          "context_override": null
+        },
+        {
+          "agent_id": "pdf-scribe",
+          "role": "Transcribes vintage manuals, schematics, and museum documents into searchable Markdown",
+          "context_override": null
+        },
+        {
+          "agent_id": "presentation",
+          "role": "Decks for museum proposals, camp curriculum, and docent training",
+          "context_override": null
+        },
+        {
+          "agent_id": "wiki-ingest",
+          "role": "Promotes exhibit research and session findings to the wiki knowledge base",
+          "context_override": null
+        }
+      ],
+      "orchestration": {
+        "mode": "thin-orchestrator",
+        "execution": {
+          "model": "opus",
+          "max_turns": 50
+        },
+        "routing": {
+          "exhibit-kit": [
+            "web-research",
+            "pdf-scribe"
+          ],
+          "machine-research": [
+            "web-research"
+          ],
+          "manual-transcription": [
+            "pdf-scribe"
+          ],
+          "email-contacts": [
+            "email-research"
+          ],
+          "curriculum-deck": [
+            "presentation"
+          ],
+          "wiki-contribution": [
+            "wiki-ingest"
+          ],
+          "general": [
+            "web-research"
+          ]
+        },
+        "delegation_strategy": "Route museum work to specialists and synthesize. Exhibit kits are the flagship deliverable \u2014 research (web-research) + source documents (pdf-scribe) feed a kit that the orchestrator assembles to the standard format. Delegate rather than answering from training knowledge; handle inline only routing questions, trivial lookups, and final synthesis.",
+        "orchestrator_instructions": "## VCF Museum Context (load-bearing)\n\n- **Where:** Vintage Computer Federation museum at InfoAge Science & History Museums, Fort Monmouth / Wall NJ. Nick volunteers there; his Concurrent Computer (3280, Micro5) background is the personal bridge.\n- **Contacts:** Doug \u2014 VCF museum manager, endorsed the exhibit-kit format, treat as the buyer/approver. Jeff \u2014 newer contact. Full roster in the wiki (`~/Workspaces/wiki/`) and memory `reference_vcf_contacts`.\n- **Exhibit Kit Standard (LOCKED):** Doug endorsed the Comdyna GP-6 multi-file kit as \"what a museum card should look like.\" Every exhibit kit ships: demo script + explainer + placard + operator card + FAQ + print/PDF. Retrofit older one-off cards (e.g. SGI Indigo\u00b2) into this format when touched.\n- **On-camera exception:** Nick stays behind the camera under the Vistter brand, EXCEPT InfoAge/VCF museum content \u2014 on-camera and his cloned voice (\"Nick 2\") are OK here; docent credibility.\n- **Adjacent projects (route AWAY, don't duplicate):** VCF social shorts and museum videos \u2192 content-studio team. ExhibitOS software \u2192 software-project team. This team owns documents, research, curriculum, and coordination \u2014 not video production or software builds.\n- **Wiki first:** check `~/Workspaces/wiki/` (InfoAge docent manual pages, Concurrent 3280 project) before re-researching anything.\n\n## Wiki Session Log (MANDATORY)\n\nAfter every substantive interaction, append a one-paragraph summary to `~/Workspaces/wiki/teams/vcf-museum/_sessions/YYYY-MM-DD.md` (create if missing, append chronologically): **Asked** / **Specialists** / **Output** / **Wiki-ingest candidates**. Skip for trivial exchanges.\n",
+        "session_summary": {
+          "enabled": true,
+          "output_path": "context-buckets/session-logs/files/"
+        }
       },
       "collaboration_rules": {
         "coordination_mode": "orchestrated",
@@ -3109,7 +3187,7 @@
     "total_agents": 58,
     "active_agents": 57,
     "archived_agents": 1,
-    "total_teams": 8,
+    "total_teams": 10,
     "total_buckets": 9,
     "agents_by_type": {
       "specialist": 52,
@@ -3126,10 +3204,12 @@
       "software-project": 9,
       "altium-solutions": 16,
       "personal-assistant": 3,
-      "youtube-content": 6,
+      "youtube-content": 0,
       "hardware-dev": 6,
       "saltwater-ads": 1,
-      "podcast-studio": 6,
+      "podcast-studio": 0,
+      "content-studio": 11,
+      "vcf-museum": 5,
       "unaffiliated": 5
     }
   }
