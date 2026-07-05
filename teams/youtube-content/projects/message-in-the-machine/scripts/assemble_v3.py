@@ -11,7 +11,7 @@ MAN  = os.path.join(ROOT, "assembly-manifest-v4.json")
 IMGB = os.path.join(ROOT, "assets/images")
 AUD  = os.path.join(ROOT, "assets/audio/episode-vo.mp3")
 WORK = os.path.join(ROOT, "assembly/segments-v4")
-OUT  = os.path.join(ROOT, "exports/the-message-in-the-machine_v7.mp4")
+OUT  = os.path.join(ROOT, "exports/the-message-in-the-machine_v17.mp4")
 FPS  = 30
 os.makedirs(WORK, exist_ok=True)
 
@@ -63,6 +63,39 @@ def render_segment(idx, page):
          "-vf",vf,"-c:v","libx264","-preset","medium","-crf","19",
          "-pix_fmt","yuv420p","-r",str(FPS),"-t",f"{dur:.3f}",seg])
     log(f"  seg {idx:03d} rendered ({page.get('img').split('/')[-1]}, {dur:.2f}s)")
+    return seg
+
+# ---------- Pillarbox (portrait source -> 16:9 with blurred side panels; static hold) ----------
+def build_pillarbox_png(page):
+    from PIL import Image, ImageFilter
+    W, H = 1920, 1080
+    img = Image.open(os.path.join(IMGB, page["img"])).convert("RGB")  # pre-baked upright (orient=1)
+    # background: cover-crop the same photo, blur + warm-darken -> fills the side panels
+    s = max(W / img.width, H / img.height)
+    bg = img.resize((round(img.width * s), round(img.height * s)), Image.LANCZOS)
+    bx, by = (bg.width - W) // 2, (bg.height - H) // 2
+    bg = bg.crop((bx, by, bx + W, by + H)).filter(ImageFilter.GaussianBlur(40))
+    bg = Image.blend(bg, Image.new("RGB", (W, H), (20, 14, 8)), 0.45)
+    # foreground: fit full height, centered -> crisp upright portrait with side panels
+    s2 = H / img.height
+    fw = round(img.width * s2)
+    fg = img.resize((fw, H), Image.LANCZOS)
+    bg.paste(fg, ((W - fw) // 2, 0))
+    out = os.path.join(WORK, f"pillar_{page['n']}.png")
+    bg.save(out)
+    log(f"  pillarbox png built ({page['img'].split('/')[-1]}, fg {fw}x{H}, side panels {(W-fw)//2}px)")
+    return out
+
+def render_pillarbox(idx, page):
+    seg = os.path.join(WORK, f"seg_{idx:03d}.mp4")
+    if os.path.exists(seg) and os.path.getsize(seg) > 10000:
+        log(f"  seg {idx:03d} exists, skip"); return seg
+    dur = float(page["dur"])
+    png = build_pillarbox_png(page)
+    run(["ffmpeg","-y","-loop","1","-framerate",str(FPS),"-t",f"{dur:.3f}","-i",png,
+         "-vf","format=yuv420p","-c:v","libx264","-preset","medium","-crf","19",
+         "-pix_fmt","yuv420p","-r",str(FPS),"-t",f"{dur:.3f}",seg])
+    log(f"  seg {idx:03d} pillarbox rendered ({page.get('img').split('/')[-1]}, {dur:.2f}s)")
     return seg
 
 # ---------- P35 closing card (static composite; NO zoom so map/QR stay in frame) ----------
@@ -148,7 +181,12 @@ def main():
         log("TEST done"); return
     segs = []
     for i, p in enumerate(pages):
-        segs.append(render_card(i, p) if p.get("closing_card") else render_segment(i, p))
+        if p.get("closing_card"):
+            segs.append(render_card(i, p))
+        elif p.get("pillarbox"):
+            segs.append(render_pillarbox(i, p))
+        else:
+            segs.append(render_segment(i, p))
     concat = os.path.join(WORK,"concat.txt")
     with open(concat,"w") as f:
         for s in segs: f.write(f"file '{s}'\n")

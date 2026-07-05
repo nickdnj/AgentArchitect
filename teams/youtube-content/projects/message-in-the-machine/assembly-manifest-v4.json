@@ -1,54 +1,293 @@
 {
   "project": "The Message in the Machine",
-  "version": "v5 (new intro ending + 'chips' + P11/P24 images + map arrow; re-timed seg01/seg03)",
+  "version": "v17 (retimed to v25 cleaner-flowed audio; Nick's comma/line edits on seg-01/02/03/05)",
   "audio": "assets/audio/episode-vo.mp3",
-  "audio_runtime_s": 429.45,
-  "output": "exports/the-message-in-the-machine_v5.mp4",
-  "video": { "width": 1920, "height": 1080, "fps": 30, "codec": "h264", "pix_fmt": "yuv420p", "faststart": true },
+  "audio_runtime_s": 470.19,
+  "output": "exports/the-message-in-the-machine_v14.mp4",
+  "video": {
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "codec": "h264",
+    "pix_fmt": "yuv420p",
+    "faststart": true
+  },
   "images_base": "assets/images/",
   "notes": "v4. Page durations RE-DERIVED so each segment's pages sum exactly to that segment's post_atempo audio length (seg01=44.72 seg02=61.62 seg03=45.06 seg04=122.49 seg05=62.01 seg06=35.57 seg07=52.08; total 423.55). Fixes the ~6s body drift from the old 38.5s intro placeholder. Audio = corrected episode-vo.mp3 (pages 6-7 fresh take + 'Read'->'reed' in seg03). P24 is the NEW research-only image (no person). Intro P1-3 still v1 photoreal PLACEHOLDERS (live HeyGen pending). MIXED SIZES -> cover-crop to 1920x1080, never letterbox/stretch. Do NOT burn text on diegetic P22/P27. P35 = composited closing card (see layout). Montage 33a-d are intentional sub-10s cuts.",
   "pages": [
-    { "n": 1,  "dur": 16.50, "img": "generated/p01-infoage-docent.png",            "motion": "push-in",  "placeholder": true },
-    { "n": 2,  "dur": 16.50, "img": "generated/p02-rom-pull-arcade-pcb.png",        "motion": "pan-lr",   "placeholder": true },
-    { "n": 3,  "dur": 16.60, "img": "generated/p03-donkeykong-cabinet-dark.png",    "motion": "push-in",  "placeholder": true },
-    { "n": 4,  "dur": 12.62, "img": "generated-storybook/p04-80s-arcade-bar.png",             "motion": "pan-lr" },
-    { "n": 5,  "dur": 12.13, "img": "generated-storybook/p05-home-arcade-basement.png",       "motion": "push-in" },
-    { "n": 6,  "dur": 14.07, "img": "generated-storybook/p06-dad-repair-bench-guts.png",      "motion": "pan-lr" },
-    { "n": 7,  "dur": 10.67, "img": "generated-storybook/p07-dad-trs80-business.png",         "motion": "push-in" },
-    { "n": 8,  "dur": 12.13, "img": "generated-storybook/p08-dad-face-trs80-glow.png",        "motion": "push-in" },
-    { "n": 9,  "dur": 11.76, "img": "generated-storybook/p09-trs80-programmer-chips.png",     "motion": "pan-lr" },
-    { "n": 10, "dur": 12.27, "img": "generated-storybook/p10-scrambled-nonsense-screen.png",  "motion": "push-in" },
-    { "n": 11, "dur": 11.82, "img": "generated-storybook/p11-bootleg-backroom-boards.png",    "motion": "pan-lr" },
-    { "n": 12, "dur": 10.23, "img": "generated-storybook/p12-modern-rom-preservation.png",    "motion": "pan-lr" },
-    { "n": 13, "dur": 10.20, "img": "generated-storybook/p13-smoky-basement-office.png",      "motion": "push-in" },
-    { "n": 14, "dur": 12.60, "img": "real/REAL-trs80-donkeykong-promdump-notebook.png",       "motion": "push-in" },
-    { "n": 15, "dur": 10.20, "img": "generated-storybook/p15-donkeykong-cabinet-1981.png",    "motion": "push-in" },
-    { "n": 16, "dur": 11.10, "img": "generated-storybook/p16-programmer-reading-scramble.png","motion": "push-in" },
-    { "n": 17, "dur": 12.10, "img": "real/REAL-trs80-programmer-copyprotection-notebook.png", "motion": "pan-lr" },
-    { "n": 18, "dur": 10.00, "img": "generated-storybook/p18-scramble-resolves-hex.png",      "motion": "push-in" },
-    { "n": 19, "dur": 12.60, "img": "generated-storybook/p19-hexdump-columns.png",            "motion": "pan-down" },
-    { "n": 20, "dur": 10.20, "img": "generated-storybook/p20-ascii-column-fragments.png",     "motion": "static-slow" },
-    { "n": 21, "dur": 10.20, "img": "generated-storybook/p21-broken-english-emerging.png",    "motion": "push-in" },
-    { "n": 22, "dur": 10.20, "img": "generated-storybook/p22-remembered-message-reveal.png",  "motion": "slow-push-in", "diegetic_text": true },
-    { "n": 23, "dur": 13.09, "img": "generated-storybook/p23-nick-sixteen-crt.png",           "motion": "push-in" },
-    { "n": 24, "dur": 11.60, "img": "generated-storybook/p24-nick-researching-home.png",      "motion": "push-in" },
-    { "n": 25, "dur": 12.20, "img": "generated-storybook/p25-ikegami-tokyo-office.png",       "motion": "pan-lr" },
-    { "n": 26, "dur": 12.20, "img": "generated-storybook/p26-hidden-message-in-code.png",     "motion": "push-in" },
-    { "n": 27, "dur": 11.05, "img": "generated-storybook/p27-ikegami-message-congratulation.png", "motion": "static-slow", "diegetic_text": true },
-    { "n": 28, "dur": 14.96, "img": "generated-storybook/p28b-bootlegger-calls-tokyo.png",    "motion": "push-in" },
-    { "n": 29, "dur": 11.02, "img": "generated-storybook/p29-code-copied.png",                "motion": "push-in" },
-    { "n": 30, "dur": 13.03, "img": "generated-storybook/p31-courtroom-rom-evidence.png",     "motion": "push-in" },
-    { "n": 31, "dur": 11.52, "img": "generated-storybook/p31-message-key-clue.png",           "motion": "push-in" },
-    { "n": 32, "dur": 11.45, "img": "real/infoage-handout/infoage-space-exhibit-docent-visitor.png", "motion": "pan-lr" },
-    { "n": "33a", "dur": 2.80, "img": "real/infoage-handout/infoage-univac-navy-missile-computer.png", "motion": "push-in", "montage": "P33 engineers" },
-    { "n": "33b", "dur": 2.80, "img": "real/museum-shoot/REAL-infoage-gallery-1.png",                  "motion": "pan-lr",  "montage": "P33 operators (real)" },
-    { "n": "33c", "dur": 2.80, "img": "real/museum-shoot/REAL-infoage-gallery-2.png",                  "motion": "pan-lr",  "montage": "P33 kids (real)" },
-    { "n": "33d", "dur": 4.05, "img": "real/museum-shoot/REAL-trs80-museum-hero.png",                  "motion": "push-in", "montage": "P33 LAND — real TRS-80 hero" },
-    { "n": 34, "dur": 14.44, "img": "real/infoage-handout/infoage-radio-gallery-hallway.png", "motion": "push-in" },
-    { "n": 35, "dur": 13.74, "img": "real/infoage-handout/infoage-antenna-dishes-signature.png", "motion": "push-in-settle", "closing_card": true,
+    {
+      "n": 1,
+      "dur": 9.12,
+      "img": "real/museum-shoot/REAL-infoage-gallery-2.png",
+      "motion": "pan-lr",
+      "note": "WELCOME (IMG_0904) \u2014 Hi, I'm Nick, let me show you around"
+    },
+    {
+      "n": 2,
+      "dur": 10.04,
+      "img": "real/museum-shoot/REAL-vcf-1940s-1950s.png",
+      "motion": "pan-lr",
+      "note": "1940s + 1950s banners (IMG_1676)"
+    },
+    {
+      "n": 3,
+      "dur": 7.31,
+      "img": "real/museum-shoot/REAL-vcf-1960s.png",
+      "motion": "pan-lr",
+      "note": "1960s (IMG_1680, PDP-8 era)"
+    },
+    {
+      "n": 4,
+      "dur": 8.22,
+      "img": "real/museum-shoot/REAL-vcf-1970s.png",
+      "motion": "pan-lr",
+      "note": "1970s banner (IMG_1681)"
+    },
+    {
+      "n": 5,
+      "dur": 7.31,
+      "img": "real/museum-shoot/REAL-vcf-1980s-upright.png",
+      "motion": "static",
+      "pillarbox": true,
+      "note": "1980s banner (IMG_1687) \u2014 PORTRAIT shot, upright-corrected (EXIF 6). Pillarboxed with blurred side panels so the full 'The 1980s' banner stays in frame; static hold on the 'stop on the 1980s' beat"
+    },
+    {
+      "n": 6,
+      "dur": 10.95,
+      "img": "real/museum-shoot/REAL-trs80-museum-hero.png",
+      "motion": "push-in",
+      "note": "the TRS-80 (IMG_0905) \u2014 my story starts"
+    },
+    {
+      "n": 4,
+      "dur": 12.1,
+      "img": "generated-storybook/p04-80s-arcade-bar.png",
+      "motion": "pan-lr"
+    },
+    {
+      "n": 5,
+      "dur": 11.63,
+      "img": "generated-storybook/p05-home-arcade-basement.png",
+      "motion": "push-in"
+    },
+    {
+      "n": 6,
+      "dur": 13.47,
+      "img": "generated-storybook/p06-dad-repair-bench-guts.png",
+      "motion": "pan-lr"
+    },
+    {
+      "n": 7,
+      "dur": 10.23,
+      "img": "generated-storybook/p07-dad-trs80-business.png",
+      "motion": "push-in"
+    },
+    {
+      "n": 8,
+      "dur": 11.63,
+      "img": "generated-storybook/p08-dad-face-trs80-glow.png",
+      "motion": "push-in"
+    },
+    {
+      "n": 9,
+      "dur": 13.58,
+      "img": "generated-storybook/p09b-dad-studies-machine.png",
+      "motion": "push-in",
+      "note": "studied every machine"
+    },
+    {
+      "n": "9b",
+      "dur": 14.03,
+      "img": "generated-storybook/p10b-backup-repurpose-boards.png",
+      "motion": "pan-lr",
+      "note": "backup / repurpose / opportunity"
+    },
+    {
+      "n": 10,
+      "dur": 13.58,
+      "img": "generated-storybook/p09-trs80-programmer-chips.png",
+      "motion": "pan-lr",
+      "note": "pull the data off the chips"
+    },
+    {
+      "n": 11,
+      "dur": 13.58,
+      "img": "generated-storybook/p10-scrambled-nonsense-screen.png",
+      "motion": "push-in",
+      "note": "came off jumbled"
+    },
+    {
+      "n": 12,
+      "dur": 14.02,
+      "img": "generated-storybook/p11-bootleg-backroom-boards.png",
+      "motion": "pan-lr",
+      "note": "figuring out the order / jumper wires"
+    },
+    {
+      "n": "12b",
+      "dur": 13.5,
+      "img": "generated-storybook/p12-modern-rom-preservation.png",
+      "motion": "pan-lr",
+      "note": "the puzzle he loved / MAME"
+    },
+    {
+      "n": 13,
+      "dur": 10.18,
+      "img": "generated-storybook/p13-smoky-basement-office.png",
+      "motion": "push-in"
+    },
+    {
+      "n": 14,
+      "dur": 12.03,
+      "img": "real/REAL-trs80-donkeykong-promdump-notebook.png",
+      "motion": "push-in"
+    },
+    {
+      "n": 15,
+      "dur": 10.18,
+      "img": "generated-storybook/p15-donkeykong-cabinet-1981.png",
+      "motion": "push-in"
+    },
+    {
+      "n": 16,
+      "dur": 11.1,
+      "img": "real/REAL-trs80-programmer-copyprotection-notebook.png",
+      "motion": "pan-lr",
+      "note": "he'd pulled the program off clean"
+    },
+    {
+      "n": 17,
+      "dur": 12.96,
+      "img": "generated-storybook/p19-hexdump-columns.png",
+      "motion": "pan-down"
+    },
+    {
+      "n": 18,
+      "dur": 12.03,
+      "img": "generated-storybook/p20-ascii-column-fragments.png",
+      "motion": "static-slow"
+    },
+    {
+      "n": 19,
+      "dur": 12.03,
+      "img": "generated-storybook/p21-broken-english-emerging.png",
+      "motion": "push-in"
+    },
+    {
+      "n": 20,
+      "dur": 11.1,
+      "img": "generated-storybook/p22-remembered-message-reveal.png",
+      "motion": "slow-push-in",
+      "diegetic_text": true
+    },
+    {
+      "n": 21,
+      "dur": 13.79,
+      "img": "generated-storybook/p23-nick-sixteen-crt.png",
+      "motion": "push-in"
+    },
+    {
+      "n": 22,
+      "dur": 12.97,
+      "img": "generated-storybook/p24-nick-researching-home.png",
+      "motion": "push-in"
+    },
+    {
+      "n": 23,
+      "dur": 13.64,
+      "img": "generated-storybook/p25-ikegami-tokyo-office.png",
+      "motion": "pan-lr"
+    },
+    {
+      "n": 24,
+      "dur": 13.64,
+      "img": "generated-storybook/p26-hidden-message-in-code.png",
+      "motion": "push-in"
+    },
+    {
+      "n": 25,
+      "dur": 12.35,
+      "img": "generated-storybook/p27-ikegami-message-congratulation.png",
+      "motion": "static-slow",
+      "diegetic_text": true
+    },
+    {
+      "n": 26,
+      "dur": 16.73,
+      "img": "generated-storybook/p28b-bootlegger-calls-tokyo.png",
+      "motion": "push-in"
+    },
+    {
+      "n": 27,
+      "dur": 13.55,
+      "img": "generated-storybook/p29-code-copied.png",
+      "motion": "push-in"
+    },
+    {
+      "n": 28,
+      "dur": 14.51,
+      "img": "generated-storybook/p31-courtroom-rom-evidence.png",
+      "motion": "push-in"
+    },
+    {
+      "n": 29,
+      "dur": 14.15,
+      "img": "generated-storybook/p31-message-key-clue.png",
+      "motion": "push-in"
+    },
+    {
+      "n": 30,
+      "dur": 12.95,
+      "img": "real/museum-shoot/REAL-vcf-comdyna-gp6.png",
+      "motion": "pan-lr"
+    },
+    {
+      "n": "31a",
+      "dur": 3.17,
+      "img": "real/infoage-handout/infoage-univac-navy-missile-computer.png",
+      "motion": "push-in",
+      "montage": "P31"
+    },
+    {
+      "n": "31b",
+      "dur": 3.17,
+      "img": "real/museum-shoot/REAL-infoage-gallery-1.png",
+      "motion": "pan-lr",
+      "montage": "P31"
+    },
+    {
+      "n": "31c",
+      "dur": 3.17,
+      "img": "real/museum-shoot/REAL-infoage-gallery-2.png",
+      "motion": "pan-lr",
+      "montage": "P31"
+    },
+    {
+      "n": "31d",
+      "dur": 4.59,
+      "img": "real/museum-shoot/REAL-trs80-museum-hero.png",
+      "motion": "push-in",
+      "montage": "P31 LAND"
+    },
+    {
+      "n": 32,
+      "dur": 16.34,
+      "img": "real/infoage-handout/infoage-computer-history-exhibit.png",
+      "motion": "push-in"
+    },
+    {
+      "n": 33,
+      "dur": 15.55,
+      "img": "real/infoage-handout/infoage-antenna-dishes-signature.png",
+      "motion": "push-in-settle",
+      "closing_card": true,
       "layout": {
         "hero": "real/infoage-handout/infoage-antenna-dishes-signature.png cover 1920x1080, slight warm grade, STATIC (no zoom so map/QR stay in frame), subtle dark lower-third scrim",
-        "lockup_text": ["Vintage Computer Museum at InfoAge", "Wall Township, NJ  ·  2201 Marconi Road", "Come find yours."],
+        "lockup_text": [
+          "Vintage Computer Museum at InfoAge",
+          "Wall Township, NJ  \u00b7  2201 Marconi Road",
+          "Come find yours."
+        ],
         "map_inset": "real/infoage-handout/infoage-location-map.png ~300px tall, bottom-LEFT, thin border",
         "qr": "real/infoage-handout/infoage-qr-directions-googlemaps.png native ~269px on a white pad box, bottom-RIGHT, crisp/scannable, 'Scan for directions' label above",
         "hold": "map + QR static and crisp for the full ~13.7s"
