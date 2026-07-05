@@ -1,0 +1,119 @@
+#!/usr/bin/env node
+/**
+ * aa — AgentArchitect global launcher. The front door.
+ *
+ * Works from any directory. Install once:
+ *   ln -s ~/Workspaces/AgentArchitect/bin/aa /usr/local/bin/aa
+ *
+ * See docs/factory-model.md.
+ */
+const fs = require('fs');
+const path = require('path');
+const { spawnSync } = require('child_process');
+
+// Resolve the real AA root even when invoked via symlink.
+const SELF = fs.realpathSync(process.argv[1]);
+const AA_ROOT = path.resolve(path.dirname(SELF), '..');
+const SCRIPTS = path.join(AA_ROOT, 'scripts');
+
+const HELP = `aa — AgentArchitect launcher
+
+Usage:
+  aa new <youtube|podcast|software> "<title>" [--team <id>] [--path <dir>]
+        Create a project repo for one deliverable and print where to start.
+
+  aa workspace <team-id> [--path <dir>]
+        Create (or re-provision) a team's standing workspace repo.
+
+  aa list
+        Everything the factory has spawned: kind, team, type, path.
+
+  aa sync [--all | <path>]
+        Refresh generated agents/skills in one spawned repo, or all of them.
+
+  aa help
+        Show this help.
+
+Start-of-day rule of thumb: new deliverable → aa new. Recurring team work
+(email, board, research) → cd into the team's workspace and run claude.
+`;
+
+function run(script, args) {
+  const r = spawnSync('node', [path.join(SCRIPTS, script), ...args], { stdio: 'inherit' });
+  process.exit(r.status ?? 1);
+}
+
+function list() {
+  const regPath = path.join(AA_ROOT, 'registry', 'workspaces.json');
+  if (!fs.existsSync(regPath)) {
+    console.log('Nothing spawned yet. Try: aa new youtube "My first video"');
+    return;
+  }
+  const reg = JSON.parse(fs.readFileSync(regPath, 'utf-8'));
+  if (!reg.workspaces || reg.workspaces.length === 0) {
+    console.log('Nothing spawned yet. Try: aa new youtube "My first video"');
+    return;
+  }
+  const rows = reg.workspaces.map(w => ({
+    kind: w.kind,
+    type: w.projectType || '-',
+    team: w.team,
+    path: w.path + (fs.existsSync(w.path) ? '' : '  [MISSING]'),
+  }));
+  const pad = (s, n) => String(s).padEnd(n);
+  const widths = {
+    kind: Math.max(4, ...rows.map(r => r.kind.length)),
+    type: Math.max(4, ...rows.map(r => r.type.length)),
+    team: Math.max(4, ...rows.map(r => r.team.length)),
+  };
+  console.log(`${pad('KIND', widths.kind)}  ${pad('TYPE', widths.type)}  ${pad('TEAM', widths.team)}  PATH`);
+  for (const r of rows) {
+    console.log(`${pad(r.kind, widths.kind)}  ${pad(r.type, widths.type)}  ${pad(r.team, widths.team)}  ${r.path}`);
+  }
+}
+
+function main() {
+  const [cmd, ...rest] = process.argv.slice(2);
+  switch (cmd) {
+    case 'new': {
+      const [type, title, ...flags] = rest;
+      if (!type || !title) {
+        console.error('Usage: aa new <youtube|podcast|software> "<title>"');
+        process.exit(1);
+      }
+      run('new-project.js', ['--type', type, '--name', title, ...flags]);
+      break;
+    }
+    case 'workspace': {
+      const [teamId, ...flags] = rest;
+      if (!teamId) {
+        console.error('Usage: aa workspace <team-id>');
+        process.exit(1);
+      }
+      run('new-workspace.js', ['--team', teamId, ...flags]);
+      break;
+    }
+    case 'list':
+      list();
+      break;
+    case 'sync': {
+      if (rest.length === 0) {
+        console.error('Usage: aa sync [--all | <path>]');
+        process.exit(1);
+      }
+      run('sync-workspace.js', rest);
+      break;
+    }
+    case 'help':
+    case '--help':
+    case '-h':
+    case undefined:
+      console.log(HELP);
+      break;
+    default:
+      console.error(`Unknown command: ${cmd}\n\n${HELP}`);
+      process.exit(1);
+  }
+}
+
+main();
