@@ -10,15 +10,15 @@ m = json.load(open(MAN))
 intro = 0.0; montage = 0.0; pdur = {}
 for p in m["pages"]:
     n, d = p["n"], float(p["dur"])
-    if n in (1, 2, 3):            intro += d
-    elif isinstance(n, str):      montage += d          # 33a-d
-    else:                         pdur[int(n)] = d
+    if n in (1, 2, 3) or n == "3b":  intro += d          # animated Segment-1 intro pages
+    elif isinstance(n, str):         montage += d        # 33a-d
+    else:                            pdur[int(n)] = d
 pdur[33] = round(montage, 2)
 
 def fmt(t):
     mm = int(t // 60); return f"{mm:02d}:{t - mm*60:04.1f}"
 
-times = {}; t = round(intro, 2)
+times = {}; t = round(intro, 2)  # v10: body starts after the 4-page animated intro (~49.6s)
 for pg in range(4, 36):
     d = pdur[pg]; times[pg] = (fmt(t), fmt(t + d), d); t = round(t + d, 2)
 total = t
@@ -45,7 +45,7 @@ for ln in lines:
     if h: cur = int(h.group(1))
     if cur in times and re.match(r"^- \*\*Time:\*\*", ln):
         i, o, d = times[cur]
-        ln = f"- **Time:** {i}–{o}  ({d:.1f}s)  *(draft — live intro is a placeholder)*"
+        ln = f"- **Time:** {i}–{o}  ({d:.1f}s)  *(v10 — after the ~49.6s animated intro)*"
     out.append(ln)
 sb = "\n".join(out)
 
