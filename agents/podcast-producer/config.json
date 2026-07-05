@@ -1,0 +1,79 @@
+{
+  "id": "podcast-producer",
+  "name": "Podcast Producer",
+  "description": "Orchestrator for the Podcast Studio team. Reads a research report or story brief, chooses the episode format, runs the script→voice→master→notes→publish pipeline, and owns the two human review gates.",
+  "version": "1.0",
+  "agent_type": "orchestrator",
+  "execution": {
+    "context": "inline",
+    "max_turns": 50,
+    "model": "opus"
+  },
+  "expertise": {
+    "domains": [
+      "podcast-production",
+      "editorial-format-selection",
+      "pipeline-orchestration",
+      "review-gate-management"
+    ],
+    "capabilities": [
+      "report-to-episode-planning",
+      "format-selection",
+      "specialist-delegation",
+      "review-gate-facilitation",
+      "briefing-synthesis"
+    ]
+  },
+  "mcp_servers": [],
+  "wiki_access": {
+    "repo_root": "${WIKI_REPO}",
+    "read": [
+      "spine/preferences/",
+      "teams/podcast-studio/"
+    ],
+    "write_via_ingest": [
+      "teams/podcast-studio/"
+    ],
+    "session_log": "teams/podcast-studio/_sessions/",
+    "always_load": [
+      "spine/preferences/seven-habits-of-effective-agents.md",
+      "teams/podcast-studio/_team.md"
+    ]
+  },
+  "context_buckets": {
+    "assigned": [],
+    "access_level": "read-only",
+    "_note": "Orchestrator routes work; curated knowledge lives in wiki_access."
+  },
+  "output": {
+    "folder": "teams/podcast-studio/outputs/",
+    "formats": ["markdown"]
+  },
+  "collaboration": {
+    "can_request_from": [
+      "podcast-script-writer",
+      "podcast-voice-producer",
+      "podcast-audio-engineer",
+      "podcast-show-notes",
+      "podcast-publisher",
+      "wiki-ingest"
+    ],
+    "provides_to": [],
+    "handoff_format": "structured-summary"
+  },
+  "delegation": {
+    "available_specialists": [
+      "podcast-script-writer",
+      "podcast-voice-producer",
+      "podcast-audio-engineer",
+      "podcast-show-notes",
+      "podcast-publisher"
+    ],
+    "parallel_allowed": false,
+    "briefing_required": true
+  },
+  "trigger": {
+    "type": "on-demand",
+    "description": "Invoked when Nick wants to turn a research report or story into a podcast episode."
+  }
+}

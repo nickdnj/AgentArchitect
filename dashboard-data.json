@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-14T20:19:03Z",
+  "generated_at": "2026-06-25T13:54:37Z",
   "version": "1.0",
   "teams": [
     {
@@ -770,6 +770,98 @@
         "orchestrator_instructions": "\n\n## Wiki Session Log (MANDATORY)\n\nAfter every substantive interaction with Nick (anything that lasted more than a quick yes/no exchange OR produced an artifact, decision, or specialist briefing), append a one-paragraph summary to:\n\n`~/Workspaces/wiki/teams/saltwater-ads/_sessions/YYYY-MM-DD.md`\n\n(Create the file if it does not exist. Append in chronological order \u2014 newest at the bottom of the day's file. Use today's date in YYYY-MM-DD format.)\n\nThe summary should cover:\n- **Asked:** one line \u2014 what Nick requested\n- **Specialists:** which agents invoked (if any)\n- **Output:** key artifacts produced, paths to files created, decisions made\n- **Wiki-ingest candidates:** any facts surfaced that should become permanent wiki pages (flag explicitly for next ingest pass)\n\nThis is the continuous session-logging surface that the `wiki-ingest` agent reads during the nightly lint to promote wiki-worthy content to permanent pages. **The wiki replaces the `/save` slash command for session continuity \u2014 but only if you write to it.**\n\nSkip the session log for trivial exchanges: pure yes/no answers, single-fact lookups, conversational meta-questions with no work product.\n"
       },
       "collaboration_rules": {}
+    },
+    {
+      "id": "podcast-studio",
+      "name": "Podcast Studio Team",
+      "description": "Turns a research report or story into a publish-ready podcast episode in Nick's cloned voice \u2014 better than NotebookLM.",
+      "skill_alias": "podcast-studio",
+      "created": "2026-06-25",
+      "status": "active",
+      "members": [
+        {
+          "agent_id": "podcast-producer",
+          "role": "Orchestrator \u2014 reads the source, picks the format, runs the pipeline, owns the two review gates",
+          "context_override": null
+        },
+        {
+          "agent_id": "podcast-script-writer",
+          "role": "Report/story \u2192 tightly-scripted, source-grounded episode in the chosen format",
+          "context_override": null
+        },
+        {
+          "agent_id": "podcast-voice-producer",
+          "role": "ElevenLabs TTS in Nick's cloned voice; per-segment WAVs + concatenated review MP3 + durations manifest",
+          "context_override": null
+        },
+        {
+          "agent_id": "podcast-audio-engineer",
+          "role": "FFmpeg mix + sound design + loudness mastering to -16 LUFS + chapter marks",
+          "context_override": null
+        },
+        {
+          "agent_id": "podcast-show-notes",
+          "role": "Title, description, chapter timestamps, clean transcript, citations",
+          "context_override": null
+        },
+        {
+          "agent_id": "podcast-publisher",
+          "role": "Host-agnostic RSS-ready episode package + cross-promo drafts",
+          "context_override": null
+        }
+      ],
+      "orchestration": {
+        "mode": "thin-orchestrator",
+        "execution": {
+          "model": "opus",
+          "max_turns": 50
+        },
+        "routing": {
+          "script": [
+            "podcast-script-writer"
+          ],
+          "voice": [
+            "podcast-voice-producer"
+          ],
+          "narration": [
+            "podcast-voice-producer"
+          ],
+          "master": [
+            "podcast-audio-engineer"
+          ],
+          "audio": [
+            "podcast-audio-engineer"
+          ],
+          "show-notes": [
+            "podcast-show-notes"
+          ],
+          "publish": [
+            "podcast-publisher"
+          ],
+          "full-episode": [
+            "podcast-script-writer",
+            "podcast-voice-producer",
+            "podcast-audio-engineer",
+            "podcast-show-notes",
+            "podcast-publisher"
+          ],
+          "general": [
+            "podcast-script-writer"
+          ]
+        },
+        "delegation_strategy": "Read the source first and make the editorial format call (solo essay / two-host / interview) BEFORE delegating. Then run the chapter pipeline with two human review gates:\n\n1. Delegate to Script Writer with source + format + angle \u2192 script.md\n2. GATE 1: Present the script (format + rationale, cold open, segments, runtime). Iterate with the writer until approved.\n3. Delegate to Voice Producer \u2192 per-segment WAVs + episode-vo.mp3 + durations.json\n4. GATE 2: Present episode-vo.mp3 for a listening pass. Surgical re-records only.\n5. Delegate to Audio Engineer \u2192 mastered episode.mp3 + chapters\n6. Delegate to Show Notes \u2192 show-notes.md\n7. Delegate to Publisher \u2192 host-agnostic publish package\n\nEach specialist runs in its own forked context. Pass the project folder path, source, format decision, and previous phase briefing to each.\n\n**Opus 4.x delegation note:** Opus defaults to fewer subagents/tool calls. Counteract that \u2014 when a request matches a specialist's domain, delegate rather than answering from training knowledge. Handle inline ONLY for routing/clarifying questions, trivial lookups in loaded context, or synthesizing briefings into the final response.",
+        "session_summary": {
+          "enabled": true,
+          "output_path": "context-buckets/session-logs/files/"
+        },
+        "orchestrator_instructions": "## Phase 0: Format Selection (MANDATORY)\n\nBefore delegating any work, READ the source (report/document/story brief) and choose ONE episode format, writing a one-paragraph rationale into project.json:\n\n- **Solo narrated essay** (Nick's voice only) \u2014 personal stories, narrative arcs, strong single POV. DEFAULT for first-person stories.\n- **Two-host dialogue** (Nick + one stock voice) \u2014 debatable/multi-angle topics, contrast, reveals.\n- **Host + expert guest** (Nick hosts, stock voice answers) \u2014 dense/technical reports unpacked via Q&A.\n\nNever default to two-host just because NotebookLM does. Pick what serves THIS source. If key facts are missing or ambiguous (names, dates, the punchline of a personal story), ask Nick a tight batched set of questions \u2014 never fabricate.\n\n## Phase 1 Gate: Script Approval\n\nAfter the Script Writer returns script.md: present format + rationale, the cold open, the segment list, and the runtime estimate. Ask Nick for batched feedback. If changes are requested, delegate back to the Script Writer. On approval, set phases.script.status = 'approved' in project.json.\n\n## Phase 2 Gate: Audio Listening Review\n\nAfter the Voice Producer returns: present episode-vo.mp3 and per-segment durations. Ask about pacing, pronunciation, and energy. If changes are requested, delegate back to the Voice Producer for SURGICAL re-records (name the specific segments only). On approval, set phases.voice.status = 'approved' and proceed to mastering.\n\n## Voice credentials check\n\nBefore the voice phase, confirm ELEVENLABS_API_KEY and VOICE_ID (Nick's 'Nick 2' clone) are set. The clone's voice_id is NOT committed anywhere \u2014 it lives in Nick's ElevenLabs account. If VOICE_ID is unset, STOP and ask Nick for it. Do not silently fall back to a stock voice.\n\n## Wiki Session Log (MANDATORY)\n\nAfter every substantive interaction with Nick (anything that lasted more than a quick yes/no exchange OR produced an artifact, decision, or specialist briefing), append a one-paragraph summary to:\n\n`~/Workspaces/wiki/teams/podcast-studio/_sessions/YYYY-MM-DD.md`\n\n(Create the file if it does not exist. Append in chronological order \u2014 newest at the bottom of the day's file. Use today's date in YYYY-MM-DD format.)\n\nThe summary should cover:\n- **Asked:** one line \u2014 what Nick requested\n- **Specialists:** which agents invoked (if any)\n- **Output:** key artifacts produced, paths to files created, decisions made\n- **Wiki-ingest candidates:** any facts surfaced that should become permanent wiki pages (flag explicitly for next ingest pass)\n\nThis is the continuous session-logging surface that the `wiki-ingest` agent reads during the nightly lint to promote wiki-worthy content to permanent pages. **The wiki replaces the `/save` slash command for session continuity \u2014 but only if you write to it.**\n\nSkip the session log for trivial exchanges: pure yes/no answers, single-fact lookups, conversational meta-questions with no work product.\n"
+      },
+      "collaboration_rules": {
+        "coordination_mode": "orchestrated",
+        "handoff_protocol": "sequential-delegation",
+        "output_sharing": "full",
+        "notification_email": "nickd@demarconet.com"
+      }
     }
   ],
   "agents": [
@@ -2696,6 +2788,214 @@
       "purpose": "The single LLM-driven agent in the Saltwater AI Ads system. Takes a brief and a snapshot of the brand bucket; returns 3 hook variants \u00d7 3 sub-variants. Validates each output against vocabulary, anti-pattern, and trademark rules before persisting.",
       "status": "active",
       "created": "2026-04-30"
+    },
+    {
+      "id": "podcast-producer",
+      "name": "Podcast Producer",
+      "description": "Orchestrator for the Podcast Studio team. Reads a research report or story brief, chooses the episode format, runs the script\u2192voice\u2192master\u2192notes\u2192publish pipeline, and owns the two human review gates.",
+      "agent_type": "orchestrator",
+      "execution": {
+        "context": "inline",
+        "max_turns": 50,
+        "model": "opus"
+      },
+      "expertise": {
+        "domains": [
+          "podcast-production",
+          "editorial-format-selection",
+          "pipeline-orchestration",
+          "review-gate-management"
+        ],
+        "capabilities": [
+          "report-to-episode-planning",
+          "format-selection",
+          "specialist-delegation",
+          "review-gate-facilitation",
+          "briefing-synthesis"
+        ]
+      },
+      "mcp_servers": [],
+      "teams": [
+        "podcast-studio"
+      ],
+      "purpose": "You are the **Podcast Producer**, the orchestrator of the Podcast Studio team. You take a research report, document, or story brief and turn it into a publish-ready podcast episode in Nick's cloned voice \u2014 one that beats NotebookLM on craft. You do not write scripts, generate audio, or master files yourself; you make the editorial call on format, then delegate each phase to a specialist running in its own forked context, and you run the two human review gates.",
+      "status": "active",
+      "created": "2026-06-25"
+    },
+    {
+      "id": "podcast-script-writer",
+      "name": "Podcast Script Writer",
+      "description": "Turns a research report or story brief into a tightly-scripted, source-grounded podcast episode in the chosen format (solo essay, two-host, or interview). The anti-NotebookLM craft brain of the team.",
+      "agent_type": "specialist",
+      "execution": {
+        "context": "fork",
+        "max_turns": 30,
+        "model": "opus"
+      },
+      "expertise": {
+        "domains": [
+          "narrative-scriptwriting",
+          "audio-storytelling",
+          "editorial-structure",
+          "source-grounding"
+        ],
+        "capabilities": [
+          "cold-open-hooks",
+          "segment-architecture",
+          "solo-essay-scripting",
+          "two-host-dialogue",
+          "interview-scripting",
+          "tts-aware-prose",
+          "citation-anchoring"
+        ]
+      },
+      "mcp_servers": [],
+      "teams": [
+        "podcast-studio"
+      ],
+      "purpose": "You turn a research report, document, or story brief into a **tightly-scripted, source-grounded podcast episode** in the format the Producer chose (solo essay, two-host dialogue, or host + expert guest). You are the reason this team beats NotebookLM: where NotebookLM auto-generates flabby two-host banter that wanders and pads, you write structured, filler-free audio prose that earns every second.",
+      "status": "active",
+      "created": "2026-06-25"
+    },
+    {
+      "id": "podcast-voice-producer",
+      "name": "Podcast Voice Producer",
+      "description": "Generates podcast narration with ElevenLabs using Nick's cloned voice (and a stock voice for a second speaker). Produces per-segment WAVs, a concatenated review MP3, and a durations manifest.",
+      "agent_type": "specialist",
+      "execution": {
+        "context": "fork",
+        "max_turns": 30,
+        "model": "sonnet"
+      },
+      "expertise": {
+        "domains": [
+          "text-to-speech",
+          "voice-cloning",
+          "narration-production",
+          "audio-segmentation"
+        ],
+        "capabilities": [
+          "elevenlabs-tts",
+          "cloned-voice-narration",
+          "multi-speaker-casting",
+          "per-segment-wav-export",
+          "concatenated-review-mp3",
+          "duration-manifest-generation"
+        ]
+      },
+      "mcp_servers": [
+        "video-editor"
+      ],
+      "teams": [
+        "podcast-studio"
+      ],
+      "purpose": "You generate the spoken narration for a podcast episode using **ElevenLabs**, in **Nick's cloned voice** (\"Nick 2\"). For multi-speaker formats you cast a second ElevenLabs voice for the co-host/guest. You always produce both per-segment WAVs (for surgical re-records) and one concatenated MP3 (for Nick's Gate-2 listening review), plus a durations manifest the audio engineer and show-notes writer use for timing and chapters.",
+      "status": "active",
+      "created": "2026-06-25"
+    },
+    {
+      "id": "podcast-audio-engineer",
+      "name": "Podcast Audio Engineer",
+      "description": "Mixes and masters the podcast episode with FFmpeg: narration plus intro/outro music and beds, crossfades, loudness normalization to broadcast standard, and chapter marks. Produces the final mastered MP3.",
+      "agent_type": "specialist",
+      "execution": {
+        "context": "fork",
+        "max_turns": 30,
+        "model": "sonnet"
+      },
+      "expertise": {
+        "domains": [
+          "audio-engineering",
+          "mixing-mastering",
+          "loudness-normalization",
+          "sound-design"
+        ],
+        "capabilities": [
+          "ffmpeg-audio-mixing",
+          "music-bed-ducking",
+          "intro-outro-assembly",
+          "ebu-r128-loudness-normalization",
+          "crossfades",
+          "chapter-marking",
+          "mp3-mastering"
+        ]
+      },
+      "mcp_servers": [
+        "video-editor"
+      ],
+      "teams": [
+        "podcast-studio"
+      ],
+      "purpose": "You take the approved narration and turn it into a finished, mastered podcast episode using **FFmpeg**: assemble the spoken segments, lay in intro/outro music and optional beds, duck the music under speech, crossfade the seams, and master the whole thing to broadcast loudness. The result sounds produced \u2014 the flat, unmastered feel is exactly what separates this from NotebookLM.",
+      "status": "active",
+      "created": "2026-06-25"
+    },
+    {
+      "id": "podcast-show-notes",
+      "name": "Podcast Show Notes Writer",
+      "description": "Writes the episode package text: title, description, chapter timestamps, a clean transcript, and citation links \u2014 ready to paste into any podcast host.",
+      "agent_type": "specialist",
+      "execution": {
+        "context": "fork",
+        "max_turns": 20,
+        "model": "sonnet"
+      },
+      "expertise": {
+        "domains": [
+          "show-notes-writing",
+          "transcript-production",
+          "metadata-and-seo",
+          "chapter-authoring"
+        ],
+        "capabilities": [
+          "episode-title-and-description",
+          "chapter-timestamp-generation",
+          "clean-transcript-formatting",
+          "citation-link-compilation"
+        ]
+      },
+      "mcp_servers": [],
+      "teams": [
+        "podcast-studio"
+      ],
+      "purpose": "You write everything that goes *around* the audio so an episode is ready to publish: a sharp title, a description that earns the click without clickbait, chapter timestamps, a clean readable transcript, and a citations/links list. This is the deliverable layer NotebookLM doesn't give you.",
+      "status": "active",
+      "created": "2026-06-25"
+    },
+    {
+      "id": "podcast-publisher",
+      "name": "Podcast Publisher",
+      "description": "Assembles a host-agnostic, RSS-ready episode package (tagged MP3, episode.xml item, cover art slot, metadata) and drafts cross-promo posts. Stops at a ready-to-upload package unless given a specific host.",
+      "agent_type": "specialist",
+      "execution": {
+        "context": "fork",
+        "max_turns": 25,
+        "model": "sonnet"
+      },
+      "expertise": {
+        "domains": [
+          "podcast-publishing",
+          "rss-feed-authoring",
+          "id3-tagging",
+          "cross-promotion"
+        ],
+        "capabilities": [
+          "id3-metadata-tagging",
+          "rss-item-generation",
+          "host-agnostic-packaging",
+          "cover-art-coordination",
+          "cross-promo-post-drafting"
+        ]
+      },
+      "mcp_servers": [
+        "video-editor"
+      ],
+      "teams": [
+        "podcast-studio"
+      ],
+      "purpose": "You take the mastered episode and the show notes and assemble a **host-agnostic, ready-to-upload package** \u2014 a properly tagged MP3, an RSS `<item>` Nick can drop into any feed, a place for cover art, and the metadata any host needs. You also draft cross-promo posts. By design you **stop at a ready package**: Nick connects the actual host (Spotify for Podcasters, Transistor, Buzzsprout, self-hosted RSS) himself. If he names a host, follow its specifics.",
+      "status": "active",
+      "created": "2026-06-25"
     }
   ],
   "buckets": [
@@ -2806,19 +3106,19 @@
     }
   ],
   "stats": {
-    "total_agents": 52,
-    "active_agents": 51,
+    "total_agents": 58,
+    "active_agents": 57,
     "archived_agents": 1,
-    "total_teams": 7,
+    "total_teams": 8,
     "total_buckets": 9,
     "agents_by_type": {
-      "specialist": 47,
-      "orchestrator": 1,
+      "specialist": 52,
+      "orchestrator": 2,
       "utility": 3
     },
     "agents_by_model": {
-      "sonnet": 38,
-      "opus": 11,
+      "sonnet": 42,
+      "opus": 13,
       "haiku": 2
     },
     "agents_by_team": {
@@ -2829,6 +3129,7 @@
       "youtube-content": 6,
       "hardware-dev": 6,
       "saltwater-ads": 1,
+      "podcast-studio": 6,
       "unaffiliated": 5
     }
   }

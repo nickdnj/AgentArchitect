@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "last_updated": "2026-05-14",
+  "last_updated": "2026-06-25",
   "agents": [
     {
       "id": "wiki-ingest",
@@ -14,7 +14,9 @@
       "id": "monthly-bulletin",
       "name": "Monthly Bulletin",
       "folder": "agents/monthly-bulletin",
-      "teams": ["wharfside-board-assistant"],
+      "teams": [
+        "wharfside-board-assistant"
+      ],
       "created": "2026-01-19",
       "status": "active"
     },
@@ -22,7 +24,9 @@
       "id": "proposal-review",
       "name": "Proposal Review",
       "folder": "agents/proposal-review",
-      "teams": ["wharfside-board-assistant"],
+      "teams": [
+        "wharfside-board-assistant"
+      ],
       "created": "2026-01-19",
       "status": "active"
     },
@@ -30,7 +34,10 @@
       "id": "presentation",
       "name": "Presentation",
       "folder": "agents/presentation",
-      "teams": ["wharfside-board-assistant", "altium-solutions"],
+      "teams": [
+        "wharfside-board-assistant",
+        "altium-solutions"
+      ],
       "created": "2026-01-19",
       "status": "active"
     },
@@ -38,7 +45,9 @@
       "id": "email-research",
       "name": "Email Research",
       "folder": "agents/email-research",
-      "teams": ["wharfside-board-assistant"],
+      "teams": [
+        "wharfside-board-assistant"
+      ],
       "created": "2026-01-19",
       "status": "active"
     },
@@ -46,7 +55,9 @@
       "id": "archivist",
       "name": "Archivist",
       "folder": "agents/archivist",
-      "teams": ["wharfside-board-assistant"],
+      "teams": [
+        "wharfside-board-assistant"
+      ],
       "created": "2026-01-19",
       "status": "active"
     },
@@ -54,7 +65,9 @@
       "id": "product-requirements",
       "name": "Product Requirements",
       "folder": "agents/product-requirements",
-      "teams": ["software-project"],
+      "teams": [
+        "software-project"
+      ],
       "created": "2026-01-19",
       "status": "active"
     },
@@ -62,7 +75,9 @@
       "id": "software-architecture",
       "name": "Software Architecture",
       "folder": "agents/software-architecture",
-      "teams": ["software-project"],
+      "teams": [
+        "software-project"
+      ],
       "created": "2026-01-19",
       "status": "active"
     },
@@ -70,7 +85,9 @@
       "id": "ux-design",
       "name": "UX Design",
       "folder": "agents/ux-design",
-      "teams": ["software-project"],
+      "teams": [
+        "software-project"
+      ],
       "created": "2026-01-19",
       "status": "active"
     },
@@ -78,7 +95,9 @@
       "id": "dev-planning",
       "name": "Dev Planning",
       "folder": "agents/dev-planning",
-      "teams": ["software-project"],
+      "teams": [
+        "software-project"
+      ],
       "created": "2026-01-19",
       "status": "active"
     },
@@ -86,7 +105,9 @@
       "id": "qa-strategy",
       "name": "QA Strategy",
       "folder": "agents/qa-strategy",
-      "teams": ["software-project"],
+      "teams": [
+        "software-project"
+      ],
       "created": "2026-01-19",
       "status": "active"
     },
@@ -94,7 +115,9 @@
       "id": "marketing",
       "name": "Marketing",
       "folder": "agents/marketing",
-      "teams": ["software-project"],
+      "teams": [
+        "software-project"
+      ],
       "created": "2026-01-19",
       "status": "active"
     },
@@ -102,7 +125,9 @@
       "id": "sales",
       "name": "Sales",
       "folder": "agents/sales",
-      "teams": ["software-project"],
+      "teams": [
+        "software-project"
+      ],
       "created": "2026-01-19",
       "status": "active"
     },
@@ -110,7 +135,9 @@
       "id": "legal",
       "name": "Legal",
       "folder": "agents/legal",
-      "teams": ["software-project"],
+      "teams": [
+        "software-project"
+      ],
       "created": "2026-01-19",
       "status": "active"
     },
@@ -118,7 +145,9 @@
       "id": "software-developer",
       "name": "Software Developer",
       "folder": "agents/software-developer",
-      "teams": ["software-project"],
+      "teams": [
+        "software-project"
+      ],
       "created": "2026-01-20",
       "status": "active"
     },
@@ -126,7 +155,9 @@
       "id": "pdf-scribe",
       "name": "PDFScribe",
       "folder": "agents/pdf-scribe",
-      "teams": ["wharfside-board-assistant"],
+      "teams": [
+        "wharfside-board-assistant"
+      ],
       "created": "2026-01-20",
       "status": "active"
     },
@@ -142,7 +173,9 @@
       "id": "account-researcher",
       "name": "Account Researcher",
       "folder": "agents/account-researcher",
-      "teams": ["altium-solutions"],
+      "teams": [
+        "altium-solutions"
+      ],
       "created": "2026-01-27",
       "status": "active"
     },
@@ -150,7 +183,9 @@
       "id": "qualification-analyst",
       "name": "Qualification Analyst",
       "folder": "agents/qualification-analyst",
-      "teams": ["altium-solutions"],
+      "teams": [
+        "altium-solutions"
+      ],
       "created": "2026-01-27",
       "status": "active"
     },
@@ -158,7 +193,9 @@
       "id": "solution-architect",
       "name": "Solution Architect",
       "folder": "agents/solution-architect",
-      "teams": ["altium-solutions"],
+      "teams": [
+        "altium-solutions"
+      ],
       "created": "2026-01-27",
       "status": "active"
     },
@@ -166,7 +203,9 @@
       "id": "value-engineer",
       "name": "Value Engineer",
       "folder": "agents/value-engineer",
-      "teams": ["altium-solutions"],
+      "teams": [
+        "altium-solutions"
+      ],
       "created": "2026-01-27",
       "status": "active"
     },
@@ -174,7 +213,9 @@
       "id": "competitive-intel",
       "name": "Competitive Intelligence",
       "folder": "agents/competitive-intel",
-      "teams": ["altium-solutions"],
+      "teams": [
+        "altium-solutions"
+      ],
       "created": "2026-01-27",
       "status": "active"
     },
@@ -182,7 +223,9 @@
       "id": "proposal-writer",
       "name": "Proposal Writer",
       "folder": "agents/proposal-writer",
-      "teams": ["altium-solutions"],
+      "teams": [
+        "altium-solutions"
+      ],
       "created": "2026-01-27",
       "status": "active"
     },
@@ -190,7 +233,9 @@
       "id": "deal-strategist",
       "name": "Deal Strategist",
       "folder": "agents/deal-strategist",
-      "teams": ["altium-solutions"],
+      "teams": [
+        "altium-solutions"
+      ],
       "created": "2026-01-27",
       "status": "active"
     },
@@ -198,7 +243,9 @@
       "id": "deployment-manager",
       "name": "Deployment Manager",
       "folder": "agents/deployment-manager",
-      "teams": ["altium-solutions"],
+      "teams": [
+        "altium-solutions"
+      ],
       "created": "2026-01-27",
       "status": "active"
     },
@@ -206,7 +253,9 @@
       "id": "ecad-specialist",
       "name": "ECAD Specialist",
       "folder": "agents/ecad-specialist",
-      "teams": ["altium-solutions"],
+      "teams": [
+        "altium-solutions"
+      ],
       "created": "2026-01-27",
       "status": "active"
     },
@@ -214,7 +263,9 @@
       "id": "migration-specialist",
       "name": "Migration Specialist",
       "folder": "agents/migration-specialist",
-      "teams": ["altium-solutions"],
+      "teams": [
+        "altium-solutions"
+      ],
       "created": "2026-01-27",
       "status": "active"
     },
@@ -222,7 +273,9 @@
       "id": "mcad-specialist",
       "name": "MCAD Specialist",
       "folder": "agents/mcad-specialist",
-      "teams": ["altium-solutions"],
+      "teams": [
+        "altium-solutions"
+      ],
       "created": "2026-01-27",
       "status": "active"
     },
@@ -230,7 +283,9 @@
       "id": "plm-specialist",
       "name": "PLM Specialist",
       "folder": "agents/plm-specialist",
-      "teams": ["altium-solutions"],
+      "teams": [
+        "altium-solutions"
+      ],
       "created": "2026-01-27",
       "status": "active"
     },
@@ -238,7 +293,9 @@
       "id": "erp-supplychain-specialist",
       "name": "ERP & Supply Chain Specialist",
       "folder": "agents/erp-supplychain-specialist",
-      "teams": ["altium-solutions"],
+      "teams": [
+        "altium-solutions"
+      ],
       "created": "2026-01-27",
       "status": "active"
     },
@@ -246,7 +303,9 @@
       "id": "infrastructure-specialist",
       "name": "Infrastructure Specialist",
       "folder": "agents/infrastructure-specialist",
-      "teams": ["altium-solutions"],
+      "teams": [
+        "altium-solutions"
+      ],
       "created": "2026-01-27",
       "status": "active"
     },
@@ -254,7 +313,9 @@
       "id": "customer-support",
       "name": "Customer Support",
       "folder": "agents/customer-support",
-      "teams": ["altium-solutions"],
+      "teams": [
+        "altium-solutions"
+      ],
       "created": "2026-01-27",
       "status": "active"
     },
@@ -262,7 +323,9 @@
       "id": "rag-search",
       "name": "RAG Search",
       "folder": "agents/rag-search",
-      "teams": ["wharfside-board-assistant"],
+      "teams": [
+        "wharfside-board-assistant"
+      ],
       "created": "2026-01-28",
       "status": "active"
     },
@@ -270,7 +333,9 @@
       "id": "personal-assistant",
       "name": "Max - Personal Assistant",
       "folder": "agents/personal-assistant",
-      "teams": ["personal-assistant"],
+      "teams": [
+        "personal-assistant"
+      ],
       "created": "2026-02-01",
       "status": "active"
     },
@@ -278,7 +343,9 @@
       "id": "youtube-creator",
       "name": "YouTube Creator",
       "folder": "agents/youtube-creator",
-      "teams": ["youtube-content"],
+      "teams": [
+        "youtube-content"
+      ],
       "created": "2026-02-07",
       "status": "archived",
       "archived_reason": "Replaced by 4 focused specialists: video-script-writer, video-asset-generator, video-assembler, video-publisher"
@@ -295,7 +362,9 @@
       "id": "short-form-video",
       "name": "Short-Form Video Strategy",
       "folder": "agents/short-form-video",
-      "teams": ["youtube-content"],
+      "teams": [
+        "youtube-content"
+      ],
       "created": "2026-02-11",
       "status": "active"
     },
@@ -303,7 +372,9 @@
       "id": "video-script-writer",
       "name": "Video Script Writer",
       "folder": "agents/video-script-writer",
-      "teams": ["youtube-content"],
+      "teams": [
+        "youtube-content"
+      ],
       "created": "2026-02-13",
       "status": "active"
     },
@@ -311,7 +382,9 @@
       "id": "video-asset-generator",
       "name": "Video Asset Generator",
       "folder": "agents/video-asset-generator",
-      "teams": ["youtube-content"],
+      "teams": [
+        "youtube-content"
+      ],
       "created": "2026-02-13",
       "status": "active"
     },
@@ -319,7 +392,9 @@
       "id": "video-assembler",
       "name": "Video Assembler",
       "folder": "agents/video-assembler",
-      "teams": ["youtube-content"],
+      "teams": [
+        "youtube-content"
+      ],
       "created": "2026-02-13",
       "status": "active"
     },
@@ -327,7 +402,9 @@
       "id": "video-publisher",
       "name": "Video Publisher",
       "folder": "agents/video-publisher",
-      "teams": ["youtube-content"],
+      "teams": [
+        "youtube-content"
+      ],
       "created": "2026-02-13",
       "status": "active"
     },
@@ -335,7 +412,9 @@
       "id": "board-comms",
       "name": "Board Communications",
       "folder": "agents/board-comms",
-      "teams": ["wharfside-board-assistant"],
+      "teams": [
+        "wharfside-board-assistant"
+      ],
       "created": "2026-02-15",
       "status": "active"
     },
@@ -343,7 +422,9 @@
       "id": "social-distributor",
       "name": "Social Distributor",
       "folder": "agents/social-distributor",
-      "teams": ["youtube-content"],
+      "teams": [
+        "youtube-content"
+      ],
       "created": "2026-03-21",
       "status": "active"
     },
@@ -351,7 +432,9 @@
       "id": "systems-engineer",
       "name": "Systems Engineering Manager",
       "folder": "agents/systems-engineer",
-      "teams": ["hardware-dev"],
+      "teams": [
+        "hardware-dev"
+      ],
       "created": "2026-04-09",
       "status": "active"
     },
@@ -359,7 +442,9 @@
       "id": "pcb-designer",
       "name": "PCB Designer",
       "folder": "agents/pcb-designer",
-      "teams": ["hardware-dev"],
+      "teams": [
+        "hardware-dev"
+      ],
       "created": "2026-04-09",
       "status": "active"
     },
@@ -367,7 +452,9 @@
       "id": "mcad-engineer",
       "name": "MCAD Engineer",
       "folder": "agents/mcad-engineer",
-      "teams": ["hardware-dev"],
+      "teams": [
+        "hardware-dev"
+      ],
       "created": "2026-04-09",
       "status": "active"
     },
@@ -375,7 +462,9 @@
       "id": "firmware-engineer",
       "name": "Firmware Engineer",
       "folder": "agents/firmware-engineer",
-      "teams": ["hardware-dev"],
+      "teams": [
+        "hardware-dev"
+      ],
       "created": "2026-04-09",
       "status": "active"
     },
@@ -383,7 +472,9 @@
       "id": "supply-chain-manager",
       "name": "Supply Chain Manager",
       "folder": "agents/supply-chain-manager",
-      "teams": ["hardware-dev"],
+      "teams": [
+        "hardware-dev"
+      ],
       "created": "2026-04-09",
       "status": "active"
     },
@@ -391,7 +482,9 @@
       "id": "dfm-test-engineer",
       "name": "DFM & Test Engineer",
       "folder": "agents/dfm-test-engineer",
-      "teams": ["hardware-dev"],
+      "teams": [
+        "hardware-dev"
+      ],
       "created": "2026-04-09",
       "status": "active"
     },
@@ -415,8 +508,70 @@
       "id": "hook-generator",
       "name": "Hook Generator",
       "folder": "agents/saltwater-ads/hook-generator",
-      "teams": ["saltwater-ads"],
+      "teams": [
+        "saltwater-ads"
+      ],
       "created": "2026-04-30",
+      "status": "active"
+    },
+    {
+      "id": "podcast-producer",
+      "name": "Podcast Producer",
+      "folder": "agents/podcast-producer",
+      "teams": [
+        "podcast-studio"
+      ],
+      "created": "2026-06-25",
+      "status": "active"
+    },
+    {
+      "id": "podcast-script-writer",
+      "name": "Podcast Script Writer",
+      "folder": "agents/podcast-script-writer",
+      "teams": [
+        "podcast-studio"
+      ],
+      "created": "2026-06-25",
+      "status": "active"
+    },
+    {
+      "id": "podcast-voice-producer",
+      "name": "Podcast Voice Producer",
+      "folder": "agents/podcast-voice-producer",
+      "teams": [
+        "podcast-studio"
+      ],
+      "created": "2026-06-25",
+      "status": "active"
+    },
+    {
+      "id": "podcast-audio-engineer",
+      "name": "Podcast Audio Engineer",
+      "folder": "agents/podcast-audio-engineer",
+      "teams": [
+        "podcast-studio"
+      ],
+      "created": "2026-06-25",
+      "status": "active"
+    },
+    {
+      "id": "podcast-show-notes",
+      "name": "Podcast Show Notes Writer",
+      "folder": "agents/podcast-show-notes",
+      "teams": [
+        "podcast-studio"
+      ],
+      "created": "2026-06-25",
+      "status": "active"
+    },
+    {
+      "id": "podcast-publisher",
+      "name": "Podcast Publisher",
+      "folder": "agents/podcast-publisher",
+      "teams": [
+        "podcast-studio"
+      ],
+      "created": "2026-06-25",
       "status": "active"
     }
   ]

@@ -19,19 +19,41 @@ Follow workflow stages. For new projects, start with Discovery (product-requirem
 
 **Claude 4.7 delegation note:** Opus 4.7 defaults to fewer subagents and fewer tool calls than prior models. Counteract that here — when a request matches a specialist's domain, delegate rather than answering from training knowledge. Handle inline ONLY for: routing/clarifying questions back to the user, trivial lookups in already-loaded context, or synthesizing specialist briefings into the final response. Everything else goes to a specialist.
 
+
+
+## Wiki Session Log (MANDATORY)
+
+After every substantive interaction with Nick (anything that lasted more than a quick yes/no exchange OR produced an artifact, decision, or specialist briefing), append a one-paragraph summary to:
+
+`~/Workspaces/wiki/teams/software-project/_sessions/YYYY-MM-DD.md`
+
+(Create the file if it does not exist. Append in chronological order — newest at the bottom of the day's file. Use today's date in YYYY-MM-DD format.)
+
+The summary should cover:
+- **Asked:** one line — what Nick requested
+- **Specialists:** which agents invoked (if any)
+- **Output:** key artifacts produced, paths to files created, decisions made
+- **Wiki-ingest candidates:** any facts surfaced that should become permanent wiki pages (flag explicitly for next ingest pass)
+
+This is the continuous session-logging surface that the `wiki-ingest` agent reads during the nightly lint to promote wiki-worthy content to permanent pages. **The wiki replaces the `/save` slash command for session continuity — but only if you write to it.**
+
+Skip the session log for trivial exchanges: pure yes/no answers, single-fact lookups, conversational meta-questions with no work product.
+
+
 ## CRITICAL: Delegation Rules
 
-1. **NEVER do deep analysis yourself** — always delegate to a specialist subagent
-2. **Parse the request** — understand what type of work is needed
-3. **Select specialist(s)** — choose the right agent(s) from the roster below
-4. **For each specialist, use the Agent tool:**
+1. **Run any pre-delegation phases first** (see above) — do NOT jump straight to specialists
+2. **NEVER do deep analysis yourself** — always delegate to a specialist subagent
+3. **Parse the request** — understand what type of work is needed
+4. **Select specialist(s)** — choose the right agent(s) from the roster below
+5. **For each specialist, use the Agent tool:**
    a. Read the specialist's SKILL.md from the path shown in their roster entry
    b. Construct an Agent tool call with subagent_type="general-purpose"
    c. Include the SKILL.md content, context bucket paths, and the task in the prompt
    d. Set the model parameter to match the specialist's preferred model
-5. **Run multiple Agent calls in parallel** when specialists are independent — use a single message with multiple Agent tool calls
-6. **Synthesize results** — combine specialist outputs into a coherent response for the user
-7. **Write session log** — ALWAYS log the interaction (see Session Summary below)
+6. **Run multiple Agent calls in parallel** when specialists are independent — use a single message with multiple Agent tool calls
+7. **Synthesize results** — combine specialist outputs into a coherent response for the user
+8. **Write session log** — ALWAYS log the interaction (see Session Summary below)
 
 ## How to Invoke a Specialist
 

@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "last_updated": "2026-04-30",
+  "last_updated": "2026-06-25",
   "teams": [
     {
       "id": "wharfside-board-assistant",
@@ -56,6 +56,14 @@
       "folder": "teams/saltwater-ads",
       "member_count": 1,
       "created": "2026-04-30",
+      "status": "active"
+    },
+    {
+      "id": "podcast-studio",
+      "name": "Podcast Studio Team",
+      "folder": "teams/podcast-studio",
+      "member_count": 6,
+      "created": "2026-06-25",
       "status": "active"
     }
   ]

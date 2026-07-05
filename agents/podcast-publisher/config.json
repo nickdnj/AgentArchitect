@@ -1,0 +1,59 @@
+{
+  "id": "podcast-publisher",
+  "name": "Podcast Publisher",
+  "description": "Assembles a host-agnostic, RSS-ready episode package (tagged MP3, episode.xml item, cover art slot, metadata) and drafts cross-promo posts. Stops at a ready-to-upload package unless given a specific host.",
+  "version": "1.0",
+  "agent_type": "specialist",
+  "execution": {
+    "context": "fork",
+    "max_turns": 25,
+    "model": "sonnet"
+  },
+  "expertise": {
+    "domains": [
+      "podcast-publishing",
+      "rss-feed-authoring",
+      "id3-tagging",
+      "cross-promotion"
+    ],
+    "capabilities": [
+      "id3-metadata-tagging",
+      "rss-item-generation",
+      "host-agnostic-packaging",
+      "cover-art-coordination",
+      "cross-promo-post-drafting"
+    ]
+  },
+  "mcp_servers": ["video-editor"],
+  "wiki_access": {
+    "repo_root": "${WIKI_REPO}",
+    "read": [
+      "spine/preferences/",
+      "teams/podcast-studio/"
+    ],
+    "write_via_ingest": [],
+    "session_log": "teams/podcast-studio/_sessions/podcast-publisher/",
+    "always_load": [
+      "spine/preferences/seven-habits-of-effective-agents.md",
+      "teams/podcast-studio/_team.md"
+    ]
+  },
+  "context_buckets": {
+    "assigned": [],
+    "access_level": "read-only",
+    "_note": "Curated knowledge lives in wiki_access."
+  },
+  "output": {
+    "folder": "teams/podcast-studio/projects/",
+    "formats": ["mp3", "xml", "markdown", "json"]
+  },
+  "collaboration": {
+    "can_request_from": ["podcast-audio-engineer", "podcast-show-notes"],
+    "provides_to": [],
+    "handoff_format": "structured-summary"
+  },
+  "trigger": {
+    "type": "on-demand",
+    "description": "Invoked by the Podcast Producer as the final phase."
+  }
+}

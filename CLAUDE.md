@@ -29,6 +29,58 @@ When sending emails or reports:
 - Use `nickd@demarconet.com` for personal matters and general research reports
 - Use `nickd@wharfsidemb.com` for Wharfside Manor board-related communications
 
+## Parallel Agent Git Rules (CRITICAL)
+
+Multiple agents (subagents, scheduled tasks, /borg routines, /loop iterations) may work on different files in this worktree simultaneously. To prevent agents from destroying each other's work, follow these rules. Adapted from [`badlogic/pi-mono`](https://github.com/badlogic/pi-mono/blob/main/AGENTS.md).
+
+### Committing
+
+- **ONLY commit files YOU changed in THIS session.** Track them as you go.
+- ALWAYS use `git add <specific-file-paths>` listing only files you modified
+- NEVER use `git add -A` or `git add .` — they sweep up changes from other agents
+- Before committing, run `git status` and verify you are only staging YOUR files
+- Include `fixes #<number>` or `closes #<number>` in the commit message when there is a related issue
+
+It is fine to include generated files (`.claude/agents/*.md`, `.claude/skills/*/SKILL.md`, dashboard data, registries auto-bumped by your work) alongside the source-of-truth files you actually changed.
+
+### Forbidden Git Operations
+
+These commands can destroy other agents' uncommitted work:
+
+- `git reset --hard` — destroys uncommitted changes
+- `git checkout .` / `git restore .` — destroys uncommitted changes
+- `git clean -fd` — deletes untracked files (other agents' new files)
+- `git stash` — stashes ALL changes including other agents' work
+- `git add -A` / `git add .` — stages other agents' uncommitted work
+- `git commit --no-verify` — bypasses required hooks
+- `git push --force` to `main` — overwrites upstream history
+
+### Safe Workflow
+
+```bash
+# 1. Check status first — confirm what's yours
+git status
+
+# 2. Add ONLY your specific files
+git add agents/<agent-id>/SKILL.md agents/<agent-id>/config.json
+
+# 3. Commit
+git commit -m "agent(<id>): description"
+
+# 4. Push (pull --rebase if needed; NEVER reset/checkout)
+git pull --rebase && git push
+```
+
+### If Rebase Conflicts Occur
+
+- Resolve conflicts in YOUR files only
+- If a conflict appears in a file you didn't modify, abort and ask — it belongs to another agent
+- NEVER force push to recover
+
+### User Override
+
+If user instructions conflict with these rules, ask for explicit confirmation that they want to override. Only then proceed.
+
 ## Smart Routing (MANDATORY)
 
 When the user starts a conversation without invoking a specific agent or team, you MUST route to the appropriate orchestrator. Do NOT bypass the orchestrator by calling specialist agents directly. The orchestrator handles routing and delegation.

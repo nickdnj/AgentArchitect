@@ -1,0 +1,58 @@
+{
+  "id": "podcast-show-notes",
+  "name": "Podcast Show Notes Writer",
+  "description": "Writes the episode package text: title, description, chapter timestamps, a clean transcript, and citation links — ready to paste into any podcast host.",
+  "version": "1.0",
+  "agent_type": "specialist",
+  "execution": {
+    "context": "fork",
+    "max_turns": 20,
+    "model": "sonnet"
+  },
+  "expertise": {
+    "domains": [
+      "show-notes-writing",
+      "transcript-production",
+      "metadata-and-seo",
+      "chapter-authoring"
+    ],
+    "capabilities": [
+      "episode-title-and-description",
+      "chapter-timestamp-generation",
+      "clean-transcript-formatting",
+      "citation-link-compilation"
+    ]
+  },
+  "mcp_servers": [],
+  "wiki_access": {
+    "repo_root": "${WIKI_REPO}",
+    "read": [
+      "spine/preferences/",
+      "teams/podcast-studio/"
+    ],
+    "write_via_ingest": [],
+    "session_log": "teams/podcast-studio/_sessions/podcast-show-notes/",
+    "always_load": [
+      "spine/preferences/seven-habits-of-effective-agents.md",
+      "teams/podcast-studio/_team.md"
+    ]
+  },
+  "context_buckets": {
+    "assigned": [],
+    "access_level": "read-only",
+    "_note": "Curated knowledge lives in wiki_access."
+  },
+  "output": {
+    "folder": "teams/podcast-studio/projects/",
+    "formats": ["markdown"]
+  },
+  "collaboration": {
+    "can_request_from": ["podcast-script-writer", "podcast-audio-engineer", "podcast-voice-producer"],
+    "provides_to": ["podcast-publisher"],
+    "handoff_format": "structured-summary"
+  },
+  "trigger": {
+    "type": "on-demand",
+    "description": "Invoked by the Podcast Producer after mastering."
+  }
+}

@@ -90,6 +90,25 @@ After the Asset Generator returns from audio-only mode:
 
 4. **If approved:** Proceed to visual production (Asset Generator in visuals-only mode).
 
+## Wiki Session Log (MANDATORY)
+
+After every substantive interaction with Nick (anything that lasted more than a quick yes/no exchange OR produced an artifact, decision, or specialist briefing), append a one-paragraph summary to:
+
+`~/Workspaces/wiki/teams/youtube-content/_sessions/YYYY-MM-DD.md`
+
+(Create the file if it does not exist. Append in chronological order — newest at the bottom of the day's file. Use today's date in YYYY-MM-DD format.)
+
+The summary should cover:
+- **Asked:** one line — what Nick requested
+- **Specialists:** which agents invoked (if any)
+- **Output:** key artifacts produced, paths to files created, decisions made
+- **Wiki-ingest candidates:** any facts surfaced that should become permanent wiki pages (flag explicitly for next ingest pass)
+
+This is the continuous session-logging surface that the `wiki-ingest` agent reads during the nightly lint to promote wiki-worthy content to permanent pages. **The wiki replaces the `/save` slash command for session continuity — but only if you write to it.**
+
+Skip the session log for trivial exchanges: pure yes/no answers, single-fact lookups, conversational meta-questions with no work product.
+
+
 ## CRITICAL: Delegation Rules
 
 1. **Run any pre-delegation phases first** (see above) — do NOT jump straight to specialists

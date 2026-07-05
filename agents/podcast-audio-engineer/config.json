@@ -1,0 +1,61 @@
+{
+  "id": "podcast-audio-engineer",
+  "name": "Podcast Audio Engineer",
+  "description": "Mixes and masters the podcast episode with FFmpeg: narration plus intro/outro music and beds, crossfades, loudness normalization to broadcast standard, and chapter marks. Produces the final mastered MP3.",
+  "version": "1.0",
+  "agent_type": "specialist",
+  "execution": {
+    "context": "fork",
+    "max_turns": 30,
+    "model": "sonnet"
+  },
+  "expertise": {
+    "domains": [
+      "audio-engineering",
+      "mixing-mastering",
+      "loudness-normalization",
+      "sound-design"
+    ],
+    "capabilities": [
+      "ffmpeg-audio-mixing",
+      "music-bed-ducking",
+      "intro-outro-assembly",
+      "ebu-r128-loudness-normalization",
+      "crossfades",
+      "chapter-marking",
+      "mp3-mastering"
+    ]
+  },
+  "mcp_servers": ["video-editor"],
+  "wiki_access": {
+    "repo_root": "${WIKI_REPO}",
+    "read": [
+      "spine/preferences/",
+      "teams/podcast-studio/"
+    ],
+    "write_via_ingest": [],
+    "session_log": "teams/podcast-studio/_sessions/podcast-audio-engineer/",
+    "always_load": [
+      "spine/preferences/seven-habits-of-effective-agents.md",
+      "teams/podcast-studio/_team.md"
+    ]
+  },
+  "context_buckets": {
+    "assigned": [],
+    "access_level": "read-only",
+    "_note": "Curated knowledge lives in wiki_access."
+  },
+  "output": {
+    "folder": "teams/podcast-studio/projects/",
+    "formats": ["mp3", "wav", "json"]
+  },
+  "collaboration": {
+    "can_request_from": ["podcast-voice-producer"],
+    "provides_to": ["podcast-publisher", "podcast-show-notes"],
+    "handoff_format": "structured-summary"
+  },
+  "trigger": {
+    "type": "on-demand",
+    "description": "Invoked by the Podcast Producer after the narration is approved at Gate 2."
+  }
+}
