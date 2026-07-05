@@ -199,9 +199,30 @@ function refreshRoutingBlock(repoPath, manifest, tokens) {
 }
 
 /**
+ * Copy the portable utility skills (wrap, voice-local, …) from
+ * templates/portable/skills/ into a spawned repo's .claude/skills/.
+ * Factory-managed: always overwrites. Returns the skill names copied.
+ */
+function syncPortableSkills(repoPath) {
+  const srcRoot = path.join(TEMPLATES_DIR, 'portable', 'skills');
+  if (!fs.existsSync(srcRoot)) return [];
+  const copied = [];
+  for (const name of fs.readdirSync(srcRoot)) {
+    const src = path.join(srcRoot, name, 'SKILL.md');
+    if (!fs.existsSync(src)) continue;
+    const destDir = path.join(repoPath, '.claude', 'skills', name);
+    fs.mkdirSync(destDir, { recursive: true });
+    fs.copyFileSync(src, path.join(destDir, 'SKILL.md'));
+    copied.push(name);
+  }
+  return copied;
+}
+
+/**
  * Sync one spawned repo from AA. Reads its manifest, regenerates
- * .claude/agents + .claude/skills, refreshes the CLAUDE.md routing block,
- * bumps aaCommit. Idempotent. Returns a summary object.
+ * .claude/agents + .claude/skills, copies the portable utility skills,
+ * refreshes the CLAUDE.md routing block, bumps aaCommit. Idempotent.
+ * Returns a summary object.
  */
 function syncRepo(repoPath) {
   const abs = path.resolve(repoPath);
@@ -223,6 +244,8 @@ function syncRepo(repoPath) {
     teamFilter: [manifest.team],
   });
 
+  const portable = syncPortableSkills(abs);
+
   const tokens = buildTokens({
     teamConfig,
     projectName: manifest.projectName || '',
@@ -243,6 +266,7 @@ function syncRepo(repoPath) {
     agentErrors: agentResults.errors,
     teams: teamResults.success.length,
     teamErrors: teamResults.errors,
+    portable,
     routingChanged,
   };
 }
