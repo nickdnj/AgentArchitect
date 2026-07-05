@@ -1,4 +1,29 @@
 {
   "version": "1.0",
-  "workspaces": []
+  "workspaces": [
+    {
+      "kind": "workspace",
+      "team": "altium-solutions",
+      "projectType": null,
+      "path": "/Users/nickd/Workspaces/Altium",
+      "provisionedAt": "2026-07-05",
+      "aaCommit": "d0bc14feebcc6d1c36ef85d65c81466d02c0f4e1"
+    },
+    {
+      "kind": "workspace",
+      "team": "personal-assistant",
+      "projectType": null,
+      "path": "/Users/nickd/Workspaces/max",
+      "provisionedAt": "2026-07-05",
+      "aaCommit": "d0bc14feebcc6d1c36ef85d65c81466d02c0f4e1"
+    },
+    {
+      "kind": "workspace",
+      "team": "wharfside-board-assistant",
+      "projectType": null,
+      "path": "/Users/nickd/Workspaces/wharfside",
+      "provisionedAt": "2026-07-05",
+      "aaCommit": "d0bc14feebcc6d1c36ef85d65c81466d02c0f4e1"
+    }
+  ]
 }
