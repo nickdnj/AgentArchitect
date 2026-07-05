@@ -7,8 +7,17 @@
       "projectType": null,
       "path": "/Users/nickd/Workspaces/Altium",
       "provisionedAt": "2026-07-05",
-      "aaCommit": "44bb57d1422a2d0599f9507270ed96f502bc78f7",
+      "aaCommit": "9d1a44f556eab1d57a395a36c609c55b55695def",
       "syncedAt": "2026-07-05"
+    },
+    {
+      "kind": "project",
+      "team": "content-studio",
+      "projectType": "youtube",
+      "name": "bob-grill-school",
+      "path": "/Users/nickd/Workspaces/bob-grill-school",
+      "provisionedAt": "2026-07-05",
+      "aaCommit": "9d1a44f556eab1d57a395a36c609c55b55695def"
     },
     {
       "kind": "project",
@@ -17,7 +26,7 @@
       "name": "Donkey Kong at InfoAge",
       "path": "/Users/nickd/Workspaces/donkey-kong-infoage",
       "provisionedAt": "2026-07-05",
-      "aaCommit": "44bb57d1422a2d0599f9507270ed96f502bc78f7",
+      "aaCommit": "9d1a44f556eab1d57a395a36c609c55b55695def",
       "syncedAt": "2026-07-05"
     },
     {
@@ -27,8 +36,16 @@
       "name": "Factory Demo App",
       "path": "/Users/nickd/Workspaces/factory-demo-app",
       "provisionedAt": "2026-07-05",
-      "aaCommit": "44bb57d1422a2d0599f9507270ed96f502bc78f7",
+      "aaCommit": "9d1a44f556eab1d57a395a36c609c55b55695def",
       "syncedAt": "2026-07-05"
+    },
+    {
+      "kind": "workspace",
+      "team": "hardware-dev",
+      "projectType": null,
+      "path": "/Users/nickd/Workspaces/hardware-dev",
+      "provisionedAt": "2026-07-05",
+      "aaCommit": "9881bac1c96dae84d86eef5e1e25dc2cd46c10bc"
     },
     {
       "kind": "project",
@@ -37,7 +54,7 @@
       "name": "The Jersey Stack Ep 1 — The Transistor",
       "path": "/Users/nickd/Workspaces/jersey-stack-ep1",
       "provisionedAt": "2026-07-05",
-      "aaCommit": "44bb57d1422a2d0599f9507270ed96f502bc78f7",
+      "aaCommit": "9d1a44f556eab1d57a395a36c609c55b55695def",
       "syncedAt": "2026-07-05"
     },
     {
@@ -46,8 +63,17 @@
       "projectType": null,
       "path": "/Users/nickd/Workspaces/max",
       "provisionedAt": "2026-07-05",
-      "aaCommit": "44bb57d1422a2d0599f9507270ed96f502bc78f7",
+      "aaCommit": "9d1a44f556eab1d57a395a36c609c55b55695def",
       "syncedAt": "2026-07-05"
+    },
+    {
+      "kind": "project",
+      "team": "content-studio",
+      "projectType": "youtube",
+      "name": "message-in-the-machine",
+      "path": "/Users/nickd/Workspaces/message-in-the-machine",
+      "provisionedAt": "2026-07-05",
+      "aaCommit": "9d1a44f556eab1d57a395a36c609c55b55695def"
     },
     {
       "kind": "workspace",
@@ -55,8 +81,35 @@
       "projectType": null,
       "path": "/Users/nickd/Workspaces/vcf",
       "provisionedAt": "2026-07-05",
-      "aaCommit": "44bb57d1422a2d0599f9507270ed96f502bc78f7",
+      "aaCommit": "9d1a44f556eab1d57a395a36c609c55b55695def",
       "syncedAt": "2026-07-05"
+    },
+    {
+      "kind": "project",
+      "team": "content-studio",
+      "projectType": "youtube",
+      "name": "vcf-comdyna-short",
+      "path": "/Users/nickd/Workspaces/vcf-comdyna-short",
+      "provisionedAt": "2026-07-05",
+      "aaCommit": "9d1a44f556eab1d57a395a36c609c55b55695def"
+    },
+    {
+      "kind": "project",
+      "team": "content-studio",
+      "projectType": "youtube",
+      "name": "vcf-sgi-short",
+      "path": "/Users/nickd/Workspaces/vcf-sgi-short",
+      "provisionedAt": "2026-07-05",
+      "aaCommit": "9d1a44f556eab1d57a395a36c609c55b55695def"
+    },
+    {
+      "kind": "project",
+      "team": "content-studio",
+      "projectType": "youtube",
+      "name": "vistter-brand-launch",
+      "path": "/Users/nickd/Workspaces/vistter-brand-launch",
+      "provisionedAt": "2026-07-05",
+      "aaCommit": "9d1a44f556eab1d57a395a36c609c55b55695def"
     },
     {
       "kind": "workspace",
@@ -64,7 +117,7 @@
       "projectType": null,
       "path": "/Users/nickd/Workspaces/wharfside",
       "provisionedAt": "2026-07-05",
-      "aaCommit": "44bb57d1422a2d0599f9507270ed96f502bc78f7",
+      "aaCommit": "9d1a44f556eab1d57a395a36c609c55b55695def",
       "syncedAt": "2026-07-05"
     }
   ]
