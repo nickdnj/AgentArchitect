@@ -14,6 +14,15 @@
       "kind": "project",
       "team": "content-studio",
       "projectType": "youtube",
+      "name": "Bahrs Landing Documentary",
+      "path": "/Users/nickd/Workspaces/bahrs-landing",
+      "provisionedAt": "2026-07-05",
+      "aaCommit": "88be75b504a84852098fe2e60b26d5e20b1cac49"
+    },
+    {
+      "kind": "project",
+      "team": "content-studio",
+      "projectType": "youtube",
       "name": "bob-grill-school",
       "path": "/Users/nickd/Workspaces/bob-grill-school",
       "provisionedAt": "2026-07-05",
