@@ -12,6 +12,8 @@ The team's agents and skills under `.claude/` are **generated** from `{{AA_PATH}
 **Spawning projects:** when the conversation produces a distinct deliverable (a video, a podcast episode, an app), do NOT build it in this workspace. Run `aa new <youtube|podcast|software> "<title>"` and hand the user the printed `cd … && claude` line. This workspace is for the team's recurring/operations work; deliverables get their own repo.
 
 **Team/agent changes** (roster, new team, behavior edits) belong in the factory: `cd {{AA_PATH}} && claude`, or `/architect` there.
+
+**Accounts & sign-ins:** which Google account, YouTube channel, or browser-automation path to use is documented in `~/Workspaces/wiki/spine/infrastructure/accounts-and-logins.md`. Read it BEFORE any task touching a signed-in service. If a signed-in browser task fails because the Claude in Chrome extension isn't connected, point Nick at that page and ask him to connect it — do NOT improvise sign-ins in clean automation profiles.
 <!-- AA:ROUTING:END -->
 
 ## Working conventions
