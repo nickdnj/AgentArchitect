@@ -85,7 +85,7 @@ If user instructions conflict with these rules, ask for explicit confirmation th
 
 AgentArchitect is a **factory**: it builds agents/teams and provisions standalone sibling repos where actual work happens. **No project or team work products live in this repo.** Full architecture: `docs/factory-model.md`.
 
-- **Workspace repos** (permanent, one per account-backed team): `~/Workspaces/wharfside`, `~/Workspaces/max`, `~/Workspaces/Altium`, `~/Workspaces/vcf`
+- **Workspace repos** (permanent, one per account-backed team): `~/Workspaces/wharfside`, `~/Workspaces/max`, `~/Workspaces/Altium`, `~/Workspaces/vcf`, `~/Workspaces/hardware-dev`, `~/Workspaces/content-studio` (channel/brand ops)
 - **Project repos** (one per deliverable): created with `aa new <youtube|podcast|software> "<title>"` — e.g. `~/Workspaces/jersey-stack-ep1`
 - **The `aa` launcher** (`bin/aa`, works from anywhere): `aa new`, `aa workspace`, `aa list`, `aa sync [--all]`. Install: `ln -s ~/Workspaces/AgentArchitect/bin/aa /usr/local/bin/aa`
 - Spawned repos carry **generated** `.claude/` agents+skills and a `.agentarchitect.json` provenance manifest. Edit sources here, then `aa sync` — never edit generated files in spawned repos.
@@ -94,6 +94,8 @@ AgentArchitect is a **factory**: it builds agents/teams and provisions standalon
 **When the user asks to start a new video/podcast/app in this repo:** run the matching `aa new …` command (or `node scripts/new-project.js …`) and hand them the printed `cd … && claude` line. Do NOT do project work inside AgentArchitect.
 
 **When the user asks for ongoing team work here (email, board, research):** do it if asked, but mention the team's workspace repo is the better home for it.
+
+**The entry-point rule:** Nick starts his day in a team workspace, not here. AA sessions are for architecture only — new teams, agent changes, template changes. Team workspaces spawn project repos via `aa new` when a deliverable emerges. If a session here turns into actual team/project work, redirect to the right repo.
 
 ## Smart Routing (MANDATORY)
 

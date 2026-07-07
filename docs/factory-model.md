@@ -40,7 +40,9 @@ Project types and their default owning team:
 
 ## Where do I start? (the front door)
 
-Run the global launcher from **any** directory:
+**Default: start in a team workspace, not in AgentArchitect.** Open Claude in the team whose domain you're working in (`~/Workspaces/wharfside`, `max`, `content-studio`, `vcf`, `Altium`, `hardware-dev`) and just talk. When the conversation produces a distinct deliverable, the team spawns a project repo with `aa new` and hands you off. Come to AgentArchitect only to create a new team, change an agent, or make an architectural change.
+
+The `aa` launcher works from **any** directory:
 
 ```bash
 aa new youtube "Jersey Stack Ep2 — the 6502"   # → creates ~/Workspaces/jersey-stack-ep2-the-6502

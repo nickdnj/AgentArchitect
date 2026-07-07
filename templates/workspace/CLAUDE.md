@@ -8,6 +8,10 @@ This is the standing workspace for the **{{TEAM_NAME}}** ({{TEAM_ID}}), provisio
 Every substantive request in this repo routes through the team orchestrator: invoke `Skill(skill: "{{TEAM_SKILL}}")` and let it delegate to specialists. Do not call specialist agents directly unless the user explicitly names one.
 
 The team's agents and skills under `.claude/` are **generated** from `{{AA_PATH}}` — never edit them here. To change an agent: edit its source in the factory, then run `aa sync {{TARGET_PATH}}`.
+
+**Spawning projects:** when the conversation produces a distinct deliverable (a video, a podcast episode, an app), do NOT build it in this workspace. Run `aa new <youtube|podcast|software> "<title>"` and hand the user the printed `cd … && claude` line. This workspace is for the team's recurring/operations work; deliverables get their own repo.
+
+**Team/agent changes** (roster, new team, behavior edits) belong in the factory: `cd {{AA_PATH}} && claude`, or `/architect` there.
 <!-- AA:ROUTING:END -->
 
 ## Working conventions
