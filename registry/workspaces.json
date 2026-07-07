@@ -29,6 +29,14 @@
       "aaCommit": "9d1a44f556eab1d57a395a36c609c55b55695def"
     },
     {
+      "kind": "workspace",
+      "team": "content-studio",
+      "projectType": null,
+      "path": "/Users/nickd/Workspaces/content-studio",
+      "provisionedAt": "2026-07-07",
+      "aaCommit": "70585d401a86f96ef5152009a235e4ec460597ed"
+    },
+    {
       "kind": "project",
       "team": "content-studio",
       "projectType": "podcast",
