@@ -7,8 +7,8 @@
       "projectType": null,
       "path": "/Users/nickd/Workspaces/Altium",
       "provisionedAt": "2026-07-05",
-      "aaCommit": "ce4e0d5f7649572f1bfd74537f08c77ad313e253",
-      "syncedAt": "2026-07-07"
+      "aaCommit": "2158193daed400e709c35d62eb74affb1a9b518a",
+      "syncedAt": "2026-07-17"
     },
     {
       "kind": "project",
@@ -17,8 +17,8 @@
       "name": "Bahrs Landing Documentary",
       "path": "/Users/nickd/Workspaces/bahrs-landing",
       "provisionedAt": "2026-07-05",
-      "aaCommit": "ce4e0d5f7649572f1bfd74537f08c77ad313e253",
-      "syncedAt": "2026-07-07"
+      "aaCommit": "2158193daed400e709c35d62eb74affb1a9b518a",
+      "syncedAt": "2026-07-17"
     },
     {
       "kind": "project",
@@ -27,8 +27,8 @@
       "name": "bob-grill-school",
       "path": "/Users/nickd/Workspaces/bob-grill-school",
       "provisionedAt": "2026-07-05",
-      "aaCommit": "ce4e0d5f7649572f1bfd74537f08c77ad313e253",
-      "syncedAt": "2026-07-07"
+      "aaCommit": "2158193daed400e709c35d62eb74affb1a9b518a",
+      "syncedAt": "2026-07-17"
     },
     {
       "kind": "workspace",
@@ -36,8 +36,8 @@
       "projectType": null,
       "path": "/Users/nickd/Workspaces/content-studio",
       "provisionedAt": "2026-07-07",
-      "aaCommit": "ce4e0d5f7649572f1bfd74537f08c77ad313e253",
-      "syncedAt": "2026-07-07"
+      "aaCommit": "2158193daed400e709c35d62eb74affb1a9b518a",
+      "syncedAt": "2026-07-17"
     },
     {
       "kind": "project",
@@ -46,8 +46,8 @@
       "name": "Donkey Kong at InfoAge",
       "path": "/Users/nickd/Workspaces/donkey-kong-infoage",
       "provisionedAt": "2026-07-05",
-      "aaCommit": "ce4e0d5f7649572f1bfd74537f08c77ad313e253",
-      "syncedAt": "2026-07-07"
+      "aaCommit": "2158193daed400e709c35d62eb74affb1a9b518a",
+      "syncedAt": "2026-07-17"
     },
     {
       "kind": "project",
@@ -56,8 +56,8 @@
       "name": "Factory Demo App",
       "path": "/Users/nickd/Workspaces/factory-demo-app",
       "provisionedAt": "2026-07-05",
-      "aaCommit": "ce4e0d5f7649572f1bfd74537f08c77ad313e253",
-      "syncedAt": "2026-07-07"
+      "aaCommit": "2158193daed400e709c35d62eb74affb1a9b518a",
+      "syncedAt": "2026-07-17"
     },
     {
       "kind": "project",
@@ -66,7 +66,8 @@
       "name": "GUI Lineage Emulation Station",
       "path": "/Users/nickd/Workspaces/gui-lineage-emulation-station",
       "provisionedAt": "2026-07-16",
-      "aaCommit": "7167470769250e742845660ac16e464610eaee2f"
+      "aaCommit": "2158193daed400e709c35d62eb74affb1a9b518a",
+      "syncedAt": "2026-07-17"
     },
     {
       "kind": "workspace",
@@ -74,18 +75,8 @@
       "projectType": null,
       "path": "/Users/nickd/Workspaces/hardware-dev",
       "provisionedAt": "2026-07-05",
-      "aaCommit": "ce4e0d5f7649572f1bfd74537f08c77ad313e253",
-      "syncedAt": "2026-07-07"
-    },
-    {
-      "kind": "project",
-      "team": "content-studio",
-      "projectType": "youtube",
-      "name": "The Jersey Stack Ep 1 — The Transistor",
-      "path": "/Users/nickd/Workspaces/jersey-stack-ep1",
-      "provisionedAt": "2026-07-05",
-      "aaCommit": "ce4e0d5f7649572f1bfd74537f08c77ad313e253",
-      "syncedAt": "2026-07-07"
+      "aaCommit": "2158193daed400e709c35d62eb74affb1a9b518a",
+      "syncedAt": "2026-07-17"
     },
     {
       "kind": "workspace",
@@ -93,18 +84,8 @@
       "projectType": null,
       "path": "/Users/nickd/Workspaces/max",
       "provisionedAt": "2026-07-05",
-      "aaCommit": "ce4e0d5f7649572f1bfd74537f08c77ad313e253",
-      "syncedAt": "2026-07-07"
-    },
-    {
-      "kind": "project",
-      "team": "content-studio",
-      "projectType": "youtube",
-      "name": "message-in-the-machine",
-      "path": "/Users/nickd/Workspaces/message-in-the-machine",
-      "provisionedAt": "2026-07-05",
-      "aaCommit": "ce4e0d5f7649572f1bfd74537f08c77ad313e253",
-      "syncedAt": "2026-07-07"
+      "aaCommit": "2158193daed400e709c35d62eb74affb1a9b518a",
+      "syncedAt": "2026-07-17"
     },
     {
       "kind": "project",
@@ -113,7 +94,7 @@
       "name": "TagSmart v2",
       "path": "/Users/nickd/Workspaces/tagsmart-v2",
       "provisionedAt": "2026-07-17",
-      "aaCommit": "7167470769250e742845660ac16e464610eaee2f",
+      "aaCommit": "2158193daed400e709c35d62eb74affb1a9b518a",
       "syncedAt": "2026-07-17"
     },
     {
@@ -122,8 +103,8 @@
       "projectType": null,
       "path": "/Users/nickd/Workspaces/vcf",
       "provisionedAt": "2026-07-05",
-      "aaCommit": "ce4e0d5f7649572f1bfd74537f08c77ad313e253",
-      "syncedAt": "2026-07-07"
+      "aaCommit": "2158193daed400e709c35d62eb74affb1a9b518a",
+      "syncedAt": "2026-07-17"
     },
     {
       "kind": "project",
@@ -132,8 +113,8 @@
       "name": "vcf-comdyna-short",
       "path": "/Users/nickd/Workspaces/vcf-comdyna-short",
       "provisionedAt": "2026-07-05",
-      "aaCommit": "ce4e0d5f7649572f1bfd74537f08c77ad313e253",
-      "syncedAt": "2026-07-07"
+      "aaCommit": "2158193daed400e709c35d62eb74affb1a9b518a",
+      "syncedAt": "2026-07-17"
     },
     {
       "kind": "project",
@@ -142,8 +123,8 @@
       "name": "vcf-sgi-short",
       "path": "/Users/nickd/Workspaces/vcf-sgi-short",
       "provisionedAt": "2026-07-05",
-      "aaCommit": "ce4e0d5f7649572f1bfd74537f08c77ad313e253",
-      "syncedAt": "2026-07-07"
+      "aaCommit": "2158193daed400e709c35d62eb74affb1a9b518a",
+      "syncedAt": "2026-07-17"
     },
     {
       "kind": "project",
@@ -152,8 +133,8 @@
       "name": "vistter-brand-launch",
       "path": "/Users/nickd/Workspaces/vistter-brand-launch",
       "provisionedAt": "2026-07-05",
-      "aaCommit": "ce4e0d5f7649572f1bfd74537f08c77ad313e253",
-      "syncedAt": "2026-07-07"
+      "aaCommit": "2158193daed400e709c35d62eb74affb1a9b518a",
+      "syncedAt": "2026-07-17"
     },
     {
       "kind": "project",
@@ -162,8 +143,8 @@
       "name": "VistterStream",
       "path": "/Users/nickd/Workspaces/VistterStream",
       "provisionedAt": "2026-07-08",
-      "aaCommit": "4b2460f439d9f9d7025eef81fc20ebd4932810d2",
-      "syncedAt": "2026-07-08"
+      "aaCommit": "2158193daed400e709c35d62eb74affb1a9b518a",
+      "syncedAt": "2026-07-17"
     },
     {
       "kind": "workspace",
@@ -171,8 +152,8 @@
       "projectType": null,
       "path": "/Users/nickd/Workspaces/wharfside",
       "provisionedAt": "2026-07-05",
-      "aaCommit": "ce4e0d5f7649572f1bfd74537f08c77ad313e253",
-      "syncedAt": "2026-07-07"
+      "aaCommit": "2158193daed400e709c35d62eb74affb1a9b518a",
+      "syncedAt": "2026-07-17"
     }
   ]
 }
