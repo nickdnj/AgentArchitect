@@ -60,6 +60,15 @@
       "syncedAt": "2026-07-07"
     },
     {
+      "kind": "project",
+      "team": "software-project",
+      "projectType": "software",
+      "name": "GUI Lineage Emulation Station",
+      "path": "/Users/nickd/Workspaces/gui-lineage-emulation-station",
+      "provisionedAt": "2026-07-16",
+      "aaCommit": "7167470769250e742845660ac16e464610eaee2f"
+    },
+    {
       "kind": "workspace",
       "team": "hardware-dev",
       "projectType": null,
@@ -96,6 +105,16 @@
       "provisionedAt": "2026-07-05",
       "aaCommit": "ce4e0d5f7649572f1bfd74537f08c77ad313e253",
       "syncedAt": "2026-07-07"
+    },
+    {
+      "kind": "project",
+      "team": "software-project",
+      "projectType": "software",
+      "name": "TagSmart v2",
+      "path": "/Users/nickd/Workspaces/tagsmart-v2",
+      "provisionedAt": "2026-07-17",
+      "aaCommit": "7167470769250e742845660ac16e464610eaee2f",
+      "syncedAt": "2026-07-17"
     },
     {
       "kind": "workspace",
