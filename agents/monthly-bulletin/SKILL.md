@@ -58,7 +58,7 @@ When starting a new bulletin, optionally send this email to Nick for forwarding 
 ```
 
 **Usage:**
-- Save as draft to `nickd@wharfsidemb.com` using `gog gmail drafts create`
+- Save as draft to `nickd@wharfsidemb.com` using `mcp__gmail__draft_email`
 - Subject: "Request for {Month} Bulletin Input"
 - To: board@wharfsidemb.com
 - Set deadline ~5 days out from current date
@@ -393,8 +393,9 @@ Keep it concise—no introduction needed:
 ## Output Requirements
 
 **Email Format:**
-- Send as HTML email using `gog gmail send --html` (not drafts)
-- Use `--html` flag for rich formatting
+- Create an HTML draft using `mcp__gmail__draft_email` with `htmlBody` set and
+  `mimeType: "text/html"` — Nick sends it, this agent never does
+- Use `htmlBody` (not `body`) for rich formatting
 - Include version in subject line: "[Month Year] Monthly Bulletin - Draft v0.X"
 - Send directly to: nickd@wharfsidemb.com
 - Do NOT save as draft - always send the bulletin directly for review
@@ -619,18 +620,16 @@ Use Chrome's headless mode to generate a clean PDF without browser headers/foote
 - `--no-pdf-header-footer`: Suppresses file path and date in footer
 - `--print-to-pdf`: Output path for the PDF
 
-### Step 3: Send PDF as Email Attachment
+### Step 3: Draft PDF as Email Attachment
 
-Send the PDF to Nick for forwarding to ECI:
+Draft the PDF to Nick for forwarding to ECI — call `mcp__gmail__draft_email` with:
 
-```bash
-gog gmail send \
-  --to "nickd@wharfsidemb.com" \
-  --subject "[Month Year] Monthly Bulletin - Final (PDF for Distribution)" \
-  --body "Attached is the final [Month] bulletin PDF for ECI distribution." \
-  --attachment "/path/to/bulletin-v0.X.pdf" \
-  --account BOARD_EMAIL
-```
+- `to`: `["nickd@wharfsidemb.com"]`
+- `subject`: `[Month Year] Monthly Bulletin - Final (PDF for Distribution)`
+- `body`: `Attached is the final [Month] bulletin PDF for ECI distribution.`
+- `attachments`: `["/path/to/bulletin-v0.X.pdf"]`
+
+Nick reviews and sends. Never call `send_email`.
 
 ### File Naming Convention
 
@@ -645,7 +644,7 @@ Example: `february-2026-bulletin-v0.13.pdf`
 
 | Format | Use Case | How to Send |
 |--------|----------|-------------|
-| HTML Email | Draft review with Nick | `gog gmail send --html` |
+| HTML Email | Draft review with Nick | `mcp__gmail__draft_email` + `htmlBody` |
 | HTML File | ECI needs to embed in their system | Send as attachment |
 | PDF | ECI attaches to their email blast | Send as attachment (preferred for final) |
 

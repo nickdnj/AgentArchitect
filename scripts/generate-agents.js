@@ -18,6 +18,7 @@ const fs = require('fs');
 const path = require('path');
 
 // Configuration
+const AA_ROOT = path.join(__dirname, '..');
 const AGENTS_DIR = path.join(__dirname, '..', 'agents');
 const TEAMS_DIR = path.join(__dirname, '..', 'teams');
 const OUTPUT_AGENTS_DIR = path.join(__dirname, '..', '.claude', 'agents');
@@ -31,12 +32,26 @@ function resolveWikiRoot() {
 }
 const WIKI_ROOT = resolveWikiRoot();
 
-// MCP Server mapping: Agent Architect config -> Claude Code tools
-// All external services are accessed via Bash CLI commands (gog, python, curl).
-// No MCP tool patterns needed. The mcp_servers field in config.json still
-// documents which services an agent needs (for dependency tracking / CLI docs injection).
+// MCP Server mapping: Agent Architect config -> Claude Code tool patterns.
+// Maps the logical server name used in config.json mcp_servers to the actual
+// MCP server namespace(s) registered with Claude Code. Emitted into the
+// generated agent's `tools:` frontmatter so specialists can reach the service
+// directly instead of shelling out.
+//
+// Servers with no entry here fall back to Bash + injected CLI docs.
 const MCP_SERVER_MAPPING = {
-  // All map to Bash (already in BASE_TOOLS) — no special tool patterns.
+  'gmail': ['mcp__gmail__*'],
+  'gmail-personal': ['mcp__gmail-personal__*'],
+  'google-docs': ['mcp__google-docs-mcp__*'],
+  'gdrive': ['mcp__google-drive__*'],
+  'gcal': ['mcp__claude_ai_Google_Calendar__*'],
+  'gtasks': ['mcp__gtasks__*'],
+  'apple-mcp': ['mcp__apple-mcp__*'],
+  'chrome': ['mcp__chrome__*'],
+  'openai-image': ['mcp__openai-image__*'],
+  'pdfscribe': ['mcp__pdfscribe__*'],
+  'video-editor': ['mcp__video-editor__*'],
+  'voicemode': ['mcp__voicemode__*'],
 };
 
 // ============================================================================
@@ -91,27 +106,39 @@ function validateAgentSpec(config, parentDirName) {
 // CLI tool documentation injected into generated skills/agents based on mcp_servers list.
 // These tell agents HOW to use each service via CLI commands.
 const CLI_TOOL_DOCS = {
-  'gmail': `## Gmail CLI (gog)
-Use \`gog\` via Bash for all email operations. Always use \`--json\` for parseable output.
-- Search: \`gog gmail search 'query' --json --max 20 --account BOARD_EMAIL\`
-- Read thread: \`gog gmail threads get <threadId> --json --account BOARD_EMAIL\`
-- Send: \`gog gmail send --to addr --subject "..." --body "..." --account BOARD_EMAIL\`
-- Draft: \`gog gmail drafts create --to addr --subject "..." --body "..." --account BOARD_EMAIL\`
-- Labels: \`gog gmail labels list --json --account BOARD_EMAIL\`
-- Attachments: \`gog gmail attachments download <messageId> --account BOARD_EMAIL\`
+  'gmail': `## Gmail (MCP — Wharfside / board account)
+Use the \`mcp__gmail__*\` tools directly. Do NOT shell out to a CLI.
+- Search: \`mcp__gmail__search_emails\`
+- Read: \`mcp__gmail__read_email\`
+- Draft: \`mcp__gmail__draft_email\`
+- Labels: \`mcp__gmail__list_email_labels\`, \`mcp__gmail__modify_email\`
+- Attachments: \`mcp__gmail__download_attachment\`
+
+**Account routing:** this server is the **Wharfside board** account (BOARD_EMAIL) only.
+**Always draft, never send** — Nick sends. Use \`draft_email\`, not \`send_email\`.
+**Before analyzing a thread or proposing a reply, search \`in:sent\` first** so you don't
+re-litigate something already answered.
 `,
-  'gmail-personal': `## Gmail CLI - Personal (gog)
-Same as Gmail CLI but use \`--account PERSONAL_EMAIL\` for the personal account.
+  'gmail-personal': `## Gmail (MCP — personal account)
+Use the \`mcp__gmail-personal__*\` tools — same surface as \`mcp__gmail__*\`, but bound to
+the personal Demarconet account (PERSONAL_EMAIL). Same rules: draft, never send; check
+\`in:sent\` before proposing replies.
 `,
-  'google-docs': `## Google Docs CLI (gog)
-- Create: \`gog docs create --title "Document" --json --account BOARD_EMAIL\`
-- Read: \`gog docs to-text <docId> --account BOARD_EMAIL\`
-- Export: \`gog docs export <docId> --format pdf --out ./output.pdf --account BOARD_EMAIL\`
+  'google-docs': `## Google Docs (MCP)
+- Create: \`mcp__google-docs-mcp__google_docs_create\`
+- Read as markdown: \`mcp__google-docs-mcp__google_docs_to_markdown\`
+- Update: \`mcp__google-docs-mcp__google_docs_update\`
+- Export: \`mcp__google-docs-mcp__google_docs_export\`
+- Search: \`mcp__google-docs-mcp__google_docs_search\`
 `,
-  'gdrive': `## Google Drive CLI (gog)
-- Search: \`gog drive search 'query' --json --account BOARD_EMAIL\`
-- Download: \`gog drive download <fileId> --out ./file --account BOARD_EMAIL\`
-- Upload: \`gog drive upload ./file --parent <folderId> --account BOARD_EMAIL\`
+  'gdrive': `## Google Drive (MCP)
+- Search: \`mcp__google-drive__gdrive_search\`
+- Read file: \`mcp__google-drive__gdrive_read_file\`
+- Sheets read/write: \`mcp__google-drive__gsheets_read\`, \`mcp__google-drive__gsheets_update_cell\`
+
+Shared drives are also mirrored locally under
+\`~/Library/CloudStorage/GoogleDrive-<account>/Shared drives/\` — for bulk reads, prefer
+Read/Glob against that path over per-file MCP calls.
 `,
   'pdfscribe': `## PDF Transcription (CLI)
 Use the pdfscribe Python CLI directly:
@@ -199,10 +226,20 @@ function readTeamConfig(teamDir) {
 
 /**
  * Map MCP servers from config to Claude Code tool patterns.
- * All external services are accessed via Bash CLI — always returns BASE_TOOLS only.
+ * Returns BASE_TOOLS plus a tool pattern for every mcp_server that has a
+ * mapping. Unmapped servers contribute nothing here and are covered by the
+ * CLI docs appendix instead.
  */
 function mapMcpServersToTools(mcpServers) {
-  return [...BASE_TOOLS];
+  const tools = [...BASE_TOOLS];
+  if (!mcpServers || !Array.isArray(mcpServers)) return tools;
+
+  for (const server of mcpServers) {
+    for (const pattern of MCP_SERVER_MAPPING[server] || []) {
+      if (!tools.includes(pattern)) tools.push(pattern);
+    }
+  }
+  return tools;
 }
 
 /**
@@ -774,9 +811,12 @@ function generateTeamOrchestratorSkill(teamConfig, allAgents) {
     '',
   ];
 
-  // Inject custom orchestrator instructions if present in team.json
+  // Inject custom orchestrator instructions if present in team.json.
+  // {{AA_ROOT}} resolves to the AgentArchitect checkout so shared tooling
+  // (rag-client-fts.py, the FTS db) stays reachable from spawned repos,
+  // which have no cowork/ of their own. See docs/factory-model.md.
   if (orch.orchestrator_instructions) {
-    lines.push(orch.orchestrator_instructions);
+    lines.push(orch.orchestrator_instructions.split('{{AA_ROOT}}').join(AA_ROOT));
     lines.push('');
   }
 

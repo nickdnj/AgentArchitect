@@ -103,7 +103,7 @@ Two accounts are available for searching:
    - Identify key stakeholders
 
 4. **Handling Search Result Limits (CRITICAL)**
-   - Gmail searches via `gog` are limited to ~100 results per query
+   - `mcp__gmail__search_emails` returns at most `maxResults` per query (cap it around 100)
    - **When a search returns the maximum number of results, you MUST dig deeper**
    - Break the time period into smaller ranges and search again
    - Continue until all searches return fewer than the maximum results
@@ -254,9 +254,8 @@ User must explicitly request transcription:
 **IMPORTANT:** Delegate PDF transcription to the PDFScribe agent rather than calling pdfscribe directly. This keeps the full transcription content out of Email Research's context.
 
 1. **Download the attachment:**
-   ```bash
-   gog gmail attachments download <messageId> --out /tmp/pdfscribe/ --account BOARD_EMAIL
-   ```
+   Call `mcp__gmail__download_attachment` with the message ID and a save path under
+   `/tmp/pdfscribe/`. (Use `mcp__gmail-personal__download_attachment` for the personal account.)
 
 2. **Delegate to PDFScribe agent:**
    Use the Task tool to spawn a PDFScribe agent:
@@ -381,7 +380,7 @@ List of email threads used in the report:
 
 ### CRITICAL: Draft-Only Policy
 **NEVER send emails directly.** Always create drafts and let the user send them.
-- Use `gog gmail drafts create` instead of `gog gmail send` for all email operations
+- Use `mcp__gmail__draft_email` (never `mcp__gmail__send_email`) for all email operations
 - This applies to research reports, replies, and any other email output
 - The user will review and send all emails manually
 

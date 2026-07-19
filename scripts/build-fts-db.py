@@ -208,8 +208,37 @@ def discover_buckets(target_bucket=None):
                 "name": config.get("name", entry.name),
                 "path": entry,
                 "files_dir": entry / "files",
+                "source_dirs": resolve_source_dirs(config, entry),
             })
     return buckets
+
+
+def resolve_source_dirs(config, bucket_dir):
+    """Resolve the local source directories declared in bucket.json.
+
+    Every source of type "local" is honored, not just files/. Paths may be
+    absolute, ~-relative, or relative to the bucket directory. Missing paths
+    are reported rather than silently skipped — a Drive folder that stopped
+    syncing should be loud, not invisible.
+    """
+    dirs = []
+    for source in config.get("sources", []):
+        if source.get("type") != "local":
+            continue
+        raw = source.get("path")
+        if not raw:
+            continue
+        p = Path(raw).expanduser()
+        if not p.is_absolute():
+            p = bucket_dir / p
+        if p not in dirs:
+            dirs.append(p)
+
+    # Always include files/, even if bucket.json forgot to declare it.
+    default = bucket_dir / "files"
+    if default not in dirs:
+        dirs.insert(0, default)
+    return dirs
 
 
 def collect_files(files_dir):
@@ -275,12 +304,18 @@ def extract_text(filepath):
     return None
 
 
-def friendly_name(filepath, files_dir):
-    """Create a friendly source name relative to the files directory."""
+def friendly_name(filepath, files_dir, prefix=None):
+    """Create a friendly source name relative to the files directory.
+
+    When a file comes from a declared source outside the bucket's own files/
+    directory, prefix it with that source's folder name so identically-named
+    documents from different drives get distinct keys.
+    """
     try:
-        return str(filepath.relative_to(files_dir))
+        rel = str(filepath.relative_to(files_dir))
     except ValueError:
-        return filepath.name
+        rel = filepath.name
+    return f"{prefix}/{rel}" if prefix else rel
 
 
 # ============================================================================
@@ -350,9 +385,9 @@ def remove_document(conn, bucket_id, source_file):
                  (bucket_id, source_file))
 
 
-def ingest_file(conn, bucket_id, filepath, files_dir, force=False):
+def ingest_file(conn, bucket_id, filepath, files_dir, force=False, prefix=None):
     """Ingest a single file into the FTS5 database. Returns status string."""
-    source_file = friendly_name(filepath, files_dir)
+    source_file = friendly_name(filepath, files_dir, prefix)
     checksum = compute_file_checksum(filepath)
 
     # Check if already indexed with same checksum
@@ -400,23 +435,33 @@ def ingest_bucket(conn, bucket, force=False, dry_run=False):
     """Ingest all files from a single bucket."""
     bucket_id = bucket["id"]
     files_dir = bucket["files_dir"]
-    files = collect_files(files_dir)
 
-    if not files:
+    # (filepath, base_dir, prefix) across every declared local source.
+    entries = []
+    for source_dir in bucket.get("source_dirs", [files_dir]):
+        if not source_dir.exists():
+            print(f"  [MISSING] declared source not on disk: {source_dir}")
+            continue
+        prefix = None if source_dir == files_dir else source_dir.name
+        found = collect_files(source_dir)
+        print(f"  {len(found):4d} files from {source_dir}")
+        entries.extend((f, source_dir, prefix) for f in found)
+
+    if not entries:
         print(f"  No ingestable files found")
         return {"ok": 0, "skipped": 0, "errors": 0}
 
-    print(f"  Found {len(files)} files")
+    print(f"  Found {len(entries)} files total")
     stats = {"ok": 0, "skipped": 0, "errors": 0}
 
-    for filepath in files:
-        source = friendly_name(filepath, files_dir)
+    for filepath, files_dir, prefix in entries:
+        source = friendly_name(filepath, files_dir, prefix)
         if dry_run:
             print(f"    [DRY] {source} ({filepath.suffix})")
             continue
 
         try:
-            status = ingest_file(conn, bucket_id, filepath, files_dir, force=force)
+            status = ingest_file(conn, bucket_id, filepath, files_dir, force=force, prefix=prefix)
             if status == "ok":
                 stats["ok"] += 1
                 print(f"    [OK] {source}")
