@@ -23,6 +23,7 @@ const { execSync } = require('child_process');
 
 // Import generateForExport from generate-agents.js (for agent .md files only)
 const { generateForExport } = require('./generate-agents');
+const { loadCommonInstructions } = require('./lib/orchestrator-common');
 
 // ============================================================================
 // Section 1: Project Definitions
@@ -354,7 +355,15 @@ function generateCoworkOrchestratorSkill(teamConfig, allAgents, project) {
     lines.push('');
   }
 
-  // Delegation rules — Cowork Agent tool pattern
+  // Shared block every orchestrator gets (deliverable spawning via `aa new`).
+  const common = loadCommonInstructions(AA_ROOT);
+  if (common) {
+    lines.push(common);
+    lines.push('');
+  }
+
+  // Delegation rules — Cowork Agent tool pattern.
+  // Keyed to team-specific instructions only; the shared block must not shift numbering.
   const hasCustomInstructions = !!orch.orchestrator_instructions;
   lines.push('## CRITICAL: Delegation Rules');
   lines.push('');

@@ -43,16 +43,31 @@
       "max_turns": 50
     },
     "routing": {
-      "exhibit-kit": ["web-research", "pdf-scribe"],
-      "machine-research": ["web-research"],
-      "manual-transcription": ["pdf-scribe"],
-      "email-contacts": ["email-research"],
-      "curriculum-deck": ["presentation"],
-      "wiki-contribution": ["wiki-ingest"],
-      "general": ["web-research"]
+      "exhibit-kit": [
+        "web-research",
+        "pdf-scribe"
+      ],
+      "machine-research": [
+        "web-research"
+      ],
+      "manual-transcription": [
+        "pdf-scribe"
+      ],
+      "email-contacts": [
+        "email-research"
+      ],
+      "curriculum-deck": [
+        "presentation"
+      ],
+      "wiki-contribution": [
+        "wiki-ingest"
+      ],
+      "general": [
+        "web-research"
+      ]
     },
     "delegation_strategy": "Route museum work to specialists and synthesize. Exhibit kits are the flagship deliverable — research (web-research) + source documents (pdf-scribe) feed a kit that the orchestrator assembles to the standard format. Delegate rather than answering from training knowledge; handle inline only routing questions, trivial lookups, and final synthesis.",
-    "orchestrator_instructions": "## VCF Museum Context (load-bearing)\n\n- **Where:** Vintage Computer Federation museum at InfoAge Science & History Museums, Fort Monmouth / Wall NJ. Nick volunteers there; his Concurrent Computer (3280, Micro5) background is the personal bridge.\n- **Contacts:** Doug — VCF museum manager, endorsed the exhibit-kit format, treat as the buyer/approver. Jeff — newer contact. Full roster in the wiki (`~/Workspaces/wiki/`) and memory `reference_vcf_contacts`.\n- **Exhibit Kit Standard (LOCKED):** Doug endorsed the Comdyna GP-6 multi-file kit as \"what a museum card should look like.\" Every exhibit kit ships: demo script + explainer + placard + operator card + FAQ + print/PDF. Retrofit older one-off cards (e.g. SGI Indigo²) into this format when touched.\n- **On-camera exception:** Nick stays behind the camera under the Vistter brand, EXCEPT InfoAge/VCF museum content — on-camera and his cloned voice (\"Nick 2\") are OK here; docent credibility.\n- **Adjacent projects (route AWAY, don't duplicate):** VCF social shorts and museum videos → content-studio team. ExhibitOS software → software-project team. This team owns documents, research, curriculum, and coordination — not video production or software builds.\n- **Wiki first:** check `~/Workspaces/wiki/` (InfoAge docent manual pages, Concurrent 3280 project) before re-researching anything.\n\n## Wiki Session Log (MANDATORY)\n\nAfter every substantive interaction, append a one-paragraph summary to `~/Workspaces/wiki/teams/vcf-museum/_sessions/YYYY-MM-DD.md` (create if missing, append chronologically): **Asked** / **Specialists** / **Output** / **Wiki-ingest candidates**. Skip for trivial exchanges.\n",
+    "orchestrator_instructions": "## VCF Museum Context (load-bearing)\n\n- **Where:** Vintage Computer Federation museum at InfoAge Science & History Museums, Fort Monmouth / Wall NJ. Nick volunteers there; his Concurrent Computer (3280, Micro5) background is the personal bridge.\n- **Contacts:** Doug — VCF museum manager, endorsed the exhibit-kit format, treat as the buyer/approver. Jeff — newer contact. Full roster in the wiki (`~/Workspaces/wiki/`) and memory `reference_vcf_contacts`.\n- **Exhibit Kit Standard (LOCKED):** Doug endorsed the Comdyna GP-6 multi-file kit as \"what a museum card should look like.\" Every exhibit kit ships: demo script + explainer + placard + operator card + FAQ + print/PDF. Retrofit older one-off cards (e.g. SGI Indigo²) into this format when touched.\n- **On-camera exception:** Nick stays behind the camera under the Vistter brand, EXCEPT InfoAge/VCF museum content — on-camera and his cloned voice (\"Nick 2\") are OK here; docent credibility.\n- **Adjacent projects (route AWAY, don't duplicate):** this team owns documents, research, curriculum, and coordination — not video production or software builds. Museum videos and VCF social shorts are content-studio deliverables; ExhibitOS is a software-project deliverable. You do NOT have those specialists here and cannot invoke them — spawn the deliverable into its own repo with `aa new youtube \"<title>\"` / `aa new software \"<title>\"` (see Spawning Deliverables below) and hand Nick the printed `cd … && claude` line.\n- **Wiki first:** check `~/Workspaces/wiki/` (InfoAge docent manual pages, Concurrent 3280 project) before re-researching anything.\n\n## Wiki Session Log (MANDATORY)\n\nAfter every substantive interaction, append a one-paragraph summary to `~/Workspaces/wiki/teams/vcf-museum/_sessions/YYYY-MM-DD.md` (create if missing, append chronologically): **Asked** / **Specialists** / **Output** / **Wiki-ingest candidates**. Skip for trivial exchanges.\n",
     "session_summary": {
       "enabled": true,
       "output_path": "context-buckets/session-logs/files/"

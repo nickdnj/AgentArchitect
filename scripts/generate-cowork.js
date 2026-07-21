@@ -21,6 +21,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { loadCommonInstructions } = require('./lib/orchestrator-common');
 
 // ============================================================================
 // Configuration
@@ -372,7 +373,15 @@ function generateCoworkOrchestratorSkill(teamConfig, allAgents) {
     lines.push('');
   }
 
-  // Delegation rules — adapted for Cowork's Agent tool
+  // Shared block every orchestrator gets (deliverable spawning via `aa new`).
+  const common = loadCommonInstructions(path.join(__dirname, '..'));
+  if (common) {
+    lines.push(common);
+    lines.push('');
+  }
+
+  // Delegation rules — adapted for Cowork's Agent tool.
+  // Keyed to team-specific instructions only; the shared block must not shift numbering.
   const hasCustomInstructions = !!orch.orchestrator_instructions;
   lines.push('## CRITICAL: Delegation Rules');
   lines.push('');

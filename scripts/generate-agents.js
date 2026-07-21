@@ -16,6 +16,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { loadCommonInstructions } = require('./lib/orchestrator-common');
 
 // Configuration
 const AA_ROOT = path.join(__dirname, '..');
@@ -820,7 +821,18 @@ function generateTeamOrchestratorSkill(teamConfig, allAgents) {
     lines.push('');
   }
 
-  // Build delegation rules with dynamic numbering
+  // Shared block every orchestrator gets (deliverable spawning via `aa new`).
+  // Placed after team-specific instructions so the cross-team escape hatch is
+  // the last word — a team's own "route away" guidance names teams, not commands.
+  const common = loadCommonInstructions(AA_ROOT);
+  if (common) {
+    lines.push(common);
+    lines.push('');
+  }
+
+  // Build delegation rules with dynamic numbering.
+  // Keyed to team-specific instructions only — the shared block is not a
+  // pre-delegation phase, so it must not shift rule numbering.
   const hasCustomInstructions = !!orch.orchestrator_instructions;
   lines.push('## CRITICAL: Delegation Rules');
   lines.push('');
