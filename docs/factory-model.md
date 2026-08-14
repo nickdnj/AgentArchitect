@@ -49,6 +49,7 @@ aa new youtube "Jersey Stack Ep2 — the 6502"   # → creates ~/Workspaces/jers
 aa new podcast "Concurrent 3280 story"
 aa new software "Fob reader dashboard"
 aa workspace wharfside-board-assistant          # → creates/refreshes a team workspace
+aa adopt ~/Workspaces/stoveiq --teams software-project,hardware-dev --type software --name "StoveIQ"
 aa list                                         # → everything the factory has spawned
 aa sync --all                                   # → push latest agents/skills into every spawned repo
 ```
@@ -86,6 +87,7 @@ Written into every spawned repo:
   "provisionedFrom": "/Users/nickd/Workspaces/AgentArchitect",
   "kind": "workspace | project",
   "team": "wharfside-board-assistant",
+  "teams": ["wharfside-board-assistant"],
   "projectType": "youtube | software | podcast | null",
   "agents": ["monthly-bulletin", "archivist", "..."],
   "skills": ["wharfside"],
@@ -97,12 +99,41 @@ Written into every spawned repo:
 
 `agents` defaults to the team roster at provision time; edit the list to trim or extend what a repo receives, then re-run sync.
 
+### Repos served by more than one team
+
+Most repos have one owning team. A product that genuinely spans disciplines — an app plus firmware plus a PCB — has two, and the manifest's `teams` array is what carries that. Sync generates **one orchestrator skill per team** into the repo, so each discipline is invoked by its own name:
+
+```json
+{ "kind": "project", "projectType": "software",
+  "team": "software-project",
+  "teams": ["software-project", "hardware-dev"],
+  "skills": ["software-project", "hardware-dev"] }
+```
+
+`team` remains the **primary** team (first in the array) and is what the registry and `aa list` key on; `teams` is authoritative for generation. Manifests written before this field existed still work — `team` is read as a one-element list.
+
+The routing block in a multi-team repo's `CLAUDE.md` renders as a table of `Skill(...)` invocations, one row per team, generated from each `team.json` description. `~/Workspaces/stoveiq` is the reference example: `software-project` owns `app/` and `cloud/`, `hardware-dev` owns `firmware/` and `hardware/`.
+
+### Adopting a repo the factory did not create
+
+`aa adopt` brings an existing repo under management **in place**. It is deliberately more conservative than provisioning:
+
+| | `aa new` / `aa workspace` | `aa adopt` |
+|---|---|---|
+| Scaffolds template dirs | yes | **no** |
+| Overwrites `CLAUDE.md` | writes it fresh | **never** — injects the routing block ahead of the first `## ` section and appends the git rules, leaving existing prose byte-for-byte intact |
+| `.gitignore` | written from template | AA ignore rules appended if absent |
+| Touches git | `git init` + scaffold commit | **nothing is committed** |
+
+Re-running is idempotent: blocks already present are detected and skipped. Use it for repos that predate the factory, or any repo built by hand that should now receive agents.
+
 ### Script contracts
 
 All in `scripts/`, all support `--help`:
 
 - **`new-workspace.js --team <id> [--path <dir>]`** — git-init the target (default `~/Workspaces/<skill_alias || id>`), render `templates/workspace/`, write the manifest from the team roster, run sync, register in `registry/workspaces.json`, commit the scaffold in the new repo.
 - **`new-project.js --type <software|youtube|podcast> --name <title> [--team <id>] [--path <dir>]`** — same, from `templates/project/<type>/`, slugifying the title.
+- **`adopt-repo.js <path> --teams <id[,id...]> [--type <type>] [--name <title>] [--kind project|workspace]`** — bring an existing repo under management without scaffolding, committing, or overwriting its `CLAUDE.md` prose. See "Adopting a repo the factory did not create" above.
 - **`sync-workspace.js <path> [--all]`** — read the target's manifest, regenerate `.claude/agents` + `.claude/skills` via the shared generation module (`generateForExport`), refresh the routing block in its `CLAUDE.md` (between `<!-- AA:ROUTING:BEGIN -->` / `<!-- AA:ROUTING:END -->` markers — user content outside the markers is preserved), refresh `.mcp.json`, bump `aaCommit`. **Idempotent**: re-running with no AA changes is a no-op diff.
 
 `bin/aa` is a thin dispatcher over these three plus `list`.
@@ -124,7 +155,9 @@ Powers `aa list` and `aa sync --all`. If a repo is deleted from disk, `aa list` 
 
 ## Templates
 
-`templates/workspace/` and `templates/project/<type>/`. Plain files with `{{TOKEN}}` replacement — no templating engine. Tokens: `{{TEAM_ID}}`, `{{TEAM_NAME}}`, `{{TEAM_SKILL}}`, `{{PROJECT_NAME}}`, `{{PROJECT_TYPE}}`, `{{SLUG}}`, `{{AA_PATH}}`, `{{DATE}}`. Each template carries: `CLAUDE.md` (routing markers + Parallel-Agent Git Rules + cloud bootstrap pointer), `.gitignore`, `README.md`, dir skeleton with `.gitkeep`s.
+`templates/workspace/` and `templates/project/<type>/`. Plain files with `{{TOKEN}}` replacement — no templating engine. Tokens: `{{TEAM_ID}}`, `{{TEAM_NAME}}`, `{{TEAM_SKILL}}`, `{{TEAM_SKILLS}}`, `{{TEAM_ROUTING}}`, `{{PROJECT_NAME}}`, `{{PROJECT_TYPE}}`, `{{SLUG}}`, `{{AA_PATH}}`, `{{TARGET_PATH}}`, `{{DATE}}`.
+
+`{{TEAM_ROUTING}}` is generated rather than hand-written: it renders the "invoke this skill" prose from the owning teams' `team.json` descriptions — a sentence for one team, a table for several. Prefer it over hardcoding a team's specialties into template prose, which goes stale when a roster changes. Each template carries: `CLAUDE.md` (routing markers + Parallel-Agent Git Rules + cloud bootstrap pointer), `.gitignore`, `README.md`, dir skeleton with `.gitkeep`s.
 
 ## Migration notes (performed 2026-07)
 

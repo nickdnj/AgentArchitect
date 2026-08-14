@@ -25,6 +25,11 @@ Usage:
   aa workspace <team-id> [--path <dir>]
         Create (or re-provision) a team's standing workspace repo.
 
+  aa adopt <path> --teams <id[,id...]> [--type <type>] [--name "<title>"]
+        Bring an existing repo under factory management in place. Never
+        scaffolds, never commits, never overwrites your CLAUDE.md prose.
+        Pass several teams for a repo that spans disciplines.
+
   aa list
         Everything the factory has spawned: kind, team, type, path.
 
@@ -57,7 +62,7 @@ function list() {
   const rows = reg.workspaces.map(w => ({
     kind: w.kind,
     type: w.projectType || '-',
-    team: w.team,
+    team: (w.teams && w.teams.length ? w.teams : [w.team]).join('+'),
     path: w.path + (fs.existsSync(w.path) ? '' : '  [MISSING]'),
   }));
   const pad = (s, n) => String(s).padEnd(n);
@@ -91,6 +96,14 @@ function main() {
         process.exit(1);
       }
       run('new-workspace.js', ['--team', teamId, ...flags]);
+      break;
+    }
+    case 'adopt': {
+      if (rest.length === 0) {
+        console.error('Usage: aa adopt <path> --teams <id[,id...]> [--type <type>] [--name "<title>"]');
+        process.exit(1);
+      }
+      run('adopt-repo.js', rest);
       break;
     }
     case 'list':

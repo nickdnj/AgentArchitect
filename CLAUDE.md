@@ -87,7 +87,8 @@ AgentArchitect is a **factory**: it builds agents/teams and provisions standalon
 
 - **Workspace repos** (permanent, one per account-backed team): `~/Workspaces/wharfside`, `~/Workspaces/max`, `~/Workspaces/Altium`, `~/Workspaces/vcf`, `~/Workspaces/hardware-dev`, `~/Workspaces/content-studio` (channel/brand ops)
 - **Project repos** (one per deliverable): created with `aa new <youtube|podcast|software> "<title>"` — e.g. `~/Workspaces/jersey-stack-ep1`
-- **The `aa` launcher** (`bin/aa`, works from anywhere): `aa new`, `aa workspace`, `aa list`, `aa sync [--all]`. Install: `ln -s ~/Workspaces/AgentArchitect/bin/aa /usr/local/bin/aa`
+- **The `aa` launcher** (`bin/aa`, works from anywhere): `aa new`, `aa workspace`, `aa adopt`, `aa list`, `aa sync [--all]`. Install: `ln -s ~/Workspaces/AgentArchitect/bin/aa /usr/local/bin/aa`
+- **Repos that predate the factory** are brought in with `aa adopt <path> --teams <id[,id...]> --type <type>` — in place, no scaffolding, no commits, existing `CLAUDE.md` prose preserved. A repo spanning disciplines may name several teams and gets one orchestrator skill per team (e.g. `~/Workspaces/stoveiq` → `software-project` + `hardware-dev`).
 - Spawned repos carry **generated** `.claude/` agents+skills and a `.agentarchitect.json` provenance manifest. Edit sources here, then `aa sync` — never edit generated files in spawned repos.
 - After changing any agent/team definition or template, run `aa sync --all` so every spawned repo picks it up.
 

@@ -72,6 +72,23 @@ function loadTeam(teamId) {
   return readJson(p);
 }
 
+/** The skill alias a team's orchestrator is invoked by. */
+function skillAlias(teamConfig) {
+  return teamConfig.skill_alias || teamConfig.id;
+}
+
+/**
+ * Team ids a repo is served by. A repo may be owned by more than one team when
+ * it spans disciplines (e.g. a connected product with app + firmware + PCB).
+ * `teams` is authoritative; `team` is the legacy single-team field, still
+ * written as the primary team so the registry and `aa list` keep working.
+ */
+function manifestTeamIds(manifest) {
+  if (Array.isArray(manifest.teams) && manifest.teams.length) return manifest.teams;
+  if (manifest.team) return [manifest.team];
+  throw new Error('Manifest declares no team (expected "teams" array or legacy "team")');
+}
+
 /**
  * All agent ids a team's repo should receive: roster members plus any agent
  * referenced in orchestration.routing that actually exists in agents/.
@@ -85,6 +102,15 @@ function teamAgentIds(teamConfig, allAgents) {
     }
   }
   return Array.from(ids).filter(id => allAgents[id]);
+}
+
+/** Union of the agent ids every owning team contributes, de-duplicated. */
+function allTeamAgentIds(teamConfigs, allAgents) {
+  const ids = new Set();
+  for (const tc of teamConfigs) {
+    for (const id of teamAgentIds(tc, allAgents)) ids.add(id);
+  }
+  return Array.from(ids).sort();
 }
 
 // ---------------------------------------------------------------------------
@@ -123,11 +149,39 @@ function renderTemplate(srcDir, destDir, tokens, opts = {}) {
   return written;
 }
 
-function buildTokens({ teamConfig, projectName, projectType, targetPath }) {
+/**
+ * The "## Routing" prose for a repo's CLAUDE.md, rendered from its owning
+ * team(s). One team reads as a sentence; several read as a routing table so
+ * the reader can tell which discipline goes where.
+ */
+function renderTeamRouting(teamConfigs) {
+  if (teamConfigs.length === 1) {
+    const tc = teamConfigs[0];
+    const desc = tc.description.charAt(0).toLowerCase() + tc.description.slice(1);
+    return `Invoke \`Skill(skill: "${skillAlias(tc)}")\` for team work — ${desc}. Direct requests on an established codebase can be handled inline; use the team for anything needing requirements, design, or planning first.`;
+  }
+  const rows = teamConfigs
+    .map(tc => `| \`Skill(skill: "${skillAlias(tc)}")\` | ${tc.description} |`)
+    .join('\n');
+  return [
+    `This repo spans more than one discipline and is served by ${teamConfigs.length} teams. Route by what the work actually is:`,
+    '',
+    '| Invoke | Covers |',
+    '|---|---|',
+    rows,
+    '',
+    'Pick the team that owns the tree you are editing. Work that crosses the boundary (an interface change, a protocol revision, a spec that binds both sides) starts with the team that owns the contract, which then hands off a briefing.',
+  ].join('\n');
+}
+
+function buildTokens({ teamConfigs, projectName, projectType, targetPath }) {
+  const primary = teamConfigs[0];
   return {
-    TEAM_ID: teamConfig.id,
-    TEAM_NAME: teamConfig.name,
-    TEAM_SKILL: teamConfig.skill_alias || teamConfig.id,
+    TEAM_ID: primary.id,
+    TEAM_NAME: teamConfigs.map(tc => tc.name).join(' + '),
+    TEAM_SKILL: skillAlias(primary),
+    TEAM_SKILLS: teamConfigs.map(skillAlias).join(', '),
+    TEAM_ROUTING: renderTeamRouting(teamConfigs),
     PROJECT_NAME: projectName || '',
     PROJECT_TYPE: projectType || '',
     SLUG: path.basename(targetPath),
@@ -231,8 +285,8 @@ function syncRepo(repoPath) {
     throw new Error(`Not an AgentArchitect-provisioned repo (no ${MANIFEST_NAME}): ${abs}`);
   }
   const manifest = readJson(manifestPath);
-  const teamConfig = loadTeam(manifest.team);
-  const allAgents = loadAllAgentConfigs();
+  const teamIds = manifestTeamIds(manifest);
+  const teamConfigs = teamIds.map(loadTeam);
 
   // Regenerate agents + skills through the same code path as /sync-agents.
   const { agentResults, teamResults } = generateForExport({
@@ -241,13 +295,13 @@ function syncRepo(repoPath) {
     outputAgentsDir: path.join(abs, '.claude', 'agents'),
     outputSkillsDir: path.join(abs, '.claude', 'skills'),
     agentFilter: manifest.agents,
-    teamFilter: [manifest.team],
+    teamFilter: teamIds,
   });
 
   const portable = syncPortableSkills(abs);
 
   const tokens = buildTokens({
-    teamConfig,
+    teamConfigs,
     projectName: manifest.projectName || '',
     projectType: manifest.projectType || '',
     targetPath: abs,
@@ -255,7 +309,7 @@ function syncRepo(repoPath) {
   const routingChanged = refreshRoutingBlock(abs, manifest, tokens);
 
   // Bump provenance.
-  manifest.skills = [teamConfig.skill_alias || teamConfig.id];
+  manifest.skills = teamConfigs.map(skillAlias);
   manifest.aaCommit = aaHeadCommit();
   manifest.syncedAt = today();
   writeJson(manifestPath, manifest);
@@ -303,16 +357,17 @@ function provisionWorkspace({ teamId, targetPath, noCommit = false }) {
   );
   if (dest === AA_ROOT) throw new Error('Refusing to provision into AgentArchitect itself');
 
-  const tokens = buildTokens({ teamConfig, targetPath: dest });
+  const tokens = buildTokens({ teamConfigs: [teamConfig], targetPath: dest });
   renderTemplate(path.join(TEMPLATES_DIR, 'workspace'), dest, tokens);
 
   const manifest = {
     provisionedFrom: AA_ROOT,
     kind: 'workspace',
     team: teamId,
+    teams: [teamId],
     projectType: null,
     agents: teamAgentIds(teamConfig, allAgents),
-    skills: [teamConfig.skill_alias || teamId],
+    skills: [skillAlias(teamConfig)],
     mcp: [],
     provisionedAt: today(),
     aaCommit: aaHeadCommit(),
@@ -339,19 +394,23 @@ function provisionWorkspace({ teamId, targetPath, noCommit = false }) {
 /**
  * Provision a project repo of a given type.
  */
-function provisionProject({ type, name, teamId, targetPath, noCommit = false }) {
+function provisionProject({ type, name, teamId, teamIds, targetPath, noCommit = false }) {
   if (!PROJECT_TYPE_TEAMS[type]) {
     throw new Error(`Unknown project type "${type}". Known: ${Object.keys(PROJECT_TYPE_TEAMS).join(', ')}`);
   }
-  const resolvedTeamId = teamId || PROJECT_TYPE_TEAMS[type];
-  const teamConfig = loadTeam(resolvedTeamId);
+  const resolvedTeamIds = (teamIds && teamIds.length)
+    ? teamIds
+    : [teamId || PROJECT_TYPE_TEAMS[type]];
+  const teamConfigs = resolvedTeamIds.map(loadTeam);
+  const teamConfig = teamConfigs[0];
+  const resolvedTeamId = teamConfig.id;
   const allAgents = loadAllAgentConfigs();
   const slug = slugify(name);
   if (!slug) throw new Error(`Could not derive a slug from title: ${name}`);
   const dest = path.resolve(targetPath || path.join(WORKSPACES_ROOT, slug));
   if (dest === AA_ROOT) throw new Error('Refusing to provision into AgentArchitect itself');
 
-  const tokens = buildTokens({ teamConfig, projectName: name, projectType: type, targetPath: dest });
+  const tokens = buildTokens({ teamConfigs, projectName: name, projectType: type, targetPath: dest });
   renderTemplate(path.join(TEMPLATES_DIR, 'project', type), dest, tokens);
 
   // Project-scoped MCP servers come from the template's .mcp.json.
@@ -365,10 +424,11 @@ function provisionProject({ type, name, teamId, targetPath, noCommit = false }) 
     provisionedFrom: AA_ROOT,
     kind: 'project',
     team: resolvedTeamId,
+    teams: resolvedTeamIds,
     projectType: type,
     projectName: name,
-    agents: teamAgentIds(teamConfig, allAgents),
-    skills: [teamConfig.skill_alias || resolvedTeamId],
+    agents: allTeamAgentIds(teamConfigs, allAgents),
+    skills: teamConfigs.map(skillAlias),
     mcp,
     provisionedAt: today(),
     aaCommit: aaHeadCommit(),
@@ -393,6 +453,161 @@ function provisionProject({ type, name, teamId, targetPath, noCommit = false }) 
   return { dest, teamConfig, sync };
 }
 
+// ---------------------------------------------------------------------------
+// Adopt — bring a repo that predates the factory under management
+// ---------------------------------------------------------------------------
+
+/** Pull a named `## ` section out of a rendered template, heading included. */
+function extractSection(text, heading) {
+  const start = text.indexOf(`## ${heading}`);
+  if (start === -1) return null;
+  const next = text.indexOf('\n## ', start + 1);
+  return (next === -1 ? text.slice(start) : text.slice(start, next)).trimEnd();
+}
+
+/**
+ * Add the factory-managed blocks to a CLAUDE.md that a human wrote, without
+ * disturbing a byte of what is already there. The routing block goes in ahead
+ * of the first `## ` section so it is the first thing an agent reads; the git
+ * rules go at the end. Both are skipped if already present.
+ */
+function injectClaudeMdBlocks(repoPath, templateDir, tokens) {
+  const claudeMdPath = path.join(repoPath, 'CLAUDE.md');
+  const templatePath = path.join(templateDir, 'CLAUDE.md');
+  if (!fs.existsSync(templatePath)) throw new Error(`Template CLAUDE.md missing: ${templatePath}`);
+
+  let template = fs.readFileSync(templatePath, 'utf-8');
+  for (const [key, value] of Object.entries(tokens)) {
+    template = template.split(`{{${key}}}`).join(value);
+  }
+
+  // Brand-new repo: take the template wholesale.
+  if (!fs.existsSync(claudeMdPath)) {
+    fs.writeFileSync(claudeMdPath, template, 'utf-8');
+    return { created: true, routingAdded: true, gitRulesAdded: true };
+  }
+
+  let content = fs.readFileSync(claudeMdPath, 'utf-8');
+  const added = { created: false, routingAdded: false, gitRulesAdded: false };
+
+  if (!content.includes(ROUTING_BEGIN)) {
+    const start = template.indexOf(ROUTING_BEGIN);
+    const end = template.indexOf(ROUTING_END);
+    if (start === -1 || end === -1) throw new Error(`Template has no AA:ROUTING block: ${templatePath}`);
+    const block = template.slice(start, end + ROUTING_END.length);
+
+    const firstSection = content.indexOf('\n## ');
+    if (firstSection === -1) {
+      content = `${content.trimEnd()}\n\n${block}\n`;
+    } else {
+      content = `${content.slice(0, firstSection + 1)}${block}\n\n${content.slice(firstSection + 1)}`;
+    }
+    added.routingAdded = true;
+  }
+
+  if (!/^## Parallel Agent Git Rules/m.test(content)) {
+    const gitRules = extractSection(template, 'Parallel Agent Git Rules (CRITICAL)');
+    if (gitRules) {
+      content = `${content.trimEnd()}\n\n${gitRules}\n`;
+      added.gitRulesAdded = true;
+    }
+  }
+
+  fs.writeFileSync(claudeMdPath, content, 'utf-8');
+  return added;
+}
+
+const GITIGNORE_MARKER = '# Generated by AgentArchitect sync';
+
+/**
+ * Append the factory's ignore rules to a repo's existing .gitignore so the
+ * generated `.claude/` surface stays untracked (the manifest itself is meant to
+ * be committed). Existing rules are never reordered or removed.
+ */
+function mergeGitignore(repoPath, templateDir) {
+  const templatePath = path.join(templateDir, 'gitignore');
+  if (!fs.existsSync(templatePath)) return false;
+  const template = fs.readFileSync(templatePath, 'utf-8');
+  const markerAt = template.indexOf(GITIGNORE_MARKER);
+  if (markerAt === -1) return false;
+  const block = template.slice(markerAt).trimEnd();
+
+  const destPath = path.join(repoPath, '.gitignore');
+  if (!fs.existsSync(destPath)) {
+    fs.writeFileSync(destPath, block + '\n', 'utf-8');
+    return true;
+  }
+  const current = fs.readFileSync(destPath, 'utf-8');
+  if (current.includes(GITIGNORE_MARKER) || current.includes('.claude/agents/*.md')) return false;
+  fs.writeFileSync(destPath, `${current.trimEnd()}\n\n${block}\n`, 'utf-8');
+  return true;
+}
+
+/**
+ * Adopt an existing repo into the factory. Unlike provisionProject this never
+ * scaffolds template directories, never touches git, and never overwrites the
+ * repo's own CLAUDE.md content — it only writes the manifest, injects the
+ * factory-managed CLAUDE.md blocks, and generates `.claude/`.
+ */
+function adoptRepo({ repoPath, teamIds, projectType, projectName, kind = 'project' }) {
+  const abs = path.resolve(repoPath);
+  if (abs === AA_ROOT) throw new Error('Refusing to adopt AgentArchitect itself');
+  if (!fs.existsSync(abs)) throw new Error(`No such directory: ${abs}`);
+  if (!teamIds || !teamIds.length) throw new Error('adoptRepo requires at least one team id');
+  if (kind === 'project' && !projectType) throw new Error('adoptRepo requires --type for a project');
+
+  const teamConfigs = teamIds.map(loadTeam);
+  const allAgents = loadAllAgentConfigs();
+  const manifestPath = path.join(abs, MANIFEST_NAME);
+  const existing = fs.existsSync(manifestPath) ? readJson(manifestPath) : {};
+
+  const manifest = {
+    ...existing,
+    provisionedFrom: AA_ROOT,
+    kind,
+    team: teamConfigs[0].id,
+    teams: teamIds,
+    projectType: kind === 'project' ? projectType : null,
+    ...(projectName ? { projectName } : {}),
+    agents: allTeamAgentIds(teamConfigs, allAgents),
+    skills: teamConfigs.map(skillAlias),
+    mcp: existing.mcp || [],
+    adopted: true,
+    provisionedAt: existing.provisionedAt || today(),
+    aaCommit: aaHeadCommit(),
+  };
+  writeJson(manifestPath, manifest);
+
+  const templateDir = kind === 'workspace'
+    ? path.join(TEMPLATES_DIR, 'workspace')
+    : path.join(TEMPLATES_DIR, 'project', projectType);
+  const tokens = buildTokens({
+    teamConfigs,
+    projectName: projectName || '',
+    projectType: manifest.projectType || '',
+    targetPath: abs,
+  });
+  const claudeMd = injectClaudeMdBlocks(abs, templateDir, tokens);
+  const gitignoreUpdated = mergeGitignore(abs, templateDir);
+
+  const sync = syncRepo(abs);
+
+  registerRepo({
+    kind,
+    team: manifest.team,
+    teams: teamIds,
+    projectType: manifest.projectType,
+    ...(projectName ? { name: projectName } : {}),
+    path: abs,
+    adopted: true,
+    provisionedAt: manifest.provisionedAt,
+    aaCommit: manifest.aaCommit,
+    syncedAt: today(),
+  });
+
+  return { dest: abs, teamConfigs, claudeMd, gitignoreUpdated, sync };
+}
+
 function handoff(dest) {
   return [
     `✔ Created ${dest}`,
@@ -407,11 +622,14 @@ module.exports = {
   PROJECT_TYPE_TEAMS,
   slugify,
   loadTeam,
+  skillAlias,
+  manifestTeamIds,
   loadRegistry,
   registerRepo,
   renderTemplate,
   provisionWorkspace,
   provisionProject,
+  adoptRepo,
   syncRepo,
   handoff,
 };
