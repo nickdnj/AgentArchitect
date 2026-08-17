@@ -137,15 +137,23 @@ fi
 
 # -----------------------------------------------------------------------------
 # 6. Persist WIKI_REPO (a convenience — agent prompts resolve it themselves)
+#
+# Only in an actual cloud sandbox. On a workstation the default
+# ~/Workspaces/wiki already resolves, and pinning an env var there just creates
+# a stale override the next time the wiki moves.
 # -----------------------------------------------------------------------------
 export WIKI_REPO="$WIKI_REPO_PATH"
-for rc in "$HOME/.bashrc" "$HOME/.zshrc"; do
-  [[ -f "$rc" ]] || continue
-  if ! grep -q 'export WIKI_REPO=' "$rc" 2>/dev/null; then
-    echo "export WIKI_REPO=\"$WIKI_REPO_PATH\"" >> "$rc"
-    echo "==> Persisted WIKI_REPO in $(basename "$rc")"
-  fi
-done
+if [[ -d "$HOME/Workspaces/AgentArchitect" ]]; then
+  echo "==> Workstation detected (AgentArchitect present) — not pinning WIKI_REPO in shell rc"
+else
+  for rc in "$HOME/.bashrc" "$HOME/.zshrc"; do
+    [[ -f "$rc" ]] || continue
+    if ! grep -q 'export WIKI_REPO=' "$rc" 2>/dev/null; then
+      echo "export WIKI_REPO=\"$WIKI_REPO_PATH\"" >> "$rc"
+      echo "==> Persisted WIKI_REPO in $(basename "$rc")"
+    fi
+  done
+fi
 
 # -----------------------------------------------------------------------------
 # 7. Capability probe (what bash can actually see — MCP presence cannot be)
@@ -156,9 +164,15 @@ command -v codex >/dev/null 2>&1 \
   && echo "    [have] codex — outside-voice review uses it" \
   || echo "    [none] codex — outside-voice review falls back to a subagent reviewer"
 if command -v curl >/dev/null 2>&1; then
-  curl -sfI --max-time 8 https://rag-api-934267405367.us-central1.run.app >/dev/null 2>&1 \
-    && echo "    [have] Cloud Run RAG API reachable — rag-search works" \
-    || echo "    [none] Cloud Run RAG API unreachable — document search degraded"
+  # Any HTTP response means we have egress and the service answered. Don't use
+  # -f: the root path legitimately returns 404/405 and that is still "reachable".
+  rag_code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 8 \
+    https://rag-api-934267405367.us-central1.run.app 2>/dev/null || echo 000)
+  if [[ "$rag_code" != "000" ]]; then
+    echo "    [have] Cloud Run RAG API reachable (HTTP $rag_code) — rag-search works"
+  else
+    echo "    [none] Cloud Run RAG API unreachable — document search degraded"
+  fi
 fi
 echo "    [note] MCP server availability cannot be probed from bash."
 echo "           See wiki spine/infrastructure/cloud-mode-capabilities.md."
@@ -166,8 +180,11 @@ echo "           See wiki spine/infrastructure/cloud-mode-capabilities.md."
 # -----------------------------------------------------------------------------
 # 8. Report
 # -----------------------------------------------------------------------------
-team=$(sed -n 's/.*"team"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' "$REPO_ROOT/.agentarchitect.json" 2>/dev/null | head -1)
-skill=$(sed -n 's/.*"skills"[[:space:]]*:[[:space:]]*\[[[:space:]]*"\([^"]*\)".*/\1/p' "$REPO_ROOT/.agentarchitect.json" 2>/dev/null | head -1)
+# Flatten the manifest before matching — it is pretty-printed, so the first
+# array element sits on its own line and a single-line regex misses it.
+manifest_flat=$(tr -d '\n' < "$REPO_ROOT/.agentarchitect.json" 2>/dev/null || true)
+team=$(printf '%s' "$manifest_flat" | sed -n 's/.*"team"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p')
+skill=$(printf '%s' "$manifest_flat" | sed -n 's/.*"skills"[[:space:]]*:[[:space:]]*\[[[:space:]]*"\([^"]*\)".*/\1/p')
 
 echo
 echo "==> Bootstrap complete"
