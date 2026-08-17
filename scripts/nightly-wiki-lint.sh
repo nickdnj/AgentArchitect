@@ -15,9 +15,65 @@
 # — other agents and Nick's Obsidian session write to this repo too.
 #
 # Manual run:  bash scripts/nightly-wiki-lint.sh
+# Install:     bash scripts/nightly-wiki-lint.sh --install    (writes + loads the plist)
+# Uninstall:   bash scripts/nightly-wiki-lint.sh --uninstall
+# Status:      launchctl list | grep wiki-lint
 # Logs:        ~/Library/Logs/wiki-lint.log
 
 set -uo pipefail
+
+PLIST="$HOME/Library/LaunchAgents/com.nickdnj.wiki-lint.plist"
+SELF="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/$(basename "${BASH_SOURCE[0]}")"
+
+if [[ "${1:-}" == "--install" ]]; then
+  mkdir -p "$(dirname "$PLIST")"
+  cat > "$PLIST" << PLISTEOF
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.nickdnj.wiki-lint</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>$SELF</string>
+    </array>
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Hour</key><integer>3</integer>
+        <key>Minute</key><integer>17</integer>
+    </dict>
+    <key>RunAtLoad</key>
+    <false/>
+    <key>StandardOutPath</key>
+    <string>$HOME/Library/Logs/wiki-lint.launchd.log</string>
+    <key>StandardErrorPath</key>
+    <string>$HOME/Library/Logs/wiki-lint.launchd.log</string>
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/opt/homebrew/bin:$HOME/.local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+        <key>WIKI_REPO</key>
+        <string>${WIKI_REPO:-$HOME/Workspaces/wiki}</string>
+    </dict>
+</dict>
+</plist>
+PLISTEOF
+  plutil -lint "$PLIST" || { echo "plist is malformed — not loading"; exit 1; }
+  launchctl unload "$PLIST" 2>/dev/null
+  launchctl load "$PLIST" || { echo "launchctl load failed"; exit 1; }
+  echo "Installed and loaded: $PLIST"
+  echo "Runs 3:17am local. Verify with:  launchctl list | grep wiki-lint"
+  exit 0
+fi
+
+if [[ "${1:-}" == "--uninstall" ]]; then
+  launchctl unload "$PLIST" 2>/dev/null
+  rm -f "$PLIST"
+  echo "Uninstalled: $PLIST"
+  exit 0
+fi
 
 export PATH="/opt/homebrew/bin:/Users/nickd/.local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
