@@ -95,6 +95,8 @@ scope: all  OR  teams/wharfside/  OR  spine/
    - **Stale dates:** any page with `last_updated` > 90 days ago AND containing time-sensitive language ("currently", "this year", "upcoming")?
    - **Orphans:** any markdown file with zero inbound `[[links]]` from other pages?
    - **Broken wikilinks:** `[[name]]` targets that don't resolve to a file.
+
+     **Parse the link before judging it.** Strip the alias first — `[[target|Label]]`, and inside markdown tables `[[target\|Label]]`, where the backslash is Obsidian's required escape for a pipe in a table cell. `\|` there is correct syntax, not a typo. Resolve the remaining target both repo-relative and relative to the linking page's directory, and append `.md`. The 2026-08-17 lint reported all 35 links in `projects.md` and 8 in `teams/hardware-dev/_team.md` as broken; every one of the 43 resolved fine — the resolver was treating the escaped pipe and the alias text as part of the filename. That finding had been carried for three cycles. If a whole file's links appear broken at once, suspect your parser before the wiki.
    - **Broken Drive URLs:** `https://drive.google.com/...` references that 404 (best effort — log if you can't verify).
 2. Write `_lint/<YYYY-MM-DD>.md`:
    ```markdown
@@ -136,8 +138,10 @@ When `audit: 10-session` is set:
 
 The session count is **derived from git log**, not stored state. Run:
 ```bash
-git -C $WIKI_REPO log --oneline --since="<last audit date>" --grep="session:" | wc -l
+git -C $WIKI_REPO log --oneline --since="<last audit date>" | wc -l
 ```
+
+Count **all** commits since the last audit. Do not filter on `--grep="session:"` — that was the original spec and it matched 3 commits in the repo's entire history against 41 in August alone, because commit messages here are written as `team: what changed`, not `session: …`. The audit consequently never fired on its own. Take the last audit date from the most recent `_lint/` report that contains an audit section; if none exists, use the oldest `_lint/` report.
 If ≥ 10, recommend running the audit. You are not the scheduler — you respond when invoked.
 
 ## Input Requirements
