@@ -21,9 +21,13 @@ Options:
 
 function syncOne(p) {
   const result = syncRepo(p);
-  console.log(`  [OK] ${result.path} — agents: ${result.agents}, orchestrators: ${result.teams}${result.routingChanged ? ', routing block updated' : ''}`);
+  const scriptNote = result.portableScripts?.length ? `, scripts: ${result.portableScripts.length}` : '';
+  console.log(`  [OK] ${result.path} — agents: ${result.agents}, orchestrators: ${result.teams}${scriptNote}${result.routingChanged ? ', routing block updated' : ''}`);
   for (const e of [...result.agentErrors, ...result.teamErrors]) {
     console.warn(`       [WARN] ${e.agentId || e.teamId}: ${e.error}`);
+  }
+  for (const w of result.wikiWarnings || []) {
+    console.warn(`       [WARN] always_load missing — ${w}`);
   }
   return result;
 }

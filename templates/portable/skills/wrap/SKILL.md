@@ -7,6 +7,15 @@ Ensures all in-flight work is captured before the terminal closes. Run this befo
 - `/wrap --no-push` — same but don't push (useful when offline).
 - `/wrap --skip-log` — same but skip the session log (useful when the team orchestrator already logged the session).
 
+## Cloud / iOS mode (read this first if you're in a sandbox)
+
+You are in cloud mode if `~/Workspaces/AgentArchitect` does not exist, or `aa` is not on PATH. There, everything below changes character:
+
+- **`/wrap` is mandatory, not advisory.** A cloud sandbox is ephemeral. An uncommitted working tree is not "pending review" — it is deleted work. Run this before the session ends, and after each substantive artifact rather than only at the end; sandbox death is silent and unannounced.
+- **`--no-push` is refused.** Explain why and run the normal push instead. Committing without pushing in an ephemeral environment loses the work just as thoroughly as not committing.
+- **Pull before you push.** In the wiki, `git pull --rebase` first — the Mac checkout may have moved since bootstrap. On a rebase conflict: **stop and report**. Do not resolve conflicts in the wiki from a phone.
+- **If the wiki is read-only here** (`scripts/bootstrap-cloud.sh` exited 4), do not silently skip the wiki. Output the intended changes as a markdown block for Nick to apply on the Mac, and say plainly that they were not saved.
+
 ## Procedure
 
 ### Step 1: Inventory uncommitted work
@@ -44,6 +53,8 @@ Same for the wiki if I touched it. Use HEREDOC multi-line messages for substanti
 ### Step 4: Push (unless `--no-push`)
 
 Push each repo that has a remote (`git remote -v`). A freshly provisioned repo may have no remote yet — report that ("local only, no remote configured") rather than failing. If push fails, report exactly what failed and the recovery path. Do NOT force-push.
+
+In the wiki, `git pull --rebase` before pushing. In cloud mode this is required (see above); on the Mac it is still the safe default, since scheduled jobs and other sessions also write there.
 
 ### Step 5: Confirm safe to exit
 

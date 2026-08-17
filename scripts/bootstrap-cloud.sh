@@ -59,7 +59,10 @@ elif [[ -e "$WIKI_REPO_PATH" ]]; then
 else
   echo "==> Cloning wiki -> $WIKI_REPO_PATH"
   mkdir -p "$(dirname "$WIKI_REPO_PATH")"
-  if ! git clone --depth 1 "$WIKI_REPO_URL" "$WIKI_REPO_PATH"; then
+  # Full clone, deliberately. The wiki's .git is ~11 MB, so --depth 1 saves
+  # nothing, and shallow history breaks `pull --rebase` and wiki-ingest's
+  # `git log --since` session audit.
+  if ! git clone "$WIKI_REPO_URL" "$WIKI_REPO_PATH"; then
     echo >&2
     echo "ERROR: git clone failed. The wiki is a private repo." >&2
     if command -v gh >/dev/null 2>&1; then

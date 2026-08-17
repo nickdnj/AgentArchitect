@@ -33,6 +33,12 @@ function resolveWikiRoot() {
 }
 const WIKI_ROOT = resolveWikiRoot();
 
+// Collector for always_load files that could not be read at generation time.
+// extractWikiAccess() pushes; processAgent() drains it per agent. Without this
+// a missing wiki page becomes an invisible "(file not found)" hole in a shipped
+// system prompt and generation still exits 0.
+let missingAlwaysLoad = [];
+
 // MCP Server mapping: Agent Architect config -> Claude Code tool patterns.
 // Maps the logical server name used in config.json mcp_servers to the actual
 // MCP server namespace(s) registered with Claude Code. Emitted into the
@@ -45,6 +51,10 @@ const MCP_SERVER_MAPPING = {
   'gmail-personal': ['mcp__gmail-personal__*'],
   'google-docs': ['mcp__google-docs-mcp__*'],
   'gdrive': ['mcp__google-drive__*'],
+  // Agent configs use both spellings; only 'gdrive' was mapped, so agents that
+  // said 'google-drive' (personal-assistant, account-researcher, value-engineer)
+  // silently got no Drive tools in their frontmatter.
+  'google-drive': ['mcp__google-drive__*'],
   'gcal': ['mcp__claude_ai_Google_Calendar__*'],
   'gtasks': ['mcp__gtasks__*'],
   'apple-mcp': ['mcp__apple-mcp__*'],
@@ -577,11 +587,25 @@ function extractWikiAccess(config) {
 
   const lines = ['### Wiki Knowledge Base Access', ''];
 
-  const repoRoot = wiki.repo_root && wiki.repo_root.includes('${WIKI_REPO}')
+  // Two roots, deliberately. repoRootFs is the generating machine's real path and
+  // is used ONLY to read always_load files off disk below. repoRootDisplay is what
+  // goes into the agent's prompt: a portable shell expression that resolves
+  // correctly on the Mac AND in a Linux cloud sandbox, where $HOME is not
+  // /Users/nickd. Baking the absolute path into the prompt broke cloud/iOS mode.
+  const usesToken = Boolean(wiki.repo_root && wiki.repo_root.includes('${WIKI_REPO}'));
+  const repoRootFs = usesToken
     ? wiki.repo_root.replace('${WIKI_REPO}', WIKI_ROOT)
     : (wiki.repo_root || WIKI_ROOT);
-  lines.push(`**Wiki root:** \`${repoRoot}\``);
+  const repoRootDisplay = usesToken || !wiki.repo_root
+    ? '${WIKI_REPO:-$HOME/Workspaces/wiki}'
+    : wiki.repo_root;
+
+  lines.push(`**Wiki root:** \`${repoRootDisplay}\``);
   lines.push('');
+  if (usesToken || !wiki.repo_root) {
+    lines.push('Resolve that expression before use (`echo` it, or just use it inside `git -C`). On Nick\'s Mac it is `~/Workspaces/wiki`. If neither `$WIKI_REPO` nor `~/Workspaces/wiki` exists you are in a fresh cloud sandbox — run `scripts/bootstrap-cloud.sh` in the repo root before any wiki read or write.');
+    lines.push('');
+  }
 
   if (Array.isArray(wiki.read) && wiki.read.length > 0) {
     lines.push('**Read paths (prefix-scoped):**');
@@ -610,7 +634,7 @@ function extractWikiAccess(config) {
   if (Array.isArray(wiki.always_load) && wiki.always_load.length > 0) {
     lines.push('**Always loaded (read at every invocation):**');
     for (const relPath of wiki.always_load) {
-      const absPath = path.join(repoRoot, relPath);
+      const absPath = path.join(repoRootFs, relPath);
       lines.push('');
       lines.push(`#### \`${relPath}\``);
       lines.push('');
@@ -621,6 +645,9 @@ function extractWikiAccess(config) {
         lines.push(content.trim());
         lines.push('```');
       } catch (e) {
+        // Record it — a silent hole in the prompt is how a missing philosophy
+        // page ships to production unnoticed. processAgent drains this.
+        missingAlwaysLoad.push(`${config.id || '?'}: ${relPath} (looked in ${absPath})`);
         lines.push(`*(file not found at generation time: \`${absPath}\`)*`);
       }
     }
@@ -1074,7 +1101,12 @@ function processAgent(agentId, allAgents = {}, dirs = {}) {
   }
 
   // Generate agent file (.claude/agents/)
+  missingAlwaysLoad = [];
   const agentContent = generateAgentFile(config, skillContent, allAgents);
+  const wikiWarnings = missingAlwaysLoad.slice();
+  if (wikiWarnings.length > 0 && process.env.AA_STRICT_ALWAYS_LOAD === '1') {
+    return { error: `always_load file(s) missing (AA_STRICT_ALWAYS_LOAD=1): ${wikiWarnings.join('; ')}` };
+  }
   const agentOutputPath = path.join(outputAgentsDir, `${agentId}.md`);
   fs.writeFileSync(agentOutputPath, agentContent, 'utf-8');
 
@@ -1101,6 +1133,7 @@ function processAgent(agentId, allAgents = {}, dirs = {}) {
     skillGenerated,
     toolCount: mapMcpServersToTools(config.mcp_servers).length,
     specWarnings,
+    wikiWarnings,
   };
 }
 
@@ -1298,6 +1331,12 @@ function main() {
   const totalSpecWarnings = agentResults.success.reduce((acc, r) => acc + (r.specWarnings?.length || 0), 0);
   if (totalSpecWarnings > 0) {
     console.log(`  Spec warnings: ${totalSpecWarnings} (agentskills.io compliance)`);
+  }
+  const allWikiWarnings = agentResults.success.flatMap(r => r.wikiWarnings || []);
+  if (allWikiWarnings.length > 0) {
+    console.log(`\n  [WARN] ${allWikiWarnings.length} always_load file(s) missing — those agents shipped with a hole in their prompt:`);
+    for (const w of allWikiWarnings) console.log(`         ${w}`);
+    console.log('         Fix the wiki path or the config, then regenerate. Set AA_STRICT_ALWAYS_LOAD=1 to make this fatal.');
   }
   if (agentResults.errors.length + teamResults.errors.length > 0) {
     console.log(`  Errors: ${agentResults.errors.length + teamResults.errors.length}`);

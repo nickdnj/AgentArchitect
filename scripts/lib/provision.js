@@ -273,10 +273,39 @@ function syncPortableSkills(repoPath) {
 }
 
 /**
+ * Copy the portable helper scripts (bootstrap-cloud.sh, …) from
+ * templates/portable/scripts/ into a spawned repo's scripts/.
+ * Factory-managed: always overwrites, and marks them executable.
+ *
+ * These live in templates/portable/ rather than templates/workspace/ on
+ * purpose: renderTemplate() only runs at provision time and never overwrites,
+ * so an already-provisioned repo would never receive them. Going through
+ * syncRepo() means all existing repos pick them up on the next `aa sync`.
+ *
+ * Returns the script filenames copied.
+ */
+function syncRepoScripts(repoPath) {
+  const srcRoot = path.join(TEMPLATES_DIR, 'portable', 'scripts');
+  if (!fs.existsSync(srcRoot)) return [];
+  const destDir = path.join(repoPath, 'scripts');
+  const copied = [];
+  for (const name of fs.readdirSync(srcRoot)) {
+    const src = path.join(srcRoot, name);
+    if (!fs.statSync(src).isFile()) continue;
+    fs.mkdirSync(destDir, { recursive: true });
+    const dest = path.join(destDir, name);
+    fs.copyFileSync(src, dest);
+    if (name.endsWith('.sh')) fs.chmodSync(dest, 0o755);
+    copied.push(name);
+  }
+  return copied;
+}
+
+/**
  * Sync one spawned repo from AA. Reads its manifest, regenerates
- * .claude/agents + .claude/skills, copies the portable utility skills,
- * refreshes the CLAUDE.md routing block, bumps aaCommit. Idempotent.
- * Returns a summary object.
+ * .claude/agents + .claude/skills, copies the portable utility skills and
+ * helper scripts, refreshes the CLAUDE.md routing block, bumps aaCommit.
+ * Idempotent. Returns a summary object.
  */
 function syncRepo(repoPath) {
   const abs = path.resolve(repoPath);
@@ -299,6 +328,7 @@ function syncRepo(repoPath) {
   });
 
   const portable = syncPortableSkills(abs);
+  const portableScripts = syncRepoScripts(abs);
 
   const tokens = buildTokens({
     teamConfigs,
@@ -321,6 +351,8 @@ function syncRepo(repoPath) {
     teams: teamResults.success.length,
     teamErrors: teamResults.errors,
     portable,
+    portableScripts,
+    wikiWarnings: agentResults.success.flatMap(r => r.wikiWarnings || []),
     routingChanged,
   };
 }
