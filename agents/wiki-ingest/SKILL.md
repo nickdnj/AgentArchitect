@@ -88,6 +88,10 @@ scope: all  OR  teams/wharfside/  OR  spine/
 **Workflow:**
 1. Walk the scope. For each page, check:
    - **Contradictions:** are there two pages that claim incompatible facts about the same entity? (e.g., two different "current treasurer" values in different pages.) Use `Grep` to cross-check.
+
+     **Two values are not a contradiction just because they share a key.** Before reporting one, check that both values are in the same *register* — same vocabulary, same granularity, answering the same question. A coarse controlled-vocabulary value and a fine-grained descriptive one are complementary, not conflicting. Concretely: a project node's `status: active` and a team page's `stage: prototype-active` describe different things at different resolutions; "Linda Masessa" vs "Taryn Frost" for the same role is a real contradiction. The 2026-08-14 lint reported 7 BLOCK-level status contradictions of which 6 were this false positive, and the fix it implied (pick a winner) would have destroyed information either way. Ask *"could both of these be true at once?"* — if yes, it is not a contradiction. Report it as INFO if the shape still looks worth flagging.
+
+     Also **re-verify before reporting a repeat.** A finding carried over from an earlier lint may already have been fixed; the 2026-08-14 report listed 14 broken wikilinks of which 11 had since been created. Check the current state of the files, not the previous report.
    - **Stale dates:** any page with `last_updated` > 90 days ago AND containing time-sensitive language ("currently", "this year", "upcoming")?
    - **Orphans:** any markdown file with zero inbound `[[links]]` from other pages?
    - **Broken wikilinks:** `[[name]]` targets that don't resolve to a file.
