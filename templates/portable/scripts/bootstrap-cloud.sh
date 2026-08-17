@@ -98,23 +98,20 @@ else
     echo >&2
     echo "ERROR: could not clone the wiki." >&2
     echo >&2
-    echo "  In a cloud sandbox this almost always means the wiki is not in this" >&2
-    echo "  session's GitHub scope. The sandbox is provisioned around the repo you" >&2
-    echo "  OPENED; nickdnj/wiki is a second private repo and must be granted" >&2
-    echo "  separately. Confirmed on 2026-08-17 — this is the expected first" >&2
-    echo "  failure, not a bug in this script." >&2
+    echo "  EXPECTED in a cloud sandbox. Not a bug, and nothing is misconfigured." >&2
     echo >&2
-    echo "  Fix it once, properly:" >&2
-    echo "    Grant the Claude GitHub app access to nickdnj/wiki, so every future" >&2
-    echo "    sandbox gets it without ceremony." >&2
+    echo "  The sandbox is issued a GitHub token scoped to the repo you OPENED." >&2
+    echo "  nickdnj/wiki is a second private repo, so it is out of scope until you" >&2
+    echo "  add it to THIS session." >&2
     echo >&2
-    echo "  Or unblock this session only:" >&2
-    echo "    attach/add the nickdnj/wiki repo to this session, then re-run this" >&2
-    echo "    script. It is idempotent." >&2
-    if ! command -v gh >/dev/null 2>&1; then
-      echo >&2
-      echo "  (No gh CLI here, so \`gh auth login\` is not an option in this sandbox.)" >&2
-    fi
+    echo "  FIX: attach / add the nickdnj/wiki repo to this session, then re-run" >&2
+    echo "       this script. It is idempotent. Takes about ten seconds." >&2
+    echo >&2
+    echo "  This is per-session by design and there is no permanent setting that" >&2
+    echo "  avoids it. Verified 2026-08-17 across three separate sandboxes with the" >&2
+    echo "  Claude GitHub app already set to 'All repositories' with read+write to" >&2
+    echo "  code — the app installation does not govern sandbox token scope. Do not" >&2
+    echo "  go hunting through GitHub settings; just attach the repo." >&2
     echo >&2
     echo "  Until then you are in READ-ONLY-WIKI mode: work normally, but surface" >&2
     echo "  any wiki change as a markdown block for Nick. Do not claim it saved." >&2
