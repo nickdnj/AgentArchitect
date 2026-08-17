@@ -96,15 +96,40 @@ else
   # `git log --since` audit.
   if ! git clone "$WIKI_REPO_URL" "$WIKI_REPO_PATH"; then
     echo >&2
-    echo "ERROR: git clone failed. The wiki is a private repo." >&2
-    if command -v gh >/dev/null 2>&1; then
-      echo "       Authenticate first:  gh auth login" >&2
-    else
-      echo "       Configure git credentials (or install gh CLI) and retry." >&2
+    echo "ERROR: could not clone the wiki." >&2
+    echo >&2
+    echo "  In a cloud sandbox this almost always means the wiki is not in this" >&2
+    echo "  session's GitHub scope. The sandbox is provisioned around the repo you" >&2
+    echo "  OPENED; nickdnj/wiki is a second private repo and must be granted" >&2
+    echo "  separately. Confirmed on 2026-08-17 — this is the expected first" >&2
+    echo "  failure, not a bug in this script." >&2
+    echo >&2
+    echo "  Fix it once, properly:" >&2
+    echo "    Grant the Claude GitHub app access to nickdnj/wiki, so every future" >&2
+    echo "    sandbox gets it without ceremony." >&2
+    echo >&2
+    echo "  Or unblock this session only:" >&2
+    echo "    attach/add the nickdnj/wiki repo to this session, then re-run this" >&2
+    echo "    script. It is idempotent." >&2
+    if ! command -v gh >/dev/null 2>&1; then
+      echo >&2
+      echo "  (No gh CLI here, so \`gh auth login\` is not an option in this sandbox.)" >&2
     fi
-    echo "       If this sandbox only has access to the repo it opened, the" >&2
-    echo "       Claude GitHub app needs access to nickdnj/wiki as well." >&2
+    echo >&2
+    echo "  Until then you are in READ-ONLY-WIKI mode: work normally, but surface" >&2
+    echo "  any wiki change as a markdown block for Nick. Do not claim it saved." >&2
     exit 3
+  fi
+fi
+
+# The agents resolve the wiki as ${WIKI_REPO:-$HOME/Workspaces/wiki}. If the
+# clone ended up somewhere else (a sandbox that works out of /workspace, an
+# explicit WIKI_REPO), leave a symlink at the default so the fallback also
+# lands — otherwise every agent that trusts the default reads nothing.
+if [[ "$WIKI_REPO_PATH" != "$HOME/Workspaces/wiki" && ! -e "$HOME/Workspaces/wiki" ]]; then
+  mkdir -p "$HOME/Workspaces"
+  if ln -s "$WIKI_REPO_PATH" "$HOME/Workspaces/wiki" 2>/dev/null; then
+    echo "==> Symlinked \$HOME/Workspaces/wiki -> $WIKI_REPO_PATH (default path resolves)"
   fi
 fi
 
