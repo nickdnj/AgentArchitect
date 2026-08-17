@@ -98,7 +98,9 @@ node scripts/run-agent.js wiki-ingest --operation lint --scope teams/<team>/
 node scripts/run-agent.js wiki-ingest --operation query-as-write --target <path> --briefing <text>
 ```
 
-The nightly lint at 3:17am ET writes a report to `wiki/_lint/<date>.md`.
+The nightly lint runs at 3:17am local and writes a report to `wiki/_lint/<date>.md`. It is a **launchd job on Nick's Mac** — `~/Library/LaunchAgents/com.nickdnj.wiki-lint.plist`, wrapping `scripts/nightly-wiki-lint.sh`. Logs at `~/Library/Logs/wiki-lint.log`. Unlike a wiki-ingest session, that job **does** commit and push, but only the dated `_lint/` and `_changelog/` artifacts it just generated.
+
+(Scheduled 2026-08-17. Before that this line described automation that did not exist — every lint in the changelog before that date was run by hand, which is how 90 session logs accumulated unactioned ingest candidates.)
 
 ## Startup Sequence
 
@@ -353,7 +355,7 @@ node scripts/run-agent.js wiki-ingest --operation ingest --source raw/<file>.md
 node scripts/run-agent.js wiki-ingest --operation lint --scope teams/wharfside/
 ```
 
-Every operation produces an audit row in `wiki/_changelog/<date>.md` or `wiki/_lint/<date>.md`. The nightly lint runs unattended at 3:17am ET.
+Every operation produces an audit row in `wiki/_changelog/<date>.md` or `wiki/_lint/<date>.md`. The nightly lint runs unattended at 3:17am local via launchd (see above).
 
 See `agents/wiki-ingest/SKILL.md` for the specialist's full workflow.
 

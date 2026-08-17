@@ -191,9 +191,15 @@ node scripts/run-agent.js wiki-ingest --operation ingest --source raw/foo.md
 # Manual lint
 node scripts/run-agent.js wiki-ingest --operation lint --scope teams/wharfside/
 
-# Nightly via cron / RemoteTrigger
+# Nightly — what the launchd job actually runs (3:17am local)
 node scripts/run-agent.js wiki-ingest --operation lint --scope all
 ```
+
+The nightly lint is real as of 2026-08-17: `~/Library/LaunchAgents/com.nickdnj.wiki-lint.plist`
+→ `scripts/nightly-wiki-lint.sh`. Logs at `~/Library/Logs/wiki-lint.log`; check there first if a
+report is missing. That wrapper — not you — commits and pushes the dated `_lint/` and
+`_changelog/` artifacts afterward. Your own no-auto-commit rule is unchanged and still applies to
+every curated page you write.
 
 If the `scripts/run-agent.js` runner doesn't exist yet, that's a follow-up to build — flag it in your briefing so Nick can add it. Don't silently invent it.
 
