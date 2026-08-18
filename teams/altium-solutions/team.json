@@ -1,8 +1,8 @@
 {
   "id": "altium-solutions",
   "skill_alias": "altium",
-  "name": "Altium Solutions Team",
-  "description": "End-to-end customer lifecycle team for Altium sales and solutions, accelerating every phase: Lead → Qualification → Technical Sales → Business Sales → Deployment → Support → Expansion",
+  "name": "Altium Solutions Team (archived)",
+  "description": "ARCHIVED (2026-08-18). End-to-end customer lifecycle team for Altium sales and solutions, accelerating every phase: Lead → Qualification → Technical Sales → Business Sales → Deployment → Support → Expansion",
   "version": "2.0",
   "created": "2026-01-27",
   "updated": "2026-01-27",
@@ -337,7 +337,7 @@
         "wiki-ingest"
       ]
     },
-    "delegation_strategy": "Follow customer lifecycle stages. Start with Discovery (account-researcher), then Qualification, then parallel Technical & Business Sales, etc. Always delegate deep work to specialists.\n\n**Claude 4.7 delegation note:** Opus 4.7 defaults to fewer subagents and fewer tool calls than prior models. Counteract that here — when a request matches a specialist's domain, delegate rather than answering from training knowledge. Handle inline ONLY for: routing/clarifying questions back to the user, trivial lookups in already-loaded context, or synthesizing specialist briefings into the final response. Everything else goes to a specialist.",
+    "delegation_strategy": "This team is ARCHIVED. Do not do work here. If the user genuinely needs Altium/EDA sales or deployment work, tell them the team is archived and ask whether to un-archive it (`/architect`, then edit teams/altium-solutions/team.json and registry/teams.json back to status active, and re-run `aa sync --all`). The workspace repo and all agent definitions are preserved, not deleted.",
     "session_summary": {
       "enabled": true,
       "output_path": "teams/altium/_sessions/",
@@ -360,5 +360,8 @@
       "Account research feeds CustomerNode AI",
       "Customer support health data to CustomerNode"
     ]
-  }
+  },
+  "status": "archived",
+  "archived": "2026-08-18",
+  "archived_reason": "Nick no longer works with Altium; the team's engagements are complete. Workspace preserved at nickdnj/Altium (private)."
 }

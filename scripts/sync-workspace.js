@@ -56,6 +56,10 @@ function main() {
     }
     console.log(`Syncing ${reg.workspaces.length} spawned repo(s)...`);
     for (const entry of reg.workspaces) {
+      if (entry.status === 'archived') {
+        console.log(`  [SKIP] ${entry.path} — archived; sync it explicitly by path to override`);
+        continue;
+      }
       if (!fs.existsSync(entry.path)) {
         console.warn(`  [MISSING] ${entry.path} — repo not on disk; remove its entry from registry/workspaces.json if it was deleted intentionally`);
         continue;

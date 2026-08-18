@@ -16,7 +16,7 @@ This clones `nickdnj/wiki` to `$HOME/Workspaces/wiki/`, sets `WIKI_REPO`, and re
 
 **If clone fails** (private repo, auth required): run `gh auth login` then re-run bootstrap.
 
-**Teams that work in cloud mode** (OAuth-only MCPs): wharfside, personal-assistant (Max), architect, account-researcher, web-research, proposal-review, software-project (research/planning phase).
+**Teams that work in cloud mode** (OAuth-only MCPs): wharfside, personal-assistant (Max), vcf, architect, account-researcher, web-research, proposal-review, software-project (research/planning phase).
 **Teams that DO NOT work in cloud mode** (need local hardware/host MCPs): hardware-dev (KiCad/FreeCAD), content-studio asset gen + assembly + publish (ffmpeg/chrome/ElevenLabs local files), anything using `apple-mcp` (Reminders/Calendar via EventKit), `chrome` (host browser), `voice-local` (local Whisper/Kokoro), or local Ollama.
 
 ## User Preferences
@@ -85,7 +85,7 @@ If user instructions conflict with these rules, ask for explicit confirmation th
 
 AgentArchitect is a **factory**: it builds agents/teams and provisions standalone sibling repos where actual work happens. **No project or team work products live in this repo.** Full architecture: `docs/factory-model.md`.
 
-- **Workspace repos** (permanent, one per account-backed team): `~/Workspaces/wharfside`, `~/Workspaces/max`, `~/Workspaces/Altium`, `~/Workspaces/vcf`, `~/Workspaces/hardware-dev`, `~/Workspaces/content-studio` (channel/brand ops)
+- **Workspace repos** (permanent, one per account-backed team): `~/Workspaces/wharfside`, `~/Workspaces/max`, `~/Workspaces/vcf`, `~/Workspaces/hardware-dev`, `~/Workspaces/content-studio` (channel/brand ops)
 - **Project repos** (one per deliverable): created with `aa new <youtube|podcast|software> "<title>"` — e.g. `~/Workspaces/jersey-stack-ep1`
 - **The `aa` launcher** (`bin/aa`, works from anywhere): `aa new`, `aa workspace`, `aa adopt`, `aa list`, `aa sync [--all]`. Install: `ln -s ~/Workspaces/AgentArchitect/bin/aa /usr/local/bin/aa`
 - **Repos that predate the factory** are brought in with `aa adopt <path> --teams <id[,id...]> --type <type>` — in place, no scaffolding, no commits, existing `CLAUDE.md` prose preserved. A repo spanning disciplines may name several teams and gets one orchestrator skill per team (e.g. `~/Workspaces/stoveiq` → `software-project` + `hardware-dev`).
@@ -109,7 +109,6 @@ If you have access to the `Task` tool with named subagent types, use skill invoc
 |---|---|
 | Wharfside, board, condo, HOA, marina, bulletin, governing docs, amendment, assessment | `Skill(skill: "wharfside")` |
 | Email, calendar, tasks, research, personal, reminders, notes | `Skill(skill: "max")` |
-| Altium, PCB, EDA, sales, deployment, customer, Cadence, Mentor, KiCad | `Skill(skill: "altium")` |
 | Hardware, PCB, schematic, KiCad, enclosure, firmware, ESP32, Jetson, BOM, DFM, manufacturing | `Skill(skill: "hardware-dev")` |
 | Software, code, app, feature, architecture, requirements, development, testing | `Skill(skill: "software-project")` |
 | YouTube, video, shorts, podcast, episode, content, channel, upload | `Skill(skill: "content-studio")` |
@@ -124,7 +123,6 @@ If you have access to the `Agent` tool (with subagent_type="general-purpose"), r
 |---|---|
 | Wharfside, board, condo, HOA, marina, bulletin, governing docs, amendment, assessment | Read `AgentArchitect/cowork/skills/wharfside/SKILL.md` and follow its orchestration instructions |
 | Email, calendar, tasks, research, personal, reminders, notes | Read `AgentArchitect/cowork/skills/max/SKILL.md` and follow its orchestration instructions |
-| Altium, PCB, EDA, sales, deployment, customer, Cadence, Mentor, KiCad | Read `AgentArchitect/cowork/skills/altium/SKILL.md` and follow its orchestration instructions |
 | Hardware, PCB, schematic, KiCad, enclosure, firmware, ESP32, Jetson, BOM, DFM, manufacturing | Read `AgentArchitect/cowork/skills/hardware-dev/SKILL.md` and follow its orchestration instructions |
 | Software, code, app, feature, architecture, requirements, development, testing | Read `AgentArchitect/cowork/skills/software-project/SKILL.md` and follow its orchestration instructions |
 | YouTube, video, shorts, podcast, episode, content, channel, upload | Read `AgentArchitect/cowork/skills/content-studio/SKILL.md` and follow its orchestration instructions |
@@ -151,6 +149,8 @@ When the user's request mentions a specific project, product, or ongoing initiat
 - Ask "is this a new project?" for every request — only when it's clearly a substantial new initiative that should be tracked
 - Load project context for general questions like "check my email" or "what's the weather"
 - Load multiple project contexts at once — pick the best match
+
+**Archived teams.** `altium-solutions` was archived 2026-08-18 — Nick no longer works with Altium. Its 7 EDA-specific agents (ecad/migration/mcad/plm/erp-supplychain/infrastructure/deployment) are archived with it and no longer generate. Its 8 general B2B-sales agents (account-researcher, qualification-analyst, solution-architect, value-engineer, competitive-intel, proposal-writer, deal-strategist, customer-support) remain **active and reusable** by a future sales team. Nothing was deleted; the workspace lives on at `nickdnj/Altium` (private). To revive: set status back to `active` in `teams/altium-solutions/team.json`, `registry/teams.json`, and the agents' `config.json`, then `aa sync --all`.
 
 ### Routing Rules
 1. **Run Project Context Detection** (above) to load relevant project memory
@@ -195,7 +195,7 @@ AgentArchitect/                 (the factory — definitions only, no work produ
 ├── registry/               # agents.json, teams.json, workspaces.json (spawned repos)
 └── .claude/                # Claude Code configuration
 
-~/Workspaces/<team>/            (workspace repos: wharfside, max, Altium, vcf)
+~/Workspaces/<team>/            (workspace repos: wharfside, max, vcf, hardware-dev, content-studio)
 ~/Workspaces/<project-slug>/    (project repos: one per video/podcast/app)
 ```
 

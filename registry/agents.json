@@ -247,7 +247,9 @@
         "altium-solutions"
       ],
       "created": "2026-01-27",
-      "status": "active"
+      "status": "archived",
+      "archived": "2026-08-18",
+      "archived_reason": "Altium-specific; team altium-solutions archived 2026-08-18"
     },
     {
       "id": "ecad-specialist",
@@ -257,7 +259,9 @@
         "altium-solutions"
       ],
       "created": "2026-01-27",
-      "status": "active"
+      "status": "archived",
+      "archived": "2026-08-18",
+      "archived_reason": "Altium-specific; team altium-solutions archived 2026-08-18"
     },
     {
       "id": "migration-specialist",
@@ -267,7 +271,9 @@
         "altium-solutions"
       ],
       "created": "2026-01-27",
-      "status": "active"
+      "status": "archived",
+      "archived": "2026-08-18",
+      "archived_reason": "Altium-specific; team altium-solutions archived 2026-08-18"
     },
     {
       "id": "mcad-specialist",
@@ -277,7 +283,9 @@
         "altium-solutions"
       ],
       "created": "2026-01-27",
-      "status": "active"
+      "status": "archived",
+      "archived": "2026-08-18",
+      "archived_reason": "Altium-specific; team altium-solutions archived 2026-08-18"
     },
     {
       "id": "plm-specialist",
@@ -287,7 +295,9 @@
         "altium-solutions"
       ],
       "created": "2026-01-27",
-      "status": "active"
+      "status": "archived",
+      "archived": "2026-08-18",
+      "archived_reason": "Altium-specific; team altium-solutions archived 2026-08-18"
     },
     {
       "id": "erp-supplychain-specialist",
@@ -297,7 +307,9 @@
         "altium-solutions"
       ],
       "created": "2026-01-27",
-      "status": "active"
+      "status": "archived",
+      "archived": "2026-08-18",
+      "archived_reason": "Altium-specific; team altium-solutions archived 2026-08-18"
     },
     {
       "id": "infrastructure-specialist",
@@ -307,7 +319,9 @@
         "altium-solutions"
       ],
       "created": "2026-01-27",
-      "status": "active"
+      "status": "archived",
+      "archived": "2026-08-18",
+      "archived_reason": "Altium-specific; team altium-solutions archived 2026-08-18"
     },
     {
       "id": "customer-support",

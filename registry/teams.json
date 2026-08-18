@@ -24,7 +24,9 @@
       "folder": "teams/altium-solutions",
       "member_count": 17,
       "created": "2026-01-27",
-      "status": "active"
+      "status": "archived",
+      "archived": "2026-08-18",
+      "archived_reason": "Nick no longer works with Altium; the team's engagements are complete. Workspace preserved at nickdnj/Altium (private)."
     },
     {
       "id": "personal-assistant",

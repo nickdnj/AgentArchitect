@@ -1159,6 +1159,13 @@ function processTeam(teamId, allAgents = {}, dirs = {}) {
     return { error: `team.json not found for team: ${teamId}` };
   }
 
+  // Skip archived teams — mirrors the archived-agent check above. Without this an
+  // archived team kept emitting a live orchestrator skill, so /<team> still showed
+  // up in the skill list and still routed work to a team that no longer exists.
+  if (teamConfig.status === 'archived') {
+    return { skipped: true, reason: `archived: ${teamConfig.archived_reason || 'no reason given'}` };
+  }
+
   // Generate orchestrator skill file
   // Use skill_alias if defined, otherwise fall back to team ID
   const skillName = teamConfig.skill_alias || teamId;
@@ -1302,7 +1309,7 @@ function main() {
   // ---- Process Teams ----
   const teamIds = targetTeam ? [targetTeam] : getAllTeamIds();
 
-  const teamResults = { success: [], errors: [] };
+  const teamResults = { success: [], skipped: [], errors: [] };
 
   if (teamIds.length > 0 && !targetAgent) {
     console.log(`\nProcessing ${teamIds.length} team(s)...\n`);
@@ -1314,6 +1321,9 @@ function main() {
         teamResults.success.push(result);
         const aliasLabel = result.skillName !== result.teamId ? ` as /${result.skillName}` : '';
         console.log(`  [OK] ${result.name} (orchestrator, ${result.memberCount} members${aliasLabel})`);
+      } else if (result.skipped) {
+        teamResults.skipped.push({ teamId, ...result });
+        console.log(`  [SKIP] ${teamId}: ${result.reason}`);
       } else {
         teamResults.errors.push({ teamId, ...result });
         console.log(`  [ERROR] ${teamId}: ${result.error}`);
@@ -1423,7 +1433,7 @@ function generateForExport(options) {
   }
 
   // Process teams
-  const teamResults = { success: [], errors: [] };
+  const teamResults = { success: [], skipped: [], errors: [] };
   if (fs.existsSync(teamsDir)) {
     const teamIds = teamFilter || fs.readdirSync(teamsDir)
       .filter(name => {
@@ -1435,6 +1445,8 @@ function generateForExport(options) {
       const result = processTeam(teamId, allAgents, dirs);
       if (result.success) {
         teamResults.success.push(result);
+      } else if (result.skipped) {
+        teamResults.skipped.push({ teamId, ...result });
       } else {
         teamResults.errors.push({ teamId, ...result });
       }

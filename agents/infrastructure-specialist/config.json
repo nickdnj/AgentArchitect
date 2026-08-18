@@ -85,5 +85,8 @@
       "spine/preferences/seven-habits-of-effective-agents.md",
       "teams/altium/_team.md"
     ]
-  }
+  },
+  "status": "archived",
+  "archived": "2026-08-18",
+  "archived_reason": "Altium-specific; team altium-solutions archived 2026-08-18. Definition preserved — set status back to active and re-run /sync-agents to revive."
 }

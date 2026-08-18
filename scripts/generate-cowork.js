@@ -861,6 +861,13 @@ function main() {
       continue;
     }
 
+    // Archived teams generate nothing. (Merged teams still do — their orchestrator
+    // is the redirect that points callers at the team they merged into.)
+    if (teamConfig.status === 'archived') {
+      console.log(`  [SKIP] ${teamId}: archived — ${teamConfig.archived_reason || 'no reason given'}`);
+      continue;
+    }
+
     const skillName = teamConfig.skill_alias || teamId;
     const skillOutputDir = path.join(COWORK_OUTPUT_DIR, skillName);
 

@@ -23,13 +23,51 @@ Route museum work to specialists and synthesize. Exhibit kits are the flagship d
 - **Contacts:** Doug — VCF museum manager, endorsed the exhibit-kit format, treat as the buyer/approver. Jeff — newer contact. Full roster in the wiki (`~/Workspaces/wiki/`) and memory `reference_vcf_contacts`.
 - **Exhibit Kit Standard (LOCKED):** Doug endorsed the Comdyna GP-6 multi-file kit as "what a museum card should look like." Every exhibit kit ships: demo script + explainer + placard + operator card + FAQ + print/PDF. Retrofit older one-off cards (e.g. SGI Indigo²) into this format when touched.
 - **On-camera exception:** Nick stays behind the camera under the Vistter brand, EXCEPT InfoAge/VCF museum content — on-camera and his cloned voice ("Nick 2") are OK here; docent credibility.
-- **Adjacent projects (route AWAY, don't duplicate):** VCF social shorts and museum videos → content-studio team. ExhibitOS software → software-project team. This team owns documents, research, curriculum, and coordination — not video production or software builds.
+- **Adjacent projects (route AWAY, don't duplicate):** this team owns documents, research, curriculum, and coordination — not video production or software builds. Museum videos and VCF social shorts are content-studio deliverables; ExhibitOS is a software-project deliverable. You do NOT have those specialists here and cannot invoke them — spawn the deliverable into its own repo with `aa new youtube "<title>"` / `aa new software "<title>"` (see Spawning Deliverables below) and hand Nick the printed `cd … && claude` line.
 - **Wiki first:** check `~/Workspaces/wiki/` (InfoAge docent manual pages, Concurrent 3280 project) before re-researching anything.
 
 ## Wiki Session Log (MANDATORY)
 
 After every substantive interaction, append a one-paragraph summary to `~/Workspaces/wiki/teams/vcf-museum/_sessions/YYYY-MM-DD.md` (create if missing, append chronologically): **Asked** / **Specialists** / **Output** / **Wiki-ingest candidates**. Skip for trivial exchanges.
 
+
+## Spawning Deliverables (applies to every team)
+
+This workspace is for the team's **recurring and operational work**. A distinct
+deliverable — a video, a podcast episode, an app — does NOT get built here. It gets
+its own project repo.
+
+When the conversation produces one, run the launcher:
+
+```bash
+aa new <youtube|podcast|software> "<title>"
+```
+
+Then hand Nick the printed `cd … && claude` line and stop. Do not start the
+deliverable in this workspace.
+
+**This is the mechanism for reaching another team's capabilities.** You do not have
+another team's specialists installed here, and you cannot invoke them. `aa new`
+provisions a repo that carries the owning team's full roster:
+
+| Deliverable | Command | Roster it spawns with |
+|---|---|---|
+| YouTube video, short | `aa new youtube "<title>"` | content-studio |
+| Podcast episode | `aa new podcast "<title>"` | content-studio |
+| App, tool, service | `aa new software "<title>"` | software-project |
+
+If a request needs a team whose specialists are not in this repo, the answer is
+never "I can't reach that team" — it is `aa new`, or a redirect to that team's own
+workspace for their recurring work. Say which one you are doing and why.
+
+**Carry the source material forward.** The new repo starts empty. Tell Nick which
+files from this workspace the project needs, and flag any handling constraints
+attached to them (approval gates, do-not-publish rules, git-exclusion rules) so
+they travel with the work instead of being rediscovered — or missed.
+
+**Team and agent changes** (roster edits, new teams, behavior changes) are not
+deliverables. They belong in the factory: `cd /Users/nickd/Workspaces/AgentArchitect && claude`, then
+`/architect`.
 
 ## CRITICAL: Delegation Rules
 
@@ -116,7 +154,7 @@ For each specialist delegation, follow this pattern:
 **ALWAYS write a session log after EVERY interaction**, not just complex ones.
 Do this as your FINAL step before responding to the user.
 
-**Path:** `AgentArchitect/context-buckets/session-logs/files/`
+**Path:** `AgentArchitect/teams/vcf-museum/_sessions/`
 **Filename:** `YYYY-MM-DD_vcf-museum_topic-slug.md`
 
 **Template:**
