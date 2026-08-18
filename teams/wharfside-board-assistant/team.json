@@ -45,6 +45,11 @@
       "agent_id": "board-comms",
       "role": "Communications drafter - writes official board notices, policy explainers, crisis updates, and owner letters",
       "context_override": null
+    },
+    {
+      "agent_id": "wiki-ingest",
+      "role": "Promotes board decisions, governing-doc findings, and session outcomes to the wiki knowledge base",
+      "context_override": null
     }
   ],
   "shared_context": {
@@ -104,6 +109,9 @@
       "general": [
         "archivist",
         "email-research"
+      ],
+      "wiki-update": [
+        "wiki-ingest"
       ]
     },
     "delegation_strategy": "Always delegate to specialist subagents. Never do deep analysis inline. Route based on request type, run specialists in parallel when possible, collect and synthesize results. For community communications: first dispatch Archivist and/or Email Research for source material, then delegate to Board Communications to draft. Board Communications should receive research briefings, not raw context.\n\n**Claude 4.7 delegation note:** Opus 4.7 defaults to fewer subagents and fewer tool calls than prior models. Counteract that here — when a request matches a specialist's domain, delegate rather than answering from training knowledge. Handle inline ONLY for: routing/clarifying questions back to the user, trivial lookups in already-loaded context, or synthesizing specialist briefings into the final response. Everything else goes to a specialist.",

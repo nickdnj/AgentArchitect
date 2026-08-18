@@ -317,13 +317,26 @@ function syncRepo(repoPath) {
   const teamIds = manifestTeamIds(manifest);
   const teamConfigs = teamIds.map(loadTeam);
 
+  // Re-derive the roster from the team definitions. manifest.agents used to be
+  // frozen at provision time, so an agent added to a team after the repo was
+  // spawned never reached it -- which is how Wharfside ran without wiki-ingest.
+  // Union with whatever the manifest already lists so a deliberate manual
+  // addition survives the sync.
+  const allAgents = loadAllAgentConfigs();
+  const previousAgents = manifest.agents || [];
+  const rosterAgents = Array.from(
+    new Set([...allTeamAgentIds(teamConfigs, allAgents), ...previousAgents])
+  ).filter(id => allAgents[id]).sort();
+  const addedAgents = rosterAgents.filter(id => !previousAgents.includes(id));
+  manifest.agents = rosterAgents;
+
   // Regenerate agents + skills through the same code path as /sync-agents.
   const { agentResults, teamResults } = generateForExport({
     agentsDir: path.join(AA_ROOT, 'agents'),
     teamsDir: TEAMS_DIR,
     outputAgentsDir: path.join(abs, '.claude', 'agents'),
     outputSkillsDir: path.join(abs, '.claude', 'skills'),
-    agentFilter: manifest.agents,
+    agentFilter: rosterAgents,
     teamFilter: teamIds,
   });
 
@@ -354,6 +367,7 @@ function syncRepo(repoPath) {
     portableScripts,
     wikiWarnings: agentResults.success.flatMap(r => r.wikiWarnings || []),
     routingChanged,
+    addedAgents,
   };
 }
 

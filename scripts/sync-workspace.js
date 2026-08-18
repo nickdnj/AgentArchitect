@@ -23,6 +23,9 @@ function syncOne(p) {
   const result = syncRepo(p);
   const scriptNote = result.portableScripts?.length ? `, scripts: ${result.portableScripts.length}` : '';
   console.log(`  [OK] ${result.path} — agents: ${result.agents}, orchestrators: ${result.teams}${scriptNote}${result.routingChanged ? ', routing block updated' : ''}`);
+  if (result.addedAgents?.length) {
+    console.log(`       [NEW] roster gained: ${result.addedAgents.join(', ')}`);
+  }
   for (const e of [...result.agentErrors, ...result.teamErrors]) {
     console.warn(`       [WARN] ${e.agentId || e.teamId}: ${e.error}`);
   }
@@ -30,6 +33,12 @@ function syncOne(p) {
     console.warn(`       [WARN] always_load missing — ${w}`);
   }
   return result;
+}
+
+/** Stamp the registry with the factory commit this repo was just synced to. */
+function recordProvenance(entry) {
+  const aaCommit = execSync('git rev-parse HEAD', { cwd: AA_ROOT, encoding: 'utf-8' }).trim();
+  registerRepo({ ...entry, aaCommit, syncedAt: new Date().toISOString().slice(0, 10) });
 }
 
 function main() {
@@ -53,8 +62,7 @@ function main() {
       }
       try {
         syncOne(entry.path);
-        const aaCommit = execSync('git rev-parse HEAD', { cwd: AA_ROOT, encoding: 'utf-8' }).trim();
-        registerRepo({ ...entry, aaCommit, syncedAt: new Date().toISOString().slice(0, 10) });
+        recordProvenance(entry);
       } catch (e) {
         console.error(`  [ERROR] ${entry.path}: ${e.message}`);
       }
@@ -63,6 +71,12 @@ function main() {
   }
 
   syncOne(args[0]);
+  // Single-path sync used to update the repo manifest but not the registry,
+  // so the two records of "which factory commit is this repo on" drifted apart.
+  const abs = path.resolve(args[0]);
+  const entry = loadRegistry().workspaces.find(w => path.resolve(w.path) === abs);
+  if (entry) recordProvenance(entry);
+  else console.warn(`  [WARN] ${abs} is not in registry/workspaces.json — provenance not recorded`);
 }
 
 main();

@@ -7,8 +7,8 @@
       "projectType": null,
       "path": "/Users/nickd/Workspaces/Altium",
       "provisionedAt": "2026-07-05",
-      "aaCommit": "5dd29842bd774ca61c5a95f53efa178f2bc91713",
-      "syncedAt": "2026-08-14"
+      "aaCommit": "df649cb90086eda4bee7bd4748d0452792776b8a",
+      "syncedAt": "2026-08-18"
     },
     {
       "kind": "project",
@@ -17,8 +17,8 @@
       "name": "Bahrs Landing Documentary",
       "path": "/Users/nickd/Workspaces/bahrs-landing",
       "provisionedAt": "2026-07-05",
-      "aaCommit": "5dd29842bd774ca61c5a95f53efa178f2bc91713",
-      "syncedAt": "2026-08-14"
+      "aaCommit": "df649cb90086eda4bee7bd4748d0452792776b8a",
+      "syncedAt": "2026-08-18"
     },
     {
       "kind": "project",
@@ -27,8 +27,8 @@
       "name": "bob-grill-school",
       "path": "/Users/nickd/Workspaces/bob-grill-school",
       "provisionedAt": "2026-07-05",
-      "aaCommit": "5dd29842bd774ca61c5a95f53efa178f2bc91713",
-      "syncedAt": "2026-08-14"
+      "aaCommit": "df649cb90086eda4bee7bd4748d0452792776b8a",
+      "syncedAt": "2026-08-18"
     },
     {
       "kind": "project",
@@ -37,8 +37,8 @@
       "name": "Concurrent 3280 Yeager Letters",
       "path": "/Users/nickd/Workspaces/concurrent-3280-yeager-letters",
       "provisionedAt": "2026-07-21",
-      "aaCommit": "5dd29842bd774ca61c5a95f53efa178f2bc91713",
-      "syncedAt": "2026-08-14"
+      "aaCommit": "df649cb90086eda4bee7bd4748d0452792776b8a",
+      "syncedAt": "2026-08-18"
     },
     {
       "kind": "workspace",
@@ -46,8 +46,8 @@
       "projectType": null,
       "path": "/Users/nickd/Workspaces/content-studio",
       "provisionedAt": "2026-07-07",
-      "aaCommit": "5dd29842bd774ca61c5a95f53efa178f2bc91713",
-      "syncedAt": "2026-08-14"
+      "aaCommit": "df649cb90086eda4bee7bd4748d0452792776b8a",
+      "syncedAt": "2026-08-18"
     },
     {
       "kind": "project",
@@ -56,8 +56,8 @@
       "name": "Donkey Kong at InfoAge",
       "path": "/Users/nickd/Workspaces/donkey-kong-infoage",
       "provisionedAt": "2026-07-05",
-      "aaCommit": "5dd29842bd774ca61c5a95f53efa178f2bc91713",
-      "syncedAt": "2026-08-14"
+      "aaCommit": "df649cb90086eda4bee7bd4748d0452792776b8a",
+      "syncedAt": "2026-08-18"
     },
     {
       "kind": "project",
@@ -66,8 +66,8 @@
       "name": "ENIAC",
       "path": "/Users/nickd/Workspaces/eniac",
       "provisionedAt": "2026-08-08",
-      "aaCommit": "5dd29842bd774ca61c5a95f53efa178f2bc91713",
-      "syncedAt": "2026-08-14"
+      "aaCommit": "df649cb90086eda4bee7bd4748d0452792776b8a",
+      "syncedAt": "2026-08-18"
     },
     {
       "kind": "project",
@@ -76,8 +76,8 @@
       "name": "Factory Demo App",
       "path": "/Users/nickd/Workspaces/factory-demo-app",
       "provisionedAt": "2026-07-05",
-      "aaCommit": "5dd29842bd774ca61c5a95f53efa178f2bc91713",
-      "syncedAt": "2026-08-14"
+      "aaCommit": "df649cb90086eda4bee7bd4748d0452792776b8a",
+      "syncedAt": "2026-08-18"
     },
     {
       "kind": "project",
@@ -86,8 +86,8 @@
       "name": "GUI Lineage Emulation Station",
       "path": "/Users/nickd/Workspaces/gui-lineage-emulation-station",
       "provisionedAt": "2026-07-16",
-      "aaCommit": "5dd29842bd774ca61c5a95f53efa178f2bc91713",
-      "syncedAt": "2026-08-14"
+      "aaCommit": "df649cb90086eda4bee7bd4748d0452792776b8a",
+      "syncedAt": "2026-08-18"
     },
     {
       "kind": "workspace",
@@ -95,8 +95,18 @@
       "projectType": null,
       "path": "/Users/nickd/Workspaces/hardware-dev",
       "provisionedAt": "2026-07-05",
-      "aaCommit": "5dd29842bd774ca61c5a95f53efa178f2bc91713",
-      "syncedAt": "2026-08-14"
+      "aaCommit": "df649cb90086eda4bee7bd4748d0452792776b8a",
+      "syncedAt": "2026-08-18"
+    },
+    {
+      "kind": "project",
+      "team": "content-studio",
+      "projectType": "youtube",
+      "name": "Jersey Stack Ep1",
+      "path": "/Users/nickd/Workspaces/jersey-stack-ep1",
+      "provisionedAt": "2026-08-16",
+      "aaCommit": "df649cb90086eda4bee7bd4748d0452792776b8a",
+      "syncedAt": "2026-08-18"
     },
     {
       "kind": "project",
@@ -105,8 +115,8 @@
       "name": "Marina",
       "path": "/Users/nickd/Workspaces/marina",
       "provisionedAt": "2026-07-19",
-      "aaCommit": "5dd29842bd774ca61c5a95f53efa178f2bc91713",
-      "syncedAt": "2026-08-14"
+      "aaCommit": "df649cb90086eda4bee7bd4748d0452792776b8a",
+      "syncedAt": "2026-08-18"
     },
     {
       "kind": "workspace",
@@ -114,8 +124,18 @@
       "projectType": null,
       "path": "/Users/nickd/Workspaces/max",
       "provisionedAt": "2026-07-05",
-      "aaCommit": "5dd29842bd774ca61c5a95f53efa178f2bc91713",
-      "syncedAt": "2026-08-14"
+      "aaCommit": "df649cb90086eda4bee7bd4748d0452792776b8a",
+      "syncedAt": "2026-08-18"
+    },
+    {
+      "kind": "project",
+      "team": "content-studio",
+      "projectType": "youtube",
+      "name": "Message in the Machine",
+      "path": "/Users/nickd/Workspaces/message-in-the-machine",
+      "provisionedAt": "2026-08-16",
+      "aaCommit": "df649cb90086eda4bee7bd4748d0452792776b8a",
+      "syncedAt": "2026-08-18"
     },
     {
       "kind": "project",
@@ -124,8 +144,8 @@
       "name": "OS Lineage Wall",
       "path": "/Users/nickd/Workspaces/os-lineage-wall",
       "provisionedAt": "2026-07-24",
-      "aaCommit": "5dd29842bd774ca61c5a95f53efa178f2bc91713",
-      "syncedAt": "2026-08-14"
+      "aaCommit": "df649cb90086eda4bee7bd4748d0452792776b8a",
+      "syncedAt": "2026-08-18"
     },
     {
       "kind": "project",
@@ -140,8 +160,8 @@
       "path": "/Users/nickd/Workspaces/stoveiq",
       "adopted": true,
       "provisionedAt": "2026-08-14",
-      "aaCommit": "5dd29842bd774ca61c5a95f53efa178f2bc91713",
-      "syncedAt": "2026-08-14"
+      "aaCommit": "df649cb90086eda4bee7bd4748d0452792776b8a",
+      "syncedAt": "2026-08-18"
     },
     {
       "kind": "project",
@@ -150,8 +170,8 @@
       "name": "TagSmart v2",
       "path": "/Users/nickd/Workspaces/tagsmart-v2",
       "provisionedAt": "2026-07-17",
-      "aaCommit": "5dd29842bd774ca61c5a95f53efa178f2bc91713",
-      "syncedAt": "2026-08-14"
+      "aaCommit": "df649cb90086eda4bee7bd4748d0452792776b8a",
+      "syncedAt": "2026-08-18"
     },
     {
       "kind": "workspace",
@@ -159,8 +179,8 @@
       "projectType": null,
       "path": "/Users/nickd/Workspaces/vcf",
       "provisionedAt": "2026-07-05",
-      "aaCommit": "5dd29842bd774ca61c5a95f53efa178f2bc91713",
-      "syncedAt": "2026-08-14"
+      "aaCommit": "df649cb90086eda4bee7bd4748d0452792776b8a",
+      "syncedAt": "2026-08-18"
     },
     {
       "kind": "project",
@@ -169,8 +189,8 @@
       "name": "vcf-comdyna-short",
       "path": "/Users/nickd/Workspaces/vcf-comdyna-short",
       "provisionedAt": "2026-07-05",
-      "aaCommit": "5dd29842bd774ca61c5a95f53efa178f2bc91713",
-      "syncedAt": "2026-08-14"
+      "aaCommit": "df649cb90086eda4bee7bd4748d0452792776b8a",
+      "syncedAt": "2026-08-18"
     },
     {
       "kind": "project",
@@ -179,8 +199,8 @@
       "name": "vcf-sgi-short",
       "path": "/Users/nickd/Workspaces/vcf-sgi-short",
       "provisionedAt": "2026-07-05",
-      "aaCommit": "5dd29842bd774ca61c5a95f53efa178f2bc91713",
-      "syncedAt": "2026-08-14"
+      "aaCommit": "df649cb90086eda4bee7bd4748d0452792776b8a",
+      "syncedAt": "2026-08-18"
     },
     {
       "kind": "project",
@@ -189,8 +209,8 @@
       "name": "vistter-brand-launch",
       "path": "/Users/nickd/Workspaces/vistter-brand-launch",
       "provisionedAt": "2026-07-05",
-      "aaCommit": "5dd29842bd774ca61c5a95f53efa178f2bc91713",
-      "syncedAt": "2026-08-14"
+      "aaCommit": "df649cb90086eda4bee7bd4748d0452792776b8a",
+      "syncedAt": "2026-08-18"
     },
     {
       "kind": "project",
@@ -199,8 +219,8 @@
       "name": "VistterStream",
       "path": "/Users/nickd/Workspaces/VistterStream",
       "provisionedAt": "2026-07-08",
-      "aaCommit": "5dd29842bd774ca61c5a95f53efa178f2bc91713",
-      "syncedAt": "2026-08-14"
+      "aaCommit": "df649cb90086eda4bee7bd4748d0452792776b8a",
+      "syncedAt": "2026-08-18"
     },
     {
       "kind": "workspace",
@@ -208,8 +228,8 @@
       "projectType": null,
       "path": "/Users/nickd/Workspaces/wharfside",
       "provisionedAt": "2026-07-05",
-      "aaCommit": "5dd29842bd774ca61c5a95f53efa178f2bc91713",
-      "syncedAt": "2026-08-14"
+      "aaCommit": "df649cb90086eda4bee7bd4748d0452792776b8a",
+      "syncedAt": "2026-08-18"
     },
     {
       "kind": "project",
@@ -218,8 +238,8 @@
       "name": "Wharfside Marina Rebuild",
       "path": "/Users/nickd/Workspaces/wharfside-marina-rebuild",
       "provisionedAt": "2026-08-01",
-      "aaCommit": "5dd29842bd774ca61c5a95f53efa178f2bc91713",
-      "syncedAt": "2026-08-14"
+      "aaCommit": "df649cb90086eda4bee7bd4748d0452792776b8a",
+      "syncedAt": "2026-08-18"
     }
   ]
 }
