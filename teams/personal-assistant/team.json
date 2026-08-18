@@ -20,6 +20,11 @@
       "agent_id": "amazon-shopper",
       "role": "Searches Amazon for products, compares options, and generates affiliate-linked recommendations",
       "context_override": null
+    },
+    {
+      "agent_id": "wiki-ingest",
+      "role": "Promotes research findings, decisions, and session outcomes to the wiki knowledge base",
+      "context_override": null
     }
   ],
   "shared_context": {
@@ -59,6 +64,9 @@
       ],
       "general": [
         "web-research"
+      ],
+      "wiki-update": [
+        "wiki-ingest"
       ]
     },
     "delegation_strategy": "Max handles simple tasks directly (email, notes, calendar). For deep research, PDF processing, or browser automation, delegate to specialist subagents. Keep context lean by offloading heavy analysis.\n\n**Claude 4.7 delegation note:** Opus 4.7 defaults to fewer subagents and fewer tool calls than prior models. Counteract that here — when a request matches a specialist's domain, delegate rather than answering from training knowledge. Handle inline ONLY for: routing/clarifying questions back to the user, trivial lookups in already-loaded context, or synthesizing specialist briefings into the final response. Everything else goes to a specialist.",
