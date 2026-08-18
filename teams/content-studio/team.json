@@ -63,6 +63,11 @@
       "agent_id": "podcast-publisher",
       "role": "PODCAST branch — host-agnostic RSS-ready episode package + cross-promo drafts",
       "context_override": null
+    },
+    {
+      "agent_id": "wiki-ingest",
+      "role": "Promotes production decisions, episode outcomes, and channel learnings to the wiki knowledge base",
+      "context_override": null
     }
   ],
   "notes": {
@@ -143,6 +148,9 @@
       ],
       "general": [
         "video-script-writer"
+      ],
+      "wiki-update": [
+        "wiki-ingest"
       ]
     },
     "delegation_strategy": "FIRST determine the deliverable branch, THEN run that branch's pipeline with its human review gates.\n\n**Branch selection:** Read `.agentarchitect.json` in the project repo root — `projectType: \"youtube\"` → VIDEO branch, `projectType: \"podcast\"` → PODCAST branch. If there is no manifest (ad-hoc request), infer from the request and confirm with the user in one line.\n\n**VIDEO branch** (former youtube-content pipeline):\n1. ALWAYS start with a Creative Brief conversation before delegating\n2. Script Writer → chapter-structured outline, script, storyboard, deck\n3. GATE 1: storyboard review with user; iterate until approved\n4. Asset Generator in AUDIO-ONLY mode\n5. GATE 2: audio listening review (per-scene WAVs + concatenated MP3)\n6. Asset Generator in VISUALS-ONLY mode\n7. Assembler → final video\n8. Publisher (if publishing), then optionally Short-Form Video + Social Distributor\n\n**PODCAST branch** (former podcast-studio pipeline):\n1. READ the source and make the editorial format call (solo essay / two-host / interview) BEFORE delegating — write rationale to project.json. Never default to two-host because NotebookLM does.\n2. Script Writer → script.md\n3. GATE 1: script review; iterate until approved\n4. Voice Producer → per-segment WAVs + episode-vo.mp3 + durations.json (confirm ELEVENLABS_API_KEY and VOICE_ID for Nick's 'Nick 2' clone first — if VOICE_ID is unset, STOP and ask; never fall back to a stock voice silently)\n5. GATE 2: listening review; surgical re-records only\n6. Audio Engineer → mastered episode.mp3 (-16 LUFS) + chapters\n7. Show Notes → show-notes.md\n8. Publisher → host-agnostic publish package\n\nEach specialist runs in its own forked context. Pass the project folder path, the brief/format decision, and the previous phase briefing to each.\n\n**Opus delegation note:** Opus defaults to fewer subagents/tool calls. Counteract that — when a request matches a specialist's domain, delegate rather than answering from training knowledge. Handle inline ONLY for routing/clarifying questions, trivial lookups in loaded context, or synthesizing briefings into the final response.",

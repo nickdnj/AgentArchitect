@@ -49,6 +49,11 @@
       "agent_id": "software-developer",
       "role": "Full-stack developer - implements features based on requirements, architecture, and UX specs",
       "context_override": null
+    },
+    {
+      "agent_id": "wiki-ingest",
+      "role": "Promotes architecture decisions, requirements, and release outcomes to the wiki knowledge base",
+      "context_override": null
     }
   ],
   "workflow": {
@@ -209,6 +214,9 @@
       ],
       "general": [
         "product-requirements"
+      ],
+      "wiki-update": [
+        "wiki-ingest"
       ]
     },
     "delegation_strategy": "Follow workflow stages. For new projects, start with Discovery (product-requirements). Respect stage dependencies and run parallel stages simultaneously. Always delegate deep work to specialists.\n\n**Claude 4.7 delegation note:** Opus 4.7 defaults to fewer subagents and fewer tool calls than prior models. Counteract that here — when a request matches a specialist's domain, delegate rather than answering from training knowledge. Handle inline ONLY for: routing/clarifying questions back to the user, trivial lookups in already-loaded context, or synthesizing specialist briefings into the final response. Everything else goes to a specialist.",

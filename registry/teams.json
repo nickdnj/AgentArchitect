@@ -14,7 +14,7 @@
       "id": "software-project",
       "name": "Software Project Team",
       "folder": "teams/software-project",
-      "member_count": 9,
+      "member_count": 10,
       "created": "2026-01-19",
       "status": "active"
     },
@@ -22,7 +22,7 @@
       "id": "altium-solutions",
       "name": "Altium Solutions Team",
       "folder": "teams/altium-solutions",
-      "member_count": 15,
+      "member_count": 17,
       "created": "2026-01-27",
       "status": "active"
     },
@@ -47,7 +47,7 @@
       "id": "hardware-dev",
       "name": "Hardware Development Team",
       "folder": "teams/hardware-dev",
-      "member_count": 6,
+      "member_count": 7,
       "created": "2026-04-09",
       "status": "active"
     },
@@ -55,7 +55,7 @@
       "id": "saltwater-ads",
       "name": "Saltwater AI Ads Team",
       "folder": "teams/saltwater-ads",
-      "member_count": 1,
+      "member_count": 2,
       "created": "2026-04-30",
       "status": "active"
     },
@@ -72,7 +72,7 @@
       "id": "content-studio",
       "name": "Content Studio Team",
       "folder": "teams/content-studio",
-      "member_count": 11,
+      "member_count": 12,
       "created": "2026-07-05",
       "status": "active",
       "merged_from": [
