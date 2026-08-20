@@ -1,8 +1,8 @@
 {
   "id": "pdf-scribe",
   "name": "PDFScribe",
-  "description": "Extracts and transcribes PDF content into detailed Markdown with optional RAG ingestion for semantic search",
-  "version": "2.1",
+  "description": "Transcribes PDFs into faithful, structured Markdown using native Claude vision, with checksum-validated caching, page splitting, and optional RAG ingest",
+  "version": "3.0",
   "expertise": {
     "domains": [
       "document-processing",
@@ -10,23 +10,24 @@
       "content-extraction",
       "transcription",
       "rag",
-      "semantic-search"
+      "archival-fidelity"
     ],
     "capabilities": [
-      "PDF text extraction",
-      "Image-based PDF transcription (Claude Sonnet 4 or GPT-4o vision)",
-      "Visual content description",
-      "Table to HTML conversion",
-      "Multi-source PDF retrieval",
-      "Intelligent caching with checksum validation",
-      "Local file system access (including Google Drive synced folders)",
-      "RAG ingestion (chunk + embed + store in pgvector)",
-      "Semantic search across indexed documents",
-      "Multi-provider AI support (Anthropic/OpenAI)"
+      "Native vision transcription of scanned and born-digital PDFs (no external API)",
+      "Batched multi-page reading for documents of any length",
+      "Structured notation for handwriting, signatures, stamps, seals, and checkboxes",
+      "Explicit uncertainty marking ({?} and {illegible}) instead of silent guessing",
+      "Table extraction to HTML with merged-cell and cross-page continuation support",
+      "Substantive figure and photograph description for inspection reports",
+      "Strikethrough/underline preservation for governing document amendments",
+      "Document-type profiles (minutes, financials, governing docs, inspections, proposals)",
+      "Checksum-validated caching next to source (Google Drive synced folders included)",
+      "Lossless page-range splitting via qpdf",
+      "RAG ingest over plain HTTP to the RAG API",
+      "Static site generation with page-image galleries"
     ]
   },
   "mcp_servers": [
-    "pdfscribe",
     "gmail",
     "gmail-personal"
   ],
@@ -50,7 +51,8 @@
   },
   "collaboration": {
     "can_request_from": [
-      "chrome-browser"
+      "chrome-browser",
+      "rag-search"
     ],
     "provides_to": [
       "all"
@@ -59,7 +61,8 @@
     "primary_collaborators": [
       "archivist",
       "email-research",
-      "proposal-review"
+      "proposal-review",
+      "rag-search"
     ]
   },
   "trigger": {
@@ -77,57 +80,62 @@
       "email",
       "local",
       "url"
-    ]
-  },
-  "cli_tool": {
-    "path": "/Users/nickdemarco/Workspaces/pdfscribe_cli",
-    "transcribe_command": "python pdfscribe_cli.py",
-    "website_command": "python pdf2website.py",
-    "split_command": "python src/split_pdf.py",
-    "rag_command": "python src/rag.py",
-    "requires_one_of": [
-      "ANTHROPIC_API_KEY",
-      "OPENAI_API_KEY"
     ],
-    "rag_requires": [
-      "OPENAI_API_KEY",
-      "RAG_DB_HOST or localhost:5433"
-    ]
+    "transcription_spec_version": "3.0",
+    "batch_sizes": {
+      "born_digital": 20,
+      "scanned_text": 10,
+      "dense_tables": 5,
+      "photo_heavy": 4
+    }
+  },
+  "toolchain": {
+    "engine": "native-vision",
+    "note": "Transcription is performed by the agent's own vision via the Read tool. No transcription API key is required. The pdfscribe MCP server and pdfscribe_cli.py were retired in v3.0.",
+    "shell_tools": {
+      "page_metadata": "pdfinfo",
+      "text_layer_probe": "pdftotext",
+      "split": "qpdf --pages <pdf> <range> -- <out.pdf>",
+      "page_images": "pdftoppm -jpeg -r 150",
+      "checksum": "shasum -a 256",
+      "http": "curl + jq"
+    },
+    "requires_keys": [],
+    "legacy_archive": "~/Workspaces/pdfscribe_cli/"
   },
   "rag_integration": {
-    "database": {
-      "type": "postgres+pgvector",
-      "host": "localhost",
-      "port": 5433,
-      "name": "rag",
-      "docker_compose": "/Users/nickdemarco/AgentArchitect/docker-compose.yml"
+    "backend": "api",
+    "api_url": "https://rag-api-934267405367.us-central1.run.app",
+    "auth_header": "X-API-Key",
+    "auth_env_var": "RAG_API_KEY",
+    "endpoints": {
+      "health": "GET /v1/health",
+      "ingest": "POST /v1/ingest",
+      "search": "POST /v1/search",
+      "stats": "GET /v1/stats",
+      "documents": "GET /v1/documents",
+      "delete": "DELETE /v1/documents"
     },
-    "env_vars": {
-      "RAG_BACKEND": "api",
-      "RAG_API_URL": "https://rag-api-934267405367.us-central1.run.app"
+    "ingest_payload": {
+      "text": "string (required)",
+      "bucket_id": "string (required)",
+      "source_file": "string (required)",
+      "force": "boolean (default false)",
+      "metadata": "object (optional)"
     },
     "embeddings": {
-      "provider": "openai",
+      "provider": "server-side",
       "model": "text-embedding-3-small",
       "dimensions": 1536
     },
-    "chunking": {
-      "size": 800,
-      "overlap": 120,
-      "method": "paragraph-aware"
-    },
-    "tools": {
-      "ingest": "python src/rag.py ingest <file> --bucket <bucket_id>",
-      "search": "python src/rag.py search '<query>' --bucket <bucket_id>",
-      "list": "python src/rag.py list --bucket <bucket_id>",
-      "stats": "python src/rag.py stats"
-    }
+    "search_owner": "rag-search",
+    "notes": "Ingest is the only operation with an external dependency. If RAG_API_KEY is unset, complete and cache the transcription and report the ingest as skipped — never report success for a step that did not run."
   },
   "agent_type": "specialist",
   "execution": {
     "context": "fork",
-    "max_turns": 15,
-    "model": "haiku"
+    "max_turns": 60,
+    "model": "sonnet"
   },
   "wiki_access": {
     "repo_root": "${WIKI_REPO}",

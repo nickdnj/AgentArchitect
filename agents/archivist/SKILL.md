@@ -501,78 +501,56 @@ Use these tools for direct file access when RAG identifies specific files:
 - **Read**: Read document contents
 - **Bash ls**: List folder contents when needed
 
-### PDF Scribe MCP (For scanned PDFs)
-Use PDF Scribe to transcribe scanned/image-based PDFs into searchable Markdown:
+### PDFScribe (For scanned PDFs)
 
-- **mcp__pdfscribe__transcribe_pdf**: Transcribe a PDF to Markdown using Claude vision
-- **mcp__pdfscribe__split_pdf**: Split large PDFs into smaller chunks before transcription
-- **mcp__pdfscribe__list_transcriptions**: List previously transcribed documents
+**Do not call `mcp__pdfscribe__*` — that MCP server was retired in PDFScribe v3.0.**
+There is no transcription CLI to shell out to either. Delegate to the PDFScribe
+specialist, which reads PDF pages with its own vision:
 
-#### Alternative: pdfscribe CLI
-If the MCP server has path access issues, use the CLI directly:
-```bash
-source ~/.zshrc  # Loads ANTHROPIC_API_KEY
-cd /Users/nickdemarco/Workspaces/pdfscribe_cli
-python pdfscribe_cli.py "/path/to/file.pdf" -o "/path/to/output.md" -b "backstory"
 ```
-**Note:** The Anthropic API key is stored in `~/.zshrc` as `ANTHROPIC_API_KEY`.
+Task(subagent_type="PDFScribe",
+     prompt="Transcribe /path/to/document.pdf. Wharfside Manor Condominium Association document.")
+```
 
-#### PDF Transcription Workflow
+PDFScribe handles page counting, batching, and caching itself. **There is no page
+limit and no need to split first** — the old 50-page ceiling was an artifact of the
+retired pipeline stuffing every page into a single API call. A 400-page governing
+document is a valid single request.
 
-When encountering a scanned PDF that cannot be searched with Grep:
+#### What comes back
 
-1. **Check for existing transcription** - Look for a `.md` file with the same name next to the PDF
-   - Verify the `.md` file is larger than 1KB (failed transcriptions leave empty/tiny files)
-   - The tool also creates a `-transcribed.md` cache file - this is normal
-2. **Check PDF size** - Use `Bash` to check page count: `pdfinfo "/path/to/file.pdf" | grep Pages`
-3. **For PDFs under 50 pages**, transcribe directly:
-   ```
-   mcp__pdfscribe__transcribe_pdf(
-     pdf_path="/path/to/document.pdf",
-     output_path="/path/to/document.md",
-     backstory="Wharfside Manor Condominium Association document"
-   )
-   ```
-4. **For PDFs 50+ pages**, MUST split first to avoid "Prompt is too long" errors:
-   ```
-   mcp__pdfscribe__split_pdf(
-     pdf_path="/path/to/large-document.pdf",
-     output_dir="/path/to/chunks/",
-     pages_per_chunk=50
-   )
-   ```
-   Then transcribe each chunk and optionally combine the results.
-5. **Output location** - Always save the `.md` file in the same directory as the original PDF with the same base filename
+- Output is `{basename}-transcribed.md`, written next to the source PDF. That file
+  **is** the transcription — not a cache artifact to ignore.
+- Transcriptions are validated by SHA-256 checksum, so re-requesting a document
+  that has not changed is effectively free. Do not build your own "is the .md
+  bigger than 1KB" heuristics; ask PDFScribe and let it check.
+- The handoff names any pages needing human review, plus counts of uncertain
+  readings (`{?...}`) and illegible passages (`{illegible}`).
 
-#### Size Limits (IMPORTANT)
+#### When to delegate
 
-- **Under 50 pages**: Direct transcription works reliably
-- **50-100 pages**: May work, but splitting recommended
-- **Over 100 pages**: MUST split first - direct transcription WILL fail
-- **400+ pages**: Split into 50-page chunks, transcribe separately
+- A Grep search returns nothing on a PDF that should contain relevant content
+- Bulk transcription of a folder is requested
+- A document is needed for text search but is image-only
+- Any document that will be cited, archived, or ingested into a RAG bucket
 
-#### When to Transcribe
+#### Batch transcription
 
-- User explicitly requests PDF transcription
-- Grep search returns no results on a PDF that should have relevant content
-- Bulk transcription of a folder requested
-- Document needed for text search but is image-only
+When asked to transcribe a folder, hand PDFScribe the folder and let it work
+through the files — it checks each one's cache before doing any work. Do not
+pre-filter by file size.
 
-#### Batch Transcription
+#### RAG ingest
 
-When asked to transcribe all PDFs in a folder:
-1. Use Glob to find all `*.pdf` files in the target folder
-2. Check which already have corresponding `.md` files **larger than 1KB**
-3. Sort by file size - process smaller PDFs first for quick wins
-4. For large PDFs (50+ pages), split before transcribing
-5. Transcribe only those without existing valid transcriptions
-6. Report progress and results
+Ask for it in the same request when the document belongs in a searchable corpus:
 
-#### Output Files
+```
+Task(subagent_type="PDFScribe",
+     prompt="Transcribe /path/to/document.pdf and ingest into bucket wharfside-docs.")
+```
 
-PDF Scribe creates two files per transcription:
-- `document.md` - Clean markdown output (use this one)
-- `document-transcribed.md` - Internal cache file (can be ignored)
+If `RAG_API_KEY` is not set in the environment, PDFScribe will complete the
+transcription and report the ingest as skipped rather than failing silently.
 
 ### Chrome MCP (For portal sync)
 - Navigate to AppFolio portal

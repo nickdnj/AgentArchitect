@@ -60,7 +60,10 @@ const MCP_SERVER_MAPPING = {
   'apple-mcp': ['mcp__apple-mcp__*'],
   'chrome': ['mcp__chrome__*'],
   'openai-image': ['mcp__openai-image__*'],
-  'pdfscribe': ['mcp__pdfscribe__*'],
+  // pdfscribe MCP retired in v3.0 — PDFScribe now transcribes with native vision.
+  // The key is kept so declaring agents still get the delegation docs, but it
+  // grants no MCP tools.
+  'pdfscribe': [],
   'video-editor': ['mcp__video-editor__*'],
   'voicemode': ['mcp__voicemode__*'],
 };
@@ -151,12 +154,23 @@ Shared drives are also mirrored locally under
 \`~/Library/CloudStorage/GoogleDrive-<account>/Shared drives/\` — for bulk reads, prefer
 Read/Glob against that path over per-file MCP calls.
 `,
-  'pdfscribe': `## PDF Transcription (CLI)
-Use the pdfscribe Python CLI directly:
-- Transcribe: \`python pdfscribe_cli/pdfscribe_cli.py <pdf_file> -o <output.md>\`
-- Split large PDF: \`python pdfscribe_cli/src/split_pdf.py <pdf> --pages-per-chunk 50\`
-- RAG ingest: \`python pdfscribe_cli/src/rag.py ingest <file> --bucket <bucket_id>\`
-- RAG search: \`python pdfscribe_cli/src/rag.py search 'query' --bucket <bucket_id>\`
+  'pdfscribe': `## PDF Transcription (PDFScribe skill)
+Do NOT shell out to a transcription CLI or MCP — that path was retired in v3.0.
+Delegate to the **PDFScribe** specialist, which reads PDF pages with native vision:
+
+\`Task(subagent_type="PDFScribe", prompt="Transcribe <path/to/file.pdf>")\`
+
+PDFScribe checks its checksum-validated cache first, so re-requesting a document
+already transcribed is effectively free. It returns the path to
+\`{basename}-transcribed.md\` plus a summary and any pages needing human review.
+
+If you only need a quick look at a short PDF, you may also just \`Read\` it
+directly (max 20 pages per call) — but anything being archived, cited, or
+ingested should go through PDFScribe so it lands in the cache with the full
+transcription spec applied.
+
+Ask PDFScribe for RAG ingest (\`--bucket <bucket_id>\`) or page splitting in the
+same request. For **searching** an existing bucket, use the \`rag-search\` agent.
 `,
   'openai-image': `## Image Generation (OpenAI API)
 Use curl or Python to generate images directly:

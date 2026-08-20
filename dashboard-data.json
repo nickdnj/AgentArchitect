@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-18T20:14:28Z",
+  "generated_at": "2026-08-20T15:14:19Z",
   "version": "1.0",
   "teams": [
     {
@@ -1575,12 +1575,12 @@
     {
       "id": "pdf-scribe",
       "name": "PDFScribe",
-      "description": "Extracts and transcribes PDF content into detailed Markdown with optional RAG ingestion for semantic search",
+      "description": "Transcribes PDFs into faithful, structured Markdown using native Claude vision, with checksum-validated caching, page splitting, and optional RAG ingest",
       "agent_type": "specialist",
       "execution": {
         "context": "fork",
-        "max_turns": 15,
-        "model": "haiku"
+        "max_turns": 60,
+        "model": "sonnet"
       },
       "expertise": {
         "domains": [
@@ -1589,30 +1589,31 @@
           "content-extraction",
           "transcription",
           "rag",
-          "semantic-search"
+          "archival-fidelity"
         ],
         "capabilities": [
-          "PDF text extraction",
-          "Image-based PDF transcription (Claude Sonnet 4 or GPT-4o vision)",
-          "Visual content description",
-          "Table to HTML conversion",
-          "Multi-source PDF retrieval",
-          "Intelligent caching with checksum validation",
-          "Local file system access (including Google Drive synced folders)",
-          "RAG ingestion (chunk + embed + store in pgvector)",
-          "Semantic search across indexed documents",
-          "Multi-provider AI support (Anthropic/OpenAI)"
+          "Native vision transcription of scanned and born-digital PDFs (no external API)",
+          "Batched multi-page reading for documents of any length",
+          "Structured notation for handwriting, signatures, stamps, seals, and checkboxes",
+          "Explicit uncertainty marking ({?} and {illegible}) instead of silent guessing",
+          "Table extraction to HTML with merged-cell and cross-page continuation support",
+          "Substantive figure and photograph description for inspection reports",
+          "Strikethrough/underline preservation for governing document amendments",
+          "Document-type profiles (minutes, financials, governing docs, inspections, proposals)",
+          "Checksum-validated caching next to source (Google Drive synced folders included)",
+          "Lossless page-range splitting via qpdf",
+          "RAG ingest over plain HTTP to the RAG API",
+          "Static site generation with page-image galleries"
         ]
       },
       "mcp_servers": [
-        "pdfscribe",
         "gmail",
         "gmail-personal"
       ],
       "teams": [
         "wharfside-board-assistant"
       ],
-      "purpose": "PDFScribe is a specialized content extraction agent that transforms PDF documents into detailed, structured Markdown with optional semantic search indexing. Whether dealing with native text PDFs or scanned image-based documents, PDFScribe ensures no information is lost by extracting both textual content and visual elements with detailed descriptions.\n\nThis agent solves the common problem of image-based PDFs (scanned documents, inspection reports, legacy files) that cannot be searched or processed by text-based tools. PDFScribe makes this content accessible, searchable, and actionable through:\n1. **Transcription** - Converting PDFs to structured Markdown\n2. **RAG Ingestion** - Chunking, embedding, and storing in a vector database for semantic search",
+      "purpose": "PDFScribe turns PDFs \u2014 native-text, scanned, or mixed \u2014 into faithful, structured Markdown that other agents and humans can search, cite, and act on.\n\n**You are the transcription engine.** You read the pages yourself with your own vision, using the `Read` tool. There is no external transcription service to call: no Docker container, no MCP server, no `pdfscribe_cli.py`, no poppler \u2192 base64 \u2192 API round-trip, no second vendor's API key. A PDF page handed to `Read` comes back to you as an image, and you transcribe it.\n\nThis matters because the failure mode of the old pipeline was silent: a broken path or a missing key produced an empty or truncated transcription that looked like a successful run. When you do the reading, a failure is something you can see on the page.\n\nEverything else PDFScribe does \u2014 caching, splitting, RAG ingest, site generation \u2014 is plumbing around that core act, and uses ordinary shell tools that are already installed.",
       "status": "active",
       "created": "2026-01-20"
     },
@@ -3013,9 +3014,9 @@
       "utility": 3
     },
     "agents_by_model": {
-      "sonnet": 35,
+      "sonnet": 36,
       "opus": 13,
-      "haiku": 2
+      "haiku": 1
     },
     "agents_by_team": {
       "wharfside-board-assistant": 9,
