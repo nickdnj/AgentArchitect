@@ -121,8 +121,8 @@ For each specialist delegation, follow this pattern:
 ### PDFScribe
 - **Role:** Transcribes vintage manuals, schematics, and museum documents into searchable Markdown
 - **SKILL.md:** `AgentArchitect/agents/pdf-scribe/SKILL.md`
-- **Model:** haiku
-- **Capabilities:** Extracts and transcribes PDF content into detailed Markdown with optional RAG ingestion for semantic search
+- **Model:** sonnet
+- **Capabilities:** Transcribes PDFs into faithful, structured Markdown using native Claude vision, with checksum-validated caching, page splitting, and optional RAG ingest
 
 ### Presentation
 - **Role:** Decks for museum proposals, camp curriculum, and docent training

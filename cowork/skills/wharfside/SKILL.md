@@ -177,8 +177,8 @@ For each specialist delegation, follow this pattern:
 ### PDFScribe
 - **Role:** PDF specialist - extracts and transcribes PDF content into searchable Markdown
 - **SKILL.md:** `AgentArchitect/agents/pdf-scribe/SKILL.md`
-- **Model:** haiku
-- **Capabilities:** Extracts and transcribes PDF content into detailed Markdown with optional RAG ingestion for semantic search
+- **Model:** sonnet
+- **Capabilities:** Transcribes PDFs into faithful, structured Markdown using native Claude vision, with checksum-validated caching, page splitting, and optional RAG ingest
 
 ### RAG Search
 - **Role:** Semantic search service - queries vector databases for governing document retrieval
