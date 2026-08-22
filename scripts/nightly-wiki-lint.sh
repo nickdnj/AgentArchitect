@@ -99,8 +99,13 @@ if ! git -C "$WIKI" pull --ff-only --quiet 2>&1; then
 fi
 
 cd "$REPO_ROOT"
-if ! WIKI_REPO="$WIKI" node scripts/run-agent.js wiki-ingest --operation lint --scope all; then
-  echo "ERROR: lint run failed (exit $?)"
+# Capture the status before anything else clobbers $?. Inside `if ! cmd`, $? is
+# already the negated test result, so the old `exit $?` reported "exit 0" on a
+# genuine failure — which is exactly what the 2026-08-22 run logged.
+WIKI_REPO="$WIKI" node scripts/run-agent.js wiki-ingest --operation lint --scope all
+lint_rc=$?
+if [[ "$lint_rc" -ne 0 ]]; then
+  echo "ERROR: lint run failed (exit $lint_rc)"
   exit 1
 fi
 
