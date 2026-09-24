@@ -1,0 +1,424 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nick's Wiki</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/force-graph@1.43.5/dist/force-graph.min.js"></script>
+<style>
+:root {
+  --bg: #fbfaf8; --panel: #f3f1ed; --line: #e2ded6; --text: #22211f; --muted: #6f6b64;
+  --accent: #6a4fc7; --accent-soft: #ece7fb; --code: #efece6; --hit: #fff1b8;
+  --unresolved: #b0463c;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #1c1c1f; --panel: #232327; --line: #34343a; --text: #e6e4df; --muted: #9a978f;
+    --accent: #a891ff; --accent-soft: #2e2945; --code: #2a2a2f; --hit: #5a4a10;
+    --unresolved: #e0796e;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #1c1c1f; --panel: #232327; --line: #34343a; --text: #e6e4df; --muted: #9a978f;
+  --accent: #a891ff; --accent-soft: #2e2945; --code: #2a2a2f; --hit: #5a4a10;
+  --unresolved: #e0796e;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; }
+body {
+  background: var(--bg); color: var(--text);
+  font: 15px/1.6 -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", sans-serif;
+  display: grid; grid-template-columns: 290px 1fr 260px; grid-template-rows: 100vh;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+a.unresolved { color: var(--unresolved); opacity: .8; }
+
+/* left: file explorer */
+#side { background: var(--panel); border-right: 1px solid var(--line); display: flex; flex-direction: column; min-height: 0; }
+#side header { padding: 12px 12px 8px; display: flex; gap: 8px; align-items: center; }
+#side header b { flex: 1; font-size: 14px; }
+#side header button, #menu { background: none; border: 1px solid var(--line); color: var(--muted); border-radius: 6px; padding: 3px 8px; cursor: pointer; font-size: 12px; }
+#q { margin: 0 12px 8px; padding: 7px 10px; border-radius: 7px; border: 1px solid var(--line); background: var(--bg); color: var(--text); font: inherit; font-size: 13px; }
+#tree, #results { overflow: auto; flex: 1; padding: 0 6px 20px; font-size: 13px; }
+#results { display: none; }
+.dir > summary { cursor: pointer; padding: 2px 6px; border-radius: 5px; color: var(--muted); list-style: none; white-space: nowrap; }
+.dir > summary::before { content: "▸"; display: inline-block; width: 14px; transition: transform .1s; }
+.dir[open] > summary::before { transform: rotate(90deg); }
+.dir > div { margin-left: 10px; border-left: 1px solid var(--line); padding-left: 4px; }
+.file { display: block; padding: 2px 8px; border-radius: 5px; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.file:hover, .dir > summary:hover { background: var(--line); text-decoration: none; }
+.file.active { background: var(--accent-soft); color: var(--accent); }
+.res { display: block; padding: 6px 8px; border-radius: 6px; color: var(--text); }
+.res:hover { background: var(--line); text-decoration: none; }
+.res small { display: block; color: var(--muted); font-size: 11px; }
+.res .snip { color: var(--muted); font-size: 12px; }
+mark { background: var(--hit); color: inherit; border-radius: 2px; }
+
+/* center: note */
+#main { overflow: auto; min-width: 0; }
+#note { max-width: 780px; margin: 0 auto; padding: 28px 40px 80px; }
+#crumbs { color: var(--muted); font-size: 12px; margin-bottom: 4px; }
+#crumbs a { color: var(--muted); }
+#note h1.title { font-size: 30px; line-height: 1.2; margin: 0 0 14px; }
+.props { border: 1px solid var(--line); border-radius: 8px; font-size: 13px; margin-bottom: 22px; padding: 6px 12px; }
+.props summary { cursor: pointer; color: var(--muted); }
+.props table { border: 0; margin: 6px 0 2px; }
+.props td { border: 0; padding: 2px 12px 2px 0; vertical-align: top; }
+.props td:first-child { color: var(--muted); white-space: nowrap; }
+.pill { display: inline-block; background: var(--accent-soft); color: var(--accent); border-radius: 10px; padding: 0 8px; margin: 1px 3px 1px 0; font-size: 12px; }
+#body h1, #body h2, #body h3 { line-height: 1.3; margin-top: 1.6em; }
+#body h1 { font-size: 24px; } #body h2 { font-size: 20px; border-bottom: 1px solid var(--line); padding-bottom: 4px; } #body h3 { font-size: 17px; }
+#body code { background: var(--code); padding: 1px 5px; border-radius: 4px; font-size: 13px; }
+#body pre { background: var(--code); padding: 12px 14px; border-radius: 8px; overflow: auto; }
+#body pre code { padding: 0; background: none; }
+#body table { border-collapse: collapse; display: block; overflow-x: auto; margin: 1em 0; font-size: 14px; }
+#body th, #body td { border: 1px solid var(--line); padding: 5px 10px; text-align: left; vertical-align: top; }
+#body th { background: var(--panel); }
+#body blockquote { margin: 1em 0; padding: 4px 14px; border-left: 3px solid var(--accent); background: var(--panel); border-radius: 0 6px 6px 0; }
+#body blockquote.callout .ct { font-weight: 600; color: var(--accent); }
+#body img { max-width: 100%; border-radius: 6px; }
+#body hr { border: 0; border-top: 1px solid var(--line); margin: 2em 0; }
+#body li input[type=checkbox] { margin-right: 6px; }
+.tag { color: var(--accent); background: var(--accent-soft); border-radius: 4px; padding: 0 4px; font-size: .92em; }
+
+/* right: links */
+#links { border-left: 1px solid var(--line); overflow: auto; padding: 18px 14px; font-size: 13px; background: var(--panel); }
+#links h4 { margin: 0 0 6px; font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+#links section { margin-bottom: 22px; }
+#links a { display: block; padding: 3px 6px; border-radius: 5px; color: var(--text); }
+#links a:hover { background: var(--line); text-decoration: none; }
+#links a small { color: var(--muted); display: block; font-size: 11px; }
+#links .none { color: var(--muted); font-style: italic; }
+#menu { display: none; }
+
+@media (max-width: 1100px) { body { grid-template-columns: 260px 1fr; } #links { display: none; } #linksInline { display: block !important; } }
+@media (max-width: 760px) {
+  body { grid-template-columns: 1fr; }
+  #side { position: fixed; inset: 0 20% 0 0; z-index: 10; transform: translateX(-100%); transition: transform .15s; box-shadow: 0 0 30px rgba(0,0,0,.3); }
+  body.nav #side { transform: none; }
+  #note { padding: 16px 16px 60px; }
+  #menu { display: inline-block; margin-bottom: 8px; }
+}
+/* graph view */
+#graph { position: fixed; inset: 0; z-index: 20; background: var(--bg); display: none; }
+#graph.on { display: block; }
+#gbar { position: absolute; top: 12px; left: 12px; right: 12px; z-index: 2; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; pointer-events: none; }
+#gbar > * { pointer-events: auto; }
+#gbar button, #gbar label { background: var(--panel); border: 1px solid var(--line); color: var(--text); border-radius: 7px; padding: 5px 10px; font: inherit; font-size: 13px; cursor: pointer; }
+#gbar button.on { background: var(--accent-soft); color: var(--accent); border-color: var(--accent); }
+#gbar input[type=search] { background: var(--panel); border: 1px solid var(--line); color: var(--text); border-radius: 7px; padding: 5px 10px; font: inherit; font-size: 13px; width: 180px; }
+#glegend { position: absolute; bottom: 12px; left: 12px; z-index: 2; font-size: 12px; color: var(--muted); background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; max-width: calc(100% - 24px); display: flex; flex-wrap: wrap; gap: 4px 12px; }
+#glegend span i { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 5px; vertical-align: -1px; }
+#gtitle { color: var(--muted); font-size: 13px; }
+#linksInline { display: none; margin-top: 40px; border-top: 1px solid var(--line); padding-top: 14px; font-size: 14px; }
+</style>
+</head>
+<body>
+<aside id="side">
+  <header><b>📚 Wiki</b><span id="count" style="color:var(--muted);font-size:12px"></span><button id="graphBtn" title="Graph view (g)">◉ Graph</button><button id="theme" title="Toggle theme">◐</button></header>
+  <input id="q" type="search" placeholder="Search (press /)" autocomplete="off">
+  <nav id="tree"></nav>
+  <nav id="results"></nav>
+</aside>
+<main id="main">
+  <article id="note">
+    <button id="menu">☰ Files</button>
+    <div id="crumbs"></div>
+    <h1 class="title" id="title"></h1>
+    <div id="props"></div>
+    <div id="body"></div>
+    <div id="linksInline"></div>
+  </article>
+</main>
+<aside id="links"></aside>
+<div id="graph">
+  <div id="gbar">
+    <button id="gClose">✕ Close</button>
+    <button id="gGlobal" class="on">Global</button>
+    <button id="gLocal">Local</button>
+    <label id="gDepthWrap" style="display:none">Depth <input id="gDepth" type="range" min="1" max="3" value="2" style="vertical-align:middle;width:70px"></label>
+    <label><input id="gOrphans" type="checkbox"> Orphans</label>
+    <input id="gFilter" type="search" placeholder="Filter nodes…">
+    <span id="gtitle"></span>
+  </div>
+  <div id="gcanvas"></div>
+  <div id="glegend"></div>
+</div>
+
+<script>
+const PAGES = /*__WIKI_DATA__*/[];
+const byPath = new Map(), byLower = new Map(), byBase = new Map();
+for (const pg of PAGES) {
+  byPath.set(pg.p, pg);
+  byLower.set(pg.p.toLowerCase(), pg);
+  const base = pg.p.split("/").pop().toLowerCase();
+  if (!byBase.has(base)) byBase.set(base, []);
+  byBase.get(base).push(pg);
+}
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const dirOf = p => p.includes("/") ? p.slice(0, p.lastIndexOf("/")) : "";
+
+function normalize(parts) {
+  const out = [];
+  for (const x of parts) { if (x === "..") out.pop(); else if (x && x !== ".") out.push(x); }
+  return out.join("/");
+}
+// Obsidian-style resolution: exact path, then relative to the current note, then shortest basename match.
+function resolve(target, from) {
+  let t = decodeURIComponent(target.split("#")[0].split("^")[0]).trim().replace(/\.md$/i, "").replace(/^\/+/, "");
+  if (!t) return null;
+  const hit = k => byLower.get(k.toLowerCase());
+  let pg = hit(t);
+  if (!pg && from) pg = hit(normalize((dirOf(from) + "/" + t).split("/")));
+  if (!pg && t.endsWith("/")) pg = hit(t + "_index");
+  if (!pg) pg = hit(t + "/_index") || hit(t + "/_team");
+  if (!pg) {
+    const cands = byBase.get(t.split("/").pop().toLowerCase()) || [];
+    const suffix = cands.filter(c => c.p.toLowerCase().endsWith(t.toLowerCase()));
+    const pool = suffix.length ? suffix : (t.includes("/") ? [] : cands);
+    pg = pool.sort((a, b) => a.p.length - b.p.length)[0];
+  }
+  return pg || null;
+}
+const href = p => "#/" + encodeURI(p);
+
+// Outgoing links, computed once for backlinks.
+const WL = /(!?)\[\[([^\]]+?)\]\]/g, ML = /\]\(([^)\s]+)(?:\s+"[^"]*")?\)/g;
+const outgoing = new Map(), incoming = new Map();
+function stripCode(s) { return s.replace(/```[\s\S]*?```/g, "").replace(/`[^`\n]*`/g, ""); }
+for (const pg of PAGES) {
+  const set = new Set(), body = stripCode(pg.b);
+  for (const m of body.matchAll(WL)) { const r = resolve(m[2].replace(/\\?\|.*$/, ""), pg.p); if (r && r !== pg) set.add(r.p); }
+  for (const m of body.matchAll(ML)) {
+    const h = m[1]; if (/^[a-z]+:/i.test(h) || h.startsWith("#")) continue;
+    const r = resolve(h, pg.p); if (r && r !== pg) set.add(r.p);
+  }
+  outgoing.set(pg.p, set);
+  for (const t of set) { if (!incoming.has(t)) incoming.set(t, new Set()); incoming.get(t).add(pg.p); }
+}
+
+// Markdown rendering
+let CURRENT = null;
+marked.use({
+  gfm: true, breaks: true,
+  renderer: {
+    link(h, title, text) {
+      if (h && !/^[a-z]+:/i.test(h) && !h.startsWith("#")) {
+        const r = resolve(h, CURRENT);
+        if (r) return `<a href="${href(r.p)}">${text}</a>`;
+      }
+      const ext = /^https?:/i.test(h || "") ? ' target="_blank" rel="noopener"' : "";
+      return `<a href="${esc(h || "")}"${ext}>${text}</a>`;
+    }
+  }
+});
+function preprocess(src, from) {
+  // protect code from wikilink/tag rewriting
+  const stash = [];
+  src = src.replace(/```[\s\S]*?```|`[^`\n]*`/g, m => { stash.push(m); return `\u0000${stash.length - 1}\u0000`; });
+  src = src.replace(WL, (all, bang, inner) => {
+    const [target, ...rest] = inner.split(/\\?\|/);
+    const r = resolve(target, from);
+    const base = target.split("/").pop();
+    const alias = rest.join("|") || (r && base.startsWith("_") ? r.t : base.replace(/#/g, " › "));
+    if (bang && /\.(png|jpe?g|gif|webp|svg)$/i.test(target)) return `<em>🖼 ${esc(target)}</em>`;
+    return r ? `<a href="${href(r.p)}">${esc(alias)}</a>` : `<a class="unresolved" title="No page">${esc(alias)}</a>`;
+  });
+  src = src.replace(/(^|\s)#([A-Za-z][\w\/-]*)/g, (m, sp, tag) => `${sp}<span class="tag">#${tag}</span>`);
+  return src.replace(/\u0000(\d+)\u0000/g, (m, i) => stash[+i]);
+}
+function callouts(root) {
+  for (const bq of root.querySelectorAll("blockquote")) {
+    const p = bq.querySelector("p"); if (!p) continue;
+    const m = p.innerHTML.match(/^\[!(\w+)\][+-]?\s*([^<\n]*)/);
+    if (!m) continue;
+    bq.classList.add("callout");
+    p.innerHTML = `<span class="ct">${esc(m[2] || m[1][0].toUpperCase() + m[1].slice(1))}</span>` + p.innerHTML.slice(m[0].length);
+  }
+}
+
+// Views
+const $ = id => document.getElementById(id);
+function fmtVal(v) {
+  if (Array.isArray(v)) return v.map(x => `<span class="pill">${esc(typeof x === "object" ? JSON.stringify(x) : x)}</span>`).join("");
+  if (v && typeof v === "object") return `<code>${esc(JSON.stringify(v))}</code>`;
+  return esc(v);
+}
+function linkList(paths) {
+  if (!paths || !paths.size) return `<div class="none">None</div>`;
+  return [...paths].map(p => byPath.get(p)).sort((a, b) => a.t.localeCompare(b.t))
+    .map(pg => `<a href="${href(pg.p)}">${esc(pg.t)}<small>${esc(dirOf(pg.p) || "/")}</small></a>`).join("");
+}
+function show(path) {
+  const pg = byPath.get(path) || resolve(path) || byPath.get("Home") || PAGES[0];
+  CURRENT = pg.p;
+  document.title = pg.t + " — Wiki";
+  const parts = pg.p.split("/");
+  $("crumbs").innerHTML = parts.slice(0, -1).map((seg, i) => {
+    const r = resolve(parts.slice(0, i + 1).join("/") + "/_index") || resolve(parts.slice(0, i + 1).join("/") + "/_team");
+    return r ? `<a href="${href(r.p)}">${esc(seg)}</a>` : esc(seg);
+  }).join(" / ");
+  $("title").textContent = pg.t;
+  const fm = Object.entries(pg.fm || {}).filter(([k]) => k !== "title");
+  $("props").innerHTML = fm.length ? `<details class="props" open><summary>Properties</summary><table>${
+    fm.map(([k, v]) => `<tr><td>${esc(k)}</td><td>${fmtVal(v)}</td></tr>`).join("")}</table></details>` : "";
+  const body = pg.b.replace(/^\s*#\s+.+\n/, m => m.replace(/^\s*#\s+/, "").trim() === pg.t ? "" : m);
+  $("body").innerHTML = marked.parse(preprocess(body, pg.p));
+  callouts($("body"));
+  for (const cb of $("body").querySelectorAll("input[type=checkbox]")) cb.disabled = true;
+  const panel = `<section><h4>Backlinks (${(incoming.get(pg.p) || new Set()).size})</h4>${linkList(incoming.get(pg.p))}</section>
+    <section><h4>Outgoing (${outgoing.get(pg.p).size})</h4>${linkList(outgoing.get(pg.p))}</section>
+    <section><h4>File</h4><div style="color:var(--muted)">${esc(pg.p)}.md<br>modified ${new Date(pg.m * 1000).toLocaleDateString()}</div></section>`;
+  $("links").innerHTML = panel;
+  $("linksInline").innerHTML = panel;
+  for (const a of document.querySelectorAll(".file.active")) a.classList.remove("active");
+  const f = document.querySelector(`.file[data-p="${CSS.escape(pg.p)}"]`);
+  if (f) { f.classList.add("active"); let d = f.parentElement; while (d && d.id !== "tree") { if (d.tagName === "DETAILS") d.open = true; d = d.parentElement; } f.scrollIntoView({block: "nearest"}); }
+  $("main").scrollTop = 0;
+  document.body.classList.remove("nav");
+}
+function route() { show(decodeURI(location.hash.replace(/^#\/?/, "")) || "Home"); }
+
+// File tree
+function buildTree() {
+  const root = {dirs: {}, files: []};
+  for (const pg of PAGES) {
+    const parts = pg.p.split("/"); let node = root;
+    for (const d of parts.slice(0, -1)) node = node.dirs[d] ||= {dirs: {}, files: []};
+    node.files.push(pg);
+  }
+  const render = node => Object.keys(node.dirs).sort((a, b) => a.localeCompare(b)).map(d =>
+      `<details class="dir"><summary>${esc(d)}</summary><div>${render(node.dirs[d])}</div></details>`).join("") +
+    node.files.sort((a, b) => a.p.localeCompare(b.p)).map(pg =>
+      `<a class="file" data-p="${esc(pg.p)}" href="${href(pg.p)}" title="${esc(pg.p)}">${esc(pg.p.split("/").pop())}</a>`).join("");
+  $("tree").innerHTML = render(root);
+  $("count").textContent = PAGES.length + " notes";
+}
+
+// Search: title hits first, then body hits with a snippet
+function search(q) {
+  const terms = q.toLowerCase().split(/\s+/).filter(Boolean);
+  if (!terms.length) { $("results").style.display = "none"; $("tree").style.display = ""; return; }
+  const scored = [];
+  for (const pg of PAGES) {
+    const t = (pg.t + " " + pg.p).toLowerCase(), b = pg.b.toLowerCase();
+    if (!terms.every(x => t.includes(x) || b.includes(x))) continue;
+    const score = terms.reduce((s, x) => s + (t.includes(x) ? 10 : 0) + Math.min(b.split(x).length - 1, 5), 0);
+    const i = b.indexOf(terms[0]);
+    const snip = i >= 0 ? pg.b.slice(Math.max(0, i - 50), i + 90).replace(/\s+/g, " ") : "";
+    scored.push({pg, score, snip});
+  }
+  scored.sort((a, b) => b.score - a.score);
+  const hl = s => { let h = esc(s); for (const x of terms) h = h.replace(new RegExp(x.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "gi"), m => `<mark>${m}</mark>`); return h; };
+  $("results").innerHTML = scored.slice(0, 80).map(({pg, snip}) =>
+    `<a class="res" href="${href(pg.p)}">${hl(pg.t)}<small>${esc(pg.p)}</small>${snip ? `<div class="snip">…${hl(snip)}…</div>` : ""}</a>`).join("")
+    || `<div class="res" style="color:var(--muted)">No matches</div>`;
+  $("results").style.display = "block"; $("tree").style.display = "none";
+}
+
+// Theme
+function setTheme(t) { if (t) document.documentElement.dataset.theme = t; else delete document.documentElement.dataset.theme; try { localStorage.setItem("wv-theme", t || ""); } catch (e) {} }
+try { setTheme(localStorage.getItem("wv-theme") || ""); } catch (e) {}
+$("theme").onclick = () => {
+  const dark = document.documentElement.dataset.theme ? document.documentElement.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+  setTheme(dark ? "light" : "dark");
+};
+$("menu").onclick = () => document.body.classList.toggle("nav");
+$("q").addEventListener("input", e => search(e.target.value));
+$("q").addEventListener("keydown", e => { if (e.key === "Enter") { const a = $("results").querySelector("a"); if (a) location.hash = a.getAttribute("href"); } if (e.key === "Escape") { e.target.value = ""; search(""); } });
+document.addEventListener("keydown", e => { if ((e.key === "/" || (e.key === "k" && (e.metaKey || e.ctrlKey))) && document.activeElement !== $("q")) { e.preventDefault(); $("q").focus(); $("q").select(); } });
+// Graph view
+const GROUP_COLORS = ["#8b6cf0","#e0796e","#4fb3a9","#e0b44f","#6fa0e8","#c77dd1","#7cb86b","#e89a5a","#9a978f","#d45d8c","#5ab0d9","#b0a04a"];
+const groupOf = p => { const parts = p.split("/"); return parts.length === 1 ? "(root)" : parts[0] === "teams" || parts[0] === "projects" ? parts[0] + "/" + parts[1] : parts[0]; };
+const topOf = p => p.includes("/") ? p.split("/")[0] : "(root)";
+const tops = [...new Set(PAGES.map(pg => topOf(pg.p)))].sort();
+const colorOf = p => GROUP_COLORS[tops.indexOf(topOf(p)) % GROUP_COLORS.length];
+const degree = p => (outgoing.get(p)?.size || 0) + (incoming.get(p)?.size || 0);
+const neighbors = p => new Set([...(outgoing.get(p) || []), ...(incoming.get(p) || [])]);
+let gNeedsFit = false, G = null, gMode = "global", hoverNode = null, hoverSet = new Set(), gFilterText = "";
+
+function graphData() {
+  let keep;
+  if (gMode === "local") {
+    keep = new Set([CURRENT]); let frontier = [CURRENT];
+    for (let d = 0; d < +$("gDepth").value; d++) {
+      const next = [];
+      for (const p of frontier) for (const n of neighbors(p)) if (!keep.has(n)) { keep.add(n); next.push(n); }
+      frontier = next;
+    }
+  } else {
+    keep = new Set(PAGES.map(pg => pg.p).filter(p => $("gOrphans").checked || degree(p) > 0));
+  }
+  const nodes = [...keep].map(p => ({id: p, name: byPath.get(p).t, deg: degree(p), color: colorOf(p)}));
+  const links = [];
+  for (const s of keep) for (const t of outgoing.get(s) || []) if (keep.has(t)) links.push({source: s, target: t});
+  return {nodes, links};
+}
+function cssVar(n) { return getComputedStyle(document.documentElement).getPropertyValue(n).trim(); }
+function openGraph() {
+  $("graph").classList.add("on");
+  const el = $("gcanvas");
+  if (!G) {
+    G = ForceGraph()(el)
+      .nodeId("id")
+      .nodeVal(n => 1 + Math.sqrt(n.deg) * 1.6)
+      .nodeRelSize(2)
+      .linkWidth(l => hoverNode && (l.source.id === hoverNode.id || l.target.id === hoverNode.id) ? 1.6 : 0.5)
+      .linkDirectionalParticles(0)
+      .onNodeHover(n => { hoverNode = n || null; hoverSet = n ? neighbors(n.id) : new Set(); el.style.cursor = n ? "pointer" : ""; })
+      .onNodeClick(n => { closeGraph(); location.hash = href(n.id); })
+      .nodeCanvasObject((n, ctx, scale) => {
+        const r = (1.3 + Math.sqrt(n.deg) * 0.55);
+        const dim = (hoverNode && n !== hoverNode && !hoverSet.has(n.id)) ||
+                    (gFilterText && !(n.name + " " + n.id).toLowerCase().includes(gFilterText));
+        ctx.globalAlpha = dim ? 0.15 : 1;
+        ctx.beginPath(); ctx.arc(n.x, n.y, r, 0, 2 * Math.PI);
+        ctx.fillStyle = n.id === CURRENT ? cssVar("--text") : n.color; ctx.fill();
+        if (n.id === CURRENT) { ctx.lineWidth = 2 / scale; ctx.strokeStyle = cssVar("--accent"); ctx.stroke(); }
+        const showLabel = n.deg * scale > 70 || scale > 14 || n === hoverNode || hoverSet.has(n.id) || n.deg > 40 || n.id === CURRENT || (gFilterText && !dim);
+        if (showLabel && !dim) {
+          const fs = Math.max(11 / scale, 2);
+          ctx.font = `${fs}px -apple-system, sans-serif`; ctx.textAlign = "center"; ctx.textBaseline = "top";
+          ctx.fillStyle = cssVar("--text"); ctx.fillText(n.name.length > 40 ? n.name.slice(0, 38) + "…" : n.name, n.x, n.y + r + 1.5);
+        }
+        ctx.globalAlpha = 1;
+      })
+      .nodePointerAreaPaint((n, color, ctx) => { ctx.fillStyle = color; ctx.beginPath(); ctx.arc(n.x, n.y, (1.3 + Math.sqrt(n.deg) * 0.55) + 2, 0, 2 * Math.PI); ctx.fill(); })
+      .nodeLabel(n => `${esc(n.name)}<br><small>${esc(n.id)}</small>`)
+      .cooldownTicks(200)
+      .onEngineStop(() => { if (gNeedsFit) { gNeedsFit = false; G.zoomToFit(0, 50); } });
+    G.d3Force("charge").strength(-70);
+    G.d3Force("link").distance(45);
+    window.addEventListener("resize", () => G && G.width(innerWidth).height(innerHeight));
+    $("glegend").innerHTML = tops.map(t => `<span><i style="background:${colorOf(t === "(root)" ? "x" : t + "/x")}"></i>${esc(t)}</span>`).join("");
+  }
+  G.width(innerWidth).height(innerHeight)
+   .backgroundColor(cssVar("--bg")).linkColor(() => cssVar("--line") === "#34343a" ? "rgba(200,200,210,.28)" : "rgba(60,55,50,.22)");
+  const data = graphData();
+  G.graphData(data);
+  $("gtitle").textContent = gMode === "local" ? `Local graph of “${byPath.get(CURRENT).t}” — ${data.nodes.length} notes` : `${data.nodes.length} notes · ${data.links.length} links`;
+  gNeedsFit = true;
+}
+function closeGraph() { $("graph").classList.remove("on"); }
+function setMode(m) { gMode = m; $("gGlobal").classList.toggle("on", m === "global"); $("gLocal").classList.toggle("on", m === "local"); $("gDepthWrap").style.display = m === "local" ? "" : "none"; openGraph(); }
+$("graphBtn").onclick = () => openGraph();
+$("gClose").onclick = closeGraph;
+$("gGlobal").onclick = () => setMode("global");
+$("gLocal").onclick = () => setMode("local");
+$("gDepth").oninput = () => openGraph();
+$("gOrphans").onchange = () => openGraph();
+$("gFilter").oninput = e => { gFilterText = e.target.value.toLowerCase().trim(); };
+document.addEventListener("keydown", e => {
+  if (e.target.tagName === "INPUT") return;
+  if (e.key === "g") { $("graph").classList.contains("on") ? closeGraph() : openGraph(); }
+  if (e.key === "Escape") closeGraph();
+});
+
+window.addEventListener("hashchange", route);
+buildTree();
+route();
+</script>
+</body>
+</html>

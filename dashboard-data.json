@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-20T15:14:19Z",
+  "generated_at": "2026-09-24T15:02:03Z",
   "version": "1.0",
   "teams": [
     {
@@ -444,6 +444,11 @@
           "agent_id": "wiki-ingest",
           "role": "Promotes research findings, decisions, and session outcomes to the wiki knowledge base",
           "context_override": null
+        },
+        {
+          "agent_id": "wiki-viewer",
+          "role": "Read-only: rebuilds and opens the Obsidian-style wiki snapshot (tree, search, backlinks, graph) in the browser",
+          "context_override": null
         }
       ],
       "orchestration": {
@@ -479,6 +484,9 @@
           ],
           "wiki-update": [
             "wiki-ingest"
+          ],
+          "wiki-browse": [
+            "wiki-viewer"
           ]
         },
         "delegation_strategy": "Max handles simple tasks directly (email, notes, calendar). For deep research, PDF processing, or browser automation, delegate to specialist subagents. Keep context lean by offloading heavy analysis.\n\n**Claude 4.7 delegation note:** Opus 4.7 defaults to fewer subagents and fewer tool calls than prior models. Counteract that here \u2014 when a request matches a specialist's domain, delegate rather than answering from training knowledge. Handle inline ONLY for: routing/clarifying questions back to the user, trivial lookups in already-loaded context, or synthesizing specialist briefings into the final response. Everything else goes to a specialist.",
@@ -2893,6 +2901,36 @@
       "purpose": "You take the mastered episode and the show notes and assemble a **host-agnostic, ready-to-upload package** \u2014 a properly tagged MP3, an RSS `<item>` Nick can drop into any feed, a place for cover art, and the metadata any host needs. You also draft cross-promo posts. By design you **stop at a ready package**: Nick connects the actual host (Spotify for Podcasters, Transistor, Buzzsprout, self-hosted RSS) himself. If he names a host, follow its specifics.",
       "status": "active",
       "created": "2026-06-25"
+    },
+    {
+      "id": "wiki-viewer",
+      "name": "Wiki Viewer",
+      "description": "Read-only: rebuilds an Obsidian-style single-file snapshot of the wiki (tree, search, backlinks, graph) and opens it in the browser, optionally at a specific note.",
+      "agent_type": "specialist",
+      "execution": {
+        "context": "fork",
+        "max_turns": 10,
+        "model": "haiku"
+      },
+      "expertise": {
+        "domains": [
+          "wiki browsing",
+          "knowledge-base navigation"
+        ],
+        "capabilities": [
+          "rebuild wiki viewer snapshot",
+          "open wiki in browser at a specific note",
+          "graph view of wiki links",
+          "shareable build excluding private folders"
+        ]
+      },
+      "mcp_servers": [],
+      "teams": [
+        "personal-assistant"
+      ],
+      "purpose": "Wiki Viewer answers \"open my wiki\". It rebuilds a single-file, Obsidian-style snapshot of the wiki (`$WIKI_REPO`, default `~/Workspaces/wiki/`) and opens it in the browser, optionally jumping straight to one note. The viewer has a file tree, full-text search, `[[wikilink]]` resolution, frontmatter properties, backlinks, callouts, tags, dark mode, and a force-directed graph view.\n\nIt is **read-only**. It never creates, edits, moves, or deletes wiki pages. `wiki-ingest` is the sole writer; if Nick wants something in the wiki changed, say so and hand back to the orchestrator.",
+      "status": "active",
+      "created": "2026-09-24"
     }
   ],
   "buckets": [
@@ -3003,26 +3041,26 @@
     }
   ],
   "stats": {
-    "total_agents": 58,
-    "active_agents": 50,
+    "total_agents": 59,
+    "active_agents": 51,
     "archived_agents": 8,
     "total_teams": 10,
     "total_buckets": 9,
     "agents_by_type": {
-      "specialist": 45,
+      "specialist": 46,
       "orchestrator": 2,
       "utility": 3
     },
     "agents_by_model": {
       "sonnet": 36,
       "opus": 13,
-      "haiku": 1
+      "haiku": 2
     },
     "agents_by_team": {
       "wharfside-board-assistant": 9,
       "software-project": 10,
       "altium-solutions": 17,
-      "personal-assistant": 4,
+      "personal-assistant": 5,
       "youtube-content": 0,
       "hardware-dev": 7,
       "saltwater-ads": 2,

@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "last_updated": "2026-07-05",
+  "last_updated": "2026-09-24",
   "teams": [
     {
       "id": "wharfside-board-assistant",
@@ -32,7 +32,7 @@
       "id": "personal-assistant",
       "name": "Personal Assistant Team",
       "folder": "teams/personal-assistant",
-      "member_count": 4,
+      "member_count": 5,
       "created": "2026-02-01",
       "status": "active"
     },

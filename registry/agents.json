@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "last_updated": "2026-06-25",
+  "last_updated": "2026-09-24",
   "agents": [
     {
       "id": "wiki-ingest",
@@ -586,6 +586,16 @@
         "podcast-studio"
       ],
       "created": "2026-06-25",
+      "status": "active"
+    },
+    {
+      "id": "wiki-viewer",
+      "name": "Wiki Viewer",
+      "folder": "agents/wiki-viewer",
+      "teams": [
+        "personal-assistant"
+      ],
+      "created": "2026-09-24",
       "status": "active"
     }
   ]

@@ -1,0 +1,64 @@
+{
+  "id": "wiki-viewer",
+  "name": "Wiki Viewer",
+  "description": "Read-only: rebuilds an Obsidian-style single-file snapshot of the wiki (tree, search, backlinks, graph) and opens it in the browser, optionally at a specific note.",
+  "version": "1.0",
+
+  "agent_type": "specialist",
+
+  "execution": {
+    "context": "fork",
+    "max_turns": 10,
+    "model": "haiku"
+  },
+
+  "expertise": {
+    "domains": ["wiki browsing", "knowledge-base navigation"],
+    "capabilities": [
+      "rebuild wiki viewer snapshot",
+      "open wiki in browser at a specific note",
+      "graph view of wiki links",
+      "shareable build excluding private folders"
+    ]
+  },
+
+  "mcp_servers": [],
+
+  "tooling": {
+    "scripts": ["scripts/wiki-viewer/build.py", "scripts/wiki-viewer/template.html"],
+    "output_dir": "~/.cache/wiki-viewer/",
+    "_note": "Moved from ~/Workspaces/max/scripts/wiki-viewer/ (max@6b60599) on 2026-09-24. Output is outside all repos because it embeds the full wiki."
+  },
+
+  "wiki_access": {
+    "repo_root": "${WIKI_REPO}",
+    "read": ["spine/", "teams/", "projects/"],
+    "write_via_ingest": [],
+    "session_log": "teams/personal-assistant/_sessions/wiki-viewer/",
+    "always_load": [
+      "spine/preferences/seven-habits-of-effective-agents.md"
+    ]
+  },
+
+  "context_buckets": {
+    "assigned": [],
+    "access_level": "none",
+    "_note": "Only for RAG buckets (FTS5 / pgvector). Curated knowledge lives in wiki_access."
+  },
+
+  "output": {
+    "folder": "~/.cache/wiki-viewer/",
+    "formats": ["html"]
+  },
+
+  "collaboration": {
+    "can_request_from": [],
+    "provides_to": ["personal-assistant"],
+    "handoff_format": "structured-summary"
+  },
+
+  "trigger": {
+    "type": "on-demand",
+    "description": "\"open my wiki\", \"show me the wiki graph\", \"open the <note> page\""
+  }
+}
