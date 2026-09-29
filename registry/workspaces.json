@@ -2,15 +2,6 @@
   "version": "1.0",
   "workspaces": [
     {
-      "kind": "project",
-      "team": "software-project",
-      "projectType": "software",
-      "name": "3280 Kiosk",
-      "path": "/Users/nickd/Workspaces/3280-kiosk",
-      "provisionedAt": "2026-08-22",
-      "aaCommit": "c8b6fd7e642e0755434bfc25c0065e1eb1330168"
-    },
-    {
       "kind": "workspace",
       "team": "altium-solutions",
       "projectType": null,
@@ -40,6 +31,15 @@
       "provisionedAt": "2026-07-05",
       "aaCommit": "aa1909c0dfbb79da843df6415c40c3081ea6473a",
       "syncedAt": "2026-08-20"
+    },
+    {
+      "kind": "project",
+      "team": "software-project",
+      "projectType": "software",
+      "name": "Concurrent 1993-3200 Kiosk",
+      "path": "/Users/nickd/Workspaces/concurrent-1993-3200-kiosk",
+      "provisionedAt": "2026-09-28",
+      "aaCommit": "48bcc48503b1a9c13ac2c783a0ab6acb772af05f"
     },
     {
       "kind": "project",
@@ -120,6 +120,24 @@
     },
     {
       "kind": "project",
+      "team": "software-project",
+      "projectType": "software",
+      "name": "Interdata Model 74 Kiosk",
+      "path": "/Users/nickd/Workspaces/interdata-model-74-kiosk",
+      "provisionedAt": "2026-09-19",
+      "aaCommit": "8f913f8b8d0700b16772a850e1ca1228e6b8bb2f"
+    },
+    {
+      "kind": "project",
+      "team": "software-project",
+      "projectType": "software",
+      "name": "Jersey Shore Computer Company",
+      "path": "/Users/nickd/Workspaces/jersey-shore-computer-company",
+      "provisionedAt": "2026-08-22",
+      "aaCommit": "c8b6fd7e642e0755434bfc25c0065e1eb1330168"
+    },
+    {
+      "kind": "project",
       "team": "content-studio",
       "projectType": "youtube",
       "name": "Jersey Stack Ep1",
@@ -166,6 +184,15 @@
       "provisionedAt": "2026-07-24",
       "aaCommit": "aa1909c0dfbb79da843df6415c40c3081ea6473a",
       "syncedAt": "2026-08-20"
+    },
+    {
+      "kind": "project",
+      "team": "software-project",
+      "projectType": "software",
+      "name": "Perkin-Elmer 3210 Kiosk",
+      "path": "/Users/nickd/Workspaces/perkin-elmer-3210-kiosk",
+      "provisionedAt": "2026-09-28",
+      "aaCommit": "48bcc48503b1a9c13ac2c783a0ab6acb772af05f"
     },
     {
       "kind": "project",
@@ -223,8 +250,8 @@
       "projectType": null,
       "path": "/Users/nickd/Workspaces/vcf",
       "provisionedAt": "2026-07-05",
-      "aaCommit": "aa1909c0dfbb79da843df6415c40c3081ea6473a",
-      "syncedAt": "2026-08-20"
+      "aaCommit": "06a2fb6278bd25fad419c872e980c2c73cbb98e4",
+      "syncedAt": "2026-09-29"
     },
     {
       "kind": "project",
@@ -244,6 +271,15 @@
       "provisionedAt": "2026-07-05",
       "aaCommit": "aa1909c0dfbb79da843df6415c40c3081ea6473a",
       "syncedAt": "2026-08-20"
+    },
+    {
+      "kind": "project",
+      "team": "content-studio",
+      "projectType": "youtube",
+      "name": "VCF intro redesign",
+      "path": "/Users/nickd/Workspaces/vcf-intro-redesign",
+      "provisionedAt": "2026-09-29",
+      "aaCommit": "48bcc48503b1a9c13ac2c783a0ab6acb772af05f"
     },
     {
       "kind": "project",
