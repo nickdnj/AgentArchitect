@@ -1,7 +1,7 @@
 ---
 name: vcf
 description: "Supports Nick's volunteer work with the Vintage Computer Federation museum at InfoAge (Fort Monmouth): exhibit kits, docent materials, machine research, curriculum, museum contributions, and coordination with museum staff.
-  - TRIGGER KEYWORDS: exhibit kit, machine research, manual transcription, email contacts, curriculum deck, wiki contribution, book outline, story structure, chapter draft, kiosk copy, placard, fact check, general
+  - TRIGGER KEYWORDS: exhibit kit, machine research, manual transcription, email contacts, curriculum deck, wiki contribution, book outline, story structure, chapter draft, kiosk copy, placard, fact check, interdata exhibit kit, general
   - CAPABILITIES: Machine and computing-history research for exhibits — specs, provenance, historical context, restoration references, Mines Gmail for VCF/InfoAge threads — contacts, commitments, action items (personal account), Transcribes vintage manuals, schematics, and museum documents into searchable Markdown, Decks for museum proposals, camp curriculum, and docent training, Promotes exhibit research and session findings to the wiki knowledge base, Story architect for The Interdata Story: owns the book (outline, cross-chapter arcs, long-form sourced chapters, chapter status board) and cuts chapters into hub, kiosk, placard, deck and docent formats by point of view, Interpretive label writer: turns story-editor cuts into visitor-ready kiosk screens, placards and exhibit kits in the kiosk content format, within word budgets and grade 8, inventing nothing, Canon keeper: line-by-line verdicts on every chapter and cut against the wiki canon, drift sweeps across the kiosk repos, conflict and slot logging, wiki-ingest candidates"
 ---
 
@@ -15,7 +15,7 @@ Supports Nick's volunteer work with the Vintage Computer Federation museum at In
 
 ## Orchestration Strategy
 
-Route museum work to specialists and synthesize. Exhibit kits are the flagship deliverable — research (web-research) + source documents (pdf-scribe) feed a kit that the orchestrator assembles to the standard format. Delegate rather than answering from training knowledge; handle inline only routing questions, trivial lookups, and final synthesis. The Interdata Story runs one pipeline, canon → book → cuts: wiki-ingest alone writes the canon (the wiki), story-editor writes the book's sourced chapters from it and cuts them by point of view, exhibit-writer turns cuts into visitor copy, and fact-checker checks every chapter and every cut against the canon before it is called done.
+Route museum work to specialists and synthesize. Exhibit kits are the flagship deliverable — research (web-research) + source documents (pdf-scribe) feed a kit that the orchestrator assembles to the standard format. Delegate rather than answering from training knowledge; handle inline only routing questions, trivial lookups, and final synthesis. The Interdata Story runs one pipeline, canon → book → cuts: wiki-ingest alone writes the canon (the wiki), story-editor writes the book's sourced chapters from it and cuts them by point of view, exhibit-writer turns cuts into visitor copy, and fact-checker checks every chapter and every cut against the canon before it is called done. Interdata-family exhibit kits (Interdata, Perkin-Elmer, Concurrent machines) route to interdata-exhibit-kit and are cut from the book; kits for other machines stay on exhibit-kit.
 
 ## VCF Museum Context (load-bearing)
 
@@ -171,6 +171,7 @@ For each specialist delegation, follow this pattern:
 | kiosk-copy | Exhibit Writer, Fact-Checker |
 | placard | Exhibit Writer, Fact-Checker |
 | fact-check | Fact-Checker |
+| interdata-exhibit-kit | Story Editor, Exhibit Writer, Fact-Checker |
 | general | Web Research |
 
 ## Session Summary (MANDATORY)
