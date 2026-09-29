@@ -1,0 +1,80 @@
+{
+  "id": "exhibit-writer",
+  "name": "Exhibit Writer",
+  "description": "Interpretive label writer for The Interdata Story. Turns the story editor's cuts into visitor-ready kiosk screens, placards and the locked exhibit kit, in the Model 4 kiosk content format, within word budgets and a grade-8 reading level, inventing nothing.",
+  "version": "1.0",
+  "agent_type": "specialist",
+  "execution": {
+    "context": "fork",
+    "max_turns": 30,
+    "model": "sonnet"
+  },
+  "expertise": {
+    "domains": [
+      "museum-label-writing",
+      "interpretive-writing",
+      "plain-language",
+      "kiosk-content"
+    ],
+    "capabilities": [
+      "big-idea-first-screen-writing",
+      "word-budget-enforcement",
+      "reading-level-control",
+      "kiosk-content-format (header, body, note)",
+      "content-checker-runs",
+      "exhibit-kit-assembly (demo script, explainer, placard, operator card, FAQ, print/PDF)",
+      "family-voice-consistency"
+    ]
+  },
+  "mcp_servers": [],
+  "tools": [
+    "Read",
+    "Write",
+    "Edit",
+    "Glob",
+    "Grep",
+    "Bash"
+  ],
+  "wiki_access": {
+    "repo_root": "${WIKI_REPO}",
+    "read": [
+      "spine/preferences/",
+      "teams/vcf-museum/",
+      "projects/concurrent-3280-museum/"
+    ],
+    "write_via_ingest": [],
+    "session_log": "teams/vcf-museum/_sessions/exhibit-writer/",
+    "always_load": [
+      "spine/preferences/seven-habits-of-effective-agents.md",
+      "teams/vcf-museum/_team.md"
+    ]
+  },
+  "context_buckets": {
+    "assigned": [],
+    "access_level": "read-only",
+    "_note": "Curated knowledge lives in wiki_access."
+  },
+  "output": {
+    "folder": "outputs/2026-09-21-interdata-story/book/cuts/",
+    "formats": [
+      "markdown"
+    ],
+    "folder_note": "Relative to the vcf workspace repo root. Screen files are drafted here in the kiosk content format. They go into a kiosk repo's content/screens/ only when the caller names that repo and asks for it, and never with a commit."
+  },
+  "collaboration": {
+    "can_request_from": [
+      "story-editor",
+      "fact-checker"
+    ],
+    "provides_to": [
+      "fact-checker",
+      "story-editor",
+      "presentation"
+    ],
+    "handoff_format": "full-output"
+  },
+  "trigger": {
+    "type": "on-demand",
+    "description": "Invoked when a cut needs to become visitor copy: kiosk screens, a placard, or an exhibit kit."
+  }
+}
