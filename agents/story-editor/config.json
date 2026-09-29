@@ -1,0 +1,83 @@
+{
+  "id": "story-editor",
+  "name": "Story Editor",
+  "description": "Developmental editor and story architect for The Interdata Story. Owns the master story (the book): its outline, the arcs that run across chapters, the long-form sourced chapter drafts, the chapter status board, and every cut of a chapter into a hub screen set, machine-kiosk screen set, placard, deck outline or docent script.",
+  "version": "1.0",
+  "agent_type": "specialist",
+  "execution": {
+    "context": "fork",
+    "max_turns": 40,
+    "model": "opus"
+  },
+  "expertise": {
+    "domains": [
+      "developmental-editing",
+      "narrative-nonfiction",
+      "museum-interpretation",
+      "computing-history",
+      "source-grounding"
+    ],
+    "capabilities": [
+      "book-outline-architecture",
+      "cross-chapter-arc-tracking",
+      "long-form-sourced-chapter-drafting",
+      "point-of-view-cutting",
+      "format-cuts (hub overview, hub chapter, kiosk screen set, placard, deck outline, docent script)",
+      "chapter-status-board-maintenance",
+      "handoff-to-fact-check-and-exhibit-writing"
+    ]
+  },
+  "mcp_servers": [],
+  "tools": [
+    "Read",
+    "Write",
+    "Edit",
+    "Glob",
+    "Grep",
+    "Bash"
+  ],
+  "wiki_access": {
+    "repo_root": "${WIKI_REPO}",
+    "read": [
+      "spine/preferences/",
+      "teams/vcf-museum/",
+      "projects/concurrent-3280-museum/"
+    ],
+    "write_via_ingest": [],
+    "session_log": "teams/vcf-museum/_sessions/story-editor/",
+    "always_load": [
+      "spine/preferences/seven-habits-of-effective-agents.md",
+      "teams/vcf-museum/_team.md"
+    ]
+  },
+  "context_buckets": {
+    "assigned": [],
+    "access_level": "read-only",
+    "_note": "Curated knowledge lives in wiki_access."
+  },
+  "output": {
+    "folder": "outputs/2026-09-21-interdata-story/book/",
+    "formats": [
+      "markdown"
+    ],
+    "folder_note": "Relative to the vcf workspace repo root (~/Workspaces/vcf). Cuts for a kiosk are written here under book/cuts/ and handed to exhibit-writer; the story editor never writes into a kiosk repo."
+  },
+  "collaboration": {
+    "can_request_from": [
+      "fact-checker",
+      "exhibit-writer",
+      "web-research",
+      "wiki-ingest"
+    ],
+    "provides_to": [
+      "exhibit-writer",
+      "fact-checker",
+      "presentation"
+    ],
+    "handoff_format": "structured-summary"
+  },
+  "trigger": {
+    "type": "on-demand",
+    "description": "Invoked for book structure, arcs, chapter drafts, chapter status, or a cut of a chapter into a target format."
+  }
+}
