@@ -597,6 +597,36 @@
       ],
       "created": "2026-09-24",
       "status": "active"
+    },
+    {
+      "id": "story-editor",
+      "name": "Story Editor",
+      "folder": "agents/story-editor",
+      "teams": [
+        "vcf-museum"
+      ],
+      "created": "2026-09-29",
+      "status": "active"
+    },
+    {
+      "id": "exhibit-writer",
+      "name": "Exhibit Writer",
+      "folder": "agents/exhibit-writer",
+      "teams": [
+        "vcf-museum"
+      ],
+      "created": "2026-09-29",
+      "status": "active"
+    },
+    {
+      "id": "fact-checker",
+      "name": "Fact-Checker",
+      "folder": "agents/fact-checker",
+      "teams": [
+        "vcf-museum"
+      ],
+      "created": "2026-09-29",
+      "status": "active"
     }
   ]
 }
