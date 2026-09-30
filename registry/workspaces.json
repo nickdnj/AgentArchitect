@@ -72,6 +72,15 @@
     },
     {
       "kind": "project",
+      "team": "software-project",
+      "projectType": "software",
+      "name": "EAI TR-20 Kiosk",
+      "path": "/Users/nickd/Workspaces/eai-tr-20-kiosk",
+      "provisionedAt": "2026-09-30",
+      "aaCommit": "210e7ffae906d7c3f41c66b1f0d4cdde018de14a"
+    },
+    {
+      "kind": "project",
       "team": "content-studio",
       "projectType": "podcast",
       "name": "ENIAC",
